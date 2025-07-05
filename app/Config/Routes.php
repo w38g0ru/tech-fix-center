@@ -5,6 +5,7 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+<<<<<<< HEAD
 $routes->get('/', function() {
     helper('auth');
     if (isLoggedIn()) {
@@ -112,3 +113,6 @@ $routes->group('dashboard', function($routes) {
 
 
 });
+=======
+$routes->get('/', 'Home::index');
+>>>>>>> 5fa8307 (Initial commit)

@@ -3,7 +3,10 @@
 use CodeIgniter\Boot;
 use Config\Paths;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5fa8307 (Initial commit)
 /*
  *---------------------------------------------------------------
  * CHECK PHP VERSION
@@ -49,10 +52,14 @@ if (getcwd() . DIRECTORY_SEPARATOR !== FCPATH) {
 
 // LOAD OUR PATHS CONFIG FILE
 // This is the line that might need to be changed, depending on your folder structure.
+<<<<<<< HEAD
 require FCPATH . '/../app/Config/Paths.php';
 
 # require realpath(__DIR__ . '/../app/Config/Paths.php');
 
+=======
+require FCPATH . '../app/Config/Paths.php';
+>>>>>>> 5fa8307 (Initial commit)
 // ^^^ Change this line if you move your application folder
 
 $paths = new Paths();
