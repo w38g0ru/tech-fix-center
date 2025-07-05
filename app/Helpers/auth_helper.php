@@ -1,0 +1,148 @@
+<?php
+
+if (!function_exists('getCurrentUser')) {
+    /**
+     * Get current logged in user from session
+     */
+    function getCurrentUser()
+    {
+        if (session()->get('isLoggedIn')) {
+            return [
+                'id' => session()->get('user_id'),
+                'username' => session()->get('username'),
+                'email' => session()->get('email'),
+                'full_name' => session()->get('full_name'),
+                'role' => session()->get('role'),
+                'isLoggedIn' => session()->get('isLoggedIn')
+            ];
+        }
+
+        return null;
+    }
+}
+
+if (!function_exists('hasRole')) {
+    /**
+     * Check if current user has specific role
+     */
+    function hasRole($role)
+    {
+        $user = getCurrentUser();
+        return $user && $user['role'] === $role;
+    }
+}
+
+if (!function_exists('hasAnyRole')) {
+    /**
+     * Check if current user has any of the specified roles
+     */
+    function hasAnyRole($roles)
+    {
+        $user = getCurrentUser();
+        return $user && in_array($user['role'], $roles);
+    }
+}
+
+if (!function_exists('isLoggedIn')) {
+    /**
+     * Check if user is logged in
+     */
+    function isLoggedIn()
+    {
+        return session()->get('isLoggedIn') === true;
+    }
+}
+
+if (!function_exists('canCreateTechnician')) {
+    /**
+     * Check if user can create technicians (admin only)
+     */
+    function canCreateTechnician()
+    {
+        return hasAnyRole(['superadmin', 'admin']);
+    }
+}
+
+if (!function_exists('canDeleteUser')) {
+    /**
+     * Check if user can delete users (admin only)
+     */
+    function canDeleteUser()
+    {
+        return hasAnyRole(['superadmin', 'admin']);
+    }
+}
+
+if (!function_exists('canDeleteJob')) {
+    /**
+     * Check if user can delete jobs (admin only)
+     */
+    function canDeleteJob()
+    {
+        return hasAnyRole(['superadmin', 'admin']);
+    }
+}
+
+if (!function_exists('canEditTechnician')) {
+    /**
+     * Check if user can edit technicians
+     */
+    function canEditTechnician()
+    {
+        return hasAnyRole(['superadmin', 'admin']);
+    }
+}
+
+if (!function_exists('canViewAllJobs')) {
+    /**
+     * Check if user can view all jobs
+     */
+    function canViewAllJobs()
+    {
+        return hasAnyRole(['superadmin', 'admin']);
+    }
+}
+
+if (!function_exists('canManageInventory')) {
+    /**
+     * Check if user can manage inventory
+     */
+    function canManageInventory()
+    {
+        return hasAnyRole(['superadmin', 'admin', 'technician']);
+    }
+}
+
+if (!function_exists('getRoleColor')) {
+    /**
+     * Get color class for role badge
+     */
+    function getRoleColor($role)
+    {
+        return match($role) {
+            'superadmin' => 'bg-red-100 text-red-800',
+            'admin' => 'bg-purple-100 text-purple-800',
+            'technician' => 'bg-blue-100 text-blue-800',
+            'user' => 'bg-gray-100 text-gray-800',
+            default => 'bg-gray-100 text-gray-800'
+        };
+    }
+}
+
+if (!function_exists('getRoleIcon')) {
+    /**
+     * Get icon for role
+     */
+    function getRoleIcon($role)
+    {
+        return match($role) {
+            'superadmin' => 'fas fa-crown',
+            'admin' => 'fas fa-user-shield',
+            'technician' => 'fas fa-user-cog',
+            'user' => 'fas fa-user',
+            default => 'fas fa-user'
+        };
+    }
+}
+
+
