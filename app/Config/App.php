@@ -33,7 +33,7 @@ class App extends BaseConfig
         $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? 'localhost';
 
         // Set baseURL based on host
-        if ($host === 'localhost' || $host === 'tfc.local') {
+        if (in_array($host, ['localhost', 'tfc.local'])) {
             $this->baseURL = 'http://tfc.local/';
         } else {
             $this->baseURL = 'https://tfc.gaighat.com/';
