@@ -1,5 +1,5 @@
 <?php
-
+print("ci has problem"); exit;
 use CodeIgniter\Boot;
 use Config\Paths;
 
