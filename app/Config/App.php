@@ -19,6 +19,28 @@ class App extends BaseConfig
     public string $baseURL = 'https://tfc.gaighat.com/';
 
     /**
+     * --------------------------------------------------------------------------
+     * Constructor
+     * --------------------------------------------------------------------------
+     *
+     * Dynamically set baseURL based on the current host
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Get the current host
+        $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? 'localhost';
+
+        // Set baseURL based on host
+        if ($host === 'localhost' || $host === 'tfc.local') {
+            $this->baseURL = 'http://tfc.local/';
+        } else {
+            $this->baseURL = 'https://tfc.gaighat.com/';
+        }
+    }
+
+    /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
      * If you want to accept multiple Hostnames, set this.
      *
