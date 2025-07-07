@@ -17,10 +17,18 @@ class Movements extends BaseController
         $this->movementModel = new InventoryMovementModel();
         $this->inventoryModel = new InventoryItemModel();
         $this->jobModel = new JobModel();
+
+        // Load auth helper
+        helper('auth');
     }
 
     public function index()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $movements = $this->movementModel->getMovementsWithDetails();
 
         $data = [
@@ -34,6 +42,11 @@ class Movements extends BaseController
 
     public function create()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $data = [
             'title' => 'Add Stock Movement',
             'inventoryItems' => $this->inventoryModel->findAll(),
@@ -45,6 +58,11 @@ class Movements extends BaseController
 
     public function store()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $rules = [
             'item_id' => 'required|is_natural_no_zero',
             'movement_type' => 'required|in_list[IN,OUT]',

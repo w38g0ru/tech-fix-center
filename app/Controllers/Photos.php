@@ -27,6 +27,11 @@ class Photos extends BaseController
 
     public function index()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $photos = $this->photoModel->getPhotosWithDetails();
 
         $data = [
@@ -39,6 +44,11 @@ class Photos extends BaseController
 
     public function upload()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         // Get URL parameters for pre-selection
         $preSelectedType = $this->request->getGet('type');
         $preSelectedJobId = $this->request->getGet('job_id');
