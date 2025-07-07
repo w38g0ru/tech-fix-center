@@ -14,28 +14,15 @@ class Technicians extends BaseController
 
         // Load auth helper
         helper('auth');
-
-        // Check authentication for all technician methods
-        $this->checkAuthentication();
-    }
-
-    /**
-     * Check if user is authenticated
-     */
-    private function checkAuthentication()
-    {
-        if (!isLoggedIn()) {
-            // Store the intended URL for redirect after login
-            session()->set('redirect_url', current_url());
-
-            // Redirect to login page
-            header('Location: ' . base_url('auth/login'));
-            exit();
-        }
     }
 
     public function index()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         // Check if user can create technicians (admin or superadmin only)
         if (!canCreateTechnician()) {
             return redirect()->to('/dashboard')->with('error', 'You do not have permission to access technicians.');

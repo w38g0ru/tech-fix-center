@@ -26,28 +26,14 @@ class Dashboard extends BaseController
 
         // Load auth helper
         helper('auth');
-
-        // Check authentication for all dashboard methods
-        $this->checkAuthentication();
-    }
-
-    /**
-     * Check if user is authenticated
-     */
-    private function checkAuthentication()
-    {
-        if (!isLoggedIn()) {
-            // Store the intended URL for redirect after login
-            session()->set('redirect_url', current_url());
-
-            // Redirect to login page
-            header('Location: ' . base_url('auth/login'));
-            exit();
-        }
     }
 
     public function index()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
         $data = [
             'title' => 'Dashboard',
             'userStats' => $this->userModel->getUserStats(),
@@ -65,6 +51,11 @@ class Dashboard extends BaseController
     // Users Management
     public function users()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $search = $this->request->getGet('search');
         
         if ($search) {
@@ -84,12 +75,22 @@ class Dashboard extends BaseController
 
     public function createUser()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $data = ['title' => 'Add New Customer'];
         return view('dashboard/users/create', $data);
     }
 
     public function storeUser()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $rules = [
             'name' => 'required|min_length[2]|max_length[100]',
             'mobile_number' => 'permit_empty|min_length[10]|max_length[20]',
@@ -183,6 +184,11 @@ class Dashboard extends BaseController
     // Technicians Management
     public function technicians()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $search = $this->request->getGet('search');
         
         if ($search) {
@@ -202,6 +208,11 @@ class Dashboard extends BaseController
 
     public function createTechnician()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         // Check if user can create technicians
         if (!canCreateTechnician()) {
             return redirect()->to('/dashboard/technicians')->with('error', 'You do not have permission to create technicians.');
@@ -213,6 +224,11 @@ class Dashboard extends BaseController
 
     public function storeTechnician()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         // Check if user can create technicians
         if (!canCreateTechnician()) {
             return redirect()->to('/dashboard/technicians')->with('error', 'You do not have permission to create technicians.');
@@ -303,24 +319,44 @@ class Dashboard extends BaseController
 
     public function userGuide()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $data = ['title' => 'User Guide'];
         return view('dashboard/user_guide', $data);
     }
 
     public function mobileTest()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $data = ['title' => 'Mobile Test'];
         return view('dashboard/mobile_test', $data);
     }
 
     public function profile()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $data = ['title' => 'Profile'];
         return view('dashboard/profile', $data);
     }
 
     public function settings()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $data = ['title' => 'Settings'];
         return view('dashboard/settings', $data);
     }

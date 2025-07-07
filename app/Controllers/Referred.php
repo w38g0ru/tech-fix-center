@@ -21,6 +21,11 @@ class Referred extends BaseController
 
     public function index()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $search = $this->request->getGet('search');
         $status = $this->request->getGet('status');
         
