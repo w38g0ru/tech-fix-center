@@ -1,0 +1,270 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Models\PartsRequestModel;
+use App\Models\TechnicianModel;
+use App\Models\JobModel;
+
+class PartsRequests extends BaseController
+{
+    protected $partsRequestModel;
+    protected $technicianModel;
+    protected $jobModel;
+
+    public function __construct()
+    {
+        $this->partsRequestModel = new PartsRequestModel();
+        $this->technicianModel = new TechnicianModel();
+        $this->jobModel = new JobModel();
+        
+        // Load auth helper
+        helper('auth');
+    }
+
+    public function index()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        $userRole = getUserRole();
+        $userId = getUserId();
+
+        // Get parts requests based on user role
+        if (in_array($userRole, ['superadmin', 'admin'])) {
+            $partsRequests = $this->partsRequestModel->getPartsRequestsWithDetails();
+        } elseif ($userRole === 'technician') {
+            // Get technician ID from admin_users table
+            $technicianId = $this->getTechnicianIdByUserId($userId);
+            $partsRequests = $this->partsRequestModel->getPartsRequestsByTechnician($technicianId);
+        } else {
+            return redirect()->to('/dashboard')->with('error', 'Access denied.');
+        }
+
+        $data = [
+            'title' => 'Parts Requests',
+            'partsRequests' => $partsRequests,
+            'stats' => $this->partsRequestModel->getPartsRequestStats(),
+            'userRole' => $userRole
+        ];
+
+        return view('dashboard/parts_requests/index', $data);
+    }
+
+    public function create()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        // Only technicians can create parts requests
+        if (!hasRole(['technician'])) {
+            return redirect()->to('/dashboard')->with('error', 'Only technicians can create parts requests.');
+        }
+
+        $data = [
+            'title' => 'Create Parts Request',
+            'technicians' => $this->technicianModel->findAll(),
+            'jobs' => $this->jobModel->getJobsWithDetails(),
+            'urgencyLevels' => $this->partsRequestModel->getUrgencyLevels()
+        ];
+
+        return view('dashboard/parts_requests/create', $data);
+    }
+
+    public function store()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        // Only technicians can create parts requests
+        if (!hasRole(['technician'])) {
+            return redirect()->to('/dashboard')->with('error', 'Only technicians can create parts requests.');
+        }
+
+        // Prepare parts request data
+        $partsRequestData = [
+            'technician_id' => $this->request->getPost('technician_id'),
+            'job_id' => $this->request->getPost('job_id') ?: null,
+            'item_name' => $this->request->getPost('item_name'),
+            'brand' => $this->request->getPost('brand'),
+            'model' => $this->request->getPost('model'),
+            'quantity_requested' => $this->request->getPost('quantity_requested'),
+            'description' => $this->request->getPost('description'),
+            'urgency' => $this->request->getPost('urgency'),
+            'status' => 'Pending',
+            'requested_by' => getUserId(),
+            'notes' => $this->request->getPost('notes')
+        ];
+
+        // Validate using model validation rules
+        if (!$this->partsRequestModel->validate($partsRequestData)) {
+            return redirect()->back()
+                           ->withInput()
+                           ->with('errors', $this->partsRequestModel->errors());
+        }
+
+        // Save parts request
+        if ($this->partsRequestModel->save($partsRequestData)) {
+            return redirect()->to('/parts-requests')
+                           ->with('success', 'Parts request submitted successfully!');
+        } else {
+            return redirect()->back()
+                           ->withInput()
+                           ->with('error', 'Failed to submit parts request. Please try again.');
+        }
+    }
+
+    public function view($id)
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        $partsRequest = $this->partsRequestModel->getPartsRequestWithDetails($id);
+        
+        if (!$partsRequest) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Parts request not found');
+        }
+
+        // Check access permissions
+        $userRole = getUserRole();
+        $userId = getUserId();
+        
+        if ($userRole === 'technician') {
+            $technicianId = $this->getTechnicianIdByUserId($userId);
+            if ($partsRequest['technician_id'] != $technicianId && $partsRequest['requested_by'] != $userId) {
+                return redirect()->to('/parts-requests')->with('error', 'Access denied.');
+            }
+        }
+
+        $data = [
+            'title' => 'Parts Request Details',
+            'partsRequest' => $partsRequest,
+            'userRole' => $userRole
+        ];
+
+        return view('dashboard/parts_requests/view', $data);
+    }
+
+    public function approve($id)
+    {
+        // Check if user is logged in and has admin privileges
+        if (!isLoggedIn() || !hasRole(['superadmin', 'admin'])) {
+            return redirect()->to('/auth/login');
+        }
+
+        $partsRequest = $this->partsRequestModel->find($id);
+        
+        if (!$partsRequest) {
+            return redirect()->to('/parts-requests')
+                           ->with('error', 'Parts request not found.');
+        }
+
+        if ($partsRequest['status'] !== 'Pending') {
+            return redirect()->to('/parts-requests')
+                           ->with('error', 'Only pending requests can be approved.');
+        }
+
+        $updateData = [
+            'status' => 'Approved',
+            'approved_by' => getUserId(),
+            'approved_at' => date('Y-m-d H:i:s'),
+            'estimated_cost' => $this->request->getPost('estimated_cost'),
+            'supplier' => $this->request->getPost('supplier'),
+            'expected_delivery_date' => $this->request->getPost('expected_delivery_date'),
+            'notes' => $this->request->getPost('notes')
+        ];
+
+        if ($this->partsRequestModel->update($id, $updateData)) {
+            return redirect()->to('/parts-requests')
+                           ->with('success', 'Parts request approved successfully!');
+        } else {
+            return redirect()->back()
+                           ->with('error', 'Failed to approve parts request. Please try again.');
+        }
+    }
+
+    public function reject($id)
+    {
+        // Check if user is logged in and has admin privileges
+        if (!isLoggedIn() || !hasRole(['superadmin', 'admin'])) {
+            return redirect()->to('/auth/login');
+        }
+
+        $partsRequest = $this->partsRequestModel->find($id);
+        
+        if (!$partsRequest) {
+            return redirect()->to('/parts-requests')
+                           ->with('error', 'Parts request not found.');
+        }
+
+        if ($partsRequest['status'] !== 'Pending') {
+            return redirect()->to('/parts-requests')
+                           ->with('error', 'Only pending requests can be rejected.');
+        }
+
+        $updateData = [
+            'status' => 'Rejected',
+            'approved_by' => getUserId(),
+            'approved_at' => date('Y-m-d H:i:s'),
+            'rejection_reason' => $this->request->getPost('rejection_reason')
+        ];
+
+        if ($this->partsRequestModel->update($id, $updateData)) {
+            return redirect()->to('/parts-requests')
+                           ->with('success', 'Parts request rejected.');
+        } else {
+            return redirect()->back()
+                           ->with('error', 'Failed to reject parts request. Please try again.');
+        }
+    }
+
+    public function updateStatus($id)
+    {
+        // Check if user is logged in and has admin privileges
+        if (!isLoggedIn() || !hasRole(['superadmin', 'admin'])) {
+            return redirect()->to('/auth/login');
+        }
+
+        $partsRequest = $this->partsRequestModel->find($id);
+        
+        if (!$partsRequest) {
+            return redirect()->to('/parts-requests')
+                           ->with('error', 'Parts request not found.');
+        }
+
+        $newStatus = $this->request->getPost('status');
+        $updateData = ['status' => $newStatus];
+
+        // Add additional fields based on status
+        if ($newStatus === 'Ordered') {
+            $updateData['order_date'] = $this->request->getPost('order_date') ?: date('Y-m-d');
+            $updateData['actual_cost'] = $this->request->getPost('actual_cost');
+        } elseif ($newStatus === 'Received') {
+            $updateData['actual_delivery_date'] = $this->request->getPost('actual_delivery_date') ?: date('Y-m-d');
+        }
+
+        if ($this->partsRequestModel->update($id, $updateData)) {
+            return redirect()->to('/parts-requests')
+                           ->with('success', 'Parts request status updated successfully!');
+        } else {
+            return redirect()->back()
+                           ->with('error', 'Failed to update status. Please try again.');
+        }
+    }
+
+    private function getTechnicianIdByUserId($userId)
+    {
+        // Get technician ID from admin_users relationship
+        $db = \Config\Database::connect();
+        $result = $db->query("SELECT id FROM technicians WHERE admin_user_id = ?", [$userId])->getRow();
+        return $result ? $result->id : null;
+    }
+}

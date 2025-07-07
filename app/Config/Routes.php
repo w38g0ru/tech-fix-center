@@ -53,6 +53,18 @@ $routes->group('dashboard', function($routes) {
     $routes->post('inventory/update/(:num)', 'Inventory::update/$1');
     $routes->get('inventory/delete/(:num)', 'Inventory::delete/$1');
     $routes->get('inventory/view/(:num)', 'Inventory::view/$1');
+    $routes->get('inventory/bulk-import', 'Inventory::bulkImport');
+    $routes->post('inventory/process-bulk-import', 'Inventory::processBulkImport');
+    $routes->get('inventory/export', 'Inventory::exportInventory');
+
+    // Parts Requests Routes
+    $routes->get('parts-requests', 'PartsRequests::index');
+    $routes->get('parts-requests/create', 'PartsRequests::create');
+    $routes->post('parts-requests/store', 'PartsRequests::store');
+    $routes->get('parts-requests/view/(:num)', 'PartsRequests::view/$1');
+    $routes->post('parts-requests/approve/(:num)', 'PartsRequests::approve/$1');
+    $routes->post('parts-requests/reject/(:num)', 'PartsRequests::reject/$1');
+    $routes->post('parts-requests/update-status/(:num)', 'PartsRequests::updateStatus/$1');
 
     // Inventory Movements Routes
     $routes->get('movements', 'Movements::index');
@@ -80,6 +92,15 @@ $routes->group('dashboard', function($routes) {
     $routes->post('referred/update/(:num)', 'Referred::update/$1');
     $routes->get('referred/delete/(:num)', 'Referred::delete/$1');
     $routes->post('referred/updateStatus/(:num)', 'Referred::updateStatus/$1');
+
+    // Service Centers Routes
+    $routes->get('service-centers', 'ServiceCenters::index');
+    $routes->get('service-centers/create', 'ServiceCenters::create');
+    $routes->post('service-centers/store', 'ServiceCenters::store');
+    $routes->get('service-centers/edit/(:num)', 'ServiceCenters::edit/$1');
+    $routes->post('service-centers/update/(:num)', 'ServiceCenters::update/$1');
+    $routes->get('service-centers/delete/(:num)', 'ServiceCenters::delete/$1');
+    $routes->get('service-centers/search', 'ServiceCenters::search');
 
     // Technicians Routes
     $routes->get('technicians', 'Technicians::index');

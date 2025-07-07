@@ -6,6 +6,7 @@ use App\Models\JobModel;
 use App\Models\UserModel;
 use App\Models\TechnicianModel;
 use App\Models\PhotoModel;
+use App\Models\ServiceCenterModel;
 
 class Jobs extends BaseController
 {
@@ -13,6 +14,7 @@ class Jobs extends BaseController
     protected $userModel;
     protected $technicianModel;
     protected $photoModel;
+    protected $serviceCenterModel;
 
     public function __construct()
     {
@@ -20,6 +22,7 @@ class Jobs extends BaseController
         $this->userModel = new UserModel();
         $this->technicianModel = new TechnicianModel();
         $this->photoModel = new PhotoModel();
+        $this->serviceCenterModel = new ServiceCenterModel();
 
         // Load auth helper
         helper('auth');
@@ -54,7 +57,10 @@ class Jobs extends BaseController
         $data = [
             'title' => 'Create New Job',
             'users' => $this->userModel->findAll(),
-            'technicians' => $this->technicianModel->getAvailableTechnicians()
+            'technicians' => $this->technicianModel->getAvailableTechnicians(),
+            'serviceCenters' => $this->serviceCenterModel->getActiveServiceCenters(),
+            'jobStatuses' => $this->jobModel->getJobStatuses(),
+            'dispatchTypes' => $this->jobModel->getDispatchTypes()
         ];
 
         return view('dashboard/jobs/create', $data);
@@ -65,12 +71,20 @@ class Jobs extends BaseController
         // Prepare job data for model validation
         $jobData = [
             'user_id' => $this->request->getPost('user_id') ?: null,
+            'walk_in_customer_name' => $this->request->getPost('walk_in_customer_name'),
             'device_name' => $this->request->getPost('device_name'),
             'serial_number' => $this->request->getPost('serial_number'),
             'problem' => $this->request->getPost('problem'),
             'technician_id' => $this->request->getPost('technician_id') ?: null,
             'status' => $this->request->getPost('status'),
-            'charge' => $this->request->getPost('charge') ?: null
+            'charge' => $this->request->getPost('charge') ?: null,
+            'dispatch_type' => $this->request->getPost('dispatch_type'),
+            'service_center_id' => $this->request->getPost('service_center_id') ?: null,
+            'dispatch_date' => $this->request->getPost('dispatch_date'),
+            'nepali_date' => $this->request->getPost('nepali_date'),
+            'expected_return_date' => $this->request->getPost('expected_return_date'),
+            'actual_return_date' => $this->request->getPost('actual_return_date'),
+            'dispatch_notes' => $this->request->getPost('dispatch_notes')
         ];
 
         // Validate using JobModel
@@ -176,7 +190,7 @@ class Jobs extends BaseController
     public function edit($id)
     {
         $job = $this->jobModel->find($id);
-        
+
         if (!$job) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Job not found');
         }
@@ -185,7 +199,10 @@ class Jobs extends BaseController
             'title' => 'Edit Job',
             'job' => $job,
             'users' => $this->userModel->findAll(),
-            'technicians' => $this->technicianModel->getAvailableTechnicians()
+            'technicians' => $this->technicianModel->getAvailableTechnicians(),
+            'serviceCenters' => $this->serviceCenterModel->getActiveServiceCenters(),
+            'jobStatuses' => $this->jobModel->getJobStatuses(),
+            'dispatchTypes' => $this->jobModel->getDispatchTypes()
         ];
 
         return view('dashboard/jobs/edit', $data);

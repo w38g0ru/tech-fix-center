@@ -17,12 +17,20 @@ class Inventory extends BaseController
         $this->inventoryModel = new InventoryItemModel();
         $this->movementModel = new InventoryMovementModel();
         $this->photoModel = new PhotoModel();
+
+        // Load auth helper
+        helper('auth');
     }
 
     public function index()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $search = $this->request->getGet('search');
-        
+
         if ($search) {
             $items = $this->inventoryModel->searchItems($search);
         } else {
@@ -33,7 +41,8 @@ class Inventory extends BaseController
             'title' => 'Inventory',
             'items' => $items,
             'search' => $search,
-            'inventoryStats' => $this->inventoryModel->getInventoryStats()
+            'inventoryStats' => $this->inventoryModel->getInventoryStats(),
+            'userRole' => getUserRole()
         ];
 
         return view('dashboard/inventory/index', $data);
@@ -41,12 +50,32 @@ class Inventory extends BaseController
 
     public function create()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        // Restrict technicians from adding stock
+        if (hasRole(['technician'])) {
+            return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot add inventory items.');
+        }
+
         $data = ['title' => 'Add New Inventory Item'];
         return view('dashboard/inventory/create', $data);
     }
 
     public function store()
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        // Restrict technicians from adding stock
+        if (hasRole(['technician'])) {
+            return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot add inventory items.');
+        }
+
         $rules = [
             'device_name' => 'permit_empty|max_length[100]',
             'brand' => 'permit_empty|max_length[100]',
@@ -186,8 +215,18 @@ class Inventory extends BaseController
 
     public function delete($id)
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        // Restrict technicians from deleting stock
+        if (hasRole(['technician'])) {
+            return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot delete inventory items.');
+        }
+
         $item = $this->inventoryModel->find($id);
-        
+
         if (!$item) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Inventory item not found');
         }
@@ -201,8 +240,13 @@ class Inventory extends BaseController
 
     public function view($id)
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $item = $this->inventoryModel->find($id);
-        
+
         if (!$item) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Inventory item not found');
         }
@@ -216,5 +260,175 @@ class Inventory extends BaseController
         ];
 
         return view('dashboard/inventory/view', $data);
+    }
+
+    public function bulkImport()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        // Restrict technicians from bulk import
+        if (hasRole(['technician'])) {
+            return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot import inventory.');
+        }
+
+        $data = ['title' => 'Bulk Import Inventory'];
+        return view('dashboard/inventory/bulk_import', $data);
+    }
+
+    public function processBulkImport()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        // Restrict technicians from bulk import
+        if (hasRole(['technician'])) {
+            return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot import inventory.');
+        }
+
+        $file = $this->request->getFile('import_file');
+
+        if (!$file || !$file->isValid()) {
+            return redirect()->back()->with('error', 'Please select a valid file.');
+        }
+
+        $allowedTypes = ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+        if (!in_array($file->getMimeType(), $allowedTypes)) {
+            return redirect()->back()->with('error', 'Please upload a CSV or Excel file.');
+        }
+
+        // Move file to uploads directory
+        $fileName = $file->getRandomName();
+        $file->move(WRITEPATH . 'uploads', $fileName);
+        $filePath = WRITEPATH . 'uploads/' . $fileName;
+
+        // Process the file
+        $result = $this->processImportFile($filePath, $fileName);
+
+        // Clean up uploaded file
+        unlink($filePath);
+
+        if ($result['success']) {
+            return redirect()->to('/inventory')
+                           ->with('success', "Import completed! {$result['successful']} items imported, {$result['failed']} failed.");
+        } else {
+            return redirect()->back()
+                           ->with('error', 'Import failed: ' . $result['error']);
+        }
+    }
+
+    public function exportInventory()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        $items = $this->inventoryModel->findAll();
+
+        // Create CSV content
+        $csvContent = "Device Name,Brand,Model,Total Stock,Purchase Price,Selling Price,Minimum Order Level,Category,Description,Supplier,Status\n";
+
+        foreach ($items as $item) {
+            $csvContent .= sprintf(
+                '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"' . "\n",
+                $item['device_name'] ?? '',
+                $item['brand'] ?? '',
+                $item['model'] ?? '',
+                $item['total_stock'] ?? 0,
+                $item['purchase_price'] ?? '',
+                $item['selling_price'] ?? '',
+                $item['minimum_order_level'] ?? 0,
+                $item['category'] ?? '',
+                str_replace('"', '""', $item['description'] ?? ''),
+                $item['supplier'] ?? '',
+                $item['status'] ?? 'Active'
+            );
+        }
+
+        // Set headers for download
+        $this->response->setHeader('Content-Type', 'text/csv');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename="inventory_export_' . date('Y-m-d_H-i-s') . '.csv"');
+
+        return $this->response->setBody($csvContent);
+    }
+
+    private function processImportFile($filePath, $fileName)
+    {
+        $successful = 0;
+        $failed = 0;
+        $errors = [];
+
+        try {
+            // Read CSV file
+            if (($handle = fopen($filePath, "r")) !== FALSE) {
+                $header = fgetcsv($handle); // Skip header row
+
+                while (($data = fgetcsv($handle)) !== FALSE) {
+                    if (count($data) < 4) { // Minimum required fields
+                        $failed++;
+                        $errors[] = "Row " . ($successful + $failed + 1) . ": Insufficient data";
+                        continue;
+                    }
+
+                    $itemData = [
+                        'device_name' => $data[0] ?? '',
+                        'brand' => $data[1] ?? '',
+                        'model' => $data[2] ?? '',
+                        'total_stock' => is_numeric($data[3]) ? (int)$data[3] : 0,
+                        'purchase_price' => isset($data[4]) && is_numeric($data[4]) ? (float)$data[4] : null,
+                        'selling_price' => isset($data[5]) && is_numeric($data[5]) ? (float)$data[5] : null,
+                        'minimum_order_level' => isset($data[6]) && is_numeric($data[6]) ? (int)$data[6] : 0,
+                        'category' => $data[7] ?? '',
+                        'description' => $data[8] ?? '',
+                        'supplier' => $data[9] ?? '',
+                        'status' => isset($data[10]) && in_array($data[10], ['Active', 'Inactive', 'Discontinued']) ? $data[10] : 'Active'
+                    ];
+
+                    if ($this->inventoryModel->save($itemData)) {
+                        $successful++;
+                    } else {
+                        $failed++;
+                        $errors[] = "Row " . ($successful + $failed + 1) . ": " . implode(', ', $this->inventoryModel->errors());
+                    }
+                }
+                fclose($handle);
+            }
+
+            // Log the import
+            $this->logImport($fileName, $successful + $failed, $successful, $failed, $errors);
+
+            return [
+                'success' => true,
+                'successful' => $successful,
+                'failed' => $failed,
+                'errors' => $errors
+            ];
+
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
+        }
+    }
+
+    private function logImport($fileName, $totalRows, $successful, $failed, $errors)
+    {
+        $db = \Config\Database::connect();
+        $db->table('inventory_import_logs')->insert([
+            'filename' => $fileName,
+            'imported_by' => getUserId(),
+            'total_rows' => $totalRows,
+            'successful_rows' => $successful,
+            'failed_rows' => $failed,
+            'error_log' => implode("\n", $errors),
+            'status' => $failed > 0 ? 'Completed' : 'Completed',
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
     }
 }

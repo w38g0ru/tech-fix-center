@@ -12,13 +12,17 @@ class InventoryItemModel extends Model
     protected $returnType = 'array';
     protected $useSoftDeletes = false;
     protected $protectFields = true;
-    protected $allowedFields = ['device_name', 'brand', 'model', 'total_stock'];
+    protected $allowedFields = [
+        'device_name', 'brand', 'model', 'total_stock', 'purchase_price',
+        'selling_price', 'minimum_order_level', 'category', 'description',
+        'supplier', 'status'
+    ];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
-    protected $updatedField = '';
+    protected $updatedField = 'updated_at';
     protected $deletedField = '';
 
     // Validation
@@ -26,7 +30,14 @@ class InventoryItemModel extends Model
         'device_name' => 'permit_empty|max_length[100]',
         'brand' => 'permit_empty|max_length[100]',
         'model' => 'permit_empty|max_length[100]',
-        'total_stock' => 'required|is_natural'
+        'total_stock' => 'required|is_natural',
+        'purchase_price' => 'permit_empty|decimal',
+        'selling_price' => 'permit_empty|decimal',
+        'minimum_order_level' => 'permit_empty|is_natural',
+        'category' => 'permit_empty|max_length[100]',
+        'description' => 'permit_empty|max_length[1000]',
+        'supplier' => 'permit_empty|max_length[100]',
+        'status' => 'required|in_list[Active,Inactive,Discontinued]'
     ];
 
     protected $validationMessages = [

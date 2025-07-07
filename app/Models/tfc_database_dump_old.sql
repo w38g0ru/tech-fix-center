@@ -50,38 +50,6 @@ INSERT INTO `admin_users` VALUES (1,'superadmin','superadmin@tfc.com','$2y$12$Ks
 UNLOCK TABLES;
 
 --
--- Table structure for table `inventory_import_logs`
---
-
-DROP TABLE IF EXISTS `inventory_import_logs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `inventory_import_logs` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `filename` varchar(255) NOT NULL,
-  `imported_by` int NOT NULL,
-  `total_rows` int unsigned NOT NULL,
-  `successful_rows` int unsigned NOT NULL,
-  `failed_rows` int unsigned NOT NULL,
-  `error_log` text,
-  `status` enum('Processing','Completed','Failed') DEFAULT 'Processing',
-  `created_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `imported_by` (`imported_by`),
-  CONSTRAINT `inventory_import_logs_ibfk_1` FOREIGN KEY (`imported_by`) REFERENCES `admin_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `inventory_import_logs`
---
-
-LOCK TABLES `inventory_import_logs` WRITE;
-/*!40000 ALTER TABLE `inventory_import_logs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `inventory_import_logs` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `inventory_items`
 --
 
@@ -94,15 +62,7 @@ CREATE TABLE `inventory_items` (
   `brand` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `model` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `total_stock` int NOT NULL DEFAULT '0',
-  `purchase_price` decimal(10,2) DEFAULT NULL,
-  `selling_price` decimal(10,2) DEFAULT NULL,
-  `minimum_order_level` int unsigned DEFAULT '0',
-  `category` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_general_ci,
-  `supplier` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `status` enum('Active','Inactive','Discontinued') COLLATE utf8mb4_general_ci DEFAULT 'Active',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -113,7 +73,7 @@ CREATE TABLE `inventory_items` (
 
 LOCK TABLES `inventory_items` WRITE;
 /*!40000 ALTER TABLE `inventory_items` DISABLE KEYS */;
-INSERT INTO `inventory_items` VALUES (1,'iPhone Screen','Apple','iPhone 12',14,NULL,NULL,0,NULL,NULL,NULL,'Active','2025-05-25 10:58:37',NULL),(2,'Samsung Display','Samsung','Galaxy A52',35,NULL,NULL,0,NULL,NULL,NULL,'Active','2025-05-30 10:58:37',NULL),(3,'Battery','Apple','iPhone 11',7,NULL,NULL,0,NULL,NULL,NULL,'Active','2025-06-04 10:58:37',NULL),(4,'Charging Port','Xiaomi','Redmi Note 10',19,NULL,NULL,0,NULL,NULL,NULL,'Active','2025-06-09 10:58:37',NULL),(5,'Back Cover','Oppo','A74',12,NULL,NULL,0,NULL,NULL,NULL,'Active','2025-06-14 10:58:37',NULL),(6,'Camera Module','Vivo','Y20',5,NULL,NULL,0,NULL,NULL,NULL,'Active','2025-06-19 10:58:37',NULL),(7,'Speaker','Realme','C25',23,NULL,NULL,0,NULL,NULL,NULL,'Active','2025-06-24 10:58:37',NULL),(8,'Touch IC','Generic','Universal',5,NULL,NULL,0,NULL,NULL,NULL,'Active','2025-06-29 10:58:37',NULL),(9,'Tempered Glass','Generic','Universal',49,NULL,NULL,0,NULL,NULL,NULL,'Active','2025-06-27 10:59:54',NULL),(10,'Phone Case','Generic','Silicone',45,NULL,NULL,0,NULL,NULL,NULL,'Active','2025-06-29 10:59:54',NULL),(11,'Charging Cable','Generic','Type-C',23,NULL,NULL,0,NULL,NULL,NULL,'Active','2025-07-01 10:59:54',NULL),(12,'Power Button','Generic','Universal',15,NULL,NULL,0,NULL,NULL,NULL,'Active','2025-07-03 10:59:54',NULL);
+INSERT INTO `inventory_items` VALUES (1,'iPhone Screen','Apple','iPhone 12',14,'2025-05-25 10:58:37'),(2,'Samsung Display','Samsung','Galaxy A52',35,'2025-05-30 10:58:37'),(3,'Battery','Apple','iPhone 11',7,'2025-06-04 10:58:37'),(4,'Charging Port','Xiaomi','Redmi Note 10',19,'2025-06-09 10:58:37'),(5,'Back Cover','Oppo','A74',12,'2025-06-14 10:58:37'),(6,'Camera Module','Vivo','Y20',5,'2025-06-19 10:58:37'),(7,'Speaker','Realme','C25',23,'2025-06-24 10:58:37'),(8,'Touch IC','Generic','Universal',5,'2025-06-29 10:58:37'),(9,'Tempered Glass','Generic','Universal',49,'2025-06-27 10:59:54'),(10,'Phone Case','Generic','Silicone',45,'2025-06-29 10:59:54'),(11,'Charging Cable','Generic','Type-C',23,'2025-07-01 10:59:54'),(12,'Power Button','Generic','Universal',15,'2025-07-03 10:59:54');
 /*!40000 ALTER TABLE `inventory_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,20 +119,12 @@ DROP TABLE IF EXISTS `jobs`;
 CREATE TABLE `jobs` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int unsigned DEFAULT NULL,
-  `walk_in_customer_name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `device_name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `serial_number` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `problem` text COLLATE utf8mb4_general_ci,
   `technician_id` int unsigned DEFAULT NULL,
-  `status` enum('Pending','In Progress','Parts Pending','Referred to Service Center','Ready to Dispatch to Customer','Returned','Completed') COLLATE utf8mb4_general_ci DEFAULT 'Pending',
+  `status` enum('Pending','In Progress','Completed') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Pending',
   `charge` decimal(10,2) DEFAULT '0.00',
-  `dispatch_type` enum('Customer','Service Center','Other') COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `service_center_id` int unsigned DEFAULT NULL,
-  `dispatch_date` date DEFAULT NULL,
-  `nepali_date` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `expected_return_date` date DEFAULT NULL,
-  `actual_return_date` date DEFAULT NULL,
-  `dispatch_notes` text COLLATE utf8mb4_general_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `jobs_user_id_foreign` (`user_id`),
@@ -188,7 +140,7 @@ CREATE TABLE `jobs` (
 
 LOCK TABLES `jobs` WRITE;
 /*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-INSERT INTO `jobs` VALUES (1,1,NULL,'iPhone 12','F2LW48XHFG7J','स्क्रिन फुटेको छ। टच काम गर्दैन। स्क्रिन रिप्लेसमेन्ट चाहिन्छ।',1,'In Progress',0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2025-06-27 10:58:37'),(2,2,NULL,'Samsung Galaxy A52','R58M123456789','ब्याट्री छिट्टै सकिन्छ। चार्जिङ पोर्ट ढिलो छ।',2,'Pending',0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2025-06-29 10:58:37'),(3,3,NULL,'Xiaomi Redmi Note 10','XM987654321','पानी परेको छ। फोन अन हुँदैन। डाटा रिकभर गर्नुपर्छ।',1,'Completed',0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2025-06-24 10:58:37'),(4,4,NULL,'Oppo A74','OP741852963','क्यामेरा काम गर्दैन। ब्लर आउँछ। फोकस मिल्दैन।',3,'In Progress',0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2025-07-01 10:58:37'),(5,5,NULL,'Vivo Y20','VV159753468','स्पिकर काम गर्दैन। आवाज आउँदैन। रिङटोन सुनिँदैन।',2,'Pending',0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2025-07-02 10:58:37'),(6,6,NULL,'iPhone 11','F2LW48XHFG8K','ब्याट्री हेल्थ ७५% छ। छिट्टै डिस्चार्ज हुन्छ।',4,'Completed',0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2025-07-03 10:58:37'),(7,7,NULL,'Realme C25','RM753951486','चार्जिङ पोर्ट बिग्रिएको। केबल जोड्दा चार्ज हुँदैन।',3,'Pending',0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2025-07-04 04:58:37'),(8,8,NULL,'Samsung Galaxy S21','SM987456123','बैक कभर फुटेको। वाटरप्रूफिङ गुमेको। रिप्लेसमेन्ट चाहिन्छ।',1,'In Progress',0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2025-07-04 08:58:37'),(9,9,NULL,'Samsung Galaxy M32','SM456789123','फोन ह्याङ हुन्छ। रिस्टार्ट गर्नुपर्छ। सफ्टवेयर अपडेट चाहिन्छ।',2,'Pending',0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2025-07-04 06:59:54'),(10,10,NULL,'iPhone 13','F2LW48XHFG9L','फेस आईडी काम गर्दैन। कैमेरा सेन्सर बिग्रिएको जस्तो लाग्छ।',1,'In Progress',0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2025-07-04 08:59:54'),(11,11,NULL,'Xiaomi Mi 11','XM111222333','वाइफाइ कनेक्ट हुँदैन। नेटवर्क सेटिङ रिसेट गर्नुपर्छ।',3,'Pending',0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2025-07-04 09:59:54'),(12,12,NULL,'OnePlus 9','OP987654321','तेम्पर्ड ग्लास फुटेको। नयाँ स्क्रिन प्रोटेक्टर लगाउनुपर्छ।',4,'Completed',0.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2025-07-04 10:29:54');
+INSERT INTO `jobs` VALUES (1,1,'iPhone 12','F2LW48XHFG7J','स्क्रिन फुटेको छ। टच काम गर्दैन। स्क्रिन रिप्लेसमेन्ट चाहिन्छ।',1,'In Progress',0.00,'2025-06-27 10:58:37'),(2,2,'Samsung Galaxy A52','R58M123456789','ब्याट्री छिट्टै सकिन्छ। चार्जिङ पोर्ट ढिलो छ।',2,'Pending',0.00,'2025-06-29 10:58:37'),(3,3,'Xiaomi Redmi Note 10','XM987654321','पानी परेको छ। फोन अन हुँदैन। डाटा रिकभर गर्नुपर्छ।',1,'Completed',0.00,'2025-06-24 10:58:37'),(4,4,'Oppo A74','OP741852963','क्यामेरा काम गर्दैन। ब्लर आउँछ। फोकस मिल्दैन।',3,'In Progress',0.00,'2025-07-01 10:58:37'),(5,5,'Vivo Y20','VV159753468','स्पिकर काम गर्दैन। आवाज आउँदैन। रिङटोन सुनिँदैन।',2,'Pending',0.00,'2025-07-02 10:58:37'),(6,6,'iPhone 11','F2LW48XHFG8K','ब्याट्री हेल्थ ७५% छ। छिट्टै डिस्चार्ज हुन्छ।',4,'Completed',0.00,'2025-07-03 10:58:37'),(7,7,'Realme C25','RM753951486','चार्जिङ पोर्ट बिग्रिएको। केबल जोड्दा चार्ज हुँदैन।',3,'Pending',0.00,'2025-07-04 04:58:37'),(8,8,'Samsung Galaxy S21','SM987456123','बैक कभर फुटेको। वाटरप्रूफिङ गुमेको। रिप्लेसमेन्ट चाहिन्छ।',1,'In Progress',0.00,'2025-07-04 08:58:37'),(9,9,'Samsung Galaxy M32','SM456789123','फोन ह्याङ हुन्छ। रिस्टार्ट गर्नुपर्छ। सफ्टवेयर अपडेट चाहिन्छ।',2,'Pending',0.00,'2025-07-04 06:59:54'),(10,10,'iPhone 13','F2LW48XHFG9L','फेस आईडी काम गर्दैन। कैमेरा सेन्सर बिग्रिएको जस्तो लाग्छ।',1,'In Progress',0.00,'2025-07-04 08:59:54'),(11,11,'Xiaomi Mi 11','XM111222333','वाइफाइ कनेक्ट हुँदैन। नेटवर्क सेटिङ रिसेट गर्नुपर्छ।',3,'Pending',0.00,'2025-07-04 09:59:54'),(12,12,'OnePlus 9','OP987654321','तेम्पर्ड ग्लास फुटेको। नयाँ स्क्रिन प्रोटेक्टर लगाउनुपर्छ।',4,'Completed',0.00,'2025-07-04 10:29:54');
 /*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -208,7 +160,7 @@ CREATE TABLE `migrations` (
   `time` int NOT NULL,
   `batch` int unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,60 +169,8 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2025-07-04-000001','App\\Database\\Migrations\\CreateRepairShopTables','default','App',1751646064,1),(2,'2025-07-04-000002','App\\Database\\Migrations\\AddRoleBasedFeatures','default','App',1751683109,2),(3,'2024-01-01-000006','App\\Database\\Migrations\\AddInventoryPhotosSupport','default','App',1751690970,3),(4,'2024-01-01-000007','App\\Database\\Migrations\\AddEmailToTechnicians','default','App',1751702061,4),(5,'2024-01-01-000008','App\\Database\\Migrations\\CreateAdminUsersTable','default','App',1751705408,5),(6,'2025-07-06-000001','App\\Database\\Migrations\\UpdateJobsTableForEnhancements','default','App',1751901774,6),(7,'2025-07-06-000002','App\\Database\\Migrations\\UpdateInventoryForEnhancements','default','App',1751902129,1),(8,'2025-07-06-000003','App\\Database\\Migrations\\CreatePartsRequestTables','default','App',1751902191,1);
+INSERT INTO `migrations` VALUES (1,'2025-07-04-000001','App\\Database\\Migrations\\CreateRepairShopTables','default','App',1751646064,1),(2,'2025-07-04-000002','App\\Database\\Migrations\\AddRoleBasedFeatures','default','App',1751683109,2),(3,'2024-01-01-000006','App\\Database\\Migrations\\AddInventoryPhotosSupport','default','App',1751690970,3),(4,'2024-01-01-000007','App\\Database\\Migrations\\AddEmailToTechnicians','default','App',1751702061,4),(5,'2024-01-01-000008','App\\Database\\Migrations\\CreateAdminUsersTable','default','App',1751705408,5);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `parts_requests`
---
-
-DROP TABLE IF EXISTS `parts_requests`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `parts_requests` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `technician_id` int unsigned NOT NULL,
-  `job_id` int unsigned DEFAULT NULL,
-  `item_name` varchar(100) NOT NULL,
-  `brand` varchar(100) DEFAULT NULL,
-  `model` varchar(100) DEFAULT NULL,
-  `quantity_requested` int unsigned NOT NULL,
-  `description` text,
-  `urgency` enum('Low','Medium','High','Critical') DEFAULT 'Medium',
-  `status` enum('Pending','Approved','Rejected','Ordered','Received','Cancelled') DEFAULT 'Pending',
-  `requested_by` int NOT NULL,
-  `approved_by` int DEFAULT NULL,
-  `approved_at` timestamp NULL DEFAULT NULL,
-  `rejection_reason` text,
-  `estimated_cost` decimal(10,2) DEFAULT NULL,
-  `actual_cost` decimal(10,2) DEFAULT NULL,
-  `supplier` varchar(100) DEFAULT NULL,
-  `order_date` date DEFAULT NULL,
-  `expected_delivery_date` date DEFAULT NULL,
-  `actual_delivery_date` date DEFAULT NULL,
-  `notes` text,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `technician_id` (`technician_id`),
-  KEY `job_id` (`job_id`),
-  KEY `requested_by` (`requested_by`),
-  KEY `approved_by` (`approved_by`),
-  CONSTRAINT `parts_requests_ibfk_1` FOREIGN KEY (`technician_id`) REFERENCES `technicians` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `parts_requests_ibfk_2` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  CONSTRAINT `parts_requests_ibfk_3` FOREIGN KEY (`requested_by`) REFERENCES `admin_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `parts_requests_ibfk_4` FOREIGN KEY (`approved_by`) REFERENCES `admin_users` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `parts_requests`
---
-
-LOCK TABLES `parts_requests` WRITE;
-/*!40000 ALTER TABLE `parts_requests` DISABLE KEYS */;
-/*!40000 ALTER TABLE `parts_requests` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -338,37 +238,6 @@ INSERT INTO `referred` VALUES (1,'राम बहादुर श्रेष�
 UNLOCK TABLES;
 
 --
--- Table structure for table `service_centers`
---
-
-DROP TABLE IF EXISTS `service_centers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `service_centers` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `address` text COLLATE utf8mb4_general_ci,
-  `contact_person` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `phone` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `email` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `status` enum('Active','Inactive') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Active',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `service_centers`
---
-
-LOCK TABLES `service_centers` WRITE;
-/*!40000 ALTER TABLE `service_centers` DISABLE KEYS */;
-INSERT INTO `service_centers` VALUES (1,'मुख्य सर्भिस सेन्टर','काठमाडौं, नेपाल','सर्भिस म्यानेजर','01-4444444','service@mainservice.com','Active','2025-07-07 09:37:54',NULL),(2,'द्वितीयक सर्भिस सेन्टर','पोखरा, नेपाल','सहायक म्यानेजर','061-555555','service@secondary.com','Active','2025-07-07 09:37:54',NULL);
-/*!40000 ALTER TABLE `service_centers` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `technicians`
 --
 
@@ -432,4 +301,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-07 21:21:00
+-- Dump completed on 2025-07-06 22:25:30
