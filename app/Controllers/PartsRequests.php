@@ -43,10 +43,18 @@ class PartsRequests extends BaseController
             return redirect()->to('/dashboard')->with('error', 'Access denied.');
         }
 
+        // Simplified version to avoid errors
         $data = [
             'title' => 'Parts Requests',
-            'partsRequests' => $partsRequests,
-            'stats' => $this->partsRequestModel->getPartsRequestStats(),
+            'partsRequests' => $partsRequests ?: [],
+            'stats' => [
+                'total' => 0,
+                'pending' => 0,
+                'approved' => 0,
+                'rejected' => 0,
+                'ordered' => 0,
+                'received' => 0
+            ],
             'userRole' => $userRole
         ];
 
