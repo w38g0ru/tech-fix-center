@@ -29,28 +29,71 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Customer Selection -->
                 <div>
-                    <label for="user_id" class="block text-sm font-medium text-gray-700 mb-2">
-                        Customer
+                    <?php
+                    // Determine current customer type
+                    $currentCustomerType = '';
+                    if (!empty($job['user_id'])) {
+                        $currentCustomerType = 'existing';
+                    } elseif (!empty($job['walk_in_customer_name']) || (empty($job['user_id']) && empty($job['walk_in_customer_name']))) {
+                        $currentCustomerType = 'walk_in';
+                    }
+                    ?>
+
+                    <label for="customer_type" class="block text-sm font-medium text-gray-700 mb-2">
+                        Customer Type <span class="text-red-500">*</span>
                     </label>
-                    <select id="user_id" 
-                            name="user_id" 
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.user_id') ? 'border-red-500' : '' ?>">
-                        <option value="">Select a customer (optional)</option>
-                        <?php if (!empty($users)): ?>
-                            <?php foreach ($users as $user): ?>
-                                <option value="<?= $user['id'] ?>" <?= old('user_id', $job['user_id']) == $user['id'] ? 'selected' : '' ?>>
-                                    <?= esc($user['name']) ?> 
-                                    <?php if (!empty($user['mobile_number'])): ?>
-                                        - <?= esc($user['mobile_number']) ?>
-                                    <?php endif; ?>
-                                    (<?= esc($user['user_type']) ?>)
-                                </option>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                    <select id="customer_type"
+                            name="customer_type"
+                            onchange="toggleCustomerFields()"
+                            required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                        <option value="">Select Customer Type</option>
+                        <option value="existing" <?= old('customer_type', $currentCustomerType) === 'existing' ? 'selected' : '' ?>>Existing Customer</option>
+                        <option value="walk_in" <?= old('customer_type', $currentCustomerType) === 'walk_in' ? 'selected' : '' ?>>Walk-in Customer</option>
                     </select>
-                    <?php if (session('errors.user_id')): ?>
-                        <p class="mt-1 text-sm text-red-600"><?= session('errors.user_id') ?></p>
-                    <?php endif; ?>
+
+                    <!-- Existing Customer Selection -->
+                    <div id="existing_customer_field" class="mt-3 <?= $currentCustomerType !== 'existing' ? 'hidden' : '' ?>">
+                        <label for="user_id" class="block text-sm font-medium text-gray-700 mb-2">
+                            Select Customer
+                        </label>
+                        <select id="user_id"
+                                name="user_id"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.user_id') ? 'border-red-500' : '' ?>">
+                            <option value="">Select a customer</option>
+                            <?php if (!empty($users)): ?>
+                                <?php foreach ($users as $user): ?>
+                                    <option value="<?= $user['id'] ?>" <?= old('user_id', $job['user_id']) == $user['id'] ? 'selected' : '' ?>>
+                                        <?= esc($user['name']) ?>
+                                        <?php if (!empty($user['mobile_number'])): ?>
+                                            - <?= esc($user['mobile_number']) ?>
+                                        <?php endif; ?>
+                                        (<?= esc($user['user_type']) ?>)
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                        <?php if (session('errors.user_id')): ?>
+                            <p class="mt-1 text-sm text-red-600"><?= session('errors.user_id') ?></p>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Walk-in Customer Name -->
+                    <div id="walk_in_customer_field" class="mt-3 <?= $currentCustomerType !== 'walk_in' ? 'hidden' : '' ?>">
+                        <label for="walk_in_customer_name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Customer Name (Optional)
+                        </label>
+                        <input type="text"
+                               id="walk_in_customer_name"
+                               name="walk_in_customer_name"
+                               value="<?= old('walk_in_customer_name', $job['walk_in_customer_name']) ?>"
+                               placeholder="e.g., रमेश श्रेष्ठ"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.walk_in_customer_name') ? 'border-red-500' : '' ?>">
+                        <?php if (session('errors.walk_in_customer_name')): ?>
+                            <p class="mt-1 text-sm text-red-600"><?= session('errors.walk_in_customer_name') ?></p>
+                        <?php endif; ?>
+                        <p class="mt-1 text-sm text-gray-500">Leave blank to show "Walk-in Customer" only</p>
+                    </div>
                 </div>
 
                 <!-- Technician Assignment -->
@@ -189,5 +232,49 @@
         </form>
     </div>
 </div>
+
+<script>
+// Toggle customer fields based on customer type selection
+function toggleCustomerFields() {
+    const customerType = document.getElementById('customer_type').value;
+    const existingField = document.getElementById('existing_customer_field');
+    const walkInField = document.getElementById('walk_in_customer_field');
+    const userIdSelect = document.getElementById('user_id');
+    const walkInInput = document.getElementById('walk_in_customer_name');
+
+    // Hide both fields initially
+    existingField.classList.add('hidden');
+    walkInField.classList.add('hidden');
+
+    // Show appropriate field based on selection
+    if (customerType === 'existing') {
+        existingField.classList.remove('hidden');
+        userIdSelect.required = true;
+        walkInInput.required = false;
+        // Clear walk-in name when switching to existing customer
+        if (!walkInInput.value) {
+            walkInInput.value = '';
+        }
+    } else if (customerType === 'walk_in') {
+        walkInField.classList.remove('hidden');
+        userIdSelect.required = false;
+        walkInInput.required = false;
+        // Clear user selection when switching to walk-in
+        userIdSelect.value = '';
+    } else {
+        userIdSelect.required = false;
+        walkInInput.required = false;
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if there's a customer type selected and show appropriate field
+    const customerType = document.getElementById('customer_type').value;
+    if (customerType) {
+        toggleCustomerFields();
+    }
+});
+</script>
 
 <?= $this->endSection() ?>

@@ -93,32 +93,44 @@
         <!-- Customer Information -->
         <div class="bg-white shadow rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Customer Information</h3>
-            <?php if (!empty($job['customer_name'])): ?>
-                <div class="space-y-3">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 h-10 w-10">
-                            <div class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
-                                <i class="fas fa-user text-primary-600"></i>
-                            </div>
-                        </div>
-                        <div class="ml-3">
-                            <p class="text-sm font-medium text-gray-900"><?= esc($job['customer_name']) ?></p>
-                            <p class="text-sm text-gray-500"><?= esc($job['user_type'] ?? 'N/A') ?></p>
+            <?php
+            // Get proper customer display name
+            $jobModel = new \App\Models\JobModel();
+            $customerDisplayName = $jobModel->getCustomerDisplayName($job);
+            $isWalkIn = empty($job['user_id']);
+            ?>
+
+            <div class="space-y-3">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                        <div class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
+                            <i class="fas fa-<?= $isWalkIn ? 'walking' : 'user' ?> text-primary-600"></i>
                         </div>
                     </div>
-                    
-                    <?php if (!empty($job['mobile_number'])): ?>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <i class="fas fa-phone mr-2"></i>
-                            <a href="tel:<?= esc($job['mobile_number']) ?>" class="hover:text-primary-600">
-                                <?= esc($job['mobile_number']) ?>
-                            </a>
-                        </div>
-                    <?php endif; ?>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-900"><?= esc($customerDisplayName) ?></p>
+                        <p class="text-sm text-gray-500">
+                            <?= $isWalkIn ? 'Walk-in Customer' : esc($job['user_type'] ?? 'Registered Customer') ?>
+                        </p>
+                    </div>
                 </div>
-            <?php else: ?>
-                <p class="text-gray-500 italic">No customer assigned</p>
-            <?php endif; ?>
+
+                <?php if (!empty($job['mobile_number']) && !$isWalkIn): ?>
+                    <div class="flex items-center text-sm text-gray-600">
+                        <i class="fas fa-phone mr-2"></i>
+                        <a href="tel:<?= esc($job['mobile_number']) ?>" class="hover:text-primary-600">
+                            <?= esc($job['mobile_number']) ?>
+                        </a>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($job['email']) && !$isWalkIn): ?>
+                    <div class="flex items-center text-sm text-gray-600">
+                        <i class="fas fa-envelope mr-2"></i>
+                        <?= esc($job['email']) ?>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
 
         <!-- Technician Information -->

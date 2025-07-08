@@ -185,10 +185,15 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
-                                    <?= esc($job['customer_name'] ?? 'N/A') ?>
+                                    <?php
+                                    // Use the JobModel method to get proper customer display name
+                                    $jobModel = new \App\Models\JobModel();
+                                    $customerDisplayName = $jobModel->getCustomerDisplayName($job);
+                                    echo esc($customerDisplayName);
+                                    ?>
                                 </div>
                                 <div class="text-sm text-gray-500">
-                                    <?= esc($job['mobile_number'] ?? 'N/A') ?>
+                                    <?= !empty($job['customer_name']) ? esc($job['mobile_number'] ?? 'N/A') : 'Walk-in Customer' ?>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">

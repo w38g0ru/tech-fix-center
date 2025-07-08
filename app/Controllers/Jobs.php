@@ -73,10 +73,30 @@ class Jobs extends BaseController
 
     public function store()
     {
+        // Get customer type and validate
+        $customerType = $this->request->getPost('customer_type');
+        $userId = $this->request->getPost('user_id') ?: null;
+        $walkInCustomerName = $this->request->getPost('walk_in_customer_name');
+
+        // Validate customer type selection
+        if (empty($customerType)) {
+            return redirect()->back()->withInput()->with('error', 'Please select a customer type.');
+        }
+
+        // Validate based on customer type
+        if ($customerType === 'existing' && empty($userId)) {
+            return redirect()->back()->withInput()->with('error', 'Please select an existing customer.');
+        }
+
+        // For walk-in customers, clear user_id to avoid conflicts
+        if ($customerType === 'walk_in') {
+            $userId = null;
+        }
+
         // Prepare job data for model validation
         $jobData = [
-            'user_id' => $this->request->getPost('user_id') ?: null,
-            'walk_in_customer_name' => $this->request->getPost('walk_in_customer_name'),
+            'user_id' => $userId,
+            'walk_in_customer_name' => $walkInCustomerName,
             'device_name' => $this->request->getPost('device_name'),
             'serial_number' => $this->request->getPost('serial_number'),
             'problem' => $this->request->getPost('problem'),
@@ -221,9 +241,30 @@ class Jobs extends BaseController
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Job not found');
         }
 
+        // Get customer type and validate
+        $customerType = $this->request->getPost('customer_type');
+        $userId = $this->request->getPost('user_id') ?: null;
+        $walkInCustomerName = $this->request->getPost('walk_in_customer_name');
+
+        // Validate customer type selection
+        if (empty($customerType)) {
+            return redirect()->back()->withInput()->with('error', 'Please select a customer type.');
+        }
+
+        // Validate based on customer type
+        if ($customerType === 'existing' && empty($userId)) {
+            return redirect()->back()->withInput()->with('error', 'Please select an existing customer.');
+        }
+
+        // For walk-in customers, clear user_id to avoid conflicts
+        if ($customerType === 'walk_in') {
+            $userId = null;
+        }
+
         // Prepare job data for model validation
         $jobData = [
-            'user_id' => $this->request->getPost('user_id') ?: null,
+            'user_id' => $userId,
+            'walk_in_customer_name' => $walkInCustomerName,
             'device_name' => $this->request->getPost('device_name'),
             'serial_number' => $this->request->getPost('serial_number'),
             'problem' => $this->request->getPost('problem'),
