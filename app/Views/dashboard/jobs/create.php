@@ -137,6 +137,10 @@
                         <option value="">Select status</option>
                         <option value="Pending" <?= old('status') === 'Pending' ? 'selected' : '' ?>>Pending</option>
                         <option value="In Progress" <?= old('status') === 'In Progress' ? 'selected' : '' ?>>In Progress</option>
+                        <option value="Parts Pending" <?= old('status') === 'Parts Pending' ? 'selected' : '' ?>>Parts Pending</option>
+                        <option value="Referred to Service Center" <?= old('status') === 'Referred to Service Center' ? 'selected' : '' ?>>Referred to Service Center</option>
+                        <option value="Ready to Dispatch to Customer" <?= old('status') === 'Ready to Dispatch to Customer' ? 'selected' : '' ?>>Ready to Dispatch to Customer</option>
+                        <option value="Returned" <?= old('status') === 'Returned' ? 'selected' : '' ?>>Returned</option>
                         <option value="Completed" <?= old('status') === 'Completed' ? 'selected' : '' ?>>Completed</option>
                     </select>
                     <?php if (session('errors.status')): ?>

@@ -17,7 +17,7 @@
 </div>
 
 <!-- Job Stats -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+<div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
     <div class="bg-white rounded-lg shadow p-4">
         <div class="flex items-center">
             <div class="p-2 rounded-full bg-blue-100 text-blue-600">
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="bg-white rounded-lg shadow p-4">
         <div class="flex items-center">
             <div class="p-2 rounded-full bg-yellow-100 text-yellow-600">
@@ -41,7 +41,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="bg-white rounded-lg shadow p-4">
         <div class="flex items-center">
             <div class="p-2 rounded-full bg-blue-100 text-blue-600">
@@ -53,7 +53,43 @@
             </div>
         </div>
     </div>
-    
+
+    <div class="bg-white rounded-lg shadow p-4">
+        <div class="flex items-center">
+            <div class="p-2 rounded-full bg-orange-100 text-orange-600">
+                <i class="fas fa-wrench"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-gray-600">Parts Pending</p>
+                <p class="text-lg font-semibold text-gray-900"><?= $jobStats['parts_pending'] ?></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-4">
+        <div class="flex items-center">
+            <div class="p-2 rounded-full bg-purple-100 text-purple-600">
+                <i class="fas fa-building"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-gray-600">Referred</p>
+                <p class="text-lg font-semibold text-gray-900"><?= $jobStats['referred_to_service'] ?></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-4">
+        <div class="flex items-center">
+            <div class="p-2 rounded-full bg-red-100 text-red-600">
+                <i class="fas fa-undo"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-gray-600">Returned</p>
+                <p class="text-lg font-semibold text-gray-900"><?= $jobStats['returned'] ?></p>
+            </div>
+        </div>
+    </div>
+
     <div class="bg-white rounded-lg shadow p-4">
         <div class="flex items-center">
             <div class="p-2 rounded-full bg-green-100 text-green-600">
@@ -82,6 +118,10 @@
                 <option value="">All Status</option>
                 <option value="Pending" <?= ($status ?? '') === 'Pending' ? 'selected' : '' ?>>Pending</option>
                 <option value="In Progress" <?= ($status ?? '') === 'In Progress' ? 'selected' : '' ?>>In Progress</option>
+                <option value="Parts Pending" <?= ($status ?? '') === 'Parts Pending' ? 'selected' : '' ?>>Parts Pending</option>
+                <option value="Referred to Service Center" <?= ($status ?? '') === 'Referred to Service Center' ? 'selected' : '' ?>>Referred to Service Center</option>
+                <option value="Ready to Dispatch to Customer" <?= ($status ?? '') === 'Ready to Dispatch to Customer' ? 'selected' : '' ?>>Ready to Dispatch</option>
+                <option value="Returned" <?= ($status ?? '') === 'Returned' ? 'selected' : '' ?>>Returned</option>
                 <option value="Completed" <?= ($status ?? '') === 'Completed' ? 'selected' : '' ?>>Completed</option>
             </select>
             <button type="submit" 
@@ -161,6 +201,10 @@
                                 $statusClass = match($job['status']) {
                                     'Pending' => 'bg-yellow-100 text-yellow-800',
                                     'In Progress' => 'bg-blue-100 text-blue-800',
+                                    'Parts Pending' => 'bg-orange-100 text-orange-800',
+                                    'Referred to Service Center' => 'bg-purple-100 text-purple-800',
+                                    'Ready to Dispatch to Customer' => 'bg-indigo-100 text-indigo-800',
+                                    'Returned' => 'bg-red-100 text-red-800',
                                     'Completed' => 'bg-green-100 text-green-800',
                                     default => 'bg-gray-100 text-gray-800'
                                 };
