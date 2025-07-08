@@ -50,7 +50,13 @@ class Referred extends BaseController
 
     public function create()
     {
-        $data = ['title' => 'Create New Dispatch'];
+        // Load service center model
+        $serviceCenterModel = new \App\Models\ServiceCenterModel();
+
+        $data = [
+            'title' => 'Create New Dispatch',
+            'serviceCenters' => $serviceCenterModel->getActiveServiceCenters()
+        ];
         return view('dashboard/referred/create', $data);
     }
 
@@ -62,6 +68,7 @@ class Referred extends BaseController
             'device_name' => 'permit_empty|max_length[100]',
             'problem_description' => 'permit_empty',
             'referred_to' => 'permit_empty|max_length[100]',
+            'service_center_id' => 'permit_empty|is_natural_no_zero',
             'status' => 'required|in_list[Pending,Dispatched,Completed]',
             'photo_description' => 'permit_empty|max_length[255]',
             'dispatch_photos' => 'permit_empty|max_size[dispatch_photos,5120]|is_image[dispatch_photos]'
@@ -72,12 +79,25 @@ class Referred extends BaseController
         }
 
         // Create the dispatch item first
+        $serviceCenterId = $this->request->getPost('service_center_id');
+        $referredTo = $this->request->getPost('referred_to');
+
+        // If service center is selected, get its name
+        if (!empty($serviceCenterId)) {
+            $serviceCenterModel = new \App\Models\ServiceCenterModel();
+            $serviceCenter = $serviceCenterModel->find($serviceCenterId);
+            if ($serviceCenter) {
+                $referredTo = $serviceCenter['name'];
+            }
+        }
+
         $data = [
             'customer_name' => $this->request->getPost('customer_name'),
             'customer_phone' => $this->request->getPost('customer_phone'),
             'device_name' => $this->request->getPost('device_name'),
             'problem_description' => $this->request->getPost('problem_description'),
-            'referred_to' => $this->request->getPost('referred_to'),
+            'referred_to' => $referredTo,
+            'service_center_id' => $serviceCenterId ?: null,
             'status' => $this->request->getPost('status'),
             'created_at' => date('Y-m-d H:i:s')
         ];

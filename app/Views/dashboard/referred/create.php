@@ -88,18 +88,54 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Referred To -->
                 <div>
-                    <label for="referred_to" class="block text-sm font-medium text-gray-700 mb-2">
-                        Referred To
+                    <label for="service_center_id" class="block text-sm font-medium text-gray-700 mb-2">
+                        Referred To <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" 
-                           id="referred_to" 
-                           name="referred_to" 
-                           value="<?= old('referred_to') ?>"
-                           placeholder="e.g., Apple Service Center, Samsung Service"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.referred_to') ? 'border-red-500' : '' ?>">
+                    <div class="flex gap-2">
+                        <select id="service_center_id"
+                                name="service_center_id"
+                                onchange="updateReferredTo()"
+                                class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.service_center_id') ? 'border-red-500' : '' ?>">
+                            <option value="">Select Service Center</option>
+                            <?php if (!empty($serviceCenters)): ?>
+                                <?php foreach ($serviceCenters as $center): ?>
+                                    <option value="<?= $center['id'] ?>" <?= old('service_center_id') == $center['id'] ? 'selected' : '' ?>>
+                                        <?= esc($center['name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                        <button type="button"
+                                onclick="openServiceCenterModal()"
+                                class="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                                title="Add New Service Center">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <a href="<?= base_url('dashboard/service-centers') ?>"
+                           target="_blank"
+                           class="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                           title="Manage Service Centers">
+                            <i class="fas fa-cog"></i>
+                        </a>
+                    </div>
+
+                    <!-- Custom Referred To (fallback) -->
+                    <div class="mt-2">
+                        <input type="text"
+                               id="referred_to"
+                               name="referred_to"
+                               value="<?= old('referred_to') ?>"
+                               placeholder="Or enter custom service center name"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.referred_to') ? 'border-red-500' : '' ?>">
+                    </div>
+
+                    <?php if (session('errors.service_center_id')): ?>
+                        <p class="mt-1 text-sm text-red-600"><?= session('errors.service_center_id') ?></p>
+                    <?php endif; ?>
                     <?php if (session('errors.referred_to')): ?>
                         <p class="mt-1 text-sm text-red-600"><?= session('errors.referred_to') ?></p>
                     <?php endif; ?>
+                    <p class="mt-1 text-sm text-gray-500">Select from dropdown or enter custom name</p>
                 </div>
 
                 <!-- Status -->
@@ -208,12 +244,153 @@
     </div>
 </div>
 
+<!-- Service Center Modal -->
+<div id="serviceCenterModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-medium text-gray-900">Add New Service Center</h3>
+                <button type="button" onclick="closeServiceCenterModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="serviceCenterForm" class="space-y-4">
+                <?= csrf_field() ?>
+
+                <div>
+                    <label for="modal_name" class="block text-sm font-medium text-gray-700 mb-1">
+                        Service Center Name <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text"
+                           id="modal_name"
+                           name="name"
+                           required
+                           placeholder="e.g., Apple Service Center Kathmandu"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                </div>
+
+                <div>
+                    <label for="modal_contact_person" class="block text-sm font-medium text-gray-700 mb-1">
+                        Contact Person
+                    </label>
+                    <input type="text"
+                           id="modal_contact_person"
+                           name="contact_person"
+                           placeholder="e.g., राम बहादुर श्रेष्ठ"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                </div>
+
+                <div>
+                    <label for="modal_phone" class="block text-sm font-medium text-gray-700 mb-1">
+                        Phone Number
+                    </label>
+                    <input type="tel"
+                           id="modal_phone"
+                           name="phone"
+                           placeholder="e.g., 01-4567890"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                </div>
+
+                <div>
+                    <label for="modal_address" class="block text-sm font-medium text-gray-700 mb-1">
+                        Address
+                    </label>
+                    <textarea id="modal_address"
+                              name="address"
+                              rows="2"
+                              placeholder="e.g., न्यू रोड, काठमाडौं"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"></textarea>
+                </div>
+
+                <input type="hidden" name="status" value="Active">
+            </form>
+
+            <div class="flex justify-end space-x-3 mt-6">
+                <button type="button"
+                        onclick="closeServiceCenterModal()"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                    Cancel
+                </button>
+                <button type="button"
+                        onclick="saveServiceCenter()"
+                        class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                    <i class="fas fa-save mr-2"></i>Save Service Center
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 function setTemplate(device, problem, referredTo) {
     document.getElementById('device_name').value = device;
     document.getElementById('problem_description').value = problem;
     document.getElementById('referred_to').value = referredTo;
     document.getElementById('status').value = 'Pending';
+}
+
+function updateReferredTo() {
+    const select = document.getElementById('service_center_id');
+    const input = document.getElementById('referred_to');
+
+    if (select.value) {
+        const selectedOption = select.options[select.selectedIndex];
+        input.value = selectedOption.text;
+        input.readOnly = true;
+        input.classList.add('bg-gray-100');
+    } else {
+        input.value = '';
+        input.readOnly = false;
+        input.classList.remove('bg-gray-100');
+    }
+}
+
+function openServiceCenterModal() {
+    document.getElementById('serviceCenterModal').classList.remove('hidden');
+}
+
+function closeServiceCenterModal() {
+    document.getElementById('serviceCenterModal').classList.add('hidden');
+    document.getElementById('serviceCenterForm').reset();
+}
+
+function saveServiceCenter() {
+    const form = document.getElementById('serviceCenterForm');
+    const formData = new FormData(form);
+
+    fetch('<?= base_url('dashboard/service-centers/store') ?>', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Add new option to dropdown
+            const select = document.getElementById('service_center_id');
+            const option = new Option(data.service_center.name, data.service_center.id);
+            select.add(option);
+            select.value = data.service_center.id;
+
+            // Update referred_to field
+            updateReferredTo();
+
+            // Close modal
+            closeServiceCenterModal();
+
+            // Show success message
+            alert('Service center added successfully!');
+        } else {
+            alert('Error: ' + (data.message || 'Failed to add service center'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error adding service center');
+    });
 }
 
 function previewDispatchPhotos(input) {

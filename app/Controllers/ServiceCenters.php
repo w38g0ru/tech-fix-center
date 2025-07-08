@@ -60,11 +60,17 @@ class ServiceCenters extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['success' => false, 'message' => 'Authentication required']);
+            }
             return redirect()->to('/auth/login');
         }
 
         // Check if user has admin privileges
         if (!hasRole(['superadmin', 'admin'])) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['success' => false, 'message' => 'Access denied. Admin privileges required.']);
+            }
             return redirect()->to('/dashboard')->with('error', 'Access denied. Admin privileges required.');
         }
 
@@ -75,21 +81,41 @@ class ServiceCenters extends BaseController
             'contact_person' => $this->request->getPost('contact_person'),
             'phone' => $this->request->getPost('phone'),
             'email' => $this->request->getPost('email'),
-            'status' => $this->request->getPost('status')
+            'status' => $this->request->getPost('status') ?: 'Active'
         ];
 
         // Validate using model validation rules
         if (!$this->serviceCenterModel->validate($serviceCenterData)) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Validation failed',
+                    'errors' => $this->serviceCenterModel->errors()
+                ]);
+            }
             return redirect()->back()
                            ->withInput()
                            ->with('errors', $this->serviceCenterModel->errors());
         }
 
         // Save service center
-        if ($this->serviceCenterModel->save($serviceCenterData)) {
-            return redirect()->to('/service-centers')
+        $serviceCenterId = $this->serviceCenterModel->insert($serviceCenterData);
+        if ($serviceCenterId) {
+            $serviceCenter = $this->serviceCenterModel->find($serviceCenterId);
+
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'success' => true,
+                    'message' => 'Service center added successfully!',
+                    'service_center' => $serviceCenter
+                ]);
+            }
+            return redirect()->to('/dashboard/service-centers')
                            ->with('success', 'Service center added successfully!');
         } else {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['success' => false, 'message' => 'Failed to add service center. Please try again.']);
+            }
             return redirect()->back()
                            ->withInput()
                            ->with('error', 'Failed to add service center. Please try again.');

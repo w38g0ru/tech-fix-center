@@ -12,7 +12,7 @@ class ReferredModel extends Model
     protected $returnType = 'array';
     protected $useSoftDeletes = false;
     protected $protectFields = true;
-    protected $allowedFields = ['customer_name', 'customer_phone', 'device_name', 'problem_description', 'referred_to', 'status'];
+    protected $allowedFields = ['customer_name', 'customer_phone', 'device_name', 'problem_description', 'referred_to', 'service_center_id', 'status'];
 
     // Dates
     protected $useTimestamps = false;
