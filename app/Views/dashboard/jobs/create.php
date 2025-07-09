@@ -63,7 +63,7 @@
 
                     <!-- Walk-in Customer Details -->
                     <div id="walk_in_customer_field" class="mt-3 hidden">
-                        <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!-- Walk-in Customer Name -->
                             <div>
                                 <label for="walk_in_customer_name" class="block text-sm font-medium text-gray-700 mb-2">
@@ -89,18 +89,18 @@
                                        id="walk_in_customer_mobile"
                                        name="walk_in_customer_mobile"
                                        value="<?= old('walk_in_customer_mobile') ?>"
-                                       placeholder="e.g., 9841234567 or 01-4567890"
+                                       placeholder="e.g., 9841234567"
                                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.walk_in_customer_mobile') ? 'border-red-500' : '' ?>">
                                 <?php if (session('errors.walk_in_customer_mobile')): ?>
                                     <p class="mt-1 text-sm text-red-600"><?= session('errors.walk_in_customer_mobile') ?></p>
                                 <?php endif; ?>
                             </div>
-
-                            <p class="text-sm text-gray-500">
-                                <i class="fas fa-info-circle mr-1"></i>
-                                Both fields are optional. Leave name blank to show "Walk-in Customer" only.
-                            </p>
                         </div>
+
+                        <p class="mt-3 text-sm text-gray-500">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Both fields are optional. Leave name blank to show "Walk-in Customer" only.
+                        </p>
                     </div>
                 </div>
 
