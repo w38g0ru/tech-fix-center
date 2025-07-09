@@ -56,6 +56,7 @@ $routes->group('dashboard', function($routes) {
     $routes->get('inventory/bulk-import', 'Inventory::bulkImport');
     $routes->post('inventory/process-bulk-import', 'Inventory::processBulkImport');
     $routes->get('inventory/export', 'Inventory::exportInventory');
+    $routes->get('inventory/downloadTemplate', 'Inventory::downloadTemplate');
 
     // Parts Requests Routes
     $routes->get('parts-requests', 'PartsRequests::index');

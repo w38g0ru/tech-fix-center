@@ -50,23 +50,23 @@
             <h3 class="text-lg font-medium text-gray-900 mb-4">Upload Inventory File</h3>
             <p class="text-sm text-gray-600 mb-6">Upload a CSV file to bulk import inventory items with pricing information.</p>
 
-            <form action="<?= base_url('dashboard/inventory/processBulkImport') ?>" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <form action="<?= base_url('dashboard/inventory/process-bulk-import') ?>" method="POST" enctype="multipart/form-data" class="space-y-6">
                 <?= csrf_field() ?>
 
                 <!-- File Upload -->
                 <div>
-                    <label for="csv_file" class="block text-sm font-medium text-gray-700 mb-2">
+                    <label for="import_file" class="block text-sm font-medium text-gray-700 mb-2">
                         Select CSV File <span class="text-red-500">*</span>
                     </label>
                     <input type="file"
-                           id="csv_file"
-                           name="csv_file"
-                           accept=".csv"
+                           id="import_file"
+                           name="import_file"
+                           accept=".csv,.xlsx,.xls"
                            required
                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
                     <p class="mt-2 text-sm text-gray-500">
                         <i class="fas fa-info-circle mr-1"></i>
-                        Supported format: CSV only. Maximum file size: 5MB.
+                        Supported formats: CSV, Excel (.xlsx, .xls). Maximum file size: 10MB.
                     </p>
                 </div>
 
