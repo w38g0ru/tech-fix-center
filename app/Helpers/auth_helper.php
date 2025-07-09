@@ -185,4 +185,61 @@ if (!function_exists('getUserEmail')) {
     }
 }
 
+if (!function_exists('clearSecureSession')) {
+    /**
+     * Securely clear user session and logout
+     */
+    function clearSecureSession()
+    {
+        $session = session();
+
+        // Log the logout action
+        $userId = $session->get('user_id');
+        $username = $session->get('username');
+
+        if ($userId) {
+            log_message('info', "User logout: ID {$userId}, Username: {$username}");
+        }
+
+        // Clear all session data
+        $session->destroy();
+
+        // Regenerate session ID for security
+        $session->regenerate(true);
+
+        // Clear any remember me cookies if they exist
+        if (isset($_COOKIE['remember_token'])) {
+            setcookie('remember_token', '', time() - 3600, '/', '', true, true);
+        }
+
+        return true;
+    }
+}
+
+if (!function_exists('isSessionValid')) {
+    /**
+     * Check if current session is valid
+     */
+    function isSessionValid()
+    {
+        $session = session();
+
+        // Check if session exists and has required data
+        if (!$session->get('isLoggedIn') || !$session->get('user_id')) {
+            return false;
+        }
+
+        // Check session timeout (optional - can be configured)
+        $lastActivity = $session->get('last_activity');
+        if ($lastActivity && (time() - $lastActivity > 7200)) { // 2 hours timeout
+            return false;
+        }
+
+        // Update last activity
+        $session->set('last_activity', time());
+
+        return true;
+    }
+}
+
 

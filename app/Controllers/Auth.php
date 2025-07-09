@@ -185,6 +185,9 @@ class Auth extends BaseController
      */
     public function logout()
     {
+        // Load auth helper
+        helper('auth');
+
         // Use secure session helper for cleanup
         clearSecureSession();
 
