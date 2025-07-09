@@ -13,7 +13,7 @@ class JobModel extends Model
     protected $useSoftDeletes = false;
     protected $protectFields = true;
     protected $allowedFields = [
-        'user_id', 'walk_in_customer_name', 'device_name', 'serial_number', 'problem',
+        'user_id', 'walk_in_customer_name', 'walk_in_customer_mobile', 'device_name', 'serial_number', 'problem',
         'technician_id', 'status', 'charge', 'dispatch_type', 'service_center_id',
         'dispatch_date', 'nepali_date', 'expected_return_date', 'actual_return_date',
         'dispatch_notes'

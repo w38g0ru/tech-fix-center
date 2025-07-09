@@ -193,7 +193,19 @@
                                     ?>
                                 </div>
                                 <div class="text-sm text-gray-500">
-                                    <?= !empty($job['customer_name']) ? esc($job['mobile_number'] ?? 'N/A') : 'Walk-in Customer' ?>
+                                    <?php
+                                    // Display mobile number based on customer type
+                                    if (!empty($job['customer_name'])) {
+                                        // Existing customer - show registered mobile
+                                        echo esc($job['mobile_number'] ?? 'No phone');
+                                    } elseif (!empty($job['walk_in_customer_mobile'])) {
+                                        // Walk-in customer with mobile
+                                        echo esc($job['walk_in_customer_mobile']);
+                                    } else {
+                                        // Walk-in customer without mobile
+                                        echo 'No phone provided';
+                                    }
+                                    ?>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">

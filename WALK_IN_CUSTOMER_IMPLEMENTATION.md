@@ -1,8 +1,8 @@
-# Walk-in Customer Implementation Guide
+# Enhanced Walk-in Customer Implementation Guide
 
 ## 🎯 **Overview**
 
-Implemented comprehensive walk-in customer functionality that allows users to select between existing customers and walk-in customers, with proper display formatting and data handling.
+Implemented comprehensive walk-in customer functionality with both name and mobile number fields. Users can select between existing customers (dropdown) and walk-in customers (name + mobile input), with proper display formatting and data handling.
 
 ## ✨ **Features Implemented**
 
@@ -11,10 +11,11 @@ Implemented comprehensive walk-in customer functionality that allows users to se
 - **Dynamic form fields** that show/hide based on selection
 - **Required validation** ensures a customer type is selected
 
-### **2. Walk-in Customer Name Input**
-- **Optional text field** for entering walk-in customer name
+### **2. Walk-in Customer Input Fields**
+- **Name field (optional)** for entering walk-in customer name
+- **Mobile field (optional)** for entering walk-in customer mobile number
 - **Nepali language support** with placeholder text
-- **Smart display logic** based on whether name is provided
+- **Smart display logic** based on whether name/mobile is provided
 
 ### **3. Display Format Logic**
 - **With Name**: "रमेश श्रेष्ठ (Walk-in Customer)"
@@ -24,9 +25,10 @@ Implemented comprehensive walk-in customer functionality that allows users to se
 ## 🔧 **Implementation Details**
 
 ### **Database Schema**
-The `jobs` table already includes:
+The `jobs` table includes:
 ```sql
 walk_in_customer_name VARCHAR(100) NULL
+walk_in_customer_mobile VARCHAR(20) NULL
 user_id INT(11) UNSIGNED NULL
 ```
 

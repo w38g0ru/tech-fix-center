@@ -122,6 +122,13 @@
                             <?= esc($job['mobile_number']) ?>
                         </a>
                     </div>
+                <?php elseif (!empty($job['walk_in_customer_mobile']) && $isWalkIn): ?>
+                    <div class="flex items-center text-sm text-gray-600">
+                        <i class="fas fa-phone mr-2"></i>
+                        <a href="tel:<?= esc($job['walk_in_customer_mobile']) ?>" class="hover:text-primary-600">
+                            <?= esc($job['walk_in_customer_mobile']) ?>
+                        </a>
+                    </div>
                 <?php endif; ?>
 
                 <?php if (!empty($job['email']) && !$isWalkIn): ?>

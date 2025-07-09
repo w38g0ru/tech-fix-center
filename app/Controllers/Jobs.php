@@ -77,6 +77,7 @@ class Jobs extends BaseController
         $customerType = $this->request->getPost('customer_type');
         $userId = $this->request->getPost('user_id') ?: null;
         $walkInCustomerName = $this->request->getPost('walk_in_customer_name');
+        $walkInCustomerMobile = $this->request->getPost('walk_in_customer_mobile');
 
         // Validate customer type selection
         if (empty($customerType)) {
@@ -97,6 +98,7 @@ class Jobs extends BaseController
         $jobData = [
             'user_id' => $userId,
             'walk_in_customer_name' => $walkInCustomerName,
+            'walk_in_customer_mobile' => $walkInCustomerMobile,
             'device_name' => $this->request->getPost('device_name'),
             'serial_number' => $this->request->getPost('serial_number'),
             'problem' => $this->request->getPost('problem'),
@@ -245,6 +247,7 @@ class Jobs extends BaseController
         $customerType = $this->request->getPost('customer_type');
         $userId = $this->request->getPost('user_id') ?: null;
         $walkInCustomerName = $this->request->getPost('walk_in_customer_name');
+        $walkInCustomerMobile = $this->request->getPost('walk_in_customer_mobile');
 
         // Validate customer type selection
         if (empty($customerType)) {
@@ -265,6 +268,7 @@ class Jobs extends BaseController
         $jobData = [
             'user_id' => $userId,
             'walk_in_customer_name' => $walkInCustomerName,
+            'walk_in_customer_mobile' => $walkInCustomerMobile,
             'device_name' => $this->request->getPost('device_name'),
             'serial_number' => $this->request->getPost('serial_number'),
             'problem' => $this->request->getPost('problem'),
