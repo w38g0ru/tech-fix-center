@@ -1,18 +1,16 @@
 <?php
-helper('branding');
-$appMeta = getAppMeta();
-$brandColors = getAllBrandColors();
+$config = config('App');
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="<?= $appMeta['viewport'] ?>">
-    <title><?= getAppTitle('Login') ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - <?= $config->appName ?></title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="<?= $appMeta['description'] ?>">
-    <meta name="author" content="<?= $appMeta['author'] ?>">
+    <meta name="description" content="<?= $config->appDescription ?>">
+    <meta name="author" content="<?= $config->companyName ?>">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="<?= base_url('favicon.ico') ?>">
@@ -24,45 +22,25 @@ $brandColors = getAllBrandColors();
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            primary: '<?= $brandColors['primary'] ?>',
-                            secondary: '<?= $brandColors['secondary'] ?>',
-                            accent: '<?= $brandColors['accent'] ?>',
-                            success: '<?= $brandColors['success'] ?>',
-                            danger: '<?= $brandColors['danger'] ?>'
-                        },
                         primary: {
                             50: '#eff6ff',
                             500: '#3b82f6',
-                            600: '<?= $brandColors['primary'] ?>',
+                            600: '<?= $config->brandColors['primary'] ?>',
                             700: '#1d4ed8'
                         },
                         success: {
                             50: '#f0fdf4',
-                            500: '<?= $brandColors['success'] ?>'
+                            500: '<?= $config->brandColors['success'] ?>'
                         },
                         danger: {
                             50: '#fef2f2',
-                            500: '<?= $brandColors['danger'] ?>'
+                            500: '<?= $config->brandColors['danger'] ?>'
                         }
                     }
                 }
             }
         }
     </script>
-
-    <!-- Custom Brand Styles -->
-    <style>
-        .brand-gradient {
-            background: linear-gradient(135deg, <?= $brandColors['primary'] ?> 0%, <?= $brandColors['secondary'] ?> 100%);
-        }
-        .brand-text-gradient {
-            background: linear-gradient(135deg, <?= $brandColors['primary'] ?> 0%, <?= $brandColors['secondary'] ?> 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-    </style>
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -80,10 +58,10 @@ $brandColors = getAllBrandColors();
         <!-- Logo and Header -->
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full shadow-lg mb-4">
-                <i class="fas fa-tools text-3xl" style="color: <?= $brandColors['primary'] ?>"></i>
+                <i class="fas fa-tools text-3xl text-primary-600"></i>
             </div>
-            <h1 class="text-3xl font-bold text-white mb-2"><?= getAppName() ?></h1>
-            <p class="text-white/80 text-sm"><?= getCompanyInfo('description') ?></p>
+            <h1 class="text-3xl font-bold text-white mb-2"><?= $config->appName ?></h1>
+            <p class="text-white/80 text-sm"><?= $config->appDescription ?></p>
         </div>
 
         <!-- Login Form -->

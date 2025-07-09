@@ -1,36 +1,20 @@
 <?php
-helper('branding');
-$appMeta = getAppMeta();
+$config = config('App');
 $pageTitle = $title ?? 'Dashboard';
-$brandColors = getAllBrandColors();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="<?= $appMeta['viewport'] ?>">
-    <title><?= getAppTitle($pageTitle) ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $pageTitle ?> - <?= $config->appName ?></title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="<?= $appMeta['description'] ?>">
-    <meta name="keywords" content="<?= $appMeta['keywords'] ?>">
-    <meta name="author" content="<?= $appMeta['author'] ?>">
-    <meta name="robots" content="<?= $appMeta['robots'] ?>">
-
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="<?= getAppTitle($pageTitle) ?>">
-    <meta property="og:description" content="<?= $appMeta['og:description'] ?>">
-    <meta property="og:type" content="<?= $appMeta['og:type'] ?>">
-    <meta property="og:url" content="<?= $appMeta['og:url'] ?>">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="<?= $appMeta['twitter:card'] ?>">
-    <meta name="twitter:title" content="<?= getAppTitle($pageTitle) ?>">
-    <meta name="twitter:description" content="<?= $appMeta['twitter:description'] ?>">
+    <meta name="description" content="<?= $config->appDescription ?>">
+    <meta name="author" content="<?= $config->companyName ?>">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="<?= base_url('favicon.ico') ?>">
-    <link rel="apple-touch-icon" href="<?= base_url('apple-touch-icon.png') ?>">
 
     <!-- External Resources -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -40,47 +24,17 @@ $brandColors = getAllBrandColors();
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            primary: '<?= $brandColors['primary'] ?>',
-                            secondary: '<?= $brandColors['secondary'] ?>',
-                            accent: '<?= $brandColors['accent'] ?>',
-                            warning: '<?= $brandColors['warning'] ?>',
-                            danger: '<?= $brandColors['danger'] ?>',
-                            success: '<?= $brandColors['success'] ?>',
-                            info: '<?= $brandColors['info'] ?>',
-                            dark: '<?= $brandColors['dark'] ?>',
-                            light: '<?= $brandColors['light'] ?>'
-                        },
                         primary: {
                             50: '#eff6ff',
                             500: '#3b82f6',
-                            600: '<?= $brandColors['primary'] ?>',
+                            600: '<?= $config->brandColors['primary'] ?>',
                             700: '#1d4ed8',
                         }
-                    },
-                    fontFamily: {
-                        'brand': ['Inter', 'system-ui', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
-
-    <!-- Custom Brand Styles -->
-    <style>
-        .brand-gradient {
-            background: linear-gradient(135deg, <?= $brandColors['primary'] ?> 0%, <?= $brandColors['secondary'] ?> 100%);
-        }
-        .brand-shadow {
-            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.15);
-        }
-        .brand-text-gradient {
-            background: linear-gradient(135deg, <?= $brandColors['primary'] ?> 0%, <?= $brandColors['secondary'] ?> 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         /* Responsive Sidebar Styles */
@@ -177,13 +131,13 @@ $brandColors = getAllBrandColors();
         <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg sidebar lg:static lg:inset-0 lg:z-auto" id="sidebar">
             
             <!-- Logo -->
-            <div class="flex items-center justify-center h-16 px-4 brand-gradient">
+            <div class="flex items-center justify-center h-16 px-4 bg-primary-600">
                 <div class="flex items-center">
                     <div class="h-8 w-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-3">
                         <i class="fas fa-tools text-white text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-lg font-bold text-white"><?= getAppName(true) ?></h1>
+                        <h1 class="text-lg font-bold text-white"><?= $config->appShortName ?></h1>
                         <p class="text-xs text-white text-opacity-80">Dashboard</p>
                     </div>
                 </div>
