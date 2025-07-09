@@ -58,10 +58,10 @@ if (!function_exists('getSessionUser')) {
 
         return [
             'id' => session()->get('user_id'),
-            'name' => session()->get('name'),
+            'name' => session()->get('name') ?? 'User',
             'email' => session()->get('email'),
             'role' => session()->get('role'),
-            'user_type' => session()->get('user_type'),
+            'user_type' => session()->get('user_type') ?? 'Admin',
             'login_time' => session()->get('login_time'),
             'last_activity' => session()->get('last_activity')
         ];
@@ -76,10 +76,10 @@ if (!function_exists('setSecureSession')) {
     {
         $sessionData = [
             'user_id' => $user['id'],
-            'name' => $user['name'],
+            'name' => $user['name'] ?? $user['full_name'] ?? 'User',
             'email' => $user['email'],
             'role' => $user['role'],
-            'user_type' => $user['user_type'] ?? 'User',
+            'user_type' => $user['user_type'] ?? 'Admin',
             'isLoggedIn' => true,
             'login_time' => time(),
             'last_activity' => time(),
