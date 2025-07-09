@@ -72,7 +72,9 @@ class App extends BaseConfig
         $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? 'localhost';
 
         // Set baseURL based on host
-        if (in_array($host, ['localhost', 'teknophix.local', 'tfc.local'])) {
+        if ($host === 'tfc.local') {
+            $this->baseURL = 'http://tfc.local/';
+        } elseif (in_array($host, ['localhost', 'teknophix.local'])) {
             $this->baseURL = 'http://teknophix.local/';
         } else {
             $this->baseURL = 'https://teknophix.gaighat.com/';
