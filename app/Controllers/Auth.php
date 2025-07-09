@@ -7,103 +7,162 @@ use App\Models\AdminUserModel;
 class Auth extends BaseController
 {
     protected $adminUserModel;
+    protected $maxLoginAttempts = 5;
+    protected $lockoutTime = 900; // 15 minutes
 
     public function __construct()
     {
         $this->adminUserModel = new AdminUserModel();
+        helper(['form', 'url', 'auth', 'session']);
     }
 
     /**
-     * Show login form
+     * Show professional login form
      */
     public function login()
     {
         // If user is already logged in, redirect to dashboard
         if (session()->get('isLoggedIn')) {
-            return redirect()->to(base_url('dashboard'));
+            $role = session()->get('role');
+            $redirectUrl = $this->getRedirectUrl($role);
+            return redirect()->to($redirectUrl)->with('info', 'You are already logged in.');
         }
 
+        // Check if there's a redirect URL in session
+        $intendedUrl = $this->request->getGet('redirect');
+        if ($intendedUrl) {
+            session()->set('redirect_url', $intendedUrl);
+        }
+
+        // Prepare data for the view
         $data = [
-            'title' => 'Login - TFC Dashboard'
+            'title' => 'Secure Login - Tech Fix Center',
+            'meta_description' => 'Secure login portal for Tech Fix Center staff and administrators',
+            'show_demo_credentials' => ENVIRONMENT === 'development' || ENVIRONMENT === 'testing'
         ];
 
         return view('auth/login', $data);
     }
 
     /**
-     * Process login
+     * Alias for login method (for backward compatibility)
+     */
+    public function index()
+    {
+        return $this->login();
+    }
+
+    /**
+     * Process login with professional security features
      */
     public function processLogin()
     {
+        // Check if request is POST
+        if (!$this->request->getMethod() === 'POST') {
+            return redirect()->to(base_url('auth/login'))->with('error', 'Invalid request method.');
+        }
+
+        // Rate limiting check
+        $clientIP = $this->request->getIPAddress();
+        if ($this->isRateLimited($clientIP)) {
+            return redirect()->back()->with('error', 'Too many login attempts. Please try again in 15 minutes.');
+        }
+
+        // Enhanced validation rules
         $rules = [
-            'email' => 'required|valid_email',
-            'password' => 'required'
+            'email' => [
+                'label' => 'Email Address',
+                'rules' => 'required|valid_email|max_length[100]',
+                'errors' => [
+                    'required' => 'Email address is required.',
+                    'valid_email' => 'Please enter a valid email address.',
+                    'max_length' => 'Email address is too long.'
+                ]
+            ],
+            'password' => [
+                'label' => 'Password',
+                'rules' => 'required|min_length[6]|max_length[255]',
+                'errors' => [
+                    'required' => 'Password is required.',
+                    'min_length' => 'Password must be at least 6 characters.',
+                    'max_length' => 'Password is too long.'
+                ]
+            ]
         ];
 
         if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            $this->recordFailedAttempt($clientIP);
+            return redirect()->back()
+                           ->withInput(['email' => $this->request->getPost('email')])
+                           ->with('errors', $this->validator->getErrors());
         }
 
-        $email = $this->request->getPost('email');
+        $email = trim(strtolower($this->request->getPost('email')));
         $password = $this->request->getPost('password');
-        $remember = $this->request->getPost('remember');
+        $remember = $this->request->getPost('remember') ? true : false;
 
-        // Verify credentials
-        $user = $this->adminUserModel->verifyCredentials($email, $password);
+        // Log login attempt
+        log_message('info', "Login attempt for email: {$email} from IP: {$clientIP}");
+
+        // Verify credentials with enhanced security
+        $user = $this->verifyUserCredentials($email, $password);
 
         if ($user) {
-            // Set session data
-            $sessionData = [
-                'user_id' => $user['id'],
-                'name' => $user['name'],
-                'email' => $user['email'],
-                'role' => $user['role'],
-                'user_type' => $user['user_type'],
-                'isLoggedIn' => true
-            ];
+            // Clear failed attempts on successful login
+            $this->clearFailedAttempts($clientIP);
 
-            session()->set($sessionData);
+            // Set secure session using helper
+            setSecureSession($user, $remember);
 
-            // Set remember me cookie if requested
+            // Handle remember me functionality
             if ($remember) {
-                $cookieData = [
-                    'user_id' => $user['id'],
-                    'email' => $user['email'],
-                    'token' => bin2hex(random_bytes(32))
-                ];
-                
-                // Set cookie for 30 days
-                setcookie('remember_token', json_encode($cookieData), time() + (30 * 24 * 60 * 60), '/');
+                $this->setRememberMeCookie($user);
             }
+
+            // Update last login in database
+            $this->adminUserModel->update($user['id'], [
+                'email_verified_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            // Log successful login
+            log_message('info', "Successful login for user ID: {$user['id']}, email: {$email}");
+
+            // Determine redirect URL
+            $redirectUrl = $this->getRedirectUrl($user['role']);
 
             // Check for intended redirect URL
-            $redirectUrl = session()->get('redirect_url');
-            if ($redirectUrl) {
+            $intendedUrl = session()->get('redirect_url');
+            if ($intendedUrl && filter_var($intendedUrl, FILTER_VALIDATE_URL)) {
                 session()->remove('redirect_url');
-            } else {
-                $redirectUrl = $this->getRedirectUrl($user['role']);
+                $redirectUrl = $intendedUrl;
             }
 
-            return redirect()->to($redirectUrl)->with('success', 'Welcome back, ' . $user['name'] . '!');
+            return redirect()->to($redirectUrl)
+                           ->with('success', 'Welcome back, ' . esc($user['name']) . '! You have been successfully logged in.');
         } else {
-            return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
+            // Record failed attempt
+            $this->recordFailedAttempt($clientIP);
+
+            // Log failed login
+            log_message('warning', "Failed login attempt for email: {$email} from IP: {$clientIP}");
+
+            return redirect()->back()
+                           ->withInput(['email' => $email])
+                           ->with('error', 'Invalid email address or password. Please check your credentials and try again.');
         }
     }
 
     /**
-     * Logout user
+     * Professional logout with security cleanup
      */
     public function logout()
     {
-        // Clear session
-        session()->destroy();
+        // Use secure session helper for cleanup
+        clearSecureSession();
 
-        // Clear remember me cookie
-        if (isset($_COOKIE['remember_token'])) {
-            setcookie('remember_token', '', time() - 3600, '/');
-        }
-
-        return redirect()->to(base_url('auth/login'))->with('success', 'You have been logged out successfully.');
+        return redirect()->to(base_url('auth/login'))
+                       ->with('success', 'You have been securely logged out. Thank you for using Tech Fix Center!');
     }
 
     /**
@@ -157,21 +216,115 @@ class Auth extends BaseController
     }
 
     /**
+     * Enhanced credential verification with security checks
+     */
+    private function verifyUserCredentials($email, $password)
+    {
+        $user = $this->adminUserModel->where('email', $email)
+                                   ->where('status', 'active')
+                                   ->first();
+
+        if (!$user) {
+            // Add small delay to prevent timing attacks
+            usleep(100000); // 0.1 second
+            return false;
+        }
+
+        // Verify password
+        if (password_verify($password, $user['password'])) {
+            return $user;
+        }
+
+        // Add delay for failed password verification
+        usleep(100000); // 0.1 second
+        return false;
+    }
+
+    /**
+     * Check if IP is rate limited
+     */
+    private function isRateLimited($ip)
+    {
+        $cacheKey = 'login_attempts_' . md5($ip);
+        $attempts = cache()->get($cacheKey);
+
+        if ($attempts && $attempts['count'] >= $this->maxLoginAttempts) {
+            $timeRemaining = $attempts['lockout_until'] - time();
+            if ($timeRemaining > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Record failed login attempt
+     */
+    private function recordFailedAttempt($ip)
+    {
+        $cacheKey = 'login_attempts_' . md5($ip);
+        $attempts = cache()->get($cacheKey) ?: ['count' => 0, 'lockout_until' => 0];
+
+        $attempts['count']++;
+
+        if ($attempts['count'] >= $this->maxLoginAttempts) {
+            $attempts['lockout_until'] = time() + $this->lockoutTime;
+        }
+
+        cache()->save($cacheKey, $attempts, $this->lockoutTime);
+    }
+
+    /**
+     * Clear failed attempts on successful login
+     */
+    private function clearFailedAttempts($ip)
+    {
+        $cacheKey = 'login_attempts_' . md5($ip);
+        cache()->delete($cacheKey);
+    }
+
+    /**
+     * Set secure remember me cookie
+     */
+    private function setRememberMeCookie($user)
+    {
+        $token = bin2hex(random_bytes(32));
+        $cookieData = [
+            'user_id' => $user['id'],
+            'email' => $user['email'],
+            'token' => $token,
+            'created' => time()
+        ];
+
+        // Set secure cookie for 30 days
+        $cookieOptions = [
+            'expires' => time() + (30 * 24 * 60 * 60),
+            'path' => '/',
+            'domain' => '',
+            'secure' => $this->request->isSecure(),
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ];
+
+        setcookie('remember_token', json_encode($cookieData), $cookieOptions);
+    }
+
+    /**
      * Get redirect URL based on user role
      */
     private function getRedirectUrl($role)
     {
-        switch ($role) {
-            case 'superadmin':
-            case 'admin':
-                return base_url('dashboard');
-            case 'technician':
-                return base_url('dashboard/jobs');
-            case 'customer':
-                return base_url('dashboard/jobs');
-            default:
-                return base_url('dashboard');
-        }
+        $roleRedirects = [
+            'superadmin' => 'dashboard',
+            'admin' => 'dashboard',
+            'manager' => 'dashboard',
+            'technician' => 'dashboard/jobs',
+            'customer' => 'dashboard/jobs'
+        ];
+
+        $redirect = $roleRedirects[$role] ?? 'dashboard';
+        return base_url($redirect);
     }
 
     /**

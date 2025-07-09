@@ -63,13 +63,13 @@ CREATE TABLE `users` (
 -- =============================================
 
 INSERT INTO `users` (`id`, `name`, `email`, `mobile_number`, `password`, `role`, `user_type`, `status`, `email_verified_at`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Super Admin', 'admin@techfixcenter.com', '9841234567', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'superadmin', 'Admin', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00'),
-(2, 'Admin User', 'admin2@techfixcenter.com', '9841234568', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'Admin', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00'),
-(3, 'Manager User', 'manager@techfixcenter.com', '9841234569', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'manager', 'Manager', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00'),
-(4, 'रमेश श्रेष्ठ', 'ramesh@example.com', '9851234567', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'customer', 'Customer', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00'),
-(5, 'सुनिता गुरुङ', 'sunita@example.com', '9861234567', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'customer', 'Customer', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00'),
-(6, 'बिमल पौडेल', 'bimal@example.com', '9871234567', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'customer', 'Customer', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00'),
-(7, 'कमला शर्मा', 'kamala@example.com', '9881234567', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'customer', 'Customer', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00');
+(1, 'Super Admin', 'admin@techfixcenter.com', '9841234567', '$2y$12$QiVH3iEK8r9r/po81pDNlONHP3wHTyHbiuN2rx3VTRRt0R0CW.Yqm', 'superadmin', 'Admin', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00'),
+(2, 'Admin User', 'admin2@techfixcenter.com', '9841234568', '$2y$12$QiVH3iEK8r9r/po81pDNlONHP3wHTyHbiuN2rx3VTRRt0R0CW.Yqm', 'admin', 'Admin', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00'),
+(3, 'Manager User', 'manager@techfixcenter.com', '9841234569', '$2y$12$QiVH3iEK8r9r/po81pDNlONHP3wHTyHbiuN2rx3VTRRt0R0CW.Yqm', 'manager', 'Manager', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00'),
+(4, 'रमेश श्रेष्ठ', 'ramesh@example.com', '9851234567', '$2y$12$QiVH3iEK8r9r/po81pDNlONHP3wHTyHbiuN2rx3VTRRt0R0CW.Yqm', 'customer', 'Customer', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00'),
+(5, 'सुनिता गुरुङ', 'sunita@example.com', '9861234567', '$2y$12$QiVH3iEK8r9r/po81pDNlONHP3wHTyHbiuN2rx3VTRRt0R0CW.Yqm', 'customer', 'Customer', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00'),
+(6, 'बिमल पौडेल', 'bimal@example.com', '9871234567', '$2y$12$QiVH3iEK8r9r/po81pDNlONHP3wHTyHbiuN2rx3VTRRt0R0CW.Yqm', 'customer', 'Customer', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00'),
+(7, 'कमला शर्मा', 'kamala@example.com', '9881234567', '$2y$12$QiVH3iEK8r9r/po81pDNlONHP3wHTyHbiuN2rx3VTRRt0R0CW.Yqm', 'customer', 'Customer', 'active', '2025-07-09 10:00:00', NULL, '2025-07-09 10:00:00', '2025-07-09 10:00:00');
 
 -- =============================================
 -- Table structure for table `technicians`
