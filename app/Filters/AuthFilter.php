@@ -19,7 +19,7 @@ class AuthFilter implements FilterInterface
             session()->set('redirect_url', current_url());
             
             // Redirect to login page
-            return redirect()->to('/auth/login')->with('error', 'Please login to access this page.');
+            return redirect()->to(base_url('auth/login'))->with('error', 'Please login to access this page.');
         }
         
         // Check for specific role requirements
@@ -27,7 +27,7 @@ class AuthFilter implements FilterInterface
             $requiredRoles = is_array($arguments) ? $arguments : [$arguments];
             
             if (!hasAnyRole($requiredRoles)) {
-                return redirect()->to('/dashboard')->with('error', 'You do not have permission to access this page.');
+                return redirect()->to(base_url('dashboard'))->with('error', 'You do not have permission to access this page.');
             }
         }
     }

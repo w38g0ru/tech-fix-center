@@ -32,7 +32,7 @@ class Dashboard extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
         $data = [
             'title' => 'Dashboard',
@@ -53,7 +53,7 @@ class Dashboard extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         $search = $this->request->getGet('search');
@@ -108,7 +108,7 @@ class Dashboard extends BaseController
         ];
 
         if ($this->userModel->insert($data)) {
-            return redirect()->to('/dashboard/users')->with('success', 'Customer added successfully!');
+            return redirect()->to(base_url('dashboard/users'))->with('success', 'Customer added successfully!');
         } else {
             return redirect()->back()->withInput()->with('error', 'Failed to add customer.');
         }

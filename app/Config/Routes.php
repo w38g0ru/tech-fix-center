@@ -8,9 +8,9 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', function() {
     helper('auth');
     if (isLoggedIn()) {
-        return redirect()->to('/dashboard');
+        return redirect()->to(base_url('dashboard'));
     } else {
-        return redirect()->to('/auth/login');
+        return redirect()->to(base_url('auth/login'));
     }
 });
 

@@ -20,7 +20,7 @@ class Auth extends BaseController
     {
         // If user is already logged in, redirect to dashboard
         if (session()->get('isLoggedIn')) {
-            return redirect()->to('/dashboard');
+            return redirect()->to(base_url('dashboard'));
         }
 
         $data = [
@@ -103,7 +103,7 @@ class Auth extends BaseController
             setcookie('remember_token', '', time() - 3600, '/');
         }
 
-        return redirect()->to('/auth/login')->with('success', 'You have been logged out successfully.');
+        return redirect()->to(base_url('auth/login'))->with('success', 'You have been logged out successfully.');
     }
 
     /**
@@ -152,7 +152,7 @@ class Auth extends BaseController
     public function checkAuth()
     {
         if (!session()->get('isLoggedIn')) {
-            return redirect()->to('/auth/login')->with('error', 'Please login to access the dashboard.');
+            return redirect()->to(base_url('auth/login'))->with('error', 'Please login to access the dashboard.');
         }
     }
 
@@ -164,13 +164,13 @@ class Auth extends BaseController
         switch ($role) {
             case 'superadmin':
             case 'admin':
-                return '/dashboard';
+                return base_url('dashboard');
             case 'technician':
-                return '/dashboard/jobs';
-            case 'user':
-                return '/dashboard/jobs';
+                return base_url('dashboard/jobs');
+            case 'customer':
+                return base_url('dashboard/jobs');
             default:
-                return '/dashboard';
+                return base_url('dashboard');
         }
     }
 

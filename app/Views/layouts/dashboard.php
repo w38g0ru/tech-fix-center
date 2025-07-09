@@ -149,8 +149,19 @@
                         Dispatch
                     </a>
 
+                    <a href="<?= base_url('dashboard/parts-requests') ?>"
+                       class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'parts-requests') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
+                        <i class="fas fa-tools mr-3"></i>
+                        Parts Requests
+                    </a>
+
                     <?php helper('auth'); ?>
                     <?php if (canCreateTechnician()): ?>
+                        <a href="<?= base_url('dashboard/service-centers') ?>"
+                           class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'service-centers') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
+                            <i class="fas fa-building mr-3"></i>
+                            Service Centers
+                        </a>
                         <a href="<?= base_url('dashboard/technicians') ?>"
                            class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'technicians') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
                             <i class="fas fa-user-cog mr-3"></i>

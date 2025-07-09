@@ -20,12 +20,12 @@ class ServiceCenters extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         // Check if user has admin privileges
         if (!hasRole(['superadmin', 'admin'])) {
-            return redirect()->to('/dashboard')->with('error', 'Access denied. Admin privileges required.');
+            return redirect()->to(base_url('dashboard'))->with('error', 'Access denied. Admin privileges required.');
         }
 
         $data = [
@@ -41,12 +41,12 @@ class ServiceCenters extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         // Check if user has admin privileges
         if (!hasRole(['superadmin', 'admin'])) {
-            return redirect()->to('/dashboard')->with('error', 'Access denied. Admin privileges required.');
+            return redirect()->to(base_url('dashboard'))->with('error', 'Access denied. Admin privileges required.');
         }
 
         $data = [
@@ -63,7 +63,7 @@ class ServiceCenters extends BaseController
             if ($this->request->isAJAX()) {
                 return $this->response->setJSON(['success' => false, 'message' => 'Authentication required']);
             }
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         // Check if user has admin privileges
@@ -71,7 +71,7 @@ class ServiceCenters extends BaseController
             if ($this->request->isAJAX()) {
                 return $this->response->setJSON(['success' => false, 'message' => 'Access denied. Admin privileges required.']);
             }
-            return redirect()->to('/dashboard')->with('error', 'Access denied. Admin privileges required.');
+            return redirect()->to(base_url('dashboard'))->with('error', 'Access denied. Admin privileges required.');
         }
 
         // Prepare service center data for model validation
@@ -126,12 +126,12 @@ class ServiceCenters extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         // Check if user has admin privileges
         if (!hasRole(['superadmin', 'admin'])) {
-            return redirect()->to('/dashboard')->with('error', 'Access denied. Admin privileges required.');
+            return redirect()->to(base_url('dashboard'))->with('error', 'Access denied. Admin privileges required.');
         }
 
         $serviceCenter = $this->serviceCenterModel->find($id);
@@ -152,12 +152,12 @@ class ServiceCenters extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         // Check if user has admin privileges
         if (!hasRole(['superadmin', 'admin'])) {
-            return redirect()->to('/dashboard')->with('error', 'Access denied. Admin privileges required.');
+            return redirect()->to(base_url('dashboard'))->with('error', 'Access denied. Admin privileges required.');
         }
 
         $serviceCenter = $this->serviceCenterModel->find($id);
@@ -185,7 +185,7 @@ class ServiceCenters extends BaseController
 
         // Update service center
         if ($this->serviceCenterModel->update($id, $serviceCenterData)) {
-            return redirect()->to('/service-centers')
+            return redirect()->to(base_url('dashboard/service-centers'))
                            ->with('success', 'Service center updated successfully!');
         } else {
             return redirect()->back()
@@ -198,35 +198,35 @@ class ServiceCenters extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         // Check if user has admin privileges
         if (!hasRole(['superadmin', 'admin'])) {
-            return redirect()->to('/dashboard')->with('error', 'Access denied. Admin privileges required.');
+            return redirect()->to(base_url('dashboard'))->with('error', 'Access denied. Admin privileges required.');
         }
 
         $serviceCenter = $this->serviceCenterModel->find($id);
-        
+
         if (!$serviceCenter) {
-            return redirect()->to('/service-centers')
+            return redirect()->to(base_url('dashboard/service-centers'))
                            ->with('error', 'Service center not found.');
         }
 
         // Check if service center has associated jobs
         $jobModel = new \App\Models\JobModel();
         $jobCount = $jobModel->where('service_center_id', $id)->countAllResults();
-        
+
         if ($jobCount > 0) {
-            return redirect()->to('/service-centers')
+            return redirect()->to(base_url('dashboard/service-centers'))
                            ->with('error', 'Cannot delete service center. It has associated jobs.');
         }
 
         if ($this->serviceCenterModel->delete($id)) {
-            return redirect()->to('/service-centers')
+            return redirect()->to(base_url('dashboard/service-centers'))
                            ->with('success', 'Service center deleted successfully!');
         } else {
-            return redirect()->to('/service-centers')
+            return redirect()->to(base_url('dashboard/service-centers'))
                            ->with('error', 'Failed to delete service center. Please try again.');
         }
     }
@@ -235,13 +235,13 @@ class ServiceCenters extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         $search = $this->request->getGet('search');
         
         if (empty($search)) {
-            return redirect()->to('/service-centers');
+            return redirect()->to(base_url('dashboard/service-centers'));
         }
 
         $data = [

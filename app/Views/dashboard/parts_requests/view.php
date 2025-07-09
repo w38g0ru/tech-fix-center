@@ -209,13 +209,13 @@ function approveRequest() {
     if (confirm('Approve this parts request?')) {
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = '/parts-requests/approve/<?= $partsRequest['id'] ?>';
-        
+        form.action = '<?= base_url('dashboard/parts-requests/approve/' . $partsRequest['id']) ?>';
+
         const csrfInput = document.createElement('input');
         csrfInput.type = 'hidden';
         csrfInput.name = '<?= csrf_token() ?>';
         csrfInput.value = '<?= csrf_hash() ?>';
-        
+
         form.appendChild(csrfInput);
         document.body.appendChild(form);
         form.submit();
@@ -227,18 +227,18 @@ function rejectRequest() {
     if (reason) {
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = '/parts-requests/reject/<?= $partsRequest['id'] ?>';
-        
+        form.action = '<?= base_url('dashboard/parts-requests/reject/' . $partsRequest['id']) ?>';
+
         const csrfInput = document.createElement('input');
         csrfInput.type = 'hidden';
         csrfInput.name = '<?= csrf_token() ?>';
         csrfInput.value = '<?= csrf_hash() ?>';
-        
+
         const reasonInput = document.createElement('input');
         reasonInput.type = 'hidden';
         reasonInput.name = 'rejection_reason';
         reasonInput.value = reason;
-        
+
         form.appendChild(csrfInput);
         form.appendChild(reasonInput);
         document.body.appendChild(form);

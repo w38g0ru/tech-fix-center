@@ -11,7 +11,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title"><?= $title ?></h3>
-                    <a href="/service-centers/create" class="btn btn-primary">
+                    <a href="<?= base_url('dashboard/service-centers/create') ?>" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Add Service Center
                     </a>
                 </div>
@@ -50,7 +50,7 @@
                     <!-- Search Form -->
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <form method="GET" action="/service-centers/search">
+                            <form method="GET" action="<?= base_url('dashboard/service-centers/search') ?>">
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="search" 
                                            placeholder="Search service centers..." 
@@ -106,11 +106,11 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                    <a href="/service-centers/edit/<?= $center['id'] ?>" 
+                                                    <a href="<?= base_url('dashboard/service-centers/edit/' . $center['id']) ?>"
                                                        class="btn btn-sm btn-warning">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <a href="/service-centers/delete/<?= $center['id'] ?>" 
+                                                    <a href="<?= base_url('dashboard/service-centers/delete/' . $center['id']) ?>"
                                                        class="btn btn-sm btn-danger"
                                                        onclick="return confirm('Are you sure you want to delete this service center?')">
                                                         <i class="fas fa-trash"></i>
@@ -125,7 +125,7 @@
                                             <?php if (isset($search)): ?>
                                                 No service centers found matching "<?= esc($search) ?>".
                                             <?php else: ?>
-                                                No service centers found. <a href="/service-centers/create">Add the first one</a>.
+                                                No service centers found. <a href="<?= base_url('dashboard/service-centers/create') ?>">Add the first one</a>.
                                             <?php endif; ?>
                                         </td>
                                     </tr>

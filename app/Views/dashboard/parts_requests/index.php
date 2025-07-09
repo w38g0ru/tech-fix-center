@@ -143,7 +143,7 @@
                                             <td><?= date('M d, Y', strtotime($request['created_at'])) ?></td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                    <a href="/parts-requests/view/<?= $request['id'] ?>" 
+                                                    <a href="<?= base_url('dashboard/parts-requests/view/' . $request['id']) ?>"
                                                        class="btn btn-sm btn-info">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
@@ -166,7 +166,7 @@
                                         <td colspan="9" class="text-center">
                                             No parts requests found.
                                             <?php if ($userRole === 'technician'): ?>
-                                                <a href="/parts-requests/create">Create the first request</a>.
+                                                <a href="<?= base_url('dashboard/parts-requests/create') ?>">Create the first request</a>.
                                             <?php endif; ?>
                                         </td>
                                     </tr>
@@ -185,7 +185,7 @@ function approveRequest(id) {
     // Add approval modal or form here
     if (confirm('Approve this parts request?')) {
         // Submit approval form
-        window.location.href = '/parts-requests/approve/' + id;
+        window.location.href = '<?= base_url('dashboard/parts-requests/approve/') ?>' + id;
     }
 }
 
@@ -196,18 +196,18 @@ function rejectRequest(id) {
         // Submit rejection form with reason
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = '/parts-requests/reject/' + id;
-        
+        form.action = '<?= base_url('dashboard/parts-requests/reject/') ?>' + id;
+
         const csrfInput = document.createElement('input');
         csrfInput.type = 'hidden';
         csrfInput.name = '<?= csrf_token() ?>';
         csrfInput.value = '<?= csrf_hash() ?>';
-        
+
         const reasonInput = document.createElement('input');
         reasonInput.type = 'hidden';
         reasonInput.name = 'rejection_reason';
         reasonInput.value = reason;
-        
+
         form.appendChild(csrfInput);
         form.appendChild(reasonInput);
         document.body.appendChild(form);

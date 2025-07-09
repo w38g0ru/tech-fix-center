@@ -26,7 +26,7 @@ class PartsRequests extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         $userRole = getUserRole();
@@ -40,7 +40,7 @@ class PartsRequests extends BaseController
             $technicianId = $this->getTechnicianIdByUserId($userId);
             $partsRequests = $this->partsRequestModel->getPartsRequestsByTechnician($technicianId);
         } else {
-            return redirect()->to('/dashboard')->with('error', 'Access denied.');
+            return redirect()->to(base_url('dashboard'))->with('error', 'Access denied.');
         }
 
         // Simplified version to avoid errors
@@ -65,12 +65,12 @@ class PartsRequests extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         // Only technicians can create parts requests
         if (!hasRole(['technician'])) {
-            return redirect()->to('/dashboard')->with('error', 'Only technicians can create parts requests.');
+            return redirect()->to(base_url('dashboard'))->with('error', 'Only technicians can create parts requests.');
         }
 
         $data = [
@@ -87,12 +87,12 @@ class PartsRequests extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         // Only technicians can create parts requests
         if (!hasRole(['technician'])) {
-            return redirect()->to('/dashboard')->with('error', 'Only technicians can create parts requests.');
+            return redirect()->to(base_url('dashboard'))->with('error', 'Only technicians can create parts requests.');
         }
 
         // Prepare parts request data
@@ -119,7 +119,7 @@ class PartsRequests extends BaseController
 
         // Save parts request
         if ($this->partsRequestModel->save($partsRequestData)) {
-            return redirect()->to('/parts-requests')
+            return redirect()->to(base_url('dashboard/parts-requests'))
                            ->with('success', 'Parts request submitted successfully!');
         } else {
             return redirect()->back()
@@ -132,7 +132,7 @@ class PartsRequests extends BaseController
     {
         // Check if user is logged in
         if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         $partsRequest = $this->partsRequestModel->getPartsRequestWithDetails($id);
@@ -148,7 +148,7 @@ class PartsRequests extends BaseController
         if ($userRole === 'technician') {
             $technicianId = $this->getTechnicianIdByUserId($userId);
             if ($partsRequest['technician_id'] != $technicianId && $partsRequest['requested_by'] != $userId) {
-                return redirect()->to('/parts-requests')->with('error', 'Access denied.');
+                return redirect()->to(base_url('dashboard/parts-requests'))->with('error', 'Access denied.');
             }
         }
 
@@ -165,18 +165,18 @@ class PartsRequests extends BaseController
     {
         // Check if user is logged in and has admin privileges
         if (!isLoggedIn() || !hasRole(['superadmin', 'admin'])) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         $partsRequest = $this->partsRequestModel->find($id);
         
         if (!$partsRequest) {
-            return redirect()->to('/parts-requests')
+            return redirect()->to(base_url('dashboard/parts-requests'))
                            ->with('error', 'Parts request not found.');
         }
 
         if ($partsRequest['status'] !== 'Pending') {
-            return redirect()->to('/parts-requests')
+            return redirect()->to(base_url('dashboard/parts-requests'))
                            ->with('error', 'Only pending requests can be approved.');
         }
 
@@ -191,7 +191,7 @@ class PartsRequests extends BaseController
         ];
 
         if ($this->partsRequestModel->update($id, $updateData)) {
-            return redirect()->to('/parts-requests')
+            return redirect()->to(base_url('dashboard/parts-requests'))
                            ->with('success', 'Parts request approved successfully!');
         } else {
             return redirect()->back()
@@ -203,18 +203,18 @@ class PartsRequests extends BaseController
     {
         // Check if user is logged in and has admin privileges
         if (!isLoggedIn() || !hasRole(['superadmin', 'admin'])) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         $partsRequest = $this->partsRequestModel->find($id);
-        
+
         if (!$partsRequest) {
-            return redirect()->to('/parts-requests')
+            return redirect()->to(base_url('dashboard/parts-requests'))
                            ->with('error', 'Parts request not found.');
         }
 
         if ($partsRequest['status'] !== 'Pending') {
-            return redirect()->to('/parts-requests')
+            return redirect()->to(base_url('dashboard/parts-requests'))
                            ->with('error', 'Only pending requests can be rejected.');
         }
 
@@ -226,7 +226,7 @@ class PartsRequests extends BaseController
         ];
 
         if ($this->partsRequestModel->update($id, $updateData)) {
-            return redirect()->to('/parts-requests')
+            return redirect()->to(base_url('dashboard/parts-requests'))
                            ->with('success', 'Parts request rejected.');
         } else {
             return redirect()->back()
@@ -238,13 +238,13 @@ class PartsRequests extends BaseController
     {
         // Check if user is logged in and has admin privileges
         if (!isLoggedIn() || !hasRole(['superadmin', 'admin'])) {
-            return redirect()->to('/auth/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         $partsRequest = $this->partsRequestModel->find($id);
-        
+
         if (!$partsRequest) {
-            return redirect()->to('/parts-requests')
+            return redirect()->to(base_url('dashboard/parts-requests'))
                            ->with('error', 'Parts request not found.');
         }
 
@@ -260,7 +260,7 @@ class PartsRequests extends BaseController
         }
 
         if ($this->partsRequestModel->update($id, $updateData)) {
-            return redirect()->to('/parts-requests')
+            return redirect()->to(base_url('dashboard/parts-requests'))
                            ->with('success', 'Parts request status updated successfully!');
         } else {
             return redirect()->back()

@@ -28,7 +28,7 @@
                         </div>
                     <?php endif; ?>
 
-                    <form action="/parts-requests/store" method="POST">
+                    <form action="<?= base_url('dashboard/parts-requests/store') ?>" method="POST">
                         <?= csrf_field() ?>
                         
                         <div class="row">

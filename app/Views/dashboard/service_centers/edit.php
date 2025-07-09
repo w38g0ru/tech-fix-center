@@ -28,7 +28,7 @@
                         </div>
                     <?php endif; ?>
 
-                    <form action="/service-centers/update/<?= $serviceCenter['id'] ?>" method="POST">
+                    <form action="<?= base_url('dashboard/service-centers/update/' . $serviceCenter['id']) ?>" method="POST">
                         <?= csrf_field() ?>
                         
                         <div class="row">
