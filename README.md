@@ -1,68 +1,87 @@
-# CodeIgniter 4 Application Starter
+# TeknoPhix - Advanced Technology Repair Management System
 
-## What is CodeIgniter?
+## About TeknoPhix
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+TeknoPhix is a comprehensive technology repair management system designed for modern repair shops and service centers. Built with CodeIgniter 4, it provides a professional solution for managing device repairs, inventory, technicians, and customer relationships.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+### Key Features
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+- **Device Repair Management**: Complete job tracking from intake to completion
+- **Inventory Management**: Track parts, stock levels, and movements
+- **Technician Management**: Assign jobs and track technician performance
+- **Customer Management**: Handle walk-in customers and referred jobs
+- **Photo Documentation**: Visual proof of repairs and device conditions
+- **Service Center Integration**: Manage multiple service locations
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## Installation
 
-## Installation & updates
+### Requirements
+- PHP 8.1 or higher
+- MySQL 5.7+ or MariaDB 10.3+
+- Apache/Nginx web server
+- Composer
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+### Quick Setup
+1. Clone the repository
+2. Run `composer install`
+3. Copy `env` to `.env` and configure:
+   - Database settings
+   - Base URL (http://teknophix.local/ for local development)
+   - Environment settings
+4. Import the database schema
+5. Configure your web server to point to the `public` directory
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### Default Login
+- **Email**: admin@teknophix.com
+- **Password**: password
 
-## Setup
+## System Modules
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+### Core Features
+- **Dashboard**: Overview of repair jobs, inventory, and system status
+- **Job Management**: Create, track, and manage repair jobs
+- **Inventory Control**: Parts management with stock tracking
+- **Technician Portal**: Assign and track technician work
+- **Customer Management**: Handle walk-in and referred customers
+- **Photo Documentation**: Upload and manage repair photos
+- **Service Centers**: Multi-location support
+- **User Management**: Role-based access control
 
-## Important Change with index.php
+### Technology Stack
+- **Backend**: CodeIgniter 4 (PHP Framework)
+- **Frontend**: Vanilla JavaScript, CSS3, HTML5
+- **Styling**: Tailwind CSS
+- **Database**: MySQL/MariaDB
+- **Icons**: Font Awesome
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+## Configuration
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+### Web Server Setup
+Configure your web server to point to the `public` folder for security:
+- **Apache**: Use virtual hosts pointing to `/path/to/teknophix/public`
+- **Nginx**: Set document root to `/path/to/teknophix/public`
 
-**Please** read the user guide for a better explanation of how CI4 works!
+### Environment Variables
+Key settings in your `.env` file:
+```
+app.baseURL = 'http://teknophix.local/'
+database.default.hostname = localhost
+database.default.database = teknophix_db
+database.default.username = your_username
+database.default.password = your_password
+```
 
-## Repository Management
+## Support
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+For support and feature requests, please contact:
+- **Email**: support@teknophix.com
+- **Website**: https://teknophix.gaighat.com
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+## License
 
-## Server Requirements
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+---
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+**TeknoPhix** - Precision Technology Solutions

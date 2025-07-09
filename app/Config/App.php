@@ -16,45 +16,45 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'https://tfc.gaighat.com/';
+    public string $baseURL = 'https://teknophix.gaighat.com/';
 
     /**
      * --------------------------------------------------------------------------
      * Application Branding Configuration
      * --------------------------------------------------------------------------
      *
-     * Professional branding settings for Tech Fix Center
+     * Professional branding settings for TeknoPhix
      */
-    public string $appName = 'Tech Fix Center';
-    public string $appShortName = 'TFC';
+    public string $appName = 'TeknoPhix';
+    public string $appShortName = 'TPX';
     public string $appVersion = '2.0.0';
-    public string $appDescription = 'Professional Device Repair Management System';
-    public string $companyName = 'Tech Fix Center';
-    public string $companyTagline = 'Expert Device Repair Solutions';
-    public string $companyWebsite = 'https://tfc.gaighat.com';
-    public string $supportEmail = 'support@techfixcenter.com';
+    public string $appDescription = 'Advanced Technology Repair Management System';
+    public string $companyName = 'TeknoPhix';
+    public string $companyTagline = 'Precision Technology Solutions';
+    public string $companyWebsite = 'https://teknophix.gaighat.com';
+    public string $supportEmail = 'support@teknophix.com';
     public string $contactPhone = '+977-1-4567890';
     public string $companyAddress = 'Gaighat, Udayapur, Nepal';
 
     // Brand Colors (Tailwind CSS compatible)
     public array $brandColors = [
-        'primary' => '#2563eb',      // Blue-600
-        'secondary' => '#7c3aed',    // Violet-600
-        'accent' => '#059669',       // Emerald-600
-        'warning' => '#d97706',      // Amber-600
-        'danger' => '#dc2626',       // Red-600
-        'success' => '#16a34a',      // Green-600
-        'info' => '#0891b2',         // Cyan-600
-        'dark' => '#1f2937',         // Gray-800
-        'light' => '#f9fafb'         // Gray-50
+        'primary' => '#0f172a',      // Slate-900 (Dark tech)
+        'secondary' => '#3b82f6',    // Blue-500 (Tech blue)
+        'accent' => '#06b6d4',       // Cyan-500 (Electric cyan)
+        'warning' => '#f59e0b',      // Amber-500
+        'danger' => '#ef4444',       // Red-500
+        'success' => '#10b981',      // Emerald-500
+        'info' => '#3b82f6',         // Blue-500
+        'dark' => '#111827',         // Gray-900
+        'light' => '#f8fafc'         // Slate-50
     ];
 
     // Social Media Links
     public array $socialMedia = [
-        'facebook' => 'https://facebook.com/techfixcenter',
-        'twitter' => 'https://twitter.com/techfixcenter',
-        'instagram' => 'https://instagram.com/techfixcenter',
-        'linkedin' => 'https://linkedin.com/company/techfixcenter'
+        'facebook' => 'https://facebook.com/teknophix',
+        'twitter' => 'https://twitter.com/teknophix',
+        'instagram' => 'https://instagram.com/teknophix',
+        'linkedin' => 'https://linkedin.com/company/teknophix'
     ];
 
     /**
@@ -72,10 +72,10 @@ class App extends BaseConfig
         $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? 'localhost';
 
         // Set baseURL based on host
-        if (in_array($host, ['localhost', 'tfc.local'])) {
-            $this->baseURL = 'http://tfc.local/';
+        if (in_array($host, ['localhost', 'teknophix.local', 'tfc.local'])) {
+            $this->baseURL = 'http://teknophix.local/';
         } else {
-            $this->baseURL = 'https://tfc.gaighat.com/';
+            $this->baseURL = 'https://teknophix.gaighat.com/';
         }
     }
 
