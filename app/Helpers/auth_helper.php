@@ -193,23 +193,28 @@ if (!function_exists('clearSecureSession')) {
     {
         $session = session();
 
-        // Log the logout action
+        // Log the logout action before clearing session
         $userId = $session->get('user_id');
-        $username = $session->get('username');
+        $username = $session->get('username') ?? $session->get('name');
 
         if ($userId) {
             log_message('info', "User logout: ID {$userId}, Username: {$username}");
         }
 
-        // Clear all session data
-        $session->destroy();
-
-        // Regenerate session ID for security
-        $session->regenerate(true);
-
         // Clear any remember me cookies if they exist
         if (isset($_COOKIE['remember_token'])) {
             setcookie('remember_token', '', time() - 3600, '/', '', true, true);
+        }
+
+        // Check if session is active before trying to regenerate
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            // Clear all session data
+            $session->destroy();
+        } else {
+            // If no active session, just clear any session variables
+            if (isset($_SESSION)) {
+                $_SESSION = [];
+            }
         }
 
         return true;
@@ -222,6 +227,11 @@ if (!function_exists('isSessionValid')) {
      */
     function isSessionValid()
     {
+        // Check if session is active
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            return false;
+        }
+
         $session = session();
 
         // Check if session exists and has required data
@@ -232,6 +242,8 @@ if (!function_exists('isSessionValid')) {
         // Check session timeout (optional - can be configured)
         $lastActivity = $session->get('last_activity');
         if ($lastActivity && (time() - $lastActivity > 7200)) { // 2 hours timeout
+            // Clear expired session
+            clearSecureSession();
             return false;
         }
 
