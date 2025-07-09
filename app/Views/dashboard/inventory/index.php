@@ -133,10 +133,10 @@
                         Stock Level
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Movements
+                        Pricing
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Created
+                        Status
                     </th>
                     <th scope="col" class="relative px-6 py-3">
                         <span class="sr-only">Actions</span>
@@ -182,14 +182,38 @@
                                     <?= $item['total_stock'] ?> units
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <div class="flex space-x-2">
-                                    <span class="text-green-600">+<?= $item['total_in'] ?? 0 ?></span>
-                                    <span class="text-red-600">-<?= $item['total_out'] ?? 0 ?></span>
-                                </div>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <?php if (!empty($item['selling_price'])): ?>
+                                    <div class="text-sm font-medium text-gray-900">NPR <?= number_format($item['selling_price'], 2) ?></div>
+                                    <?php if (!empty($item['purchase_price'])): ?>
+                                        <div class="text-xs text-gray-500">Cost: NPR <?= number_format($item['purchase_price'], 2) ?></div>
+                                    <?php endif; ?>
+                                <?php elseif (!empty($item['purchase_price'])): ?>
+                                    <div class="text-sm text-gray-900">NPR <?= number_format($item['purchase_price'], 2) ?></div>
+                                    <div class="text-xs text-gray-500">Purchase price</div>
+                                <?php else: ?>
+                                    <span class="text-gray-400">No pricing</span>
+                                <?php endif; ?>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <?= date('M j, Y', strtotime($item['created_at'])) ?>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    <?php
+                                    switch($item['status'] ?? 'Active') {
+                                        case 'Active':
+                                            echo 'bg-green-100 text-green-800';
+                                            break;
+                                        case 'Inactive':
+                                            echo 'bg-yellow-100 text-yellow-800';
+                                            break;
+                                        case 'Discontinued':
+                                            echo 'bg-red-100 text-red-800';
+                                            break;
+                                        default:
+                                            echo 'bg-gray-100 text-gray-800';
+                                    }
+                                    ?>">
+                                    <?= esc($item['status'] ?? 'Active') ?>
+                                </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex items-center justify-end space-x-2">

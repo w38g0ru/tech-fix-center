@@ -67,22 +67,151 @@
                 <?php endif; ?>
             </div>
 
-            <!-- Initial Stock -->
+            <!-- Stock and Order Level Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Initial Stock -->
+                <div>
+                    <label for="total_stock" class="block text-sm font-medium text-gray-700 mb-2">
+                        Initial Stock Quantity <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number"
+                           id="total_stock"
+                           name="total_stock"
+                           value="<?= old('total_stock', 0) ?>"
+                           min="0"
+                           required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.total_stock') ? 'border-red-500' : '' ?>">
+                    <?php if (session('errors.total_stock')): ?>
+                        <p class="mt-1 text-sm text-red-600"><?= session('errors.total_stock') ?></p>
+                    <?php endif; ?>
+                    <p class="mt-1 text-sm text-gray-500">Starting quantity for this item</p>
+                </div>
+
+                <!-- Minimum Order Level -->
+                <div>
+                    <label for="minimum_order_level" class="block text-sm font-medium text-gray-700 mb-2">
+                        Minimum Order Level
+                    </label>
+                    <input type="number"
+                           id="minimum_order_level"
+                           name="minimum_order_level"
+                           value="<?= old('minimum_order_level') ?>"
+                           min="0"
+                           placeholder="5"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.minimum_order_level') ? 'border-red-500' : '' ?>">
+                    <?php if (session('errors.minimum_order_level')): ?>
+                        <p class="mt-1 text-sm text-red-600"><?= session('errors.minimum_order_level') ?></p>
+                    <?php endif; ?>
+                    <p class="mt-1 text-sm text-gray-500">Reorder when stock reaches this level</p>
+                </div>
+            </div>
+
+            <!-- Pricing Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Purchase Price -->
+                <div>
+                    <label for="purchase_price" class="block text-sm font-medium text-gray-700 mb-2">
+                        Purchase Price (NPR)
+                    </label>
+                    <input type="number"
+                           id="purchase_price"
+                           name="purchase_price"
+                           value="<?= old('purchase_price') ?>"
+                           min="0"
+                           step="0.01"
+                           placeholder="0.00"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.purchase_price') ? 'border-red-500' : '' ?>">
+                    <?php if (session('errors.purchase_price')): ?>
+                        <p class="mt-1 text-sm text-red-600"><?= session('errors.purchase_price') ?></p>
+                    <?php endif; ?>
+                    <p class="mt-1 text-sm text-gray-500">Cost price for this item (optional)</p>
+                </div>
+
+                <!-- Selling Price -->
+                <div>
+                    <label for="selling_price" class="block text-sm font-medium text-gray-700 mb-2">
+                        Selling Price (NPR)
+                    </label>
+                    <input type="number"
+                           id="selling_price"
+                           name="selling_price"
+                           value="<?= old('selling_price') ?>"
+                           min="0"
+                           step="0.01"
+                           placeholder="0.00"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.selling_price') ? 'border-red-500' : '' ?>">
+                    <?php if (session('errors.selling_price')): ?>
+                        <p class="mt-1 text-sm text-red-600"><?= session('errors.selling_price') ?></p>
+                    <?php endif; ?>
+                    <p class="mt-1 text-sm text-gray-500">Retail price for this item (optional)</p>
+                </div>
+            </div>
+
+            <!-- Additional Fields Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Category -->
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
+                        Category
+                    </label>
+                    <input type="text"
+                           id="category"
+                           name="category"
+                           value="<?= old('category') ?>"
+                           placeholder="e.g., Mobile Parts, Laptop Parts"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.category') ? 'border-red-500' : '' ?>">
+                    <?php if (session('errors.category')): ?>
+                        <p class="mt-1 text-sm text-red-600"><?= session('errors.category') ?></p>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Supplier -->
+                <div>
+                    <label for="supplier" class="block text-sm font-medium text-gray-700 mb-2">
+                        Supplier
+                    </label>
+                    <input type="text"
+                           id="supplier"
+                           name="supplier"
+                           value="<?= old('supplier') ?>"
+                           placeholder="e.g., Tech Supplier Ltd"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.supplier') ? 'border-red-500' : '' ?>">
+                    <?php if (session('errors.supplier')): ?>
+                        <p class="mt-1 text-sm text-red-600"><?= session('errors.supplier') ?></p>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Description -->
             <div>
-                <label for="total_stock" class="block text-sm font-medium text-gray-700 mb-2">
-                    Initial Stock Quantity <span class="text-red-500">*</span>
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                    Description
                 </label>
-                <input type="number" 
-                       id="total_stock" 
-                       name="total_stock" 
-                       value="<?= old('total_stock', 0) ?>"
-                       min="0"
-                       required
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.total_stock') ? 'border-red-500' : '' ?>">
-                <?php if (session('errors.total_stock')): ?>
-                    <p class="mt-1 text-sm text-red-600"><?= session('errors.total_stock') ?></p>
+                <textarea id="description"
+                          name="description"
+                          rows="3"
+                          placeholder="Enter item description..."
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.description') ? 'border-red-500' : '' ?>"><?= old('description') ?></textarea>
+                <?php if (session('errors.description')): ?>
+                    <p class="mt-1 text-sm text-red-600"><?= session('errors.description') ?></p>
                 <?php endif; ?>
-                <p class="mt-1 text-sm text-gray-500">Starting quantity for this item</p>
+            </div>
+
+            <!-- Status -->
+            <div>
+                <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+                    Status <span class="text-red-500">*</span>
+                </label>
+                <select id="status"
+                        name="status"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.status') ? 'border-red-500' : '' ?>">
+                    <option value="Active" <?= old('status', 'Active') === 'Active' ? 'selected' : '' ?>>Active</option>
+                    <option value="Inactive" <?= old('status') === 'Inactive' ? 'selected' : '' ?>>Inactive</option>
+                    <option value="Discontinued" <?= old('status') === 'Discontinued' ? 'selected' : '' ?>>Discontinued</option>
+                </select>
+                <?php if (session('errors.status')): ?>
+                    <p class="mt-1 text-sm text-red-600"><?= session('errors.status') ?></p>
+                <?php endif; ?>
             </div>
 
             <!-- Inventory Photos -->

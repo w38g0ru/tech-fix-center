@@ -86,7 +86,14 @@ class Inventory extends BaseController
             'device_name' => 'permit_empty|max_length[100]',
             'brand' => 'permit_empty|max_length[100]',
             'model' => 'permit_empty|max_length[100]',
+            'category' => 'permit_empty|max_length[100]',
             'total_stock' => 'required|is_natural',
+            'purchase_price' => 'permit_empty|decimal',
+            'selling_price' => 'permit_empty|decimal',
+            'minimum_order_level' => 'permit_empty|is_natural',
+            'supplier' => 'permit_empty|max_length[100]',
+            'description' => 'permit_empty|max_length[1000]',
+            'status' => 'required|in_list[Active,Inactive,Discontinued]',
             'photo_description' => 'permit_empty|max_length[255]',
             'inventory_photos' => 'permit_empty|max_size[inventory_photos,5120]|is_image[inventory_photos]'
         ];
@@ -100,7 +107,14 @@ class Inventory extends BaseController
             'device_name' => $this->request->getPost('device_name'),
             'brand' => $this->request->getPost('brand'),
             'model' => $this->request->getPost('model'),
-            'total_stock' => $this->request->getPost('total_stock')
+            'category' => $this->request->getPost('category'),
+            'total_stock' => $this->request->getPost('total_stock'),
+            'purchase_price' => $this->request->getPost('purchase_price') ?: null,
+            'selling_price' => $this->request->getPost('selling_price') ?: null,
+            'minimum_order_level' => $this->request->getPost('minimum_order_level') ?: null,
+            'supplier' => $this->request->getPost('supplier'),
+            'description' => $this->request->getPost('description'),
+            'status' => $this->request->getPost('status') ?: 'Active'
         ];
 
         $inventoryId = $this->inventoryModel->insert($data);
@@ -198,7 +212,14 @@ class Inventory extends BaseController
             'device_name' => 'permit_empty|max_length[100]',
             'brand' => 'permit_empty|max_length[100]',
             'model' => 'permit_empty|max_length[100]',
-            'total_stock' => 'required|is_natural'
+            'category' => 'permit_empty|max_length[100]',
+            'total_stock' => 'required|is_natural',
+            'purchase_price' => 'permit_empty|decimal',
+            'selling_price' => 'permit_empty|decimal',
+            'minimum_order_level' => 'permit_empty|is_natural',
+            'supplier' => 'permit_empty|max_length[100]',
+            'description' => 'permit_empty|max_length[1000]',
+            'status' => 'required|in_list[Active,Inactive,Discontinued]'
         ];
 
         if (!$this->validate($rules)) {
@@ -209,7 +230,14 @@ class Inventory extends BaseController
             'device_name' => $this->request->getPost('device_name'),
             'brand' => $this->request->getPost('brand'),
             'model' => $this->request->getPost('model'),
-            'total_stock' => $this->request->getPost('total_stock')
+            'category' => $this->request->getPost('category'),
+            'total_stock' => $this->request->getPost('total_stock'),
+            'purchase_price' => $this->request->getPost('purchase_price') ?: null,
+            'selling_price' => $this->request->getPost('selling_price') ?: null,
+            'minimum_order_level' => $this->request->getPost('minimum_order_level') ?: null,
+            'supplier' => $this->request->getPost('supplier'),
+            'description' => $this->request->getPost('description'),
+            'status' => $this->request->getPost('status')
         ];
 
         if ($this->inventoryModel->update($id, $data)) {
