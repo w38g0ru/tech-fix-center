@@ -58,25 +58,25 @@
                     </div>
                 <?php endif; ?>
 
-                <!-- Username/Email Field -->
+                <!-- Email Field -->
                 <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
-                        Username or Email
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-user text-gray-400"></i>
+                            <i class="fas fa-envelope text-gray-400"></i>
                         </div>
-                        <input type="text" 
-                               id="username" 
-                               name="username" 
-                               value="<?= old('username') ?>"
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               value="<?= old('email') ?>"
                                required
-                               placeholder="Enter your username or email"
-                               class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.username') ? 'border-red-500' : '' ?>">
+                               placeholder="Enter your email address"
+                               class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.email') ? 'border-red-500' : '' ?>">
                     </div>
-                    <?php if (session('errors.username')): ?>
-                        <p class="mt-1 text-sm text-red-600"><?= session('errors.username') ?></p>
+                    <?php if (session('errors.email')): ?>
+                        <p class="mt-1 text-sm text-red-600"><?= session('errors.email') ?></p>
                     <?php endif; ?>
                 </div>
 
@@ -159,9 +159,9 @@
             }
         }
 
-        // Auto-focus on username field
+        // Auto-focus on email field
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('username').focus();
+            document.getElementById('email').focus();
         });
     </script>
 </body>

@@ -75,11 +75,12 @@ class UserManagement extends BaseController
 
         // Prepare user data for model validation
         $userData = [
-            'username' => $this->request->getPost('username'),
+            'name' => $this->request->getPost('name'),
             'email' => $this->request->getPost('email'),
             'password' => $this->request->getPost('password'),
-            'full_name' => $this->request->getPost('full_name'),
+            'mobile_number' => $this->request->getPost('mobile_number'),
             'role' => $this->request->getPost('role'),
+            'user_type' => $this->request->getPost('user_type') ?: 'User',
             'status' => $this->request->getPost('status') ?: 'active'
         ];
 
@@ -165,10 +166,11 @@ class UserManagement extends BaseController
 
         // Prepare user data for model validation
         $userData = [
-            'username' => $this->request->getPost('username'),
+            'name' => $this->request->getPost('name'),
             'email' => $this->request->getPost('email'),
-            'full_name' => $this->request->getPost('full_name'),
+            'mobile_number' => $this->request->getPost('mobile_number'),
             'role' => $this->request->getPost('role'),
+            'user_type' => $this->request->getPost('user_type'),
             'status' => $this->request->getPost('status')
         ];
 
@@ -190,8 +192,8 @@ class UserManagement extends BaseController
         }
 
         // For updates, we need to modify validation rules to exclude current record
-        $this->adminUserModel->setValidationRule('username', "required|min_length[3]|max_length[50]|is_unique[admin_users.username,id,{$id}]");
-        $this->adminUserModel->setValidationRule('email', "required|valid_email|is_unique[admin_users.email,id,{$id}]");
+        $this->adminUserModel->setValidationRule('name', "required|min_length[2]|max_length[100]");
+        $this->adminUserModel->setValidationRule('email', "required|valid_email|is_unique[users.email,id,{$id}]");
 
         // Make password optional for updates
         if (!$password) {

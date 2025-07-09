@@ -13,13 +13,15 @@ class AdminUserModel extends Model
     protected $useSoftDeletes = false;
     protected $protectFields = true;
     protected $allowedFields = [
-        'username',
-        'email', 
+        'name',
+        'email',
         'password',
-        'full_name',
+        'mobile_number',
         'role',
+        'user_type',
         'status',
-        'last_login',
+        'email_verified_at',
+        'remember_token',
         'created_at',
         'updated_at'
     ];
@@ -32,20 +34,20 @@ class AdminUserModel extends Model
 
     // Validation
     protected $validationRules = [
-        'username' => 'required|min_length[3]|max_length[50]|is_unique[admin_users.username,id,{id}]',
-        'email' => 'required|valid_email|is_unique[admin_users.email,id,{id}]',
+        'name' => 'required|min_length[2]|max_length[100]',
+        'email' => 'required|valid_email|is_unique[users.email,id,{id}]',
         'password' => 'required|min_length[6]',
-        'full_name' => 'required|min_length[2]|max_length[100]',
-        'role' => 'required|in_list[superadmin,admin,technician,user]',
-        'status' => 'permit_empty|in_list[active,inactive,suspended]'
+        'mobile_number' => 'permit_empty|max_length[20]',
+        'role' => 'required|in_list[superadmin,admin,manager,technician,customer]',
+        'user_type' => 'permit_empty|max_length[50]',
+        'status' => 'permit_empty|in_list[active,inactive]'
     ];
 
     protected $validationMessages = [
-        'username' => [
-            'required' => 'Username is required',
-            'min_length' => 'Username must be at least 3 characters',
-            'max_length' => 'Username cannot exceed 50 characters',
-            'is_unique' => 'Username already exists'
+        'name' => [
+            'required' => 'Name is required',
+            'min_length' => 'Name must be at least 2 characters',
+            'max_length' => 'Name cannot exceed 100 characters'
         ],
         'email' => [
             'required' => 'Email is required',
@@ -56,13 +58,19 @@ class AdminUserModel extends Model
             'required' => 'Password is required',
             'min_length' => 'Password must be at least 6 characters'
         ],
-        'full_name' => [
-            'required' => 'Full name is required',
-            'min_length' => 'Full name must be at least 2 characters'
+        'mobile_number' => [
+            'max_length' => 'Mobile number cannot exceed 20 characters'
         ],
         'role' => [
             'required' => 'Role is required',
             'in_list' => 'Invalid role selected'
+        ],
+        'user_type' => [
+            'max_length' => 'User type cannot exceed 50 characters'
+        ],
+        'status' => [
+            'required' => 'Status is required',
+            'in_list' => 'Invalid status selected'
         ]
     ];
 
@@ -84,16 +92,17 @@ class AdminUserModel extends Model
     /**
      * Verify user credentials
      */
-    public function verifyCredentials($username, $password)
+    public function verifyCredentials($email, $password)
     {
-        $user = $this->where('username', $username)
-                     ->orWhere('email', $username)
+        $user = $this->where('email', $email)
                      ->where('status', 'active')
                      ->first();
 
         if ($user && password_verify($password, $user['password'])) {
-            // Update last login
-            $this->update($user['id'], ['last_login' => date('Y-m-d H:i:s')]);
+            // Update email verified timestamp if not set
+            if (!$user['email_verified_at']) {
+                $this->update($user['id'], ['email_verified_at' => date('Y-m-d H:i:s')]);
+            }
             return $user;
         }
 
@@ -107,7 +116,7 @@ class AdminUserModel extends Model
     {
         return $this->where('role', $role)
                     ->where('status', 'active')
-                    ->orderBy('full_name', 'ASC')
+                    ->orderBy('name', 'ASC')
                     ->findAll();
     }
 
@@ -116,9 +125,9 @@ class AdminUserModel extends Model
      */
     public function searchUsers($search)
     {
-        return $this->like('full_name', $search)
-                    ->orLike('username', $search)
+        return $this->like('name', $search)
                     ->orLike('email', $search)
+                    ->orLike('mobile_number', $search)
                     ->orderBy('created_at', 'DESC')
                     ->findAll();
     }
@@ -132,26 +141,14 @@ class AdminUserModel extends Model
             'total' => $this->countAll(),
             'active' => $this->where('status', 'active')->countAllResults(false),
             'inactive' => $this->where('status', 'inactive')->countAllResults(false),
-            'suspended' => $this->where('status', 'suspended')->countAllResults(false),
             'superadmin' => $this->where('role', 'superadmin')->countAllResults(false),
             'admin' => $this->where('role', 'admin')->countAllResults(false),
+            'manager' => $this->where('role', 'manager')->countAllResults(false),
             'technician' => $this->where('role', 'technician')->countAllResults(false),
-            'user' => $this->where('role', 'user')->countAllResults(false)
+            'customer' => $this->where('role', 'customer')->countAllResults(false)
         ];
 
         return $stats;
-    }
-
-    /**
-     * Check if username exists
-     */
-    public function usernameExists($username, $excludeId = null)
-    {
-        $builder = $this->where('username', $username);
-        if ($excludeId) {
-            $builder->where('id !=', $excludeId);
-        }
-        return $builder->countAllResults() > 0;
     }
 
     /**
@@ -181,7 +178,7 @@ class AdminUserModel extends Model
      */
     public function updateStatus($id, $status)
     {
-        if (!in_array($status, ['active', 'inactive', 'suspended'])) {
+        if (!in_array($status, ['active', 'inactive'])) {
             return false;
         }
 

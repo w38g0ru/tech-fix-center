@@ -36,7 +36,7 @@ class Auth extends BaseController
     public function processLogin()
     {
         $rules = [
-            'username' => 'required',
+            'email' => 'required|valid_email',
             'password' => 'required'
         ];
 
@@ -44,21 +44,21 @@ class Auth extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $username = $this->request->getPost('username');
+        $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $remember = $this->request->getPost('remember');
 
         // Verify credentials
-        $user = $this->adminUserModel->verifyCredentials($username, $password);
+        $user = $this->adminUserModel->verifyCredentials($email, $password);
 
         if ($user) {
             // Set session data
             $sessionData = [
                 'user_id' => $user['id'],
-                'username' => $user['username'],
+                'name' => $user['name'],
                 'email' => $user['email'],
-                'full_name' => $user['full_name'],
                 'role' => $user['role'],
+                'user_type' => $user['user_type'],
                 'isLoggedIn' => true
             ];
 
@@ -68,7 +68,7 @@ class Auth extends BaseController
             if ($remember) {
                 $cookieData = [
                     'user_id' => $user['id'],
-                    'username' => $user['username'],
+                    'email' => $user['email'],
                     'token' => bin2hex(random_bytes(32))
                 ];
                 
@@ -84,9 +84,9 @@ class Auth extends BaseController
                 $redirectUrl = $this->getRedirectUrl($user['role']);
             }
 
-            return redirect()->to($redirectUrl)->with('success', 'Welcome back, ' . $user['full_name'] . '!');
+            return redirect()->to($redirectUrl)->with('success', 'Welcome back, ' . $user['name'] . '!');
         } else {
-            return redirect()->back()->withInput()->with('error', 'Invalid username or password.');
+            return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
         }
     }
 
@@ -193,10 +193,10 @@ class Auth extends BaseController
                     // Set session data
                     $sessionData = [
                         'user_id' => $user['id'],
-                        'username' => $user['username'],
+                        'name' => $user['name'],
                         'email' => $user['email'],
-                        'full_name' => $user['full_name'],
                         'role' => $user['role'],
+                        'user_type' => $user['user_type'],
                         'isLoggedIn' => true
                     ];
 
