@@ -145,4 +145,44 @@ if (!function_exists('getRoleIcon')) {
     }
 }
 
+if (!function_exists('getUserId')) {
+    /**
+     * Get current user ID
+     */
+    function getUserId()
+    {
+        return session()->get('user_id');
+    }
+}
+
+if (!function_exists('getUserRole')) {
+    /**
+     * Get current user role
+     */
+    function getUserRole()
+    {
+        return session()->get('role');
+    }
+}
+
+if (!function_exists('getUserName')) {
+    /**
+     * Get current user name
+     */
+    function getUserName()
+    {
+        return session()->get('name');
+    }
+}
+
+if (!function_exists('getUserEmail')) {
+    /**
+     * Get current user email
+     */
+    function getUserEmail()
+    {
+        return session()->get('email');
+    }
+}
+
 

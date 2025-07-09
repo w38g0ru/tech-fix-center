@@ -47,6 +47,7 @@ class PartsRequests extends BaseController
         $data = [
             'title' => 'Parts Requests',
             'partsRequests' => $partsRequests ?: [],
+            'userRole' => $userRole,
             'stats' => [
                 'total' => 0,
                 'pending' => 0,

@@ -12,7 +12,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title"><?= $title ?></h3>
                     <?php if ($userRole === 'technician'): ?>
-                        <a href="/parts-requests/create" class="btn btn-primary">
+                        <a href="<?= base_url('dashboard/parts-requests/create') ?>" class="btn btn-primary">
                             <i class="fas fa-plus"></i> Request Parts
                         </a>
                     <?php endif; ?>
