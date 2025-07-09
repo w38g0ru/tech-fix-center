@@ -1,9 +1,22 @@
+<?php
+helper('branding');
+$appMeta = getAppMeta();
+$brandColors = getAllBrandColors();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Tech Fix Center</title>
+    <meta name="viewport" content="<?= $appMeta['viewport'] ?>">
+    <title><?= getAppTitle('Login') ?></title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="<?= $appMeta['description'] ?>">
+    <meta name="author" content="<?= $appMeta['author'] ?>">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="<?= base_url('favicon.ico') ?>">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -11,25 +24,45 @@
             theme: {
                 extend: {
                     colors: {
+                        brand: {
+                            primary: '<?= $brandColors['primary'] ?>',
+                            secondary: '<?= $brandColors['secondary'] ?>',
+                            accent: '<?= $brandColors['accent'] ?>',
+                            success: '<?= $brandColors['success'] ?>',
+                            danger: '<?= $brandColors['danger'] ?>'
+                        },
                         primary: {
                             50: '#eff6ff',
                             500: '#3b82f6',
-                            600: '#2563eb',
+                            600: '<?= $brandColors['primary'] ?>',
                             700: '#1d4ed8'
                         },
                         success: {
                             50: '#f0fdf4',
-                            500: '#22c55e'
+                            500: '<?= $brandColors['success'] ?>'
                         },
                         danger: {
                             50: '#fef2f2',
-                            500: '#ef4444'
+                            500: '<?= $brandColors['danger'] ?>'
                         }
                     }
                 }
             }
         }
     </script>
+
+    <!-- Custom Brand Styles -->
+    <style>
+        .brand-gradient {
+            background: linear-gradient(135deg, <?= $brandColors['primary'] ?> 0%, <?= $brandColors['secondary'] ?> 100%);
+        }
+        .brand-text-gradient {
+            background: linear-gradient(135deg, <?= $brandColors['primary'] ?> 0%, <?= $brandColors['secondary'] ?> 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -47,10 +80,10 @@
         <!-- Logo and Header -->
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full shadow-lg mb-4">
-                <i class="fas fa-tools text-3xl text-primary-600"></i>
+                <i class="fas fa-tools text-3xl" style="color: <?= $brandColors['primary'] ?>"></i>
             </div>
-            <h1 class="text-3xl font-bold text-white mb-2">Tech Fix Center</h1>
-            <p class="text-white/80 text-sm">Professional Device Repair Management</p>
+            <h1 class="text-3xl font-bold text-white mb-2"><?= getAppName() ?></h1>
+            <p class="text-white/80 text-sm"><?= getCompanyInfo('description') ?></p>
         </div>
 
         <!-- Login Form -->

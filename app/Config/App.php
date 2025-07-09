@@ -20,6 +20,45 @@ class App extends BaseConfig
 
     /**
      * --------------------------------------------------------------------------
+     * Application Branding Configuration
+     * --------------------------------------------------------------------------
+     *
+     * Professional branding settings for Tech Fix Center
+     */
+    public string $appName = 'Tech Fix Center';
+    public string $appShortName = 'TFC';
+    public string $appVersion = '2.0.0';
+    public string $appDescription = 'Professional Device Repair Management System';
+    public string $companyName = 'Tech Fix Center';
+    public string $companyTagline = 'Expert Device Repair Solutions';
+    public string $companyWebsite = 'https://tfc.gaighat.com';
+    public string $supportEmail = 'support@techfixcenter.com';
+    public string $contactPhone = '+977-1-4567890';
+    public string $companyAddress = 'Gaighat, Udayapur, Nepal';
+
+    // Brand Colors (Tailwind CSS compatible)
+    public array $brandColors = [
+        'primary' => '#2563eb',      // Blue-600
+        'secondary' => '#7c3aed',    // Violet-600
+        'accent' => '#059669',       // Emerald-600
+        'warning' => '#d97706',      // Amber-600
+        'danger' => '#dc2626',       // Red-600
+        'success' => '#16a34a',      // Green-600
+        'info' => '#0891b2',         // Cyan-600
+        'dark' => '#1f2937',         // Gray-800
+        'light' => '#f9fafb'         // Gray-50
+    ];
+
+    // Social Media Links
+    public array $socialMedia = [
+        'facebook' => 'https://facebook.com/techfixcenter',
+        'twitter' => 'https://twitter.com/techfixcenter',
+        'instagram' => 'https://instagram.com/techfixcenter',
+        'linkedin' => 'https://linkedin.com/company/techfixcenter'
+    ];
+
+    /**
+     * --------------------------------------------------------------------------
      * Constructor
      * --------------------------------------------------------------------------
      *
