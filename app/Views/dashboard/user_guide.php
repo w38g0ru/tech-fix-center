@@ -12,7 +12,7 @@
     <!-- Quick Navigation -->
     <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
         <h2 class="text-xl font-semibold text-gray-900 mb-4">Quick Navigation</h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             <a href="#getting-started" class="text-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
                 <i class="fas fa-play-circle text-2xl text-blue-600 mb-2"></i>
                 <p class="text-sm font-medium text-blue-800">Getting Started</p>
@@ -36,6 +36,22 @@
             <a href="#inventory" class="text-center p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
                 <i class="fas fa-boxes text-2xl text-red-600 mb-2"></i>
                 <p class="text-sm font-medium text-red-800">Inventory</p>
+            </a>
+            <a href="#parts-requests" class="text-center p-3 bg-cyan-50 rounded-lg hover:bg-cyan-100 transition-colors">
+                <i class="fas fa-cogs text-2xl text-cyan-600 mb-2"></i>
+                <p class="text-sm font-medium text-cyan-800">Parts Requests</p>
+            </a>
+            <a href="#photos" class="text-center p-3 bg-pink-50 rounded-lg hover:bg-pink-100 transition-colors">
+                <i class="fas fa-camera text-2xl text-pink-600 mb-2"></i>
+                <p class="text-sm font-medium text-pink-800">Photos</p>
+            </a>
+            <a href="#user-roles" class="text-center p-3 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors">
+                <i class="fas fa-users-cog text-2xl text-yellow-600 mb-2"></i>
+                <p class="text-sm font-medium text-yellow-800">User Roles</p>
+            </a>
+            <a href="#support" class="text-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <i class="fas fa-life-ring text-2xl text-gray-600 mb-2"></i>
+                <p class="text-sm font-medium text-gray-800">Support</p>
             </a>
         </div>
     </div>
@@ -389,6 +405,322 @@
                     <li>Link stock movements to jobs when possible</li>
                     <li>Regular backup of important data</li>
                 </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parts Requests Section -->
+    <div id="parts-requests" class="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+            <i class="fas fa-cogs text-blue-600 mr-2"></i>
+            Parts Requests Management
+        </h2>
+
+        <div class="space-y-6">
+            <div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Overview</h3>
+                <p class="text-gray-600 mb-4">The Parts Requests module allows technicians to request parts for repairs and administrators to approve or reject these requests.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h4 class="font-medium text-blue-900 mb-2">For Technicians</h4>
+                    <ul class="text-sm text-blue-800 space-y-1">
+                        <li>• Create new parts requests with detailed specifications</li>
+                        <li>• View own request history and status</li>
+                        <li>• Track request progress from pending to received</li>
+                        <li>• Add detailed descriptions and notes</li>
+                        <li>• Specify urgency levels (Low, Medium, High, Critical)</li>
+                        <li>• Link requests to specific jobs</li>
+                    </ul>
+                </div>
+
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h4 class="font-medium text-green-900 mb-2">For Administrators</h4>
+                    <ul class="text-sm text-green-800 space-y-1">
+                        <li>• View all parts requests across all technicians</li>
+                        <li>• Approve or reject requests with reasons</li>
+                        <li>• Add cost estimates and supplier information</li>
+                        <li>• Track delivery dates and actual costs</li>
+                        <li>• Monitor request statistics and trends</li>
+                        <li>• Generate parts request reports</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Request Status Types</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                        <span class="text-sm text-gray-600">Awaiting approval</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Approved</span>
+                        <span class="text-sm text-gray-600">Ready for ordering</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Ordered</span>
+                        <span class="text-sm text-gray-600">Parts ordered from supplier</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800">Received</span>
+                        <span class="text-sm text-gray-600">Parts delivered and available</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Rejected</span>
+                        <span class="text-sm text-gray-600">Request denied with reason</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">Cancelled</span>
+                        <span class="text-sm text-gray-600">Request cancelled</span>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Creating a Parts Request</h3>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <ol class="list-decimal list-inside text-sm text-gray-700 space-y-1">
+                        <li>Navigate to Parts Requests → Create Request</li>
+                        <li>Fill in item details (name, brand, model, quantity)</li>
+                        <li>Select urgency level based on job priority</li>
+                        <li>Add detailed description of the part needed</li>
+                        <li>Link to specific job if applicable</li>
+                        <li>Submit request for administrator review</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Management Section -->
+    <div id="photos" class="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+            <i class="fas fa-camera text-purple-600 mr-2"></i>
+            Photo Management System
+        </h2>
+
+        <div class="space-y-6">
+            <div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Photo Categories</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-orange-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-orange-900 mb-2">Job Photos</h4>
+                        <p class="text-sm text-orange-800 mb-2">Document repair progress and results</p>
+                        <ul class="text-xs text-orange-700 space-y-1">
+                            <li>• Before repair condition</li>
+                            <li>• Work in progress</li>
+                            <li>• Completed repair</li>
+                            <li>• Quality assurance</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-blue-900 mb-2">Inventory Photos</h4>
+                        <p class="text-sm text-blue-800 mb-2">Visual catalog of parts and products</p>
+                        <ul class="text-xs text-blue-700 space-y-1">
+                            <li>• Product documentation</li>
+                            <li>• Condition assessment</li>
+                            <li>• Quality verification</li>
+                            <li>• Catalog reference</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-green-900 mb-2">Dispatch Photos</h4>
+                        <p class="text-sm text-green-800 mb-2">Delivery and shipping documentation</p>
+                        <ul class="text-xs text-green-700 space-y-1">
+                            <li>• Package condition</li>
+                            <li>• Delivery confirmation</li>
+                            <li>• Shipping documentation</li>
+                            <li>• Customer handover</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Upload Guidelines & Best Practices</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <h4 class="font-medium text-yellow-900 mb-2">Technical Requirements</h4>
+                        <ul class="text-sm text-yellow-800 space-y-1">
+                            <li>• Maximum file size: 5MB per image</li>
+                            <li>• Supported formats: JPG, PNG, GIF</li>
+                            <li>• Recommended resolution: 1920x1080 or higher</li>
+                            <li>• Images automatically optimized for storage</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <h4 class="font-medium text-blue-900 mb-2">Quality Guidelines</h4>
+                        <ul class="text-sm text-blue-800 space-y-1">
+                            <li>• Use good lighting for clear visibility</li>
+                            <li>• Include multiple angles when relevant</li>
+                            <li>• Add descriptive captions for context</li>
+                            <li>• Organize photos chronologically</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Roles Section -->
+    <div id="user-roles" class="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+            <i class="fas fa-users-cog text-red-600 mr-2"></i>
+            User Roles & Permissions
+        </h2>
+
+        <div class="space-y-6">
+            <div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Role-Based Access Control</h3>
+                <p class="text-gray-600 mb-4">The system uses role-based permissions to ensure users only access features appropriate to their responsibilities.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="border border-red-200 rounded-lg p-4">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-crown text-red-600 mr-2"></i>
+                        <h3 class="text-lg font-semibold text-red-800">Super Admin</h3>
+                    </div>
+                    <ul class="space-y-1 text-sm text-gray-700">
+                        <li>• Complete system access and control</li>
+                        <li>• User management and role assignment</li>
+                        <li>• System settings and configuration</li>
+                        <li>• All CRUD operations on all modules</li>
+                        <li>• Advanced reporting and analytics</li>
+                        <li>• Database management and backups</li>
+                        <li>• Service center management</li>
+                        <li>• System maintenance and updates</li>
+                    </ul>
+                </div>
+
+                <div class="border border-purple-200 rounded-lg p-4">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-user-shield text-purple-600 mr-2"></i>
+                        <h3 class="text-lg font-semibold text-purple-800">Admin</h3>
+                    </div>
+                    <ul class="space-y-1 text-sm text-gray-700">
+                        <li>• Most system features with some restrictions</li>
+                        <li>• Job and customer management</li>
+                        <li>• Inventory and parts management</li>
+                        <li>• Technician management and assignment</li>
+                        <li>• Parts request approval/rejection</li>
+                        <li>• Standard reporting features</li>
+                        <li>• Photo management and organization</li>
+                        <li>• Service center coordination</li>
+                    </ul>
+                </div>
+
+                <div class="border border-blue-200 rounded-lg p-4">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-user-cog text-blue-600 mr-2"></i>
+                        <h3 class="text-lg font-semibold text-blue-800">Technician</h3>
+                    </div>
+                    <ul class="space-y-1 text-sm text-gray-700">
+                        <li>• Job management and status updates</li>
+                        <li>• Parts request creation and tracking</li>
+                        <li>• Inventory viewing and stock movements</li>
+                        <li>• Photo upload for job documentation</li>
+                        <li>• Own profile management</li>
+                        <li>• Job progress reporting</li>
+                        <li>• Customer communication notes</li>
+                        <li>• Work order completion</li>
+                    </ul>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-user text-gray-600 mr-2"></i>
+                        <h3 class="text-lg font-semibold text-gray-800">Manager</h3>
+                    </div>
+                    <ul class="space-y-1 text-sm text-gray-700">
+                        <li>• Job oversight and management</li>
+                        <li>• Customer relationship management</li>
+                        <li>• Inventory monitoring and reporting</li>
+                        <li>• Team performance tracking</li>
+                        <li>• Report generation and analysis</li>
+                        <li>• Service center coordination</li>
+                        <li>• Quality assurance oversight</li>
+                        <li>• Resource allocation planning</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Permission Matrix</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Feature</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Super Admin</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Manager</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Technician</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">User Management</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-check text-green-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-check text-green-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-eye text-blue-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-times text-red-600"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Job Management</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-check text-green-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-check text-green-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-check text-green-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-edit text-yellow-600"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Parts Requests</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-check text-green-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-check text-green-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-eye text-blue-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-plus text-green-600"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Inventory Management</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-check text-green-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-check text-green-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-eye text-blue-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-eye text-blue-600"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Service Centers</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-check text-green-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-check text-green-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-times text-red-600"></i></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center"><i class="fas fa-times text-red-600"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 flex items-center space-x-6 text-sm">
+                    <div class="flex items-center space-x-1">
+                        <i class="fas fa-check text-green-600"></i>
+                        <span class="text-gray-600">Full Access</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <i class="fas fa-edit text-yellow-600"></i>
+                        <span class="text-gray-600">Edit Own</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <i class="fas fa-eye text-blue-600"></i>
+                        <span class="text-gray-600">View Only</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <i class="fas fa-plus text-green-600"></i>
+                        <span class="text-gray-600">Create Only</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <i class="fas fa-times text-red-600"></i>
+                        <span class="text-gray-600">No Access</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
