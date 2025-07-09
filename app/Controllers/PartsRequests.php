@@ -43,20 +43,29 @@ class PartsRequests extends BaseController
             return redirect()->to(base_url('dashboard'))->with('error', 'Access denied.');
         }
 
-        // Simplified version to avoid errors
+        // Calculate statistics
+        $stats = [
+            'total' => count($partsRequests),
+            'pending' => 0,
+            'approved' => 0,
+            'rejected' => 0,
+            'received' => 0,
+            'ordered' => 0,
+            'cancelled' => 0
+        ];
+
+        foreach ($partsRequests as $request) {
+            $status = strtolower($request['status']);
+            if (isset($stats[$status])) {
+                $stats[$status]++;
+            }
+        }
+
         $data = [
             'title' => 'Parts Requests',
             'partsRequests' => $partsRequests ?: [],
             'userRole' => $userRole,
-            'stats' => [
-                'total' => 0,
-                'pending' => 0,
-                'approved' => 0,
-                'rejected' => 0,
-                'ordered' => 0,
-                'received' => 0
-            ],
-            'userRole' => $userRole
+            'stats' => $stats
         ];
 
         return view('dashboard/parts_requests/index', $data);
