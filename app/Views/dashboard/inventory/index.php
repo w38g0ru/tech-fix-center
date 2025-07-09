@@ -7,8 +7,33 @@
         <h1 class="text-2xl font-semibold text-gray-900">Inventory</h1>
         <p class="mt-1 text-sm text-gray-600">Manage your inventory items and stock levels</p>
     </div>
-    <div class="mt-4 sm:mt-0">
-        <a href="<?= base_url('dashboard/inventory/create') ?>" 
+    <div class="mt-4 sm:mt-0 flex flex-wrap gap-2">
+        <!-- Import/Export Buttons -->
+        <div class="flex gap-2">
+            <a href="<?= base_url('dashboard/inventory/downloadTemplate') ?>"
+               class="inline-flex items-center px-3 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"
+               title="Download CSV template for bulk import">
+                <i class="fas fa-download mr-2"></i>
+                Template
+            </a>
+
+            <a href="<?= base_url('dashboard/inventory/bulkImport') ?>"
+               class="inline-flex items-center px-3 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150"
+               title="Import items from CSV/Excel file">
+                <i class="fas fa-upload mr-2"></i>
+                Import
+            </a>
+
+            <a href="<?= base_url('dashboard/inventory/exportInventory') ?>"
+               class="inline-flex items-center px-3 py-2 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700 focus:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition ease-in-out duration-150"
+               title="Export all inventory items to CSV">
+                <i class="fas fa-file-export mr-2"></i>
+                Export
+            </a>
+        </div>
+
+        <!-- Add Item Button -->
+        <a href="<?= base_url('dashboard/inventory/create') ?>"
            class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:bg-primary-700 active:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
             <i class="fas fa-plus mr-2"></i>
             Add Item

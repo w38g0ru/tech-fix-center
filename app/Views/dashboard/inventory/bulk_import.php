@@ -1,153 +1,194 @@
 <?= $this->extend('layouts/dashboard') ?>
 
-<?= $this->section('title') ?>
-<?= $title ?>
-<?= $this->endSection() ?>
-
 <?= $this->section('content') ?>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title"><?= $title ?></h3>
-                    <div class="card-tools">
-                        <a href="/inventory" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Back to Inventory
-                        </a>
+
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+    <div>
+        <h1 class="text-2xl font-semibold text-gray-900">Bulk Import Inventory</h1>
+        <p class="mt-1 text-sm text-gray-600">Import multiple inventory items from CSV or Excel file</p>
+    </div>
+    <div class="mt-4 sm:mt-0">
+        <a href="<?= base_url('dashboard/inventory') ?>"
+           class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Back to Inventory
+        </a>
+    </div>
+</div>
+
+<!-- Alert Messages -->
+<?php if (session()->getFlashdata('error')): ?>
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm"><?= session()->getFlashdata('error') ?></p>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php if (session()->getFlashdata('success')): ?>
+    <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-6">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm"><?= session()->getFlashdata('success') ?></p>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Upload Form -->
+    <div class="lg:col-span-2">
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Upload Inventory File</h3>
+            <p class="text-sm text-gray-600 mb-6">Upload a CSV file to bulk import inventory items with pricing information.</p>
+
+            <form action="<?= base_url('dashboard/inventory/processBulkImport') ?>" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <?= csrf_field() ?>
+
+                <!-- File Upload -->
+                <div>
+                    <label for="csv_file" class="block text-sm font-medium text-gray-700 mb-2">
+                        Select CSV File <span class="text-red-500">*</span>
+                    </label>
+                    <input type="file"
+                           id="csv_file"
+                           name="csv_file"
+                           accept=".csv"
+                           required
+                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
+                    <p class="mt-2 text-sm text-gray-500">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Supported format: CSV only. Maximum file size: 5MB.
+                    </p>
+                </div>
+
+                <!-- Update Existing Option -->
+                <div class="flex items-center">
+                    <input type="checkbox"
+                           id="update_existing"
+                           name="update_existing"
+                           value="1"
+                           class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                    <label for="update_existing" class="ml-2 block text-sm text-gray-900">
+                        Update existing items (if device name, brand, and model match)
+                    </label>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button type="submit"
+                            class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        <i class="fas fa-upload mr-2"></i>
+                        Import Inventory
+                    </button>
+
+                    <a href="<?= base_url('dashboard/inventory/downloadTemplate') ?>"
+                       class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        <i class="fas fa-download mr-2"></i>
+                        Download Template
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Information Panel -->
+    <div class="lg:col-span-1">
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">
+                <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                Import Information
+            </h3>
+
+            <!-- CSV Format -->
+            <div class="mb-6">
+                <h4 class="text-sm font-medium text-gray-900 mb-2">Required CSV Format</h4>
+                <div class="bg-gray-50 rounded-md p-3 text-xs font-mono">
+                    <div class="text-gray-600">device_name,brand,model,category,...</div>
+                    <div class="text-gray-800">iPhone 14 Pro,Apple,A2894,Mobile Phone,...</div>
+                </div>
+            </div>
+
+            <!-- Required Fields -->
+            <div class="mb-6">
+                <h4 class="text-sm font-medium text-gray-900 mb-2">Required Fields</h4>
+                <ul class="text-sm text-gray-600 space-y-1">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>device_name</li>
+                </ul>
+            </div>
+
+            <!-- Pricing Fields -->
+            <div class="mb-6">
+                <h4 class="text-sm font-medium text-gray-900 mb-2">
+                    <i class="fas fa-dollar-sign text-green-500 mr-1"></i>
+                    Pricing Fields (Optional)
+                </h4>
+                <ul class="text-sm text-gray-600 space-y-1">
+                    <li><i class="fas fa-shopping-cart text-blue-500 mr-2"></i>purchase_price</li>
+                    <li><i class="fas fa-tag text-green-500 mr-2"></i>selling_price</li>
+                    <li><i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>minimum_order_level</li>
+                </ul>
+                <p class="text-xs text-gray-500 mt-2">
+                    Prices can be left empty if not available. Use numbers only (e.g., 120000 for NPR 1,20,000).
+                </p>
+            </div>
+
+            <!-- All Available Fields -->
+            <div class="mb-6">
+                <h4 class="text-sm font-medium text-gray-900 mb-2">All Available Fields</h4>
+                <div class="text-xs text-gray-600 space-y-1">
+                    <div>• device_name <span class="text-red-500">(required)</span></div>
+                    <div>• brand</div>
+                    <div>• model</div>
+                    <div>• category</div>
+                    <div>• total_stock</div>
+                    <div>• purchase_price <span class="text-green-600">(optional)</span></div>
+                    <div>• selling_price <span class="text-green-600">(optional)</span></div>
+                    <div>• minimum_order_level <span class="text-green-600">(optional)</span></div>
+                    <div>• supplier</div>
+                    <div>• description</div>
+                    <div>• status (Active/Inactive/Discontinued)</div>
+                </div>
+            </div>
+
+            <!-- Sample Data -->
+            <div class="mb-6">
+                <h4 class="text-sm font-medium text-gray-900 mb-2">Sample Data</h4>
+                <div class="bg-gray-50 rounded-md p-3 text-xs">
+                    <div class="text-gray-800 mb-2">
+                        <strong>Device:</strong> iPhone 14 Pro<br>
+                        <strong>Brand:</strong> Apple<br>
+                        <strong>Purchase Price:</strong> 120000<br>
+                        <strong>Selling Price:</strong> 135000<br>
+                        <strong>Min Order:</strong> 5
                     </div>
                 </div>
-                <div class="card-body">
-                    <?php if (session()->getFlashdata('error')): ?>
-                        <div class="alert alert-danger">
-                            <?= session()->getFlashdata('error') ?>
-                        </div>
-                    <?php endif; ?>
+            </div>
 
-                    <div class="row">
-                        <div class="col-md-8">
-                            <h5>Upload Inventory File</h5>
-                            <p class="text-muted">Upload a CSV or Excel file to bulk import inventory items.</p>
-                            
-                            <form action="/inventory/process-bulk-import" method="POST" enctype="multipart/form-data">
-                                <?= csrf_field() ?>
-                                
-                                <div class="form-group">
-                                    <label for="import_file">Select File <span class="text-danger">*</span></label>
-                                    <input type="file" class="form-control-file" id="import_file" name="import_file" 
-                                           accept=".csv,.xlsx,.xls" required>
-                                    <small class="form-text text-muted">
-                                        Supported formats: CSV, Excel (.xlsx, .xls). Maximum file size: 10MB.
-                                    </small>
-                                </div>
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-upload"></i> Import Inventory
-                                    </button>
-                                    <a href="/inventory/export" class="btn btn-success">
-                                        <i class="fas fa-download"></i> Download Sample Template
-                                    </a>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-4">
-                            <h5>File Format Requirements</h5>
-                            <div class="alert alert-info">
-                                <h6>Required Columns:</h6>
-                                <ul class="mb-2">
-                                    <li><strong>Device Name</strong> (Required)</li>
-                                    <li><strong>Brand</strong></li>
-                                    <li><strong>Model</strong></li>
-                                    <li><strong>Total Stock</strong> (Required, Number)</li>
-                                </ul>
-                                
-                                <h6>Optional Columns:</h6>
-                                <ul class="mb-2">
-                                    <li><strong>Purchase Price</strong> (Number)</li>
-                                    <li><strong>Selling Price</strong> (Number)</li>
-                                    <li><strong>Minimum Order Level</strong> (Number)</li>
-                                    <li><strong>Category</strong></li>
-                                    <li><strong>Description</strong></li>
-                                    <li><strong>Supplier</strong></li>
-                                    <li><strong>Status</strong> (Active/Inactive/Discontinued)</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <h5>Sample CSV Format</h5>
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-sm">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Device Name</th>
-                                            <th>Brand</th>
-                                            <th>Model</th>
-                                            <th>Total Stock</th>
-                                            <th>Purchase Price</th>
-                                            <th>Selling Price</th>
-                                            <th>Minimum Order Level</th>
-                                            <th>Category</th>
-                                            <th>Description</th>
-                                            <th>Supplier</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>iPhone Screen</td>
-                                            <td>Apple</td>
-                                            <td>iPhone 12</td>
-                                            <td>50</td>
-                                            <td>15000</td>
-                                            <td>18000</td>
-                                            <td>10</td>
-                                            <td>Mobile Parts</td>
-                                            <td>Original iPhone 12 screen replacement</td>
-                                            <td>Tech Supplier Ltd</td>
-                                            <td>Active</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Samsung Battery</td>
-                                            <td>Samsung</td>
-                                            <td>Galaxy S21</td>
-                                            <td>25</td>
-                                            <td>2500</td>
-                                            <td>3000</td>
-                                            <td>5</td>
-                                            <td>Mobile Parts</td>
-                                            <td>Original Samsung Galaxy S21 battery</td>
-                                            <td>Mobile Parts Co</td>
-                                            <td>Active</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <h5>Import Guidelines</h5>
-                            <div class="alert alert-warning">
-                                <ul class="mb-0">
-                                    <li>Ensure the first row contains column headers exactly as shown above</li>
-                                    <li>Device Name and Total Stock are required fields</li>
-                                    <li>Numeric fields (prices, quantities) should contain only numbers</li>
-                                    <li>Status field accepts: Active, Inactive, or Discontinued (defaults to Active)</li>
-                                    <li>Empty cells in optional columns will be left blank</li>
-                                    <li>Duplicate device names will be updated with new information</li>
-                                    <li>Invalid rows will be skipped and reported in the import summary</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Tips -->
+            <div class="bg-blue-50 rounded-md p-3">
+                <h4 class="text-sm font-medium text-blue-900 mb-2">
+                    <i class="fas fa-lightbulb mr-1"></i>
+                    Tips
+                </h4>
+                <ul class="text-xs text-blue-800 space-y-1">
+                    <li>• Download the template for correct format</li>
+                    <li>• Prices are optional but recommended</li>
+                    <li>• Use "Active" status for new items</li>
+                    <li>• Check "Update existing" to modify items</li>
+                    <li>• Backup your data before importing</li>
+                </ul>
             </div>
         </div>
     </div>
 </div>
+
 <?= $this->endSection() ?>

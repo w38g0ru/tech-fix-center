@@ -147,4 +147,156 @@ class InventoryItemModel extends Model
             'out_of_stock' => $outOfStock
         ];
     }
+
+    /**
+     * Get export data for CSV/Excel
+     */
+    public function getExportData()
+    {
+        return $this->select([
+            'device_name',
+            'brand',
+            'model',
+            'category',
+            'total_stock',
+            'purchase_price',
+            'selling_price',
+            'minimum_order_level',
+            'supplier',
+            'description',
+            'status',
+            'created_at',
+            'updated_at'
+        ])->findAll();
+    }
+
+    /**
+     * Get CSV template headers
+     */
+    public function getCsvHeaders()
+    {
+        return [
+            'device_name',
+            'brand',
+            'model',
+            'category',
+            'total_stock',
+            'purchase_price',
+            'selling_price',
+            'minimum_order_level',
+            'supplier',
+            'description',
+            'status'
+        ];
+    }
+
+    /**
+     * Validate import data structure
+     */
+    public function validateImportData($headers)
+    {
+        $requiredHeaders = ['device_name'];
+        $validHeaders = $this->getCsvHeaders();
+
+        $errors = [];
+
+        // Check for required headers
+        foreach ($requiredHeaders as $required) {
+            if (!in_array($required, $headers)) {
+                $errors[] = "Missing required column: $required";
+            }
+        }
+
+        // Check for invalid headers
+        foreach ($headers as $header) {
+            if (!in_array($header, $validHeaders)) {
+                $errors[] = "Invalid column: $header";
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Bulk import items from array data
+     */
+    public function bulkImport($data, $updateExisting = false)
+    {
+        $results = [
+            'success' => 0,
+            'errors' => 0,
+            'updated' => 0,
+            'messages' => []
+        ];
+
+        foreach ($data as $index => $row) {
+            $rowNumber = $index + 2; // +2 because index starts at 0 and we skip header row
+
+            try {
+                // Prepare item data
+                $itemData = [
+                    'device_name' => trim($row['device_name'] ?? ''),
+                    'brand' => trim($row['brand'] ?? ''),
+                    'model' => trim($row['model'] ?? ''),
+                    'category' => trim($row['category'] ?? ''),
+                    'total_stock' => (int)($row['total_stock'] ?? 0),
+                    'purchase_price' => !empty($row['purchase_price']) ? (float)$row['purchase_price'] : null,
+                    'selling_price' => !empty($row['selling_price']) ? (float)$row['selling_price'] : null,
+                    'minimum_order_level' => !empty($row['minimum_order_level']) ? (int)$row['minimum_order_level'] : null,
+                    'supplier' => trim($row['supplier'] ?? ''),
+                    'description' => trim($row['description'] ?? ''),
+                    'status' => trim($row['status'] ?? 'Active')
+                ];
+
+                // Skip empty rows
+                if (empty($itemData['device_name']) && empty($itemData['brand']) && empty($itemData['model'])) {
+                    continue;
+                }
+
+                // Validate required fields
+                if (empty($itemData['device_name'])) {
+                    $results['errors']++;
+                    $results['messages'][] = "Row $rowNumber: Device name is required";
+                    continue;
+                }
+
+                // Check if item exists (by device_name, brand, model combination)
+                $existingItem = $this->where([
+                    'device_name' => $itemData['device_name'],
+                    'brand' => $itemData['brand'],
+                    'model' => $itemData['model']
+                ])->first();
+
+                if ($existingItem && $updateExisting) {
+                    // Update existing item
+                    if ($this->update($existingItem['id'], $itemData)) {
+                        $results['updated']++;
+                        $results['messages'][] = "Row $rowNumber: Updated existing item";
+                    } else {
+                        $results['errors']++;
+                        $results['messages'][] = "Row $rowNumber: Failed to update - " . implode(', ', $this->errors());
+                    }
+                } elseif (!$existingItem) {
+                    // Create new item
+                    if ($this->insert($itemData)) {
+                        $results['success']++;
+                        $results['messages'][] = "Row $rowNumber: Successfully imported";
+                    } else {
+                        $results['errors']++;
+                        $results['messages'][] = "Row $rowNumber: Failed to import - " . implode(', ', $this->errors());
+                    }
+                } else {
+                    // Item exists but update not allowed
+                    $results['errors']++;
+                    $results['messages'][] = "Row $rowNumber: Item already exists (use update option to modify)";
+                }
+
+            } catch (\Exception $e) {
+                $results['errors']++;
+                $results['messages'][] = "Row $rowNumber: Error - " . $e->getMessage();
+            }
+        }
+
+        return $results;
+    }
 }

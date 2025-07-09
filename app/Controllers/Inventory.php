@@ -363,6 +363,36 @@ class Inventory extends BaseController
         return $this->response->setBody($csvContent);
     }
 
+    /**
+     * Download CSV import template
+     */
+    public function downloadTemplate()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        // Check if user has admin privileges
+        if (!hasRole(['superadmin', 'admin'])) {
+            return redirect()->to('/dashboard')->with('error', 'Access denied. Admin privileges required.');
+        }
+
+        // Create CSV template content
+        $csvContent = "device_name,brand,model,category,total_stock,purchase_price,selling_price,minimum_order_level,supplier,description,status\n";
+
+        // Add sample data row
+        $csvContent .= '"iPhone 14 Pro","Apple","A2894","Mobile Phone","10","120000","135000","5","Apple Store Nepal","Latest iPhone model with Pro features","Active"' . "\n";
+        $csvContent .= '"Samsung Galaxy S23","Samsung","SM-S911B","Mobile Phone","15","95000","110000","3","Samsung Nepal","Flagship Android smartphone","Active"' . "\n";
+        $csvContent .= '"MacBook Air M2","Apple","MLY33","Laptop","5","180000","200000","2","Apple Store Nepal","13-inch MacBook Air with M2 chip","Active"' . "\n";
+
+        // Set headers for download
+        $this->response->setHeader('Content-Type', 'text/csv');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename="inventory_import_template.csv"');
+
+        return $this->response->setBody($csvContent);
+    }
+
     private function processImportFile($filePath, $fileName)
     {
         $successful = 0;
@@ -437,4 +467,81 @@ class Inventory extends BaseController
             'created_at' => date('Y-m-d H:i:s')
         ]);
     }
+
+    /**
+     * Export inventory items to CSV
+     */
+    public function export()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        // Check if user has admin privileges
+        if (!hasRole(['superadmin', 'admin'])) {
+            return redirect()->to('/dashboard')->with('error', 'Access denied. Admin privileges required.');
+        }
+
+        try {
+            // Get export data
+            $items = $this->inventoryModel->getExportData();
+
+            // Set headers for CSV download
+            $filename = 'inventory_export_' . date('Y-m-d_H-i-s') . '.csv';
+
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Expires: 0');
+
+            // Open output stream
+            $output = fopen('php://output', 'w');
+
+            // Write CSV headers
+            $headers = [
+                'Device Name',
+                'Brand',
+                'Model',
+                'Category',
+                'Total Stock',
+                'Purchase Price',
+                'Selling Price',
+                'Minimum Order Level',
+                'Supplier',
+                'Description',
+                'Status',
+                'Created At',
+                'Updated At'
+            ];
+            fputcsv($output, $headers);
+
+            // Write data rows
+            foreach ($items as $item) {
+                $row = [
+                    $item['device_name'],
+                    $item['brand'],
+                    $item['model'],
+                    $item['category'],
+                    $item['total_stock'],
+                    $item['purchase_price'],
+                    $item['selling_price'],
+                    $item['minimum_order_level'],
+                    $item['supplier'],
+                    $item['description'],
+                    $item['status'],
+                    $item['created_at'],
+                    $item['updated_at']
+                ];
+                fputcsv($output, $row);
+            }
+
+            fclose($output);
+            exit;
+
+        } catch (\Exception $e) {
+            return redirect()->to('/dashboard/inventory')->with('error', 'Export failed: ' . $e->getMessage());
+        }
+    }
+
 }
