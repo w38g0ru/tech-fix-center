@@ -16,7 +16,7 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'https://teknophix.gaighat.com/';
+    public string $baseURL = 'https://tfc.gaighat.com/';
 
     /**
      * --------------------------------------------------------------------------
@@ -74,10 +74,10 @@ class App extends BaseConfig
         // Set baseURL based on host
         if ($host === 'tfc.local') {
             $this->baseURL = 'http://tfc.local/';
-        } elseif (in_array($host, ['localhost', 'teknophix.local'])) {
+        } elseif (in_array($host, ['localhost', 'tfc.local'])) {
             $this->baseURL = 'http://teknophix.local/';
         } else {
-            $this->baseURL = 'https://teknophix.gaighat.com/';
+            $this->baseURL = 'https://tfc.gaighat.com/';
         }
     }
 
