@@ -34,7 +34,6 @@ $brandColors = getAllBrandColors();
 
     <!-- External Resources -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
@@ -84,6 +83,48 @@ $brandColors = getAllBrandColors();
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
+        /* Responsive Sidebar Styles */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar {
+                transform: translateX(0) !important;
+            }
+        }
+
+        /* Mobile Overlay */
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Dropdown Menus */
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
         /* Mobile optimizations */
         @media (max-width: 1023px) {
             body {
@@ -100,16 +141,6 @@ $brandColors = getAllBrandColors();
                 min-height: 44px;
                 min-width: 44px;
             }
-
-            /* Smooth transitions */
-            .sidebar-transition {
-                transition: transform 0.3s ease-in-out;
-            }
-        }
-
-        /* Fix for Alpine.js cloak */
-        [x-cloak] {
-            display: none !important;
         }
 
         /* Ensure proper scrolling */
@@ -129,33 +160,21 @@ $brandColors = getAllBrandColors();
                 min-width: 600px;
             }
         }
+
+        /* Focus styles for accessibility */
+        .focus-ring:focus {
+            outline: 2px solid #2563eb;
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
-    <div x-data="{
-        sidebarOpen: false,
-        userMenuOpen: false,
-        toggleSidebar() {
-            this.sidebarOpen = !this.sidebarOpen;
-            if (window.innerWidth < 1024) {
-                document.body.style.overflow = this.sidebarOpen ? 'hidden' : '';
-            }
-        },
-        toggleUserMenu() {
-            this.userMenuOpen = !this.userMenuOpen;
-        },
-        closeSidebar() {
-            this.sidebarOpen = false;
-            document.body.style.overflow = '';
-        }
-    }"
-    @close-sidebar.window="closeSidebar()"
-    @open-sidebar.window="sidebarOpen = true"
-    class="flex h-screen overflow-hidden">
+    <div class="flex h-screen overflow-hidden" id="app-container">
+        <!-- Mobile Overlay -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
         <!-- Sidebar -->
-        <div :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-             class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:z-auto sidebar-transition"
-             x-cloak>
+        <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg sidebar lg:static lg:inset-0 lg:z-auto" id="sidebar">
             
             <!-- Logo -->
             <div class="flex items-center justify-center h-16 px-4 brand-gradient">
@@ -261,8 +280,8 @@ $brandColors = getAllBrandColors();
             <header class="bg-white shadow-sm border-b border-gray-200 flex-shrink-0">
                 <div class="flex items-center justify-between px-4 py-4 lg:px-6">
                     <div class="flex items-center">
-                        <button @click="toggleSidebar()"
-                                class="text-gray-500 hover:text-gray-700 lg:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors">
+                        <button onclick="toggleSidebar()" id="mobile-menu-btn"
+                                class="text-gray-500 hover:text-gray-700 lg:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors focus-ring">
                             <i class="fas fa-bars text-lg"></i>
                         </button>
                         <h2 class="ml-2 text-lg font-semibold text-gray-800 lg:ml-0 lg:text-xl truncate">
@@ -279,24 +298,16 @@ $brandColors = getAllBrandColors();
                         </div>
                         
                         <div class="relative">
-                            <button @click="toggleUserMenu()" class="flex items-center space-x-2 text-gray-700 hover:text-gray-900 p-2 rounded-md hover:bg-gray-100">
+                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="flex items-center space-x-2 text-gray-700 hover:text-gray-900 p-2 rounded-md hover:bg-gray-100 focus-ring">
                                 <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center">
                                     <i class="fas fa-user text-white text-sm"></i>
                                 </div>
                                 <span class="text-sm font-medium"><?= session()->get('full_name') ?? 'User' ?></span>
-                                <i class="fas fa-chevron-down text-xs" :class="{ 'rotate-180': userMenuOpen }"></i>
+                                <i class="fas fa-chevron-down text-xs transition-transform" id="user-menu-arrow"></i>
                             </button>
 
                             <!-- Dropdown Menu -->
-                            <div x-show="userMenuOpen"
-                                 x-transition:enter="transition ease-out duration-100"
-                                 x-transition:enter-start="transform opacity-0 scale-95"
-                                 x-transition:enter-end="transform opacity-100 scale-100"
-                                 x-transition:leave="transition ease-in duration-75"
-                                 x-transition:leave-start="transform opacity-100 scale-100"
-                                 x-transition:leave-end="transform opacity-0 scale-95"
-                                 @click.away="userMenuOpen = false"
-                                 class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border dropdown-menu" id="user-menu">
                                 <div class="px-4 py-2 text-sm text-gray-700 border-b">
                                     <div class="font-medium"><?= session()->get('full_name') ?? 'User' ?></div>
                                     <div class="text-xs text-gray-500"><?= session()->get('email') ?? '' ?></div>
@@ -339,110 +350,231 @@ $brandColors = getAllBrandColors();
         </div>
     </div>
 
-    <!-- Mobile sidebar overlay -->
-    <div x-show="sidebarOpen"
-         @click="closeSidebar()"
-         @touchstart="closeSidebar()"
-         class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
-         x-transition:enter="transition-opacity ease-linear duration-300"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition-opacity ease-linear duration-300"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
-         style="display: none;">
-    </div>
+
 
     <script>
-        // Auto-hide flash messages
-        setTimeout(function() {
-            const alerts = document.querySelectorAll('[role="alert"]');
-            alerts.forEach(function(alert) {
-                alert.style.transition = 'opacity 0.5s';
-                alert.style.opacity = '0';
-                setTimeout(function() {
-                    alert.remove();
-                }, 500);
-            });
-        }, 5000);
+        // Dashboard State Management
+        const DashboardState = {
+            sidebarOpen: false,
+            userMenuOpen: false
+        };
 
-        // Mobile navigation improvements
+        // Sidebar Functions
+        function toggleSidebar() {
+            DashboardState.sidebarOpen = !DashboardState.sidebarOpen;
+            updateSidebarDisplay();
+
+            if (window.innerWidth < 1024) {
+                document.body.style.overflow = DashboardState.sidebarOpen ? 'hidden' : '';
+            }
+        }
+
+        function closeSidebar() {
+            DashboardState.sidebarOpen = false;
+            updateSidebarDisplay();
+            document.body.style.overflow = '';
+        }
+
+        function updateSidebarDisplay() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (DashboardState.sidebarOpen) {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            }
+        }
+
+        // User Menu Functions
+        function toggleUserMenu() {
+            DashboardState.userMenuOpen = !DashboardState.userMenuOpen;
+            updateUserMenuDisplay();
+        }
+
+        function closeUserMenu() {
+            DashboardState.userMenuOpen = false;
+            updateUserMenuDisplay();
+        }
+
+        function updateUserMenuDisplay() {
+            const userMenu = document.getElementById('user-menu');
+            const arrow = document.getElementById('user-menu-arrow');
+
+            if (DashboardState.userMenuOpen) {
+                userMenu.classList.add('show');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                userMenu.classList.remove('show');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Initialize Dashboard
         document.addEventListener('DOMContentLoaded', function() {
-            // Prevent body scroll when sidebar is open on mobile
-            const body = document.body;
-
-            // Listen for sidebar state changes
-            document.addEventListener('alpine:init', () => {
-                Alpine.store('sidebar', {
-                    open: false,
-                    toggle() {
-                        this.open = !this.open;
-                        if (window.innerWidth < 1024) { // lg breakpoint
-                            if (this.open) {
-                                body.style.overflow = 'hidden';
-                            } else {
-                                body.style.overflow = '';
-                            }
-                        }
-                    },
-                    close() {
-                        this.open = false;
-                        body.style.overflow = '';
-                    }
+            // Auto-hide flash messages
+            setTimeout(function() {
+                const alerts = document.querySelectorAll('[role="alert"]');
+                alerts.forEach(function(alert) {
+                    alert.style.transition = 'opacity 0.5s';
+                    alert.style.opacity = '0';
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 500);
                 });
-            });
-
-            // Close sidebar when clicking on navigation links on mobile
-            const navLinks = document.querySelectorAll('nav a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (window.innerWidth < 1024) {
-                        // Trigger Alpine.js to close sidebar
-                        const event = new CustomEvent('close-sidebar');
-                        document.dispatchEvent(event);
-                    }
-                });
-            });
+            }, 5000);
 
             // Handle window resize
             window.addEventListener('resize', function() {
                 if (window.innerWidth >= 1024) {
-                    body.style.overflow = '';
+                    document.body.style.overflow = '';
+                    closeSidebar();
                 }
             });
 
-            // Improve touch handling for mobile
+            // Handle escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (DashboardState.userMenuOpen) {
+                        closeUserMenu();
+                    }
+                    if (window.innerWidth < 1024 && DashboardState.sidebarOpen) {
+                        closeSidebar();
+                    }
+                }
+            });
+
+            // Handle clicks outside elements
+            document.addEventListener('click', function(e) {
+                // Close user menu when clicking outside
+                const userMenuContainer = e.target.closest('#user-menu-btn') || e.target.closest('#user-menu');
+                if (!userMenuContainer && DashboardState.userMenuOpen) {
+                    closeUserMenu();
+                }
+
+                // Close sidebar on mobile when clicking outside
+                if (window.innerWidth < 1024 && DashboardState.sidebarOpen) {
+                    const sidebarContainer = e.target.closest('#sidebar') || e.target.closest('#mobile-menu-btn');
+                    if (!sidebarContainer) {
+                        closeSidebar();
+                    }
+                }
+            });
+
+            // Auto-close sidebar when clicking navigation links on mobile
+            document.querySelectorAll('#sidebar a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth < 1024) {
+                        setTimeout(closeSidebar, 100);
+                    }
+                });
+            });
+
+            // Touch gestures for mobile
             let touchStartX = 0;
-            let touchEndX = 0;
+            let touchStartY = 0;
 
             document.addEventListener('touchstart', function(e) {
-                touchStartX = e.changedTouches[0].screenX;
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
             });
 
             document.addEventListener('touchend', function(e) {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
+                if (window.innerWidth < 1024) {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    const deltaX = touchEndX - touchStartX;
+                    const deltaY = touchEndY - touchStartY;
+
+                    // Swipe right to open sidebar (from left edge)
+                    if (deltaX > 50 && Math.abs(deltaY) < 100 && touchStartX < 50) {
+                        DashboardState.sidebarOpen = true;
+                        updateSidebarDisplay();
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    // Swipe left to close sidebar
+                    if (deltaX < -50 && Math.abs(deltaY) < 100 && DashboardState.sidebarOpen) {
+                        closeSidebar();
+                    }
+                }
             });
 
-            function handleSwipe() {
-                const swipeThreshold = 50;
-                const diff = touchStartX - touchEndX;
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Alt + M for mobile menu toggle
+                if (e.altKey && e.key === 'm' && window.innerWidth < 1024) {
+                    e.preventDefault();
+                    toggleSidebar();
+                }
 
-                if (Math.abs(diff) > swipeThreshold) {
-                    if (diff > 0) {
-                        // Swipe left - close sidebar
-                        const event = new CustomEvent('close-sidebar');
-                        document.dispatchEvent(event);
+                // Ctrl/Cmd + K for search (if search exists)
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    const searchInput = document.querySelector('input[type="search"]');
+                    if (searchInput) {
+                        searchInput.focus();
+                    }
+                }
+            });
+
+            // Focus management for accessibility
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Tab' && window.innerWidth < 1024 && DashboardState.sidebarOpen) {
+                    const sidebarFocusable = document.querySelectorAll('#sidebar button, #sidebar [href]');
+                    const firstFocusable = sidebarFocusable[0];
+                    const lastFocusable = sidebarFocusable[sidebarFocusable.length - 1];
+
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstFocusable) {
+                            e.preventDefault();
+                            lastFocusable.focus();
+                        }
                     } else {
-                        // Swipe right - open sidebar (only if near left edge)
-                        if (touchStartX < 50 && window.innerWidth < 1024) {
-                            const event = new CustomEvent('open-sidebar');
-                            document.dispatchEvent(event);
+                        if (document.activeElement === lastFocusable) {
+                            e.preventDefault();
+                            firstFocusable.focus();
                         }
                     }
                 }
+            });
+
+            // Initialize proper state
+            if (window.innerWidth >= 1024) {
+                document.body.style.overflow = '';
             }
         });
+
+        // Global notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transition-opacity ${
+                type === 'success' ? 'bg-green-500' :
+                type === 'error' ? 'bg-red-500' :
+                type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
+            } text-white`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Make functions globally available
+        window.toggleSidebar = toggleSidebar;
+        window.closeSidebar = closeSidebar;
+        window.toggleUserMenu = toggleUserMenu;
+        window.closeUserMenu = closeUserMenu;
+        window.showNotification = showNotification;
     </script>
 </body>
 </html>
