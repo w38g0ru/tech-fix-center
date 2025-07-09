@@ -58,14 +58,19 @@ class Auth extends BaseController
     public function processLogin()
     {
         // Check if request is POST
-        if (!$this->request->getMethod() === 'POST') {
+        if ($this->request->getMethod() !== 'POST') {
             return redirect()->to(base_url('auth/login'))->with('error', 'Invalid request method.');
         }
 
-        // Rate limiting check
+        // Rate limiting check (with fallback)
         $clientIP = $this->request->getIPAddress();
-        if ($this->isRateLimited($clientIP)) {
-            return redirect()->back()->with('error', 'Too many login attempts. Please try again in 15 minutes.');
+        try {
+            if ($this->isRateLimited($clientIP)) {
+                return redirect()->back()->with('error', 'Too many login attempts. Please try again in 15 minutes.');
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Rate limiting error: ' . $e->getMessage());
+            // Continue with login if rate limiting fails
         }
 
         // Enhanced validation rules
@@ -91,7 +96,11 @@ class Auth extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            $this->recordFailedAttempt($clientIP);
+            try {
+                $this->recordFailedAttempt($clientIP);
+            } catch (\Exception $e) {
+                log_message('error', 'Failed to record login attempt: ' . $e->getMessage());
+            }
             return redirect()->back()
                            ->withInput(['email' => $this->request->getPost('email')])
                            ->with('errors', $this->validator->getErrors());
@@ -108,41 +117,59 @@ class Auth extends BaseController
         $user = $this->verifyUserCredentials($email, $password);
 
         if ($user) {
-            // Clear failed attempts on successful login
-            $this->clearFailedAttempts($clientIP);
+            try {
+                // Clear failed attempts on successful login
+                $this->clearFailedAttempts($clientIP);
 
-            // Set secure session using helper
-            setSecureSession($user, $remember);
+                // Set secure session using helper
+                setSecureSession($user, $remember);
 
-            // Handle remember me functionality
-            if ($remember) {
-                $this->setRememberMeCookie($user);
+                // Handle remember me functionality
+                if ($remember) {
+                    $this->setRememberMeCookie($user);
+                }
+
+                // Update last login in database
+                try {
+                    $this->adminUserModel->update($user['id'], [
+                        'last_login' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ]);
+                } catch (\Exception $e) {
+                    log_message('error', 'Failed to update last login: ' . $e->getMessage());
+                    // Continue with login even if update fails
+                }
+
+                // Log successful login
+                log_message('info', "Successful login for user ID: {$user['id']}, email: {$email}");
+
+                // Determine redirect URL
+                $redirectUrl = $this->getRedirectUrl($user['role']);
+
+                // Check for intended redirect URL
+                $intendedUrl = session()->get('redirect_url');
+                if ($intendedUrl && filter_var($intendedUrl, FILTER_VALIDATE_URL)) {
+                    session()->remove('redirect_url');
+                    $redirectUrl = $intendedUrl;
+                }
+
+                $userName = $user['name'] ?? $user['full_name'] ?? 'User';
+                return redirect()->to($redirectUrl)
+                               ->with('success', 'Welcome back, ' . esc($userName) . '! You have been successfully logged in.');
+
+            } catch (\Exception $e) {
+                log_message('error', 'Error during successful login processing: ' . $e->getMessage());
+                return redirect()->back()
+                               ->withInput(['email' => $email])
+                               ->with('error', 'Login successful but there was an error setting up your session. Please try again.');
             }
-
-            // Update last login in database
-            $this->adminUserModel->update($user['id'], [
-                'email_verified_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
-            ]);
-
-            // Log successful login
-            log_message('info', "Successful login for user ID: {$user['id']}, email: {$email}");
-
-            // Determine redirect URL
-            $redirectUrl = $this->getRedirectUrl($user['role']);
-
-            // Check for intended redirect URL
-            $intendedUrl = session()->get('redirect_url');
-            if ($intendedUrl && filter_var($intendedUrl, FILTER_VALIDATE_URL)) {
-                session()->remove('redirect_url');
-                $redirectUrl = $intendedUrl;
-            }
-
-            return redirect()->to($redirectUrl)
-                           ->with('success', 'Welcome back, ' . esc($user['name']) . '! You have been successfully logged in.');
         } else {
             // Record failed attempt
-            $this->recordFailedAttempt($clientIP);
+            try {
+                $this->recordFailedAttempt($clientIP);
+            } catch (\Exception $e) {
+                log_message('error', 'Failed to record login attempt: ' . $e->getMessage());
+            }
 
             // Log failed login
             log_message('warning', "Failed login attempt for email: {$email} from IP: {$clientIP}");
@@ -245,17 +272,23 @@ class Auth extends BaseController
      */
     private function isRateLimited($ip)
     {
-        $cacheKey = 'login_attempts_' . md5($ip);
-        $attempts = cache()->get($cacheKey);
+        try {
+            $cacheKey = 'login_attempts_' . md5($ip);
+            $attempts = cache()->get($cacheKey);
 
-        if ($attempts && $attempts['count'] >= $this->maxLoginAttempts) {
-            $timeRemaining = $attempts['lockout_until'] - time();
-            if ($timeRemaining > 0) {
-                return true;
+            if ($attempts && $attempts['count'] >= $this->maxLoginAttempts) {
+                $timeRemaining = $attempts['lockout_until'] - time();
+                if ($timeRemaining > 0) {
+                    return true;
+                }
             }
-        }
 
-        return false;
+            return false;
+        } catch (\Exception $e) {
+            // If cache fails, don't block login but log the error
+            log_message('error', 'Cache error in rate limiting: ' . $e->getMessage());
+            return false;
+        }
     }
 
     /**
@@ -263,16 +296,21 @@ class Auth extends BaseController
      */
     private function recordFailedAttempt($ip)
     {
-        $cacheKey = 'login_attempts_' . md5($ip);
-        $attempts = cache()->get($cacheKey) ?: ['count' => 0, 'lockout_until' => 0];
+        try {
+            $cacheKey = 'login_attempts_' . md5($ip);
+            $attempts = cache()->get($cacheKey) ?: ['count' => 0, 'lockout_until' => 0];
 
-        $attempts['count']++;
+            $attempts['count']++;
 
-        if ($attempts['count'] >= $this->maxLoginAttempts) {
-            $attempts['lockout_until'] = time() + $this->lockoutTime;
+            if ($attempts['count'] >= $this->maxLoginAttempts) {
+                $attempts['lockout_until'] = time() + $this->lockoutTime;
+            }
+
+            cache()->save($cacheKey, $attempts, $this->lockoutTime);
+        } catch (\Exception $e) {
+            // If cache fails, log the error but don't break login
+            log_message('error', 'Cache error in recording failed attempt: ' . $e->getMessage());
         }
-
-        cache()->save($cacheKey, $attempts, $this->lockoutTime);
     }
 
     /**
@@ -280,8 +318,13 @@ class Auth extends BaseController
      */
     private function clearFailedAttempts($ip)
     {
-        $cacheKey = 'login_attempts_' . md5($ip);
-        cache()->delete($cacheKey);
+        try {
+            $cacheKey = 'login_attempts_' . md5($ip);
+            cache()->delete($cacheKey);
+        } catch (\Exception $e) {
+            // If cache fails, log the error but don't break login
+            log_message('error', 'Cache error in clearing failed attempts: ' . $e->getMessage());
+        }
     }
 
     /**
