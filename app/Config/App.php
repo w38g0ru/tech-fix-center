@@ -28,11 +28,11 @@ class App extends BaseConfig
     public string $appName = 'TeknoPhix';
     public string $appShortName = 'TPX';
     public string $appVersion = '2.0.0';
-    public string $appDescription = 'Advanced Technology Repair Management System';
-    public string $companyName = 'TeknoPhix';
+    public string $appDescription = 'Tech Fix Center - Your trusted partner for technology solutions.';
+    public string $companyName = 'infoTech Suppliers & Traders';
     public string $companyTagline = 'Precision Technology Solutions';
-    public string $companyWebsite = 'https://teknophix.gaighat.com';
-    public string $supportEmail = 'support@teknophix.com';
+    public string $companyWebsite = 'https://tfc.gaighat.com';
+    public string $supportEmail = 'support@gaighat.com';
     public string $contactPhone = '+977-1-4567890';
     public string $companyAddress = 'Gaighat, Udayapur, Nepal';
 
@@ -196,7 +196,7 @@ class App extends BaseConfig
      * @see https://www.php.net/manual/en/timezones.php for list of timezones
      *      supported by PHP.
      */
-    public string $appTimezone = 'UTC';
+    public string $appTimezone = 'Asia/Kathmandu';
 
     /**
      * --------------------------------------------------------------------------

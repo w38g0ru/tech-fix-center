@@ -197,7 +197,7 @@ $config = config('App');
             <!-- Footer -->
             <div class="mt-6 text-center">
                 <p class="text-xs text-gray-500">
-                    © <?= date('Y') ?> Tech Fix Center. All rights reserved.
+                    © <?= date('Y') ?> Infotech Suppliers & Traders, Gaighat. All rights reserved.
                 </p>
             </div>
         </div>
