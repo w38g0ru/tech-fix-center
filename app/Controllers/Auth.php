@@ -11,10 +11,33 @@ class Auth extends BaseController
     protected $maxLoginAttempts = 5;
     protected $lockoutTime = 900; // 15 minutes
 
+    // Google OAuth Credentials - loaded from credentials file
+    protected $googleClientId;
+    protected $googleClientSecret;
+
     public function __construct()
     {
         $this->adminUserModel = new AdminUserModel();
         helper(['form', 'url', 'auth', 'session']);
+
+        // Load Google OAuth credentials
+        $this->loadGoogleCredentials();
+    }
+
+    /**
+     * Load Google OAuth credentials from credentials file
+     */
+    private function loadGoogleCredentials()
+    {
+        $credentialsFile = APPPATH . 'Config/GoogleCredentials.php';
+        if (file_exists($credentialsFile)) {
+            $credentials = include $credentialsFile;
+            $this->googleClientId = $credentials['client_id'] ?? '';
+            $this->googleClientSecret = $credentials['client_secret'] ?? '';
+        } else {
+            $this->googleClientId = '';
+            $this->googleClientSecret = '';
+        }
     }
 
     /**
