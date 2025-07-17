@@ -489,17 +489,21 @@ class Auth extends BaseController
             $userInfo = $googleOAuth->handleCallback($code);
 
             if (!$userInfo || !isset($userInfo['email'])) {
+                log_message('error', 'Google OAuth: Failed to retrieve user information from Google');
                 return redirect()->to(base_url('auth/login'))
                     ->with('error', 'Failed to retrieve user information from Google.');
             }
+
+            log_message('info', 'Google OAuth: Retrieved user info for email: ' . $userInfo['email']);
 
             // Check if user exists in admin_user table
             $user = $this->adminUserModel->where('email', $userInfo['email'])->first();
 
             if (!$user) {
                 log_message('warning', 'Google OAuth attempt with non-existent email: ' . $userInfo['email']);
+                log_message('debug', 'Google OAuth: Available emails in database: ' . json_encode($this->adminUserModel->select('email')->findAll()));
                 return redirect()->to(base_url('auth/login'))
-                    ->with('error', 'Your Google account is not authorized to access this system. Please contact an administrator.');
+                    ->with('error', 'Your Google account (' . $userInfo['email'] . ') is not authorized to access this system. Please contact an administrator.');
             }
 
             // Check if user is active
