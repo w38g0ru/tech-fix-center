@@ -138,3 +138,19 @@ $routes->group('dashboard', function($routes) {
 
 
 });
+
+// Test route for admin dashboard
+$routes->get('test-admin', function() {
+    return view('admin/dashboard', [
+        'title' => 'Admin Dashboard Test',
+        'stats' => [
+            'total_users' => 1234,
+            'total_sales' => 45678.90,
+            'total_orders' => 892,
+            'monthly_revenue' => 23456.78
+        ]
+    ]);
+});
+
+// Include Admin Routes
+require_once APPPATH . 'Config/AdminRoutes.php';
