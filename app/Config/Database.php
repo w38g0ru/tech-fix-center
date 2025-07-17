@@ -51,6 +51,8 @@ class Database extends Config
         ],
     ];
 
+
+
     //    /**
     //     * Sample database connection for SQLite3.
     //     *
@@ -192,6 +194,21 @@ class Database extends Config
     public function __construct()
     {
         parent::__construct();
+
+        // Check if we're on production server (by domain)
+        $isProduction = (
+            isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'tfc.gaighat.com'
+        ) || (
+            isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] === 'tfc.gaighat.com'
+        );
+
+        if ($isProduction) {
+            // Production database configuration
+            $this->default['username'] = 'tfcgaighat_user';  // Update with actual production username
+            $this->default['password'] = 'your_production_password';  // Update with actual production password
+            $this->default['database'] = 'tfcgaighat_db';
+            $this->default['DBDebug'] = false;
+        }
 
         // Ensure that we always set the database group to 'tests' if
         // we are currently running an automated test suite, so that
