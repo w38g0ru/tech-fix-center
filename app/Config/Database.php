@@ -204,8 +204,8 @@ class Database extends Config
 
         if ($isProduction) {
             // Production database configuration
-            $this->default['username'] = 'tfcgaighat_user';  // Update with actual production username
-            $this->default['password'] = 'your_production_password';  // Update with actual production password
+            $this->default['username'] = 'tfcgaighat_db';  // Update with actual production username
+            $this->default['password'] = 'tfcgaighat_db';  // Update with actual production password
             $this->default['database'] = 'tfcgaighat_db';
             $this->default['DBDebug'] = false;
         }
