@@ -22,9 +22,9 @@ class GoogleOAuth extends BaseConfig
     {
         parent::__construct();
 
-        // Configuration - decode from base64 to avoid GitHub secret detection
-        $this->clientId = base64_decode('ODE3ODY0NjIwMDA5LXJzNGE4OWRrMzcwOHMwbjZobjFnbXVzdmpqbWpsa2VudS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbQ==');
-        $this->clientSecret = base64_decode('R09DU1BYLUZYT2VMdTVDVzlpMHBQRUV4MTVLUW5OampCdQ==');
+        // Configuration - use environment variables
+        $this->clientId = env('GOOGLE_CLIENT_ID');
+        $this->clientSecret = env('GOOGLE_CLIENT_SECRET');
         $this->redirectUri = 'https://tfc.gaighat.com/auth/google/callback';
     }
     
@@ -44,7 +44,7 @@ class GoogleOAuth extends BaseConfig
         // Use current domain for redirect URI
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
         $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-        return $protocol . '://' . $host . '/auth/callback';
+        return $protocol . '://' . $host . '/auth/google/callback';
     }
 
     /**
