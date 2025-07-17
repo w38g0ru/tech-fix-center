@@ -367,19 +367,19 @@ $pageTitle = $title ?? 'Dashboard';
             <nav class="mt-6">
                 <div class="px-4 py-2">
                     <a href="<?= base_url('dashboard') ?>"
-                       class="nav-link flex items-center px-3 py-2 text-gray-300 font-normal text-sm <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>">
+                       class="nav-link flex items-center px-3 py-2 text-gray-300 font-medium <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>">
                         <i class="fas fa-tachometer-alt mr-3 w-4 text-center"></i>
                         Dashboard
                     </a>
 
                     <a href="<?= base_url('dashboard/jobs') ?>"
-                       class="nav-link flex items-center px-3 py-2 text-gray-300 font-normal text-sm <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>">
+                       class="nav-link flex items-center px-3 py-2 text-gray-300 font-medium <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>">
                         <i class="fas fa-wrench mr-3 w-4 text-center"></i>
                         Jobs
                     </a>
 
                     <a href="<?= base_url('dashboard/users') ?>"
-                       class="nav-link flex items-center px-3 py-2 text-gray-300 font-normal text-sm <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>">
+                       class="nav-link flex items-center px-3 py-2 text-gray-300 font-medium <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>">
                         <i class="fas fa-users mr-3 w-4 text-center"></i>
                         Customers
                     </a>
