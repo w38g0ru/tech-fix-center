@@ -41,8 +41,10 @@ class GoogleOAuth extends BaseConfig
      */
     public function getRedirectUri(): string
     {
-        // Always use production URI - Google OAuth only works online
-        return $this->redirectUri;
+        // Use current domain for redirect URI
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        return $protocol . '://' . $host . '/auth/callback';
     }
 
     /**
@@ -50,13 +52,8 @@ class GoogleOAuth extends BaseConfig
      */
     public function isConfigured(): bool
     {
-        // Only enable Google OAuth on production domain
-        if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'tfc.gaighat.com') {
-            return !empty($this->clientId) && !empty($this->clientSecret);
-        }
-
-        // Disable for all other domains (local development, etc.)
-        return false;
+        // Simple check - just verify credentials exist
+        return !empty($this->clientId) && !empty($this->clientSecret);
     }
 
     /**
