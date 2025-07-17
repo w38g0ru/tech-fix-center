@@ -22,30 +22,17 @@ $config = config('App');
             theme: {
                 extend: {
                     colors: {
-                        primary: {
-                            50: '#f8fafc',
-                            100: '#f1f5f9',
-                            200: '#e2e8f0',
-                            300: '#cbd5e1',
-                            400: '#94a3b8',
-                            500: '#64748b',
-                            600: '#475569',
-                            700: '#334155',
-                            800: '<?= $config->brandColors['primary'] ?>',
-                            900: '#0f172a'
-                        },
-                        accent: {
-                            50: '#eff6ff',
-                            500: '<?= $config->brandColors['accent'] ?>',
-                            600: '#2563eb'
-                        },
-                        success: {
-                            50: '#f0fdf4',
-                            500: '<?= $config->brandColors['success'] ?>'
-                        },
-                        danger: {
-                            50: '#fef2f2',
-                            500: '<?= $config->brandColors['danger'] ?>'
+                        mono: {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            600: '#4b5563',
+                            700: '<?= $config->brandColors['primary'] ?>',
+                            800: '#1f2937',
+                            900: '<?= $config->brandColors['accent'] ?>'
                         }
                     }
                 }
@@ -54,21 +41,21 @@ $config = config('App');
     </script>
     <style>
         .gradient-bg {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         }
         .glass-effect {
             backdrop-filter: blur(10px);
             background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(156, 163, 175, 0.2);
+            box-shadow: 0 8px 32px rgba(107, 114, 128, 0.1);
         }
         .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
             transition: all 0.3s ease;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 8px 25px rgba(55, 65, 81, 0.3);
         }
     </style>
 </head>
@@ -79,8 +66,8 @@ $config = config('App');
         <div class="glass-effect rounded-3xl shadow-2xl overflow-hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
 
-                <!-- Left Side - Branding -->
-                <div class="bg-gradient-to-br from-primary-800 to-primary-900 p-12 flex flex-col justify-center items-center text-white relative overflow-hidden">
+                <!-- Left Side - Monochromatic Branding -->
+                <div class="bg-gradient-to-br from-mono-800 to-mono-900 p-12 flex flex-col justify-center items-center text-white relative overflow-hidden">
                     <!-- Background Pattern -->
                     <div class="absolute inset-0 opacity-10">
                         <div class="absolute top-10 left-10 w-32 h-32 border border-white/20 rounded-full"></div>
@@ -90,33 +77,33 @@ $config = config('App');
 
                     <!-- Content -->
                     <div class="relative z-10 text-center">
-                        <div class="inline-flex items-center justify-center w-24 h-24 bg-accent-500 rounded-2xl shadow-xl mb-8">
+                        <div class="inline-flex items-center justify-center w-24 h-24 bg-mono-600 rounded-2xl shadow-xl mb-8">
                             <i class="fas fa-tools text-4xl text-white"></i>
                         </div>
                         <h1 class="text-4xl font-bold mb-4"><?= $config->appName ?></h1>
-                        <p class="text-xl text-primary-200 mb-8 leading-relaxed"><?= $config->appDescription ?></p>
-                        <div class="space-y-4 text-primary-100">
+                        <p class="text-xl text-mono-300 mb-8 leading-relaxed"><?= $config->appDescription ?></p>
+                        <div class="space-y-4 text-mono-200">
                             <div class="flex items-center justify-center">
-                                <i class="fas fa-shield-alt mr-3 text-accent-400"></i>
+                                <i class="fas fa-shield-alt mr-3 text-mono-400"></i>
                                 <span>Secure & Professional</span>
                             </div>
                             <div class="flex items-center justify-center">
-                                <i class="fas fa-users mr-3 text-accent-400"></i>
+                                <i class="fas fa-users mr-3 text-mono-400"></i>
                                 <span>Trusted by Technicians</span>
                             </div>
                             <div class="flex items-center justify-center">
-                                <i class="fas fa-clock mr-3 text-accent-400"></i>
+                                <i class="fas fa-clock mr-3 text-mono-400"></i>
                                 <span>24/7 Access</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Side - Login Form -->
+                <!-- Right Side - Monochromatic Login Form -->
                 <div class="p-12 flex flex-col justify-center bg-white">
                     <div class="mb-8">
-                        <h2 class="text-3xl font-bold text-primary-800 mb-3">Welcome Back</h2>
-                        <p class="text-primary-600 text-lg">Please sign in to your account</p>
+                        <h2 class="text-3xl font-bold text-mono-800 mb-3">Welcome Back</h2>
+                        <p class="text-mono-600 text-lg">Please sign in to your account</p>
                     </div>
 
                     <!-- Alert Messages -->
@@ -161,12 +148,12 @@ $config = config('App');
 
                         <!-- Email Field -->
                         <div class="space-y-3">
-                            <label for="email" class="block text-sm font-semibold text-primary-700">
-                                Email Address <span class="text-red-500">*</span>
+                            <label for="email" class="block text-sm font-semibold text-mono-700">
+                                Email Address <span class="text-mono-600">*</span>
                             </label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <i class="fas fa-envelope text-primary-400"></i>
+                                    <i class="fas fa-envelope text-mono-400"></i>
                                 </div>
                                 <input type="email"
                                        id="email"
@@ -175,18 +162,18 @@ $config = config('App');
                                        required
                                        autocomplete="email"
                                        placeholder="Enter your email address"
-                                       class="w-full pl-12 pr-4 py-4 border border-primary-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200 text-lg">
+                                       class="w-full pl-12 pr-4 py-4 border border-mono-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-mono-600 focus:border-mono-600 transition-all duration-200 text-lg">
                             </div>
                         </div>
 
                         <!-- Password Field -->
                         <div class="space-y-3">
-                            <label for="password" class="block text-sm font-semibold text-primary-700">
-                                Password <span class="text-red-500">*</span>
+                            <label for="password" class="block text-sm font-semibold text-mono-700">
+                                Password <span class="text-mono-600">*</span>
                             </label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <i class="fas fa-lock text-primary-400"></i>
+                                    <i class="fas fa-lock text-mono-400"></i>
                                 </div>
                                 <input type="password"
                                        id="password"
@@ -194,11 +181,11 @@ $config = config('App');
                                        required
                                        autocomplete="current-password"
                                        placeholder="Enter your password"
-                                       class="w-full pl-12 pr-14 py-4 border border-primary-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200 text-lg">
+                                       class="w-full pl-12 pr-14 py-4 border border-mono-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-mono-600 focus:border-mono-600 transition-all duration-200 text-lg">
                                 <button type="button"
                                         onclick="togglePassword()"
                                         class="absolute inset-y-0 right-0 pr-4 flex items-center">
-                                    <i id="passwordToggle" class="fas fa-eye text-primary-400 hover:text-accent-500 transition-colors"></i>
+                                    <i id="passwordToggle" class="fas fa-eye text-mono-400 hover:text-mono-600 transition-colors"></i>
                                 </button>
                             </div>
                         </div>

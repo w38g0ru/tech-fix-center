@@ -24,29 +24,17 @@ $pageTitle = $title ?? 'Dashboard';
             theme: {
                 extend: {
                     colors: {
-                        primary: {
-                            50: '#f8fafc',   // Slate-50
-                            100: '#f1f5f9',  // Slate-100
-                            200: '#e2e8f0',  // Slate-200
-                            300: '#cbd5e1',  // Slate-300
-                            400: '#94a3b8',  // Slate-400
-                            500: '#64748b',  // Slate-500
-                            600: '#475569',  // Slate-600
-                            700: '#334155',  // Slate-700
-                            800: '<?= $config->brandColors['primary'] ?>',  // Slate-800
-                            900: '#0f172a',  // Slate-900
-                        },
-                        accent: {
-                            50: '#eff6ff',   // Blue-50
-                            100: '#dbeafe',  // Blue-100
-                            200: '#bfdbfe',  // Blue-200
-                            300: '#93c5fd',  // Blue-300
-                            400: '#60a5fa',  // Blue-400
-                            500: '<?= $config->brandColors['accent'] ?>',  // Blue-500
-                            600: '#2563eb',  // Blue-600
-                            700: '#1d4ed8',  // Blue-700
-                            800: '#1e40af',  // Blue-800
-                            900: '#1e3a8a',  // Blue-900
+                        mono: {
+                            50: '#f9fafb',   // Gray-50 (Lightest)
+                            100: '#f3f4f6',  // Gray-100
+                            200: '#e5e7eb',  // Gray-200
+                            300: '#d1d5db',  // Gray-300
+                            400: '#9ca3af',  // Gray-400
+                            500: '#6b7280',  // Gray-500 (Medium)
+                            600: '#4b5563',  // Gray-600
+                            700: '<?= $config->brandColors['primary'] ?>',  // Gray-700 (Primary)
+                            800: '#1f2937',  // Gray-800
+                            900: '<?= $config->brandColors['accent'] ?>',   // Gray-900 (Darkest)
                         }
                     }
                 }
@@ -55,24 +43,26 @@ $pageTitle = $title ?? 'Dashboard';
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        /* Professional Dark Theme */
+        /* Monochromatic Design Theme */
         :root {
-            --primary-50: #f8fafc;
-            --primary-100: #f1f5f9;
-            --primary-200: #e2e8f0;
-            --primary-600: #475569;
-            --primary-800: #1e293b;
-            --primary-900: #0f172a;
-            --accent-500: #3b82f6;
-            --accent-600: #2563eb;
+            --mono-50: #f9fafb;
+            --mono-100: #f3f4f6;
+            --mono-200: #e5e7eb;
+            --mono-300: #d1d5db;
+            --mono-400: #9ca3af;
+            --mono-500: #6b7280;
+            --mono-600: #4b5563;
+            --mono-700: #374151;
+            --mono-800: #1f2937;
+            --mono-900: #111827;
         }
 
-        /* Responsive Sidebar Styles */
+        /* Monochromatic Sidebar Styles */
         .sidebar {
             transform: translateX(-100%);
             transition: transform 0.3s ease-in-out;
-            background: var(--primary-900);
-            border-right: 1px solid var(--primary-800);
+            background: var(--mono-900);
+            border-right: 1px solid var(--mono-800);
         }
 
         .sidebar.open {
@@ -90,7 +80,7 @@ $pageTitle = $title ?? 'Dashboard';
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(17, 24, 39, 0.8);
         }
 
         .sidebar-overlay.active {
@@ -105,7 +95,7 @@ $pageTitle = $title ?? 'Dashboard';
             transform: translateY(-10px);
             transition: all 0.2s ease-in-out;
             background: white;
-            border: 1px solid var(--primary-200);
+            border: 1px solid var(--mono-200);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
@@ -115,7 +105,7 @@ $pageTitle = $title ?? 'Dashboard';
             transform: translateY(0);
         }
 
-        /* Navigation Links */
+        /* Monochromatic Navigation Links */
         .nav-link {
             transition: all 0.2s ease-in-out;
             border-radius: 8px;
@@ -123,34 +113,34 @@ $pageTitle = $title ?? 'Dashboard';
         }
 
         .nav-link:hover {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--accent-500);
+            background: rgba(107, 114, 128, 0.1);
+            color: var(--mono-300);
         }
 
         .nav-link.active {
-            background: var(--accent-500);
+            background: var(--mono-700);
             color: white;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 2px 8px rgba(55, 65, 81, 0.3);
         }
 
-        /* Cards and Components */
+        /* Monochromatic Cards and Components */
         .card {
             background: white;
-            border: 1px solid var(--primary-200);
+            border: 1px solid var(--mono-200);
             border-radius: 12px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             transition: all 0.2s ease-in-out;
         }
 
         .card:hover {
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border-color: var(--accent-500);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: var(--mono-400);
             transform: translateY(-2px);
         }
 
-        /* Buttons */
+        /* Monochromatic Buttons */
         .btn-primary {
-            background: var(--accent-500);
+            background: var(--mono-700);
             color: white;
             border: none;
             border-radius: 8px;
@@ -159,9 +149,9 @@ $pageTitle = $title ?? 'Dashboard';
         }
 
         .btn-primary:hover {
-            background: var(--accent-600);
+            background: var(--mono-800);
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 12px rgba(55, 65, 81, 0.3);
         }
 
         /* Mobile optimizations */
@@ -200,7 +190,7 @@ $pageTitle = $title ?? 'Dashboard';
 
         /* Focus styles */
         .focus-ring:focus {
-            outline: 2px solid var(--accent-500);
+            outline: 2px solid var(--mono-600);
             outline-offset: 2px;
         }
 
@@ -210,7 +200,7 @@ $pageTitle = $title ?? 'Dashboard';
         .status-inactive { color: #dc2626; }
     </style>
 </head>
-<body class="bg-primary-50 text-primary-800">
+<body class="bg-mono-50 text-mono-800">
     <div class="flex h-screen overflow-hidden" id="app-container">
         <!-- Mobile Overlay -->
         <div class="fixed inset-0 z-40 lg:hidden sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -219,14 +209,14 @@ $pageTitle = $title ?? 'Dashboard';
         <div class="fixed inset-y-0 left-0 z-50 w-64 shadow-2xl sidebar lg:static lg:inset-0 lg:z-auto" id="sidebar">
 
             <!-- Logo -->
-            <div class="flex items-center justify-center h-16 px-4 bg-primary-800 border-b border-primary-700">
+            <div class="flex items-center justify-center h-16 px-4 bg-mono-800 border-b border-mono-700">
                 <div class="flex items-center">
-                    <div class="h-10 w-10 bg-accent-500 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+                    <div class="h-10 w-10 bg-mono-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
                         <i class="fas fa-tools text-white text-lg"></i>
                     </div>
                     <div>
                         <h1 class="text-lg font-bold text-white tracking-tight"><?= $config->appShortName ?></h1>
-                        <p class="text-xs text-primary-300 font-medium">Dashboard</p>
+                        <p class="text-xs text-mono-300 font-medium">Dashboard</p>
                     </div>
                 </div>
             </div>
@@ -235,19 +225,19 @@ $pageTitle = $title ?? 'Dashboard';
             <nav class="mt-6">
                 <div class="px-3 space-y-1">
                     <a href="<?= base_url('dashboard') ?>"
-                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>">
+                       class="nav-link flex items-center px-3 py-3 text-mono-300 font-medium <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>">
                         <i class="fas fa-tachometer-alt mr-3 w-5"></i>
                         Dashboard
                     </a>
 
                     <a href="<?= base_url('dashboard/jobs') ?>"
-                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>">
+                       class="nav-link flex items-center px-3 py-3 text-mono-300 font-medium <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>">
                         <i class="fas fa-wrench mr-3 w-5"></i>
                         Jobs
                     </a>
 
                     <a href="<?= base_url('dashboard/users') ?>"
-                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>">
+                       class="nav-link flex items-center px-3 py-3 text-mono-300 font-medium <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>">
                         <i class="fas fa-users mr-3 w-5"></i>
                         Customers
                     </a>
@@ -324,53 +314,53 @@ $pageTitle = $title ?? 'Dashboard';
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
-            <header class="bg-white shadow-sm border-b border-primary-200 flex-shrink-0">
+            <header class="bg-white shadow-sm border-b border-mono-200 flex-shrink-0">
                 <div class="flex items-center justify-between px-4 py-4 lg:px-6">
                     <div class="flex items-center">
                         <button onclick="toggleSidebar()" id="mobile-menu-btn"
-                                class="text-primary-500 hover:text-accent-500 lg:hidden p-2 rounded-lg hover:bg-accent-50 focus:outline-none focus:ring-2 focus:ring-accent-500 transition-all focus-ring">
+                                class="text-mono-500 hover:text-mono-700 lg:hidden p-2 rounded-lg hover:bg-mono-100 focus:outline-none focus:ring-2 focus:ring-mono-600 transition-all focus-ring">
                             <i class="fas fa-bars text-lg"></i>
                         </button>
-                        <h2 class="ml-2 text-xl font-bold text-primary-800 lg:ml-0 lg:text-2xl truncate">
+                        <h2 class="ml-2 text-xl font-bold text-mono-800 lg:ml-0 lg:text-2xl truncate">
                             <?= $title ?? 'Dashboard' ?>
                         </h2>
                     </div>
                     
                     <div class="flex items-center space-x-3">
                         <div class="relative">
-                            <button class="flex items-center text-primary-500 hover:text-accent-500 p-2 rounded-lg hover:bg-accent-50 transition-all">
+                            <button class="flex items-center text-mono-500 hover:text-mono-700 p-2 rounded-lg hover:bg-mono-100 transition-all">
                                 <i class="fas fa-bell text-lg"></i>
-                                <span class="absolute -top-1 -right-1 bg-accent-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+                                <span class="absolute -top-1 -right-1 bg-mono-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
                             </button>
                         </div>
 
                         <div class="relative">
-                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="flex items-center space-x-3 text-primary-700 hover:text-primary-900 p-2 rounded-lg hover:bg-accent-50 focus-ring transition-all">
-                                <div class="w-9 h-9 bg-accent-500 rounded-xl flex items-center justify-center shadow-md">
+                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="flex items-center space-x-3 text-mono-700 hover:text-mono-900 p-2 rounded-lg hover:bg-mono-100 focus-ring transition-all">
+                                <div class="w-9 h-9 bg-mono-600 rounded-xl flex items-center justify-center shadow-md">
                                     <i class="fas fa-user text-white text-sm"></i>
                                 </div>
                                 <div class="hidden sm:block text-left">
                                     <div class="text-sm font-semibold"><?= session()->get('full_name') ?? 'User' ?></div>
-                                    <div class="text-xs text-primary-500 capitalize"><?= session()->get('role') ?? '' ?></div>
+                                    <div class="text-xs text-mono-500 capitalize"><?= session()->get('role') ?? '' ?></div>
                                 </div>
                                 <i class="fas fa-chevron-down text-xs transition-transform" id="user-menu-arrow"></i>
                             </button>
 
                             <!-- Dropdown Menu -->
-                            <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl py-2 z-50 border border-primary-200 dropdown-menu" id="user-menu">
-                                <div class="px-4 py-3 border-b border-primary-100">
-                                    <div class="font-semibold text-primary-800"><?= session()->get('full_name') ?? 'User' ?></div>
-                                    <div class="text-sm text-primary-500"><?= session()->get('email') ?? '' ?></div>
-                                    <div class="text-xs text-accent-500 capitalize font-medium"><?= session()->get('role') ?? '' ?></div>
+                            <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl py-2 z-50 border border-mono-200 dropdown-menu" id="user-menu">
+                                <div class="px-4 py-3 border-b border-mono-100">
+                                    <div class="font-semibold text-mono-800"><?= session()->get('full_name') ?? 'User' ?></div>
+                                    <div class="text-sm text-mono-500"><?= session()->get('email') ?? '' ?></div>
+                                    <div class="text-xs text-mono-600 capitalize font-medium"><?= session()->get('role') ?? '' ?></div>
                                 </div>
-                                <a href="<?= base_url('dashboard/profile') ?>" class="flex items-center px-4 py-3 text-sm text-primary-700 hover:bg-accent-50 hover:text-accent-600 transition-colors">
+                                <a href="<?= base_url('dashboard/profile') ?>" class="flex items-center px-4 py-3 text-sm text-mono-700 hover:bg-mono-100 hover:text-mono-800 transition-colors">
                                     <i class="fas fa-user mr-3 w-4"></i>Profile
                                 </a>
-                                <a href="<?= base_url('dashboard/settings') ?>" class="flex items-center px-4 py-3 text-sm text-primary-700 hover:bg-accent-50 hover:text-accent-600 transition-colors">
+                                <a href="<?= base_url('dashboard/settings') ?>" class="flex items-center px-4 py-3 text-sm text-mono-700 hover:bg-mono-100 hover:text-mono-800 transition-colors">
                                     <i class="fas fa-cog mr-3 w-4"></i>Settings
                                 </a>
-                                <div class="border-t border-primary-100 my-1"></div>
-                                <a href="<?= base_url('auth/logout') ?>" class="flex items-center px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                <div class="border-t border-mono-100 my-1"></div>
+                                <a href="<?= base_url('auth/logout') ?>" class="flex items-center px-4 py-3 text-sm text-mono-600 hover:bg-mono-100 transition-colors">
                                     <i class="fas fa-sign-out-alt mr-3 w-4"></i>Logout
                                 </a>
                             </div>
@@ -380,21 +370,21 @@ $pageTitle = $title ?? 'Dashboard';
             </header>
 
             <!-- Page Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-primary-50">
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-mono-50">
                 <div class="container mx-auto px-4 py-6 lg:px-6 lg:py-8">
                     <?php if (session()->getFlashdata('success')): ?>
-                        <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-4 rounded-xl shadow-sm" role="alert">
+                        <div class="mb-6 bg-mono-100 border border-mono-300 text-mono-800 px-4 py-4 rounded-xl shadow-sm" role="alert">
                             <div class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <i class="fas fa-check-circle text-mono-600 mr-3"></i>
                                 <span class="font-medium"><?= session()->getFlashdata('success') ?></span>
                             </div>
                         </div>
                     <?php endif; ?>
 
                     <?php if (session()->getFlashdata('error')): ?>
-                        <div class="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-4 rounded-xl shadow-sm" role="alert">
+                        <div class="mb-6 bg-mono-200 border border-mono-400 text-mono-800 px-4 py-4 rounded-xl shadow-sm" role="alert">
                             <div class="flex items-center">
-                                <i class="fas fa-exclamation-circle text-red-500 mr-3"></i>
+                                <i class="fas fa-exclamation-circle text-mono-700 mr-3"></i>
                                 <span class="font-medium"><?= session()->getFlashdata('error') ?></span>
                             </div>
                         </div>
