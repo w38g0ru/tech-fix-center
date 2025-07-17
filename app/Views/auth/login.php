@@ -196,7 +196,11 @@ $config = config('App');
                 </div>
             </div>
 
-            <!-- Google Login Button -->
+            <!-- Google Login Button - Only show in production -->
+            <?php
+            $googleConfig = new \Config\GoogleOAuth();
+            if ($googleConfig->isConfigured()):
+            ?>
             <div class="mb-6">
                 <a href="<?= base_url('auth/google') ?>"
                    class="w-full flex justify-center items-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
@@ -209,6 +213,7 @@ $config = config('App');
                     Sign in with Google
                 </a>
             </div>
+            <?php endif; ?>
 
             <!-- Demo Credentials -->
             <div class="mt-6 p-4 bg-gray-50 rounded-lg border">
