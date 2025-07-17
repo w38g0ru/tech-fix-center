@@ -74,6 +74,16 @@
         .sidebar-overlay {
             transition: opacity 0.3s ease-in-out;
         }
+
+        /* Sidebar open state for mobile */
+        #sidebar.open {
+            transform: translateX(0) !important;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
         
         /* Navigation hover effects */
         .nav-item:hover {
@@ -155,7 +165,8 @@
     </div>
     
     <!-- Mobile Sidebar Overlay -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden sidebar-overlay"></div>
+    <div id="sidebar-overlay"
+         class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden sidebar-overlay"></div>
     
     <!-- JavaScript -->
     <script>
@@ -213,8 +224,13 @@
             },
             
             toggleSidebar() {
+                console.log('Toggle sidebar called, current state:', this.sidebarOpen);
                 this.sidebarOpen = !this.sidebarOpen;
                 this.updateSidebarDisplay();
+
+                if (window.innerWidth < 1024) {
+                    document.body.style.overflow = this.sidebarOpen ? 'hidden' : '';
+                }
             },
             
             closeSidebar() {
@@ -225,14 +241,18 @@
             updateSidebarDisplay() {
                 const sidebar = document.getElementById('sidebar');
                 const overlay = document.getElementById('sidebar-overlay');
-                
+
+                console.log('Updating sidebar display, open:', this.sidebarOpen);
+
                 if (this.sidebarOpen) {
-                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('open');
                     overlay.classList.remove('hidden');
+                    overlay.classList.add('active');
                     document.body.style.overflow = 'hidden';
                 } else {
-                    sidebar.classList.add('-translate-x-full');
+                    sidebar.classList.remove('open');
                     overlay.classList.add('hidden');
+                    overlay.classList.remove('active');
                     document.body.style.overflow = '';
                 }
             },
@@ -275,20 +295,27 @@
             // Event listeners
             initEventListeners() {
                 // Sidebar toggle
-                document.getElementById('sidebar-toggle')?.addEventListener('click', () => {
+                const sidebarToggle = document.getElementById('sidebar-toggle');
+                console.log('Sidebar toggle button found:', sidebarToggle);
+                sidebarToggle?.addEventListener('click', (e) => {
+                    console.log('Sidebar toggle clicked');
+                    e.preventDefault();
+                    e.stopPropagation();
                     this.toggleSidebar();
                 });
-                
+
                 // Sidebar overlay click
-                document.getElementById('sidebar-overlay')?.addEventListener('click', () => {
+                document.getElementById('sidebar-overlay')?.addEventListener('click', (e) => {
+                    e.preventDefault();
                     this.closeSidebar();
                 });
-                
+
                 // Dark mode toggle
-                document.getElementById('dark-mode-toggle')?.addEventListener('click', () => {
+                document.getElementById('dark-mode-toggle')?.addEventListener('click', (e) => {
+                    e.preventDefault();
                     this.toggleDarkMode();
                 });
-                
+
                 // Escape key to close dropdowns and sidebar
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape') {

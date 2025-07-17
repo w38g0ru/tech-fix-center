@@ -50,7 +50,9 @@ $unreadCount = count(array_filter($notifications, fn($n) => !$n['read']));
         <!-- Left Side -->
         <div class="flex items-center space-x-4">
             <!-- Mobile Menu Button -->
-            <button id="sidebar-toggle" class="lg:hidden p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 transition-colors duration-200">
+            <button id="sidebar-toggle"
+                    type="button"
+                    class="lg:hidden p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 transition-colors duration-200">
                 <i class="fas fa-bars text-lg"></i>
             </button>
             

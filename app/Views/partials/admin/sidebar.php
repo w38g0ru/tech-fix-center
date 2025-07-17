@@ -10,7 +10,7 @@ function isActive($path, $currentUri) {
 ?>
 
 <!-- Sidebar -->
-<aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full lg:translate-x-0 sidebar-transition lg:static lg:inset-0">
+<aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:static lg:inset-0">
     <!-- Sidebar Header -->
     <div class="flex items-center justify-center h-16 px-4 bg-primary-600 dark:bg-gray-900">
         <div class="flex items-center space-x-3">
