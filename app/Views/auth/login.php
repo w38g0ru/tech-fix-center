@@ -22,22 +22,15 @@ $config = config('App');
             theme: {
                 extend: {
                     colors: {
-                        primary: {
-                            50: '#f9fafb',
-                            100: '#f3f4f6',
-                            200: '#e5e7eb',
-                            300: '#d1d5db',
-                            400: '#9ca3af',
-                            500: '#6b7280',
-                            600: '#4b5563',
-                            700: '#374151',
-                            800: '<?= $config->brandColors['primary'] ?>',
-                            900: '<?= $config->brandColors['dark'] ?>'
-                        },
-                        accent: {
-                            50: '#eff6ff',
-                            500: '<?= $config->brandColors['accent'] ?>',
-                            600: '#2563eb'
+                        adminlte: {
+                            primary: '<?= $config->brandColors['primary'] ?>',    // #007bff
+                            secondary: '<?= $config->brandColors['secondary'] ?>', // #6c757d
+                            success: '<?= $config->brandColors['success'] ?>',    // #28a745
+                            info: '<?= $config->brandColors['info'] ?>',          // #17a2b8
+                            warning: '<?= $config->brandColors['warning'] ?>',    // #ffc107
+                            danger: '<?= $config->brandColors['danger'] ?>',      // #dc3545
+                            light: '<?= $config->brandColors['light'] ?>',        // #f8f9fa
+                            dark: '<?= $config->brandColors['dark'] ?>',          // #343a40
                         }
                     }
                 }
@@ -45,22 +38,26 @@ $config = config('App');
         }
     </script>
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        .adminlte-gradient-bg {
+            background: linear-gradient(135deg, #343a40 0%, #212529 100%);
         }
-        .glass-effect {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
+        .adminlte-card {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 0 1px rgba(0,0,0,0.125), 0 1px 3px rgba(0,0,0,0.2);
+            border-radius: 0.25rem;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            transition: all 0.3s ease;
+        .btn-adminlte-primary {
+            background: #007bff;
+            border-color: #007bff;
+            color: #ffffff;
+            transition: all 0.15s ease-in-out;
+            border-radius: 0.25rem;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        .btn-adminlte-primary:hover {
+            background: #0056b3;
+            border-color: #0056b3;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
     </style>
 </head>
@@ -71,44 +68,46 @@ $config = config('App');
         <div class="glass-effect rounded-3xl shadow-2xl overflow-hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
 
-                <!-- Left Side - Standard Minimal Branding -->
-                <div class="bg-gradient-to-br from-primary-800 to-primary-900 p-12 flex flex-col justify-center items-center text-white relative overflow-hidden">
-                    <!-- Background Pattern -->
-                    <div class="absolute inset-0 opacity-10">
-                        <div class="absolute top-10 left-10 w-32 h-32 border border-white/20 rounded-full"></div>
-                        <div class="absolute bottom-20 right-10 w-24 h-24 border border-white/20 rounded-full"></div>
-                        <div class="absolute top-1/2 left-1/4 w-16 h-16 border border-white/20 rounded-full"></div>
+                <!-- Left Side - AdminLTE Branding -->
+                <div class="adminlte-gradient-bg p-12 flex flex-col justify-center items-center text-white relative overflow-hidden">
+                    <!-- AdminLTE Background Pattern -->
+                    <div class="absolute inset-0 opacity-5">
+                        <div class="absolute top-10 left-10 w-32 h-32 border border-white/30"></div>
+                        <div class="absolute bottom-20 right-10 w-24 h-24 border border-white/30"></div>
+                        <div class="absolute top-1/2 left-1/4 w-16 h-16 border border-white/30"></div>
                     </div>
 
                     <!-- Content -->
                     <div class="relative z-10 text-center">
-                        <div class="inline-flex items-center justify-center w-24 h-24 bg-accent-500 rounded-2xl shadow-xl mb-8">
-                            <i class="fas fa-tools text-4xl text-white"></i>
+                        <div class="inline-flex items-center justify-center w-20 h-20 mb-8" style="background-color: #007bff; border-radius: 0.25rem; box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);">
+                            <i class="fas fa-tools text-3xl text-white"></i>
                         </div>
-                        <h1 class="text-4xl font-bold mb-4"><?= $config->appName ?></h1>
-                        <p class="text-xl text-primary-200 mb-8 leading-relaxed"><?= $config->appDescription ?></p>
-                        <div class="space-y-4 text-primary-100">
+                        <h1 class="text-3xl font-bold mb-4"><?= $config->appName ?></h1>
+                        <p class="text-lg text-gray-300 mb-8 leading-relaxed"><?= $config->appDescription ?></p>
+
+                        <!-- AdminLTE Feature List -->
+                        <div class="space-y-3 text-gray-200">
                             <div class="flex items-center justify-center">
-                                <i class="fas fa-shield-alt mr-3 text-accent-400"></i>
+                                <i class="fas fa-shield-alt mr-3" style="color: #007bff;"></i>
                                 <span>Secure & Professional</span>
                             </div>
                             <div class="flex items-center justify-center">
-                                <i class="fas fa-users mr-3 text-accent-400"></i>
+                                <i class="fas fa-users mr-3" style="color: #007bff;"></i>
                                 <span>Trusted by Technicians</span>
                             </div>
                             <div class="flex items-center justify-center">
-                                <i class="fas fa-clock mr-3 text-accent-400"></i>
+                                <i class="fas fa-clock mr-3" style="color: #007bff;"></i>
                                 <span>24/7 Access</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Side - Standard Minimal Login Form -->
+                <!-- Right Side - AdminLTE Login Form -->
                 <div class="p-12 flex flex-col justify-center bg-white">
                     <div class="mb-8">
-                        <h2 class="text-3xl font-bold text-primary-800 mb-3">Welcome Back</h2>
-                        <p class="text-primary-600 text-lg">Please sign in to your account</p>
+                        <h2 class="text-2xl font-bold mb-3" style="color: #343a40;">Welcome Back</h2>
+                        <p class="text-lg" style="color: #6c757d;">Please sign in to your account</p>
                     </div>
 
                     <!-- Alert Messages -->
@@ -151,14 +150,14 @@ $config = config('App');
                     <form action="<?= base_url('auth/processLogin') ?>" method="POST" id="loginForm" class="space-y-6">
                         <?= csrf_field() ?>
 
-                        <!-- Email Field -->
-                        <div class="space-y-3">
-                            <label for="email" class="block text-sm font-semibold text-primary-700">
-                                Email Address <span class="text-red-500">*</span>
+                        <!-- AdminLTE Email Field -->
+                        <div class="mb-4">
+                            <label for="email" class="block text-sm font-medium mb-2" style="color: #495057;">
+                                Email Address <span style="color: #dc3545;">*</span>
                             </label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <i class="fas fa-envelope text-primary-400"></i>
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-envelope" style="color: #6c757d;"></i>
                                 </div>
                                 <input type="email"
                                        id="email"
@@ -167,18 +166,19 @@ $config = config('App');
                                        required
                                        autocomplete="email"
                                        placeholder="Enter your email address"
-                                       class="w-full pl-12 pr-4 py-4 border border-primary-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200 text-lg">
+                                       class="form-control w-full pl-10 pr-3 py-2 text-base"
+                                       style="border: 1px solid #ced4da; border-radius: 0.25rem; transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;">
                             </div>
                         </div>
 
-                        <!-- Password Field -->
-                        <div class="space-y-3">
-                            <label for="password" class="block text-sm font-semibold text-primary-700">
-                                Password <span class="text-red-500">*</span>
+                        <!-- AdminLTE Password Field -->
+                        <div class="mb-4">
+                            <label for="password" class="block text-sm font-medium mb-2" style="color: #495057;">
+                                Password <span style="color: #dc3545;">*</span>
                             </label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <i class="fas fa-lock text-primary-400"></i>
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-lock" style="color: #6c757d;"></i>
                                 </div>
                                 <input type="password"
                                        id="password"
@@ -186,11 +186,12 @@ $config = config('App');
                                        required
                                        autocomplete="current-password"
                                        placeholder="Enter your password"
-                                       class="w-full pl-12 pr-14 py-4 border border-primary-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200 text-lg">
+                                       class="form-control w-full pl-10 pr-10 py-2 text-base"
+                                       style="border: 1px solid #ced4da; border-radius: 0.25rem; transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;">
                                 <button type="button"
                                         onclick="togglePassword()"
-                                        class="absolute inset-y-0 right-0 pr-4 flex items-center">
-                                    <i id="passwordToggle" class="fas fa-eye text-primary-400 hover:text-accent-500 transition-colors"></i>
+                                        class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                    <i id="passwordToggle" class="fas fa-eye hover:text-blue-600 transition-colors" style="color: #6c757d;"></i>
                                 </button>
                             </div>
                         </div>

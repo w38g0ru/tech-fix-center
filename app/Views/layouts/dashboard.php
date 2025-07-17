@@ -24,21 +24,15 @@ $pageTitle = $title ?? 'Dashboard';
             theme: {
                 extend: {
                     colors: {
-                        primary: {
-                            50: '#f9fafb',   // Gray-50 (Light background)
-                            100: '#f3f4f6',  // Gray-100
-                            200: '#e5e7eb',  // Gray-200
-                            300: '#d1d5db',  // Gray-300
-                            400: '#9ca3af',  // Gray-400
-                            500: '#6b7280',  // Gray-500
-                            600: '#4b5563',  // Gray-600
-                            700: '<?= $config->brandColors['secondary'] ?>', // Gray-700 (Secondary)
-                            800: '<?= $config->brandColors['primary'] ?>',   // Gray-800 (Primary)
-                            900: '<?= $config->brandColors['dark'] ?>',      // Gray-900 (Dark)
-                        },
-                        accent: {
-                            500: '<?= $config->brandColors['accent'] ?>',   // Blue-500 (Accent)
-                            600: '#2563eb',  // Blue-600
+                        adminlte: {
+                            primary: '<?= $config->brandColors['primary'] ?>',    // #007bff
+                            secondary: '<?= $config->brandColors['secondary'] ?>', // #6c757d
+                            success: '<?= $config->brandColors['success'] ?>',    // #28a745
+                            info: '<?= $config->brandColors['info'] ?>',          // #17a2b8
+                            warning: '<?= $config->brandColors['warning'] ?>',    // #ffc107
+                            danger: '<?= $config->brandColors['danger'] ?>',      // #dc3545
+                            light: '<?= $config->brandColors['light'] ?>',        // #f8f9fa
+                            dark: '<?= $config->brandColors['dark'] ?>',          // #343a40
                         }
                     }
                 }
@@ -47,28 +41,35 @@ $pageTitle = $title ?? 'Dashboard';
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        /* Standard Minimal Design Theme */
+        /* Lite AdminLTE Design Theme */
         :root {
-            --primary-50: #f9fafb;
-            --primary-100: #f3f4f6;
-            --primary-200: #e5e7eb;
-            --primary-300: #d1d5db;
-            --primary-400: #9ca3af;
-            --primary-500: #6b7280;
-            --primary-600: #4b5563;
-            --primary-700: #374151;
-            --primary-800: #1f2937;
-            --primary-900: #111827;
-            --accent-500: #3b82f6;
-            --accent-600: #2563eb;
+            --adminlte-primary: #007bff;
+            --adminlte-secondary: #6c757d;
+            --adminlte-success: #28a745;
+            --adminlte-info: #17a2b8;
+            --adminlte-warning: #ffc107;
+            --adminlte-danger: #dc3545;
+            --adminlte-light: #f8f9fa;
+            --adminlte-dark: #343a40;
+            --adminlte-white: #ffffff;
+            --adminlte-gray-100: #f8f9fa;
+            --adminlte-gray-200: #e9ecef;
+            --adminlte-gray-300: #dee2e6;
+            --adminlte-gray-400: #ced4da;
+            --adminlte-gray-500: #adb5bd;
+            --adminlte-gray-600: #6c757d;
+            --adminlte-gray-700: #495057;
+            --adminlte-gray-800: #343a40;
+            --adminlte-gray-900: #212529;
         }
 
-        /* Standard Minimal Sidebar Styles */
+        /* AdminLTE Sidebar Styles */
         .sidebar {
             transform: translateX(-100%);
             transition: transform 0.3s ease-in-out;
-            background: var(--primary-900);
-            border-right: 1px solid var(--primary-700);
+            background: var(--adminlte-dark);
+            border-right: none;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
         .sidebar.open {
@@ -86,7 +87,7 @@ $pageTitle = $title ?? 'Dashboard';
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-            background: rgba(17, 24, 39, 0.8);
+            background: rgba(52, 58, 64, 0.8);
         }
 
         .sidebar-overlay.active {
@@ -94,15 +95,16 @@ $pageTitle = $title ?? 'Dashboard';
             visibility: visible;
         }
 
-        /* Dropdown Menus */
+        /* AdminLTE Dropdown Menus */
         .dropdown-menu {
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
             transition: all 0.2s ease-in-out;
-            background: white;
-            border: 1px solid var(--primary-200);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background: var(--adminlte-white);
+            border: 1px solid var(--adminlte-gray-300);
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border-radius: 0.25rem;
         }
 
         .dropdown-menu.show {
@@ -111,53 +113,131 @@ $pageTitle = $title ?? 'Dashboard';
             transform: translateY(0);
         }
 
-        /* Standard Minimal Navigation Links */
+        /* AdminLTE Navigation Links */
         .nav-link {
-            transition: all 0.2s ease-in-out;
-            border-radius: 8px;
-            margin: 2px 0;
+            transition: all 0.15s ease-in-out;
+            border-radius: 0.25rem;
+            margin: 1px 0;
+            position: relative;
         }
 
         .nav-link:hover {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--accent-500);
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
         }
 
         .nav-link.active {
-            background: var(--accent-500);
-            color: white;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            background: var(--adminlte-primary);
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.25);
         }
 
-        /* Standard Minimal Cards */
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #ffffff;
+            border-radius: 0 2px 2px 0;
+        }
+
+        /* AdminLTE Cards */
         .card {
-            background: white;
-            border: 1px solid var(--primary-200);
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            transition: all 0.2s ease-in-out;
+            background: var(--adminlte-white);
+            border: 1px solid var(--adminlte-gray-300);
+            border-radius: 0.25rem;
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgba(0, 0, 0, 0.2);
+            transition: all 0.15s ease-in-out;
         }
 
         .card:hover {
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border-color: var(--accent-500);
-            transform: translateY(-2px);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
         }
 
-        /* Standard Minimal Buttons */
+        .card-header {
+            background: var(--adminlte-gray-100);
+            border-bottom: 1px solid var(--adminlte-gray-300);
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.25rem 0.25rem 0 0;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        /* AdminLTE Buttons */
         .btn-primary {
-            background: var(--accent-500);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 16px;
-            transition: all 0.2s ease-in-out;
+            background: var(--adminlte-primary);
+            color: #ffffff;
+            border: 1px solid var(--adminlte-primary);
+            border-radius: 0.25rem;
+            padding: 0.375rem 0.75rem;
+            transition: all 0.15s ease-in-out;
+            font-weight: 400;
         }
 
         .btn-primary:hover {
-            background: var(--accent-600);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            background: #0056b3;
+            border-color: #0056b3;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .btn-secondary {
+            background: var(--adminlte-secondary);
+            color: #ffffff;
+            border: 1px solid var(--adminlte-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+            border-color: #545b62;
+        }
+
+        .btn-success {
+            background: var(--adminlte-success);
+            color: #ffffff;
+            border: 1px solid var(--adminlte-success);
+        }
+
+        .btn-success:hover {
+            background: #1e7e34;
+            border-color: #1e7e34;
+        }
+
+        .btn-info {
+            background: var(--adminlte-info);
+            color: #ffffff;
+            border: 1px solid var(--adminlte-info);
+        }
+
+        .btn-info:hover {
+            background: #117a8b;
+            border-color: #117a8b;
+        }
+
+        .btn-warning {
+            background: var(--adminlte-warning);
+            color: #212529;
+            border: 1px solid var(--adminlte-warning);
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+            border-color: #e0a800;
+        }
+
+        .btn-danger {
+            background: var(--adminlte-danger);
+            color: #ffffff;
+            border: 1px solid var(--adminlte-danger);
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            border-color: #c82333;
         }
 
         /* Mobile optimizations */
@@ -194,10 +274,23 @@ $pageTitle = $title ?? 'Dashboard';
             }
         }
 
-        /* Focus styles */
+        /* AdminLTE Focus styles */
         .focus-ring:focus {
-            outline: 2px solid var(--accent-500);
-            outline-offset: 2px;
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        /* AdminLTE Form Controls */
+        .form-control {
+            border: 1px solid var(--adminlte-gray-400);
+            border-radius: 0.25rem;
+            padding: 0.375rem 0.75rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
 
         /* Status indicators */
@@ -206,7 +299,7 @@ $pageTitle = $title ?? 'Dashboard';
         .status-inactive { color: #dc2626; }
     </style>
 </head>
-<body class="bg-primary-50 text-primary-800">
+<body style="background-color: var(--adminlte-light);" class="text-gray-800">
     <div class="flex h-screen overflow-hidden" id="app-container">
         <!-- Mobile Overlay -->
         <div class="fixed inset-0 z-40 lg:hidden sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -214,37 +307,37 @@ $pageTitle = $title ?? 'Dashboard';
         <!-- Sidebar -->
         <div class="fixed inset-y-0 left-0 z-50 w-64 shadow-2xl sidebar lg:static lg:inset-0 lg:z-auto" id="sidebar">
 
-            <!-- Logo -->
-            <div class="flex items-center justify-center h-16 px-4 bg-primary-800 border-b border-primary-700">
+            <!-- AdminLTE Logo -->
+            <div class="flex items-center justify-center h-16 px-4" style="background-color: var(--adminlte-dark); border-bottom: 1px solid var(--adminlte-gray-700);">
                 <div class="flex items-center">
-                    <div class="h-10 w-10 bg-accent-500 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+                    <div class="h-10 w-10 rounded flex items-center justify-center mr-3" style="background-color: var(--adminlte-primary);">
                         <i class="fas fa-tools text-white text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-lg font-bold text-white tracking-tight"><?= $config->appShortName ?></h1>
-                        <p class="text-xs text-primary-300 font-medium">Dashboard</p>
+                        <h1 class="text-lg font-bold text-white"><?= $config->appShortName ?></h1>
+                        <p class="text-xs text-gray-400 font-normal">Control Panel</p>
                     </div>
                 </div>
             </div>
 
             <!-- Navigation -->
             <nav class="mt-6">
-                <div class="px-3 space-y-1">
+                <div class="px-4 py-2">
                     <a href="<?= base_url('dashboard') ?>"
-                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>">
-                        <i class="fas fa-tachometer-alt mr-3 w-5"></i>
+                       class="nav-link flex items-center px-3 py-2 text-gray-300 font-normal text-sm <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>">
+                        <i class="fas fa-tachometer-alt mr-3 w-4 text-center"></i>
                         Dashboard
                     </a>
 
                     <a href="<?= base_url('dashboard/jobs') ?>"
-                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>">
-                        <i class="fas fa-wrench mr-3 w-5"></i>
+                       class="nav-link flex items-center px-3 py-2 text-gray-300 font-normal text-sm <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>">
+                        <i class="fas fa-wrench mr-3 w-4 text-center"></i>
                         Jobs
                     </a>
 
                     <a href="<?= base_url('dashboard/users') ?>"
-                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>">
-                        <i class="fas fa-users mr-3 w-5"></i>
+                       class="nav-link flex items-center px-3 py-2 text-gray-300 font-normal text-sm <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>">
+                        <i class="fas fa-users mr-3 w-4 text-center"></i>
                         Customers
                     </a>
                     
@@ -319,54 +412,55 @@ $pageTitle = $title ?? 'Dashboard';
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Header -->
-            <header class="bg-white shadow-sm border-b border-primary-200 flex-shrink-0">
-                <div class="flex items-center justify-between px-4 py-4 lg:px-6">
+            <!-- AdminLTE Header -->
+            <header class="bg-white shadow-sm border-b flex-shrink-0" style="border-color: var(--adminlte-gray-300);">
+                <div class="flex items-center justify-between px-4 py-3 lg:px-6">
                     <div class="flex items-center">
                         <button onclick="toggleSidebar()" id="mobile-menu-btn"
-                                class="text-primary-500 hover:text-accent-500 lg:hidden p-2 rounded-lg hover:bg-accent-50 focus:outline-none focus:ring-2 focus:ring-accent-500 transition-all focus-ring">
+                                class="lg:hidden p-2 rounded hover:bg-gray-100 focus:outline-none focus-ring transition-all"
+                                style="color: var(--adminlte-secondary);">
                             <i class="fas fa-bars text-lg"></i>
                         </button>
-                        <h2 class="ml-2 text-xl font-bold text-primary-800 lg:ml-0 lg:text-2xl truncate">
+                        <h2 class="ml-2 text-xl font-semibold lg:ml-0 lg:text-2xl truncate" style="color: var(--adminlte-dark);">
                             <?= $title ?? 'Dashboard' ?>
                         </h2>
                     </div>
                     
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2">
                         <div class="relative">
-                            <button class="flex items-center text-primary-500 hover:text-accent-500 p-2 rounded-lg hover:bg-accent-50 transition-all">
+                            <button class="flex items-center p-2 rounded hover:bg-gray-100 transition-all" style="color: var(--adminlte-secondary);">
                                 <i class="fas fa-bell text-lg"></i>
-                                <span class="absolute -top-1 -right-1 bg-accent-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+                                <span class="absolute -top-1 -right-1 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold" style="background-color: var(--adminlte-danger);">3</span>
                             </button>
                         </div>
 
                         <div class="relative">
-                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="flex items-center space-x-3 text-primary-700 hover:text-primary-900 p-2 rounded-lg hover:bg-accent-50 focus-ring transition-all">
-                                <div class="w-9 h-9 bg-accent-500 rounded-xl flex items-center justify-center shadow-md">
-                                    <i class="fas fa-user text-white text-sm"></i>
+                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="flex items-center space-x-2 p-2 rounded hover:bg-gray-100 focus-ring transition-all" style="color: var(--adminlte-dark);">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm" style="background-color: var(--adminlte-primary);">
+                                    <i class="fas fa-user"></i>
                                 </div>
                                 <div class="hidden sm:block text-left">
-                                    <div class="text-sm font-semibold"><?= session()->get('full_name') ?? 'User' ?></div>
-                                    <div class="text-xs text-primary-500 capitalize"><?= session()->get('role') ?? '' ?></div>
+                                    <div class="text-sm font-medium"><?= session()->get('full_name') ?? 'User' ?></div>
+                                    <div class="text-xs capitalize" style="color: var(--adminlte-secondary);"><?= session()->get('role') ?? '' ?></div>
                                 </div>
                                 <i class="fas fa-chevron-down text-xs transition-transform" id="user-menu-arrow"></i>
                             </button>
 
-                            <!-- Dropdown Menu -->
-                            <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl py-2 z-50 border border-primary-200 dropdown-menu" id="user-menu">
-                                <div class="px-4 py-3 border-b border-primary-100">
-                                    <div class="font-semibold text-primary-800"><?= session()->get('full_name') ?? 'User' ?></div>
-                                    <div class="text-sm text-primary-500"><?= session()->get('email') ?? '' ?></div>
-                                    <div class="text-xs text-accent-500 capitalize font-medium"><?= session()->get('role') ?? '' ?></div>
+                            <!-- AdminLTE Dropdown Menu -->
+                            <div class="absolute right-0 mt-2 w-56 bg-white shadow-lg py-1 z-50 dropdown-menu" id="user-menu" style="border: 1px solid var(--adminlte-gray-300); border-radius: 0.25rem;">
+                                <div class="px-4 py-3" style="border-bottom: 1px solid var(--adminlte-gray-300);">
+                                    <div class="font-medium" style="color: var(--adminlte-dark);"><?= session()->get('full_name') ?? 'User' ?></div>
+                                    <div class="text-sm" style="color: var(--adminlte-secondary);"><?= session()->get('email') ?? '' ?></div>
+                                    <div class="text-xs capitalize font-medium" style="color: var(--adminlte-primary);"><?= session()->get('role') ?? '' ?></div>
                                 </div>
-                                <a href="<?= base_url('dashboard/profile') ?>" class="flex items-center px-4 py-3 text-sm text-primary-700 hover:bg-accent-50 hover:text-accent-600 transition-colors">
-                                    <i class="fas fa-user mr-3 w-4"></i>Profile
+                                <a href="<?= base_url('dashboard/profile') ?>" class="flex items-center px-4 py-2 text-sm hover:bg-gray-100 transition-colors" style="color: var(--adminlte-dark);">
+                                    <i class="fas fa-user mr-3 w-4" style="color: var(--adminlte-secondary);"></i>Profile
                                 </a>
-                                <a href="<?= base_url('dashboard/settings') ?>" class="flex items-center px-4 py-3 text-sm text-primary-700 hover:bg-accent-50 hover:text-accent-600 transition-colors">
-                                    <i class="fas fa-cog mr-3 w-4"></i>Settings
+                                <a href="<?= base_url('dashboard/settings') ?>" class="flex items-center px-4 py-2 text-sm hover:bg-gray-100 transition-colors" style="color: var(--adminlte-dark);">
+                                    <i class="fas fa-cog mr-3 w-4" style="color: var(--adminlte-secondary);"></i>Settings
                                 </a>
-                                <div class="border-t border-primary-100 my-1"></div>
-                                <a href="<?= base_url('auth/logout') ?>" class="flex items-center px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                <div style="border-top: 1px solid var(--adminlte-gray-300);" class="my-1"></div>
+                                <a href="<?= base_url('auth/logout') ?>" class="flex items-center px-4 py-2 text-sm hover:bg-red-50 transition-colors" style="color: var(--adminlte-danger);">
                                     <i class="fas fa-sign-out-alt mr-3 w-4"></i>Logout
                                 </a>
                             </div>
@@ -375,22 +469,22 @@ $pageTitle = $title ?? 'Dashboard';
                 </div>
             </header>
 
-            <!-- Page Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-primary-50">
+            <!-- AdminLTE Page Content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto" style="background-color: var(--adminlte-light);">
                 <div class="container mx-auto px-4 py-6 lg:px-6 lg:py-8">
                     <?php if (session()->getFlashdata('success')): ?>
-                        <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-4 rounded-xl shadow-sm" role="alert">
+                        <div class="mb-4 px-4 py-3 border-l-4 rounded" role="alert" style="background-color: #d4edda; border-color: var(--adminlte-success); color: #155724;">
                             <div class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <i class="fas fa-check-circle mr-3" style="color: var(--adminlte-success);"></i>
                                 <span class="font-medium"><?= session()->getFlashdata('success') ?></span>
                             </div>
                         </div>
                     <?php endif; ?>
 
                     <?php if (session()->getFlashdata('error')): ?>
-                        <div class="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-4 rounded-xl shadow-sm" role="alert">
+                        <div class="mb-4 px-4 py-3 border-l-4 rounded" role="alert" style="background-color: #f8d7da; border-color: var(--adminlte-danger); color: #721c24;">
                             <div class="flex items-center">
-                                <i class="fas fa-exclamation-circle text-red-500 mr-3"></i>
+                                <i class="fas fa-exclamation-circle mr-3" style="color: var(--adminlte-danger);"></i>
                                 <span class="font-medium"><?= session()->getFlashdata('error') ?></span>
                             </div>
                         </div>
