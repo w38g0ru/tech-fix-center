@@ -45,6 +45,9 @@ $RECYCLE.BIN/
 .vagrant
 Vagrantfile
 
+# Google OAuth Credentials
+app/Config/GoogleCredentials.php
+
 #-------------------------
 # Temporary Files
 #-------------------------

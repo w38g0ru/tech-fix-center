@@ -22,9 +22,18 @@ class GoogleOAuth extends BaseConfig
     {
         parent::__construct();
 
-        // Configuration - use environment variables
-        $this->clientId = env('GOOGLE_CLIENT_ID');
-        $this->clientSecret = env('GOOGLE_CLIENT_SECRET');
+        // Load credentials from separate config file if exists, otherwise use defaults
+        $credentialsFile = APPPATH . 'Config/GoogleCredentials.php';
+        if (file_exists($credentialsFile)) {
+            $credentials = include $credentialsFile;
+            $this->clientId = $credentials['client_id'] ?? '';
+            $this->clientSecret = $credentials['client_secret'] ?? '';
+        } else {
+            // Default empty values - configure in GoogleCredentials.php
+            $this->clientId = '';
+            $this->clientSecret = '';
+        }
+
         $this->redirectUri = 'https://tfc.gaighat.com/auth/google/callback';
     }
     
