@@ -21,6 +21,10 @@ $routes->get('auth/logout', 'Auth::logout');
 $routes->get('auth/forgot-password', 'Auth::forgotPassword');
 $routes->post('auth/processForgotPassword', 'Auth::processForgotPassword');
 
+// Google OAuth Routes
+$routes->get('auth/google', 'Auth::googleLogin');
+$routes->get('auth/callback', 'Auth::callback');
+
 // Dashboard Routes (Protected by Auth in Controllers)
 $routes->group('dashboard', function($routes) {
     $routes->get('/', 'Dashboard::index');

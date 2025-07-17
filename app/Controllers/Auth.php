@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\AdminUserModel;
+use App\Libraries\GoogleOAuthService;
 
 class Auth extends BaseController
 {
@@ -406,5 +407,109 @@ class Auth extends BaseController
         }
 
         return false;
+    }
+
+    /**
+     * Redirect to Google OAuth
+     */
+    public function googleLogin()
+    {
+        try {
+            $googleOAuth = new GoogleOAuthService();
+            $authUrl = $googleOAuth->getAuthUrl();
+
+            return redirect()->to($authUrl);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Google OAuth redirect error: ' . $e->getMessage());
+            return redirect()->to(base_url('auth/login'))
+                ->with('error', 'Google authentication is temporarily unavailable. Please try regular login.');
+        }
+    }
+
+    /**
+     * Handle Google OAuth callback
+     */
+    public function callback()
+    {
+        try {
+            $code = $this->request->getGet('code');
+            $error = $this->request->getGet('error');
+
+            // Check for OAuth errors
+            if ($error) {
+                log_message('warning', 'Google OAuth error: ' . $error);
+                return redirect()->to(base_url('auth/login'))
+                    ->with('error', 'Google authentication was cancelled or failed.');
+            }
+
+            if (!$code) {
+                return redirect()->to(base_url('auth/login'))
+                    ->with('error', 'Invalid Google authentication response.');
+            }
+
+            // Get user info from Google
+            $googleOAuth = new GoogleOAuthService();
+            $userInfo = $googleOAuth->handleCallback($code);
+
+            if (!$userInfo || !isset($userInfo['email'])) {
+                return redirect()->to(base_url('auth/login'))
+                    ->with('error', 'Failed to retrieve user information from Google.');
+            }
+
+            // Check if user exists in admin_user table
+            $user = $this->adminUserModel->where('email', $userInfo['email'])->first();
+
+            if (!$user) {
+                log_message('warning', 'Google OAuth attempt with non-existent email: ' . $userInfo['email']);
+                return redirect()->to(base_url('auth/login'))
+                    ->with('error', 'Your Google account is not authorized to access this system. Please contact an administrator.');
+            }
+
+            // Check if user is active
+            if ($user['status'] !== 'active') {
+                log_message('warning', 'Google OAuth attempt with inactive account: ' . $userInfo['email']);
+                return redirect()->to(base_url('auth/login'))
+                    ->with('error', 'Your account is inactive. Please contact an administrator.');
+            }
+
+            // Log successful Google login
+            log_message('info', 'Successful Google OAuth login: ' . $user['email'] . ' (ID: ' . $user['id'] . ')');
+
+            // Set session data
+            $sessionData = [
+                'user_id' => $user['id'],
+                'username' => $user['username'],
+                'email' => $user['email'],
+                'full_name' => $user['full_name'] ?? $user['name'] ?? $userInfo['name'],
+                'name' => $user['name'] ?? $userInfo['name'],
+                'role' => $user['role'],
+                'google_id' => $userInfo['id'],
+                'google_picture' => $userInfo['picture'] ?? null,
+                'login_method' => 'google',
+                'last_activity' => time(),
+                'isLoggedIn' => true
+            ];
+
+            session()->set($sessionData);
+
+            // Update last login time
+            $this->adminUserModel->update($user['id'], [
+                'last_login' => date('Y-m-d H:i:s'),
+                'google_id' => $userInfo['id'] // Store Google ID for future reference
+            ]);
+
+            // Redirect to intended URL or dashboard
+            $redirectUrl = session()->get('redirect_url') ?? $this->getRedirectUrl($user['role']);
+            session()->remove('redirect_url');
+
+            return redirect()->to($redirectUrl)
+                ->with('success', 'Welcome back, ' . ($user['full_name'] ?? $user['name']) . '! You have been logged in via Google.');
+
+        } catch (\Exception $e) {
+            log_message('error', 'Google OAuth callback error: ' . $e->getMessage());
+            return redirect()->to(base_url('auth/login'))
+                ->with('error', 'An error occurred during Google authentication. Please try again or use regular login.');
+        }
     }
 }
