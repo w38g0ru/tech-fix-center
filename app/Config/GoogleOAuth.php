@@ -25,7 +25,7 @@ class GoogleOAuth extends BaseConfig
         // Configuration - decode from base64 to avoid GitHub secret detection
         $this->clientId = base64_decode('ODE3ODY0NjIwMDA5LXJzNGE4OWRrMzcwOHMwbjZobjFnbXVzdmpqbWpsa2VudS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbQ==');
         $this->clientSecret = base64_decode('R09DU1BYLUZYT2VMdTVDVzlpMHBQRUV4MTVLUW5OampCdQ==');
-        $this->redirectUri = 'https://tfc.gaighat.com/auth/callback';
+        $this->redirectUri = 'https://tfc.gaighat.com/auth/google/callback';
     }
     
     /**
