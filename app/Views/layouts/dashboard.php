@@ -67,15 +67,28 @@ $pageTitle = $title ?? 'Dashboard';
             --quasar-text-secondary: #757575;
         }
 
-        /* Quasar Minimalist Improved Sidebar */
+        /* Quasar Improved Layout Sidebar */
         .sidebar {
             transform: translateX(-100%);
             transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
             background: var(--quasar-surface);
             border-right: 1px solid var(--quasar-separator);
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
-            width: 280px;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
+            width: 320px;
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar {
+                width: 280px;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .sidebar {
+                width: 320px;
+            }
         }
 
         .sidebar.open {
@@ -170,30 +183,34 @@ $pageTitle = $title ?? 'Dashboard';
             border-radius: 2px 0 0 2px;
         }
 
-        /* Quasar Minimalist Cards */
+        /* Quasar Improved Layout Cards */
         .card {
             background: var(--quasar-surface);
             border: none;
-            border-radius: 4px;
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.08);
             transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
+            margin-bottom: 24px;
         }
 
         .card:hover {
-            box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 8px 32px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
         }
 
         .card-header {
             background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover));
             color: white;
             border-bottom: none;
-            padding: 16px 24px;
+            padding: 20px 32px;
             border-radius: 0;
-            font-weight: 500;
-            font-size: 16px;
+            font-weight: 600;
+            font-size: 18px;
             position: relative;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
         }
 
         .card-header::after {
@@ -202,13 +219,24 @@ $pageTitle = $title ?? 'Dashboard';
             bottom: 0;
             left: 0;
             right: 0;
-            height: 2px;
-            background: var(--quasar-accent);
+            height: 3px;
+            background: linear-gradient(90deg, var(--quasar-accent), var(--quasar-secondary));
         }
 
         .card-body {
-            padding: 24px;
+            padding: 32px;
             background: var(--quasar-surface);
+            line-height: 1.6;
+        }
+
+        .card-compact .card-header {
+            padding: 16px 24px;
+            min-height: 60px;
+            font-size: 16px;
+        }
+
+        .card-compact .card-body {
+            padding: 24px;
         }
 
         /* Quasar Minimalist Button System */
@@ -423,6 +451,85 @@ $pageTitle = $title ?? 'Dashboard';
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
         }
 
+        /* Quasar Improved Layout System */
+        .layout-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .layout-grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .layout-grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .layout-grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        @media (min-width: 768px) {
+            .layout-grid {
+                gap: 32px;
+            }
+
+            .layout-grid-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .layout-grid-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .layout-grid-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Layout Spacing */
+        .layout-section {
+            margin-bottom: 48px;
+        }
+
+        .layout-section:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Responsive Containers */
+        .container-fluid {
+            width: 100%;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        @media (min-width: 640px) {
+            .container-fluid {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container-fluid {
+                padding-left: 32px;
+                padding-right: 32px;
+            }
+        }
+
+        /* Enhanced Shadows */
+        .shadow-soft {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+        }
+
+        .shadow-medium {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        .shadow-strong {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 16px 64px rgba(0, 0, 0, 0.08);
+        }
+
         /* Status indicators */
         .status-active { color: #059669; }
         .status-pending { color: #f59e0b; }
@@ -430,68 +537,101 @@ $pageTitle = $title ?? 'Dashboard';
     </style>
 </head>
 <body style="background-color: var(--quasar-background);" class="text-gray-800">
-    <div class="flex h-screen overflow-hidden" id="app-container">
+    <div class="flex h-screen overflow-hidden" id="app-container" style="background: var(--quasar-background);">
         <!-- Mobile Overlay -->
         <div class="fixed inset-0 z-40 lg:hidden sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
         <!-- Sidebar -->
-        <div class="fixed inset-y-0 left-0 z-50 w-64 shadow-2xl sidebar lg:static lg:inset-0 lg:z-auto" id="sidebar">
+        <div class="fixed inset-y-0 left-0 z-50 w-80 shadow-2xl sidebar lg:static lg:inset-0 lg:z-auto lg:w-72 xl:w-80" id="sidebar">
 
-            <!-- Quasar Minimalist Improved Logo -->
-            <div class="flex items-center justify-center h-20 px-6 relative" style="background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover)); border-bottom: 2px solid var(--quasar-accent);">
+            <!-- Quasar Improved Layout Logo -->
+            <div class="flex items-center justify-center h-24 px-8 relative" style="background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover)); border-bottom: 3px solid var(--quasar-accent);">
                 <div class="flex items-center">
-                    <div class="h-12 w-12 rounded-lg flex items-center justify-center mr-4 shadow-lg" style="background-color: var(--quasar-surface); border: 2px solid var(--quasar-accent);">
+                    <div class="h-14 w-14 rounded-xl flex items-center justify-center mr-5 shadow-xl" style="background-color: var(--quasar-surface); border: 2px solid var(--quasar-accent);">
                         <i class="fas fa-tools text-2xl" style="color: var(--quasar-primary);"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold text-white"><?= $config->appShortName ?></h1>
-                        <p class="text-sm text-blue-100 font-medium">Control Center</p>
+                        <h1 class="text-2xl font-bold text-white"><?= $config->appShortName ?></h1>
+                        <p class="text-sm text-blue-100 font-semibold">Control Center</p>
                     </div>
                 </div>
-                <!-- Decorative accent -->
-                <div class="absolute bottom-0 left-0 right-0 h-1" style="background: linear-gradient(90deg, var(--quasar-accent), var(--quasar-secondary));"></div>
+                <!-- Enhanced decorative accent -->
+                <div class="absolute bottom-0 left-0 right-0 h-1" style="background: linear-gradient(90deg, var(--quasar-accent), var(--quasar-secondary), var(--quasar-info));"></div>
+                <!-- Corner decorations -->
+                <div class="absolute top-4 right-4 w-2 h-2 rounded-full" style="background: var(--quasar-accent); opacity: 0.7;"></div>
+                <div class="absolute bottom-4 left-4 w-1 h-1 rounded-full" style="background: var(--quasar-secondary); opacity: 0.5;"></div>
             </div>
 
-            <!-- Quasar Minimalist Improved Navigation -->
-            <nav class="mt-8">
+            <!-- Quasar Improved Layout Navigation -->
+            <nav class="mt-8 px-4">
                 <!-- Navigation Header -->
-                <div class="px-6 mb-4">
-                    <h3 class="text-xs font-bold uppercase tracking-wider" style="color: var(--quasar-text-secondary);">Main Menu</h3>
+                <div class="mb-6">
+                    <h3 class="text-xs font-bold uppercase tracking-wider px-2" style="color: var(--quasar-text-secondary);">Main Menu</h3>
+                    <div class="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mt-2"></div>
                 </div>
 
-                <div class="px-3 space-y-1">
+                <div class="space-y-2">
                     <a href="<?= base_url('dashboard') ?>"
-                       class="nav-link flex items-center px-4 py-4 font-medium <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
-                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: rgba(25, 118, 210, 0.1);">
-                            <i class="fas fa-tachometer-alt text-lg" style="color: var(--quasar-primary);"></i>
+                       class="nav-link group flex items-center px-4 py-4 font-medium rounded-xl transition-all duration-300 <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(25, 118, 210, 0.1);">
+                            <i class="fas fa-tachometer-alt text-xl transition-all duration-300" style="color: var(--quasar-primary);"></i>
                         </div>
                         <div class="flex-1">
-                            <div class="font-semibold">Dashboard</div>
-                            <div class="text-xs" style="color: var(--quasar-text-secondary);">Overview & Stats</div>
+                            <div class="font-bold text-base">Dashboard</div>
+                            <div class="text-sm font-medium opacity-70" style="color: var(--quasar-text-secondary);">Overview & Analytics</div>
                         </div>
+                        <div class="w-2 h-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100" style="background: var(--quasar-primary);"></div>
                     </a>
 
                     <a href="<?= base_url('dashboard/jobs') ?>"
-                       class="nav-link flex items-center px-4 py-4 font-medium <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
-                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: rgba(38, 166, 154, 0.1);">
-                            <i class="fas fa-wrench text-lg" style="color: var(--quasar-secondary);"></i>
+                       class="nav-link group flex items-center px-4 py-4 font-medium rounded-xl transition-all duration-300 <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(38, 166, 154, 0.1);">
+                            <i class="fas fa-wrench text-xl transition-all duration-300" style="color: var(--quasar-secondary);"></i>
                         </div>
                         <div class="flex-1">
-                            <div class="font-semibold">Jobs</div>
-                            <div class="text-xs" style="color: var(--quasar-text-secondary);">Repair Tasks</div>
+                            <div class="font-bold text-base">Jobs</div>
+                            <div class="text-sm font-medium opacity-70" style="color: var(--quasar-text-secondary);">Repair Management</div>
                         </div>
+                        <div class="w-2 h-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100" style="background: var(--quasar-secondary);"></div>
                     </a>
 
                     <a href="<?= base_url('dashboard/users') ?>"
-                       class="nav-link flex items-center px-4 py-4 font-medium <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
-                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: rgba(156, 39, 176, 0.1);">
-                            <i class="fas fa-users text-lg" style="color: var(--quasar-accent);"></i>
+                       class="nav-link group flex items-center px-4 py-4 font-medium rounded-xl transition-all duration-300 <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(156, 39, 176, 0.1);">
+                            <i class="fas fa-users text-xl transition-all duration-300" style="color: var(--quasar-accent);"></i>
                         </div>
                         <div class="flex-1">
-                            <div class="font-semibold">Customers</div>
-                            <div class="text-xs" style="color: var(--quasar-text-secondary);">Client Management</div>
+                            <div class="font-bold text-base">Customers</div>
+                            <div class="text-sm font-medium opacity-70" style="color: var(--quasar-text-secondary);">Client Database</div>
                         </div>
+                        <div class="w-2 h-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100" style="background: var(--quasar-accent);"></div>
                     </a>
+                </div>
+
+                <!-- Secondary Navigation -->
+                <div class="mt-8">
+                    <div class="mb-4">
+                        <h3 class="text-xs font-bold uppercase tracking-wider px-2" style="color: var(--quasar-text-secondary);">Management</h3>
+                        <div class="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mt-2"></div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <a href="<?= base_url('dashboard/inventory') ?>"
+                           class="nav-link group flex items-center px-4 py-3 font-medium rounded-lg transition-all duration-300 <?= strpos(uri_string(), 'inventory') !== false ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
+                            <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(255, 152, 0, 0.1);">
+                                <i class="fas fa-boxes text-sm" style="color: var(--quasar-warning);"></i>
+                            </div>
+                            <span class="font-semibold">Inventory</span>
+                        </a>
+
+                        <a href="<?= base_url('dashboard/reports') ?>"
+                           class="nav-link group flex items-center px-4 py-3 font-medium rounded-lg transition-all duration-300" style="color: var(--quasar-text-primary);">
+                            <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(33, 150, 243, 0.1);">
+                                <i class="fas fa-chart-bar text-sm" style="color: var(--quasar-info);"></i>
+                            </div>
+                            <span class="font-semibold">Reports</span>
+                        </a>
+                    </div>
                 </div>
                     
 
@@ -565,20 +705,44 @@ $pageTitle = $title ?? 'Dashboard';
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Quasar Minimalist Header -->
-            <header class="bg-white shadow-sm border-b flex-shrink-0" style="border-color: var(--quasar-separator); box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);">
-                <div class="flex items-center justify-between px-6 py-4 lg:px-8">
-                    <div class="flex items-center">
+            <!-- Quasar Improved Layout Header -->
+            <header class="bg-white shadow-sm border-b flex-shrink-0 relative" style="border-color: var(--quasar-separator); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                <!-- Header Background Gradient -->
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50 opacity-30"></div>
+
+                <div class="relative flex items-center justify-between px-6 py-5 lg:px-8">
+                    <div class="flex items-center flex-1">
                         <button onclick="toggleSidebar()" id="mobile-menu-btn"
-                                class="lg:hidden p-3 rounded-lg hover:bg-gray-100 focus:outline-none focus-ring transition-all"
-                                style="color: var(--quasar-text-secondary);">
+                                class="lg:hidden p-3 rounded-xl hover:bg-white hover:bg-opacity-50 focus:outline-none focus-ring transition-all shadow-sm"
+                                style="color: var(--quasar-text-secondary); background: rgba(255, 255, 255, 0.8);">
                             <i class="fas fa-bars text-lg"></i>
                         </button>
-                        <div class="ml-3 lg:ml-0">
-                            <h2 class="text-2xl font-light truncate" style="color: var(--quasar-text-primary);">
-                                <?= $title ?? 'Dashboard' ?>
-                            </h2>
-                            <div class="h-1 w-16 mt-1 rounded" style="background: linear-gradient(90deg, var(--quasar-primary), var(--quasar-accent));"></div>
+
+                        <!-- Page Title Section -->
+                        <div class="ml-4 lg:ml-0 flex-1">
+                            <div class="flex items-center space-x-4">
+                                <div>
+                                    <h1 class="text-3xl font-bold truncate" style="color: var(--quasar-text-primary);">
+                                        <?= $title ?? 'Dashboard' ?>
+                                    </h1>
+                                    <?php if (isset($subtitle)): ?>
+                                        <p class="text-sm font-medium mt-1" style="color: var(--quasar-text-secondary);"><?= $subtitle ?></p>
+                                    <?php endif; ?>
+                                    <div class="h-1 w-20 mt-2 rounded-full" style="background: linear-gradient(90deg, var(--quasar-primary), var(--quasar-accent));"></div>
+                                </div>
+
+                                <!-- Quick Stats or Info -->
+                                <?php if (isset($headerStats) && !empty($headerStats)): ?>
+                                    <div class="hidden md:flex items-center space-x-6 ml-8">
+                                        <?php foreach ($headerStats as $stat): ?>
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold" style="color: var(--quasar-primary);"><?= $stat['value'] ?></div>
+                                                <div class="text-xs font-medium" style="color: var(--quasar-text-secondary);"><?= $stat['label'] ?></div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                     
@@ -634,32 +798,86 @@ $pageTitle = $title ?? 'Dashboard';
                 </div>
             </header>
 
-            <!-- Quasar Minimalist Page Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto" style="background-color: var(--quasar-background);">
-                <div class="container mx-auto px-6 py-8 lg:px-8 lg:py-10">
-                    <?php if (session()->getFlashdata('success')): ?>
-                        <div class="mb-6 px-6 py-4 rounded-lg shadow-lg" role="alert" style="background: linear-gradient(135deg, #e8f5e8, #f1f8e9); border-left: 4px solid var(--quasar-success); color: var(--quasar-success);">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: var(--quasar-success);">
-                                    <i class="fas fa-check-circle text-white"></i>
+            <!-- Quasar Improved Layout Page Content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto" style="background: linear-gradient(135deg, var(--quasar-background) 0%, #f8f9fa 100%);">
+                <!-- Content Container with Improved Layout -->
+                <div class="min-h-full">
+                    <!-- Page Header Section -->
+                    <div class="bg-white shadow-sm border-b" style="border-color: var(--quasar-separator);">
+                        <div class="max-w-7xl mx-auto px-6 py-6 lg:px-8">
+                            <!-- Breadcrumb and Actions -->
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                                <div class="flex-1 min-w-0">
+                                    <nav class="flex mb-2" aria-label="Breadcrumb">
+                                        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                                            <li class="inline-flex items-center">
+                                                <a href="<?= base_url('dashboard') ?>" class="text-sm font-medium hover:text-blue-600 transition-colors" style="color: var(--quasar-text-secondary);">
+                                                    <i class="fas fa-home mr-2"></i>Dashboard
+                                                </a>
+                                            </li>
+                                            <?php if (isset($breadcrumb) && !empty($breadcrumb)): ?>
+                                                <?php foreach ($breadcrumb as $item): ?>
+                                                    <li>
+                                                        <div class="flex items-center">
+                                                            <i class="fas fa-chevron-right text-xs mx-2" style="color: var(--quasar-text-secondary);"></i>
+                                                            <?php if (isset($item['url'])): ?>
+                                                                <a href="<?= $item['url'] ?>" class="text-sm font-medium hover:text-blue-600 transition-colors" style="color: var(--quasar-text-secondary);"><?= $item['title'] ?></a>
+                                                            <?php else: ?>
+                                                                <span class="text-sm font-medium" style="color: var(--quasar-primary);"><?= $item['title'] ?></span>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </ol>
+                                    </nav>
                                 </div>
-                                <span class="font-semibold text-lg"><?= session()->getFlashdata('success') ?></span>
                             </div>
                         </div>
-                    <?php endif; ?>
+                    </div>
 
-                    <?php if (session()->getFlashdata('error')): ?>
-                        <div class="mb-6 px-6 py-4 rounded-lg shadow-lg" role="alert" style="background: linear-gradient(135deg, #fce8e6, #ffebee); border-left: 4px solid var(--quasar-danger); color: var(--quasar-danger);">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: var(--quasar-danger);">
-                                    <i class="fas fa-exclamation-circle text-white"></i>
+                    <!-- Main Content Area -->
+                    <div class="max-w-7xl mx-auto px-6 py-8 lg:px-8">
+                        <!-- Flash Messages with Improved Styling -->
+                        <?php if (session()->getFlashdata('success')): ?>
+                            <div class="mb-8 px-6 py-5 rounded-xl shadow-lg border-l-4" role="alert" style="background: linear-gradient(135deg, #e8f5e8, #f1f8e9); border-color: var(--quasar-success); color: var(--quasar-success);">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-5 shadow-md" style="background: var(--quasar-success);">
+                                        <i class="fas fa-check-circle text-white text-lg"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-lg mb-1">Success!</h4>
+                                        <p class="font-medium opacity-90"><?= session()->getFlashdata('success') ?></p>
+                                    </div>
+                                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 p-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors">
+                                        <i class="fas fa-times"></i>
+                                    </button>
                                 </div>
-                                <span class="font-semibold text-lg"><?= session()->getFlashdata('error') ?></span>
                             </div>
-                        </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
 
-                    <?= $this->renderSection('content') ?>
+                        <?php if (session()->getFlashdata('error')): ?>
+                            <div class="mb-8 px-6 py-5 rounded-xl shadow-lg border-l-4" role="alert" style="background: linear-gradient(135deg, #fce8e6, #ffebee); border-color: var(--quasar-danger); color: var(--quasar-danger);">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-5 shadow-md" style="background: var(--quasar-danger);">
+                                        <i class="fas fa-exclamation-circle text-white text-lg"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-lg mb-1">Error!</h4>
+                                        <p class="font-medium opacity-90"><?= session()->getFlashdata('error') ?></p>
+                                    </div>
+                                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 p-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
+                        <!-- Page Content -->
+                        <div class="space-y-8">
+                            <?= $this->renderSection('content') ?>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
