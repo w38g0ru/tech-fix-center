@@ -1,23 +1,23 @@
-/* TeknoPhix - Monochromatic Design Theme */
+/* TeknoPhix - Dark Yellow Minimal Design */
 
 :root {
-    /* Monochromatic Gray Scale */
-    --mono-50: #f9fafb;
-    --mono-100: #f3f4f6;
-    --mono-200: #e5e7eb;
-    --mono-300: #d1d5db;
-    --mono-400: #9ca3af;
-    --mono-500: #6b7280;
-    --mono-600: #4b5563;
-    --mono-700: #374151;
-    --mono-800: #1f2937;
-    --mono-900: #111827;
+    /* Dark Yellow Minimal Palette */
+    --yellow-50: #fffbeb;
+    --yellow-100: #fef3c7;
+    --yellow-200: #fde68a;
+    --yellow-300: #fcd34d;
+    --yellow-400: #fbbf24;
+    --yellow-500: #f59e0b;
+    --yellow-600: #d97706;
+    --yellow-700: #b45309;
+    --yellow-800: #92400e;
+    --yellow-900: #451a03;
 
-    /* Status Colors - Monochromatic */
-    --success: #6b7280;    /* Gray-500 for success */
-    --warning: #9ca3af;    /* Gray-400 for warning */
-    --danger: #4b5563;     /* Gray-600 for danger */
-    --info: #d1d5db;       /* Gray-300 for info */
+    /* Status Colors - Minimal */
+    --success: #059669;    /* Emerald-600 for success */
+    --warning: #f59e0b;    /* Amber-500 for warning */
+    --danger: #dc2626;     /* Red-600 for danger */
+    --info: #0284c7;       /* Sky-600 for info */
 }
 
 /* Base Styles */
@@ -32,8 +32,8 @@ body {
 }
 
 /* Typography */
-.text-primary { color: var(--mono-700); }
-.text-secondary { color: var(--mono-500); }
+.text-primary { color: var(--yellow-600); }
+.text-secondary { color: var(--yellow-700); }
 .text-success { color: var(--success); }
 .text-warning { color: var(--warning); }
 .text-danger { color: var(--danger); }
@@ -54,35 +54,43 @@ body {
 }
 
 .btn-primary {
-    background: var(--mono-700);
+    background: var(--yellow-600);
     color: white;
+    border-radius: 12px;
+    font-weight: 600;
 }
 
 .btn-primary:hover {
-    background: var(--mono-800);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(55, 65, 81, 0.3);
+    background: var(--yellow-700);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(217, 119, 6, 0.4);
 }
 
 .btn-secondary {
-    background: var(--mono-600);
+    background: var(--yellow-700);
     color: white;
+    border-radius: 12px;
+    font-weight: 600;
 }
 
 .btn-secondary:hover {
-    background: var(--mono-700);
-    transform: translateY(-1px);
+    background: var(--yellow-800);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(180, 83, 9, 0.3);
 }
 
 .btn-outline {
     background: transparent;
-    border: 1px solid var(--mono-600);
-    color: var(--mono-600);
+    border: 2px solid var(--yellow-600);
+    color: var(--yellow-600);
+    border-radius: 12px;
+    font-weight: 600;
 }
 
 .btn-outline:hover {
-    background: var(--mono-600);
+    background: var(--yellow-600);
     color: white;
+    transform: translateY(-1px);
 }
 
 .btn-sm {
