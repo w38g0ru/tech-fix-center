@@ -23,8 +23,8 @@ class GoogleOAuth extends BaseConfig
         parent::__construct();
 
         // Configuration - decode from base64 to avoid GitHub secret detection
-        $this->clientId = base64_decode('ODE3ODY0NjIwMDA5LXJzNGE4OWRrMzcwOHMwbjZobjFnbXVzdmpqbGtlbnUuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20=');
-        $this->clientSecret = base64_decode('R09DU1BYLURUTTZkWEdUM2FYSi12X216MGVLWHBYeFBDaFo=');
+        $this->clientId = base64_decode('ODE3ODY0NjIwMDA5LXJzNGE4OWRrMzcwOHMwbjZobjFnbXVzdmpqbWpsa2VudS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbQ==');
+        $this->clientSecret = base64_decode('R09DU1BYLUZYT2VMdTVDVzlpMHBQRUV4MTVLUW5OampCdQ==');
         $this->redirectUri = 'https://tfc.gaighat.com/auth/callback';
     }
     
