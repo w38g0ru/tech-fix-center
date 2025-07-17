@@ -24,16 +24,15 @@ $pageTitle = $title ?? 'Dashboard';
             theme: {
                 extend: {
                     colors: {
-                        darkbtn: {
-                            primary: '<?= $config->brandColors['primary'] ?>',    // #212529
-                            secondary: '<?= $config->brandColors['secondary'] ?>', // #495057
-                            accent: '<?= $config->brandColors['accent'] ?>',      // #6c757d
-                            success: '<?= $config->brandColors['success'] ?>',    // #155724
-                            info: '<?= $config->brandColors['info'] ?>',          // #0c5460
-                            warning: '<?= $config->brandColors['warning'] ?>',    // #856404
-                            danger: '<?= $config->brandColors['danger'] ?>',      // #721c24
-                            light: '<?= $config->brandColors['light'] ?>',        // #f8f9fa
-                            dark: '<?= $config->brandColors['dark'] ?>',          // #1a1e21
+                        google: {
+                            blue: '<?= $config->brandColors['primary'] ?>',      // #1a73e8
+                            gray: '<?= $config->brandColors['secondary'] ?>',    // #5f6368
+                            green: '<?= $config->brandColors['accent'] ?>',      // #34a853
+                            yellow: '<?= $config->brandColors['warning'] ?>',    // #fbbc04
+                            red: '<?= $config->brandColors['danger'] ?>',        // #ea4335
+                            info: '<?= $config->brandColors['info'] ?>',         // #4285f4
+                            dark: '<?= $config->brandColors['dark'] ?>',         // #202124
+                            light: '<?= $config->brandColors['light'] ?>',       // #ffffff
                         }
                     }
                 }
@@ -42,36 +41,33 @@ $pageTitle = $title ?? 'Dashboard';
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        /* Dark Button Based Design Theme */
+        /* Google Clean Design Theme */
         :root {
-            --darkbtn-primary: #212529;
-            --darkbtn-secondary: #495057;
-            --darkbtn-accent: #6c757d;
-            --darkbtn-success: #155724;
-            --darkbtn-info: #0c5460;
-            --darkbtn-warning: #856404;
-            --darkbtn-danger: #721c24;
-            --darkbtn-light: #f8f9fa;
-            --darkbtn-dark: #1a1e21;
-            --darkbtn-white: #ffffff;
-            --darkbtn-gray-100: #f8f9fa;
-            --darkbtn-gray-200: #e9ecef;
-            --darkbtn-gray-300: #dee2e6;
-            --darkbtn-gray-400: #ced4da;
-            --darkbtn-gray-500: #adb5bd;
-            --darkbtn-gray-600: #6c757d;
-            --darkbtn-gray-700: #495057;
-            --darkbtn-gray-800: #343a40;
-            --darkbtn-gray-900: #212529;
+            --google-blue: #1a73e8;
+            --google-blue-hover: #1557b0;
+            --google-gray: #5f6368;
+            --google-gray-light: #9aa0a6;
+            --google-gray-lighter: #dadce0;
+            --google-gray-lightest: #f8f9fa;
+            --google-green: #34a853;
+            --google-yellow: #fbbc04;
+            --google-red: #ea4335;
+            --google-dark: #202124;
+            --google-white: #ffffff;
+            --google-surface: #ffffff;
+            --google-background: #fafafa;
+            --google-border: #e8eaed;
+            --google-shadow: rgba(60, 64, 67, 0.3);
+            --google-shadow-light: rgba(60, 64, 67, 0.15);
         }
 
-        /* Dark Button Sidebar Styles */
+        /* Google Clean Sidebar Styles */
         .sidebar {
             transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
-            background: var(--darkbtn-dark);
-            border-right: 2px solid var(--darkbtn-primary);
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            background: var(--google-surface);
+            border-right: 1px solid var(--google-border);
+            box-shadow: 0 1px 2px 0 var(--google-shadow-light), 0 1px 3px 1px var(--google-shadow-light);
         }
 
         .sidebar.open {
@@ -88,8 +84,8 @@ $pageTitle = $title ?? 'Dashboard';
         .sidebar-overlay {
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-            background: rgba(26, 30, 33, 0.9);
+            transition: opacity 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            background: rgba(32, 33, 36, 0.6);
         }
 
         .sidebar-overlay.active {
@@ -97,16 +93,16 @@ $pageTitle = $title ?? 'Dashboard';
             visibility: visible;
         }
 
-        /* Dark Button Dropdown Menus */
+        /* Google Clean Dropdown Menus */
         .dropdown-menu {
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.2s ease-in-out;
-            background: var(--darkbtn-white);
-            border: 2px solid var(--darkbtn-primary);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            border-radius: 0.5rem;
+            transform: translateY(-8px);
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            background: var(--google-surface);
+            border: 1px solid var(--google-border);
+            box-shadow: 0 2px 10px 0 var(--google-shadow);
+            border-radius: 8px;
         }
 
         .dropdown-menu.show {
@@ -115,169 +111,173 @@ $pageTitle = $title ?? 'Dashboard';
             transform: translateY(0);
         }
 
-        /* Dark Button Navigation Links */
+        /* Google Clean Navigation Links */
         .nav-link {
-            transition: all 0.2s ease-in-out;
-            border-radius: 0.5rem;
-            margin: 3px 0;
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            border-radius: 24px;
+            margin: 4px 8px;
             position: relative;
-            border: 1px solid transparent;
+            font-weight: 500;
         }
 
         .nav-link:hover {
-            background: var(--darkbtn-primary);
-            color: #ffffff;
-            border-color: var(--darkbtn-accent);
-            box-shadow: 0 2px 8px rgba(33, 37, 41, 0.3);
+            background: rgba(26, 115, 232, 0.08);
+            color: var(--google-blue);
         }
 
         .nav-link.active {
-            background: var(--darkbtn-primary);
-            color: #ffffff;
-            border-color: var(--darkbtn-accent);
-            box-shadow: 0 4px 12px rgba(33, 37, 41, 0.4);
+            background: rgba(26, 115, 232, 0.12);
+            color: var(--google-blue);
+            font-weight: 600;
         }
 
         .nav-link.active::before {
             content: '';
             position: absolute;
-            left: -1px;
-            top: 0;
-            bottom: 0;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
             width: 4px;
-            background: var(--darkbtn-accent);
-            border-radius: 0 4px 4px 0;
+            height: 24px;
+            background: var(--google-blue);
+            border-radius: 0 2px 2px 0;
         }
 
-        /* Dark Button Cards */
+        /* Google Clean Cards */
         .card {
-            background: var(--darkbtn-white);
-            border: 2px solid var(--darkbtn-primary);
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 12px rgba(33, 37, 41, 0.15);
-            transition: all 0.2s ease-in-out;
+            background: var(--google-surface);
+            border: 1px solid var(--google-border);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px 0 var(--google-shadow-light), 0 1px 3px 1px var(--google-shadow-light);
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
         .card:hover {
-            box-shadow: 0 8px 24px rgba(33, 37, 41, 0.25);
-            transform: translateY(-2px);
-            border-color: var(--darkbtn-accent);
+            box-shadow: 0 1px 3px 0 var(--google-shadow), 0 4px 8px 3px var(--google-shadow-light);
+            transform: translateY(-1px);
         }
 
         .card-header {
-            background: var(--darkbtn-primary);
-            color: var(--darkbtn-white);
-            border-bottom: 2px solid var(--darkbtn-accent);
-            padding: 1rem 1.5rem;
-            border-radius: 0.75rem 0.75rem 0 0;
-            font-weight: 600;
+            background: var(--google-surface);
+            color: var(--google-dark);
+            border-bottom: 1px solid var(--google-border);
+            padding: 16px 24px;
+            border-radius: 8px 8px 0 0;
+            font-weight: 500;
+            font-size: 16px;
         }
 
         .card-body {
-            padding: 1.5rem;
+            padding: 24px;
         }
 
-        /* Dark Button System */
+        /* Google Clean Button System */
         .btn-primary {
-            background: var(--darkbtn-primary);
-            color: #ffffff;
-            border: 2px solid var(--darkbtn-primary);
-            border-radius: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            transition: all 0.2s ease-in-out;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(33, 37, 41, 0.2);
+            background: var(--google-blue);
+            color: var(--google-white);
+            border: none;
+            border-radius: 4px;
+            padding: 10px 24px;
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            font-weight: 500;
+            font-size: 14px;
+            box-shadow: 0 1px 2px 0 var(--google-shadow-light), 0 1px 3px 1px var(--google-shadow-light);
+            text-transform: none;
         }
 
         .btn-primary:hover {
-            background: var(--darkbtn-dark);
-            border-color: var(--darkbtn-accent);
-            box-shadow: 0 4px 16px rgba(33, 37, 41, 0.3);
+            background: var(--google-blue-hover);
+            box-shadow: 0 1px 3px 0 var(--google-shadow), 0 4px 8px 3px var(--google-shadow-light);
             transform: translateY(-1px);
         }
 
         .btn-secondary {
-            background: var(--darkbtn-secondary);
-            color: #ffffff;
-            border: 2px solid var(--darkbtn-secondary);
-            border-radius: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(73, 80, 87, 0.2);
+            background: var(--google-surface);
+            color: var(--google-blue);
+            border: 1px solid var(--google-border);
+            border-radius: 4px;
+            padding: 10px 24px;
+            font-weight: 500;
+            font-size: 14px;
+            box-shadow: 0 1px 2px 0 var(--google-shadow-light);
+            text-transform: none;
         }
 
         .btn-secondary:hover {
-            background: var(--darkbtn-primary);
-            border-color: var(--darkbtn-accent);
-            box-shadow: 0 4px 16px rgba(73, 80, 87, 0.3);
-            transform: translateY(-1px);
+            background: rgba(26, 115, 232, 0.04);
+            border-color: var(--google-blue);
+            box-shadow: 0 1px 3px 0 var(--google-shadow-light);
         }
 
         .btn-success {
-            background: var(--darkbtn-success);
-            color: #ffffff;
-            border: 2px solid var(--darkbtn-success);
-            border-radius: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(21, 87, 36, 0.2);
+            background: var(--google-green);
+            color: var(--google-white);
+            border: none;
+            border-radius: 4px;
+            padding: 10px 24px;
+            font-weight: 500;
+            font-size: 14px;
+            box-shadow: 0 1px 2px 0 var(--google-shadow-light);
+            text-transform: none;
         }
 
         .btn-success:hover {
-            background: #0f4419;
-            border-color: var(--darkbtn-accent);
-            box-shadow: 0 4px 16px rgba(21, 87, 36, 0.3);
+            background: #2d8f47;
+            box-shadow: 0 1px 3px 0 var(--google-shadow-light);
             transform: translateY(-1px);
         }
 
         .btn-info {
-            background: var(--darkbtn-info);
-            color: #ffffff;
-            border: 2px solid var(--darkbtn-info);
-            border-radius: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(12, 84, 96, 0.2);
+            background: var(--google-info);
+            color: var(--google-white);
+            border: none;
+            border-radius: 4px;
+            padding: 10px 24px;
+            font-weight: 500;
+            font-size: 14px;
+            box-shadow: 0 1px 2px 0 var(--google-shadow-light);
+            text-transform: none;
         }
 
         .btn-info:hover {
-            background: #083d44;
-            border-color: var(--darkbtn-accent);
-            box-shadow: 0 4px 16px rgba(12, 84, 96, 0.3);
+            background: #3367d6;
+            box-shadow: 0 1px 3px 0 var(--google-shadow-light);
             transform: translateY(-1px);
         }
 
         .btn-warning {
-            background: var(--darkbtn-warning);
-            color: #ffffff;
-            border: 2px solid var(--darkbtn-warning);
-            border-radius: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(133, 100, 4, 0.2);
+            background: var(--google-yellow);
+            color: var(--google-dark);
+            border: none;
+            border-radius: 4px;
+            padding: 10px 24px;
+            font-weight: 500;
+            font-size: 14px;
+            box-shadow: 0 1px 2px 0 var(--google-shadow-light);
+            text-transform: none;
         }
 
         .btn-warning:hover {
-            background: #664d03;
-            border-color: var(--darkbtn-accent);
-            box-shadow: 0 4px 16px rgba(133, 100, 4, 0.3);
+            background: #f9ab00;
+            box-shadow: 0 1px 3px 0 var(--google-shadow-light);
             transform: translateY(-1px);
         }
 
         .btn-danger {
-            background: var(--darkbtn-danger);
-            color: #ffffff;
-            border: 2px solid var(--darkbtn-danger);
-            border-radius: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(114, 28, 36, 0.2);
+            background: var(--google-red);
+            color: var(--google-white);
+            border: none;
+            border-radius: 4px;
+            padding: 10px 24px;
+            font-weight: 500;
+            font-size: 14px;
+            box-shadow: 0 1px 2px 0 var(--google-shadow-light);
+            text-transform: none;
         }
 
         .btn-danger:hover {
-            background: #58151c;
-            border-color: var(--darkbtn-accent);
-            box-shadow: 0 4px 16px rgba(114, 28, 36, 0.3);
+            background: #d33b2c;
+            box-shadow: 0 1px 3px 0 var(--google-shadow-light);
             transform: translateY(-1px);
         }
 
@@ -315,25 +315,31 @@ $pageTitle = $title ?? 'Dashboard';
             }
         }
 
-        /* Dark Button Focus styles */
+        /* Google Clean Focus styles */
         .focus-ring:focus {
             outline: none;
-            box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.3);
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
         }
 
-        /* Dark Button Form Controls */
+        /* Google Clean Form Controls */
         .form-control {
-            border: 2px solid var(--darkbtn-primary);
-            border-radius: 0.5rem;
-            padding: 0.75rem 1rem;
-            transition: all 0.2s ease-in-out;
-            background: var(--darkbtn-white);
+            border: 1px solid var(--google-border);
+            border-radius: 4px;
+            padding: 12px 16px;
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            background: var(--google-surface);
+            font-size: 14px;
+            line-height: 20px;
         }
 
         .form-control:focus {
-            border-color: var(--darkbtn-accent);
-            box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.15);
-            background: var(--darkbtn-light);
+            border-color: var(--google-blue);
+            box-shadow: 0 0 0 1px var(--google-blue);
+            outline: none;
+        }
+
+        .form-control:hover {
+            border-color: var(--google-gray);
         }
 
         /* Status indicators */
@@ -342,7 +348,7 @@ $pageTitle = $title ?? 'Dashboard';
         .status-inactive { color: #dc2626; }
     </style>
 </head>
-<body style="background-color: var(--darkbtn-light);" class="text-gray-800">
+<body style="background-color: var(--google-background);" class="text-gray-800">
     <div class="flex h-screen overflow-hidden" id="app-container">
         <!-- Mobile Overlay -->
         <div class="fixed inset-0 z-40 lg:hidden sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -350,37 +356,37 @@ $pageTitle = $title ?? 'Dashboard';
         <!-- Sidebar -->
         <div class="fixed inset-y-0 left-0 z-50 w-64 shadow-2xl sidebar lg:static lg:inset-0 lg:z-auto" id="sidebar">
 
-            <!-- AdminLTE Logo -->
-            <div class="flex items-center justify-center h-16 px-4" style="background-color: var(--adminlte-dark); border-bottom: 1px solid var(--adminlte-gray-700);">
+            <!-- Google Clean Logo -->
+            <div class="flex items-center justify-center h-16 px-6" style="background-color: var(--google-surface); border-bottom: 1px solid var(--google-border);">
                 <div class="flex items-center">
-                    <div class="h-10 w-10 rounded flex items-center justify-center mr-3" style="background-color: var(--adminlte-primary);">
+                    <div class="h-10 w-10 rounded-full flex items-center justify-center mr-3" style="background-color: var(--google-blue);">
                         <i class="fas fa-tools text-white text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-lg font-bold text-white"><?= $config->appShortName ?></h1>
-                        <p class="text-xs text-gray-400 font-normal">Control Panel</p>
+                        <h1 class="text-lg font-medium" style="color: var(--google-dark);"><?= $config->appShortName ?></h1>
+                        <p class="text-xs" style="color: var(--google-gray);">Dashboard</p>
                     </div>
                 </div>
             </div>
 
             <!-- Navigation -->
             <nav class="mt-6">
-                <div class="px-4 py-2">
+                <div class="px-2 py-4">
                     <a href="<?= base_url('dashboard') ?>"
-                       class="nav-link flex items-center px-3 py-2 text-gray-300 font-medium <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>">
-                        <i class="fas fa-tachometer-alt mr-3 w-4 text-center"></i>
+                       class="nav-link flex items-center px-4 py-3 font-medium <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>" style="color: var(--google-gray);">
+                        <i class="fas fa-tachometer-alt mr-4 w-5 text-center"></i>
                         Dashboard
                     </a>
 
                     <a href="<?= base_url('dashboard/jobs') ?>"
-                       class="nav-link flex items-center px-3 py-2 text-gray-300 font-medium <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>">
-                        <i class="fas fa-wrench mr-3 w-4 text-center"></i>
+                       class="nav-link flex items-center px-4 py-3 font-medium <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>" style="color: var(--google-gray);">
+                        <i class="fas fa-wrench mr-4 w-5 text-center"></i>
                         Jobs
                     </a>
 
                     <a href="<?= base_url('dashboard/users') ?>"
-                       class="nav-link flex items-center px-3 py-2 text-gray-300 font-medium <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>">
-                        <i class="fas fa-users mr-3 w-4 text-center"></i>
+                       class="nav-link flex items-center px-4 py-3 font-medium <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>" style="color: var(--google-gray);">
+                        <i class="fas fa-users mr-4 w-5 text-center"></i>
                         Customers
                     </a>
                     
@@ -455,65 +461,56 @@ $pageTitle = $title ?? 'Dashboard';
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Dark Button Header -->
-            <header class="bg-white shadow-lg border-b-2 flex-shrink-0" style="border-color: var(--darkbtn-primary);">
+            <!-- Google Clean Header -->
+            <header class="bg-white shadow-sm border-b flex-shrink-0" style="border-color: var(--google-border); box-shadow: 0 1px 2px 0 var(--google-shadow-light);">
                 <div class="flex items-center justify-between px-6 py-4 lg:px-8">
                     <div class="flex items-center">
                         <button onclick="toggleSidebar()" id="mobile-menu-btn"
-                                class="lg:hidden p-3 rounded-lg hover:bg-gray-100 focus:outline-none focus-ring transition-all btn-secondary"
-                                style="color: var(--darkbtn-primary);">
+                                class="lg:hidden p-2 rounded-full hover:bg-gray-100 focus:outline-none focus-ring transition-all"
+                                style="color: var(--google-gray);">
                             <i class="fas fa-bars text-lg"></i>
                         </button>
-                        <h2 class="ml-3 text-2xl font-bold lg:ml-0 lg:text-3xl truncate" style="color: var(--darkbtn-primary);">
+                        <h2 class="ml-3 text-xl font-normal lg:ml-0 lg:text-2xl truncate" style="color: var(--google-dark);">
                             <?= $title ?? 'Dashboard' ?>
                         </h2>
                     </div>
                     
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2">
                         <div class="relative">
-                            <button class="btn-secondary flex items-center p-3 transition-all">
+                            <button class="p-2 rounded-full hover:bg-gray-100 transition-all" style="color: var(--google-gray);">
                                 <i class="fas fa-bell text-lg"></i>
-                                <span class="absolute -top-1 -right-1 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold" style="background-color: var(--darkbtn-danger);">3</span>
+                                <span class="absolute -top-1 -right-1 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-medium" style="background-color: var(--google-red);">3</span>
                             </button>
                         </div>
 
                         <div class="relative">
-                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="btn-primary flex items-center space-x-3 focus-ring transition-all">
-                                <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white shadow-lg" style="background-color: var(--darkbtn-accent); border: 2px solid var(--darkbtn-primary);">
-                                    <i class="fas fa-user text-lg"></i>
+                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="flex items-center space-x-2 p-2 rounded-full hover:bg-gray-100 focus-ring transition-all" style="color: var(--google-dark);">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-white" style="background-color: var(--google-blue);">
+                                    <i class="fas fa-user text-sm"></i>
                                 </div>
                                 <div class="hidden sm:block text-left">
-                                    <div class="text-sm font-bold"><?= session()->get('full_name') ?? 'User' ?></div>
-                                    <div class="text-xs capitalize opacity-80"><?= session()->get('role') ?? '' ?></div>
+                                    <div class="text-sm font-medium"><?= session()->get('full_name') ?? 'User' ?></div>
+                                    <div class="text-xs capitalize" style="color: var(--google-gray);"><?= session()->get('role') ?? '' ?></div>
                                 </div>
-                                <i class="fas fa-chevron-down text-sm transition-transform" id="user-menu-arrow"></i>
+                                <i class="fas fa-chevron-down text-xs transition-transform" id="user-menu-arrow"></i>
                             </button>
 
-                            <!-- Dark Button Dropdown Menu -->
-                            <div class="absolute right-0 mt-3 w-64 bg-white shadow-2xl py-2 z-50 dropdown-menu" id="user-menu">
-                                <div class="px-6 py-4" style="background: var(--darkbtn-primary); color: white; border-bottom: 2px solid var(--darkbtn-accent);">
-                                    <div class="font-bold text-lg"><?= session()->get('full_name') ?? 'User' ?></div>
-                                    <div class="text-sm opacity-80"><?= session()->get('email') ?? '' ?></div>
-                                    <div class="text-xs capitalize font-semibold mt-1" style="color: var(--darkbtn-accent);"><?= session()->get('role') ?? '' ?></div>
+                            <!-- Google Clean Dropdown Menu -->
+                            <div class="absolute right-0 mt-2 w-56 bg-white shadow-lg py-2 z-50 dropdown-menu" id="user-menu">
+                                <div class="px-4 py-3" style="border-bottom: 1px solid var(--google-border);">
+                                    <div class="font-medium" style="color: var(--google-dark);"><?= session()->get('full_name') ?? 'User' ?></div>
+                                    <div class="text-sm" style="color: var(--google-gray);"><?= session()->get('email') ?? '' ?></div>
+                                    <div class="text-xs capitalize font-medium mt-1" style="color: var(--google-blue);"><?= session()->get('role') ?? '' ?></div>
                                 </div>
-                                <a href="<?= base_url('dashboard/profile') ?>" class="flex items-center px-6 py-3 text-sm font-medium hover:bg-gray-100 transition-colors" style="color: var(--darkbtn-primary);">
-                                    <div class="w-8 h-8 rounded flex items-center justify-center mr-3" style="background: var(--darkbtn-secondary);">
-                                        <i class="fas fa-user text-white text-sm"></i>
-                                    </div>
-                                    Profile
+                                <a href="<?= base_url('dashboard/profile') ?>" class="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors" style="color: var(--google-dark);">
+                                    <i class="fas fa-user mr-3 w-4" style="color: var(--google-gray);"></i>Profile
                                 </a>
-                                <a href="<?= base_url('dashboard/settings') ?>" class="flex items-center px-6 py-3 text-sm font-medium hover:bg-gray-100 transition-colors" style="color: var(--darkbtn-primary);">
-                                    <div class="w-8 h-8 rounded flex items-center justify-center mr-3" style="background: var(--darkbtn-secondary);">
-                                        <i class="fas fa-cog text-white text-sm"></i>
-                                    </div>
-                                    Settings
+                                <a href="<?= base_url('dashboard/settings') ?>" class="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors" style="color: var(--google-dark);">
+                                    <i class="fas fa-cog mr-3 w-4" style="color: var(--google-gray);"></i>Settings
                                 </a>
-                                <div style="border-top: 2px solid var(--darkbtn-primary);" class="my-2"></div>
-                                <a href="<?= base_url('auth/logout') ?>" class="flex items-center px-6 py-3 text-sm font-medium hover:bg-red-50 transition-colors" style="color: var(--darkbtn-danger);">
-                                    <div class="w-8 h-8 rounded flex items-center justify-center mr-3" style="background: var(--darkbtn-danger);">
-                                        <i class="fas fa-sign-out-alt text-white text-sm"></i>
-                                    </div>
-                                    Logout
+                                <div style="border-top: 1px solid var(--google-border);" class="my-1"></div>
+                                <a href="<?= base_url('auth/logout') ?>" class="flex items-center px-4 py-2 text-sm hover:bg-red-50 transition-colors" style="color: var(--google-red);">
+                                    <i class="fas fa-sign-out-alt mr-3 w-4"></i>Logout
                                 </a>
                             </div>
                         </div>
@@ -521,27 +518,23 @@ $pageTitle = $title ?? 'Dashboard';
                 </div>
             </header>
 
-            <!-- Dark Button Page Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto" style="background-color: var(--darkbtn-light);">
-                <div class="container mx-auto px-6 py-8 lg:px-8 lg:py-10">
+            <!-- Google Clean Page Content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto" style="background-color: var(--google-background);">
+                <div class="container mx-auto px-6 py-6 lg:px-8 lg:py-8">
                     <?php if (session()->getFlashdata('success')): ?>
-                        <div class="mb-6 px-6 py-4 border-l-4 rounded-lg shadow-lg" role="alert" style="background-color: #d4edda; border-color: var(--darkbtn-success); color: var(--darkbtn-success);">
+                        <div class="mb-4 px-4 py-3 rounded-lg" role="alert" style="background-color: #e8f5e8; border: 1px solid var(--google-green); color: var(--google-green);">
                             <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: var(--darkbtn-success);">
-                                    <i class="fas fa-check-circle text-white"></i>
-                                </div>
-                                <span class="font-bold text-lg"><?= session()->getFlashdata('success') ?></span>
+                                <i class="fas fa-check-circle mr-3" style="color: var(--google-green);"></i>
+                                <span class="font-medium"><?= session()->getFlashdata('success') ?></span>
                             </div>
                         </div>
                     <?php endif; ?>
 
                     <?php if (session()->getFlashdata('error')): ?>
-                        <div class="mb-6 px-6 py-4 border-l-4 rounded-lg shadow-lg" role="alert" style="background-color: #f8d7da; border-color: var(--darkbtn-danger); color: var(--darkbtn-danger);">
+                        <div class="mb-4 px-4 py-3 rounded-lg" role="alert" style="background-color: #fce8e6; border: 1px solid var(--google-red); color: var(--google-red);">
                             <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: var(--darkbtn-danger);">
-                                    <i class="fas fa-exclamation-circle text-white"></i>
-                                </div>
-                                <span class="font-bold text-lg"><?= session()->getFlashdata('error') ?></span>
+                                <i class="fas fa-exclamation-circle mr-3" style="color: var(--google-red);"></i>
+                                <span class="font-medium"><?= session()->getFlashdata('error') ?></span>
                             </div>
                         </div>
                     <?php endif; ?>

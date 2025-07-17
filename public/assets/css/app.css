@@ -1,17 +1,23 @@
-/* TeknoPhix - Dark Button Based Design */
+/* TeknoPhix - Google Clean Design */
 
 :root {
-    /* Dark Button Color Palette */
-    --darkbtn-primary: #212529;
-    --darkbtn-secondary: #495057;
-    --darkbtn-accent: #6c757d;
-    --darkbtn-success: #155724;
-    --darkbtn-info: #0c5460;
-    --darkbtn-warning: #856404;
-    --darkbtn-danger: #721c24;
-    --darkbtn-light: #f8f9fa;
-    --darkbtn-dark: #1a1e21;
-    --darkbtn-white: #ffffff;
+    /* Google Clean Color Palette */
+    --google-blue: #1a73e8;
+    --google-blue-hover: #1557b0;
+    --google-gray: #5f6368;
+    --google-gray-light: #9aa0a6;
+    --google-gray-lighter: #dadce0;
+    --google-gray-lightest: #f8f9fa;
+    --google-green: #34a853;
+    --google-yellow: #fbbc04;
+    --google-red: #ea4335;
+    --google-dark: #202124;
+    --google-white: #ffffff;
+    --google-surface: #ffffff;
+    --google-background: #fafafa;
+    --google-border: #e8eaed;
+    --google-shadow: rgba(60, 64, 67, 0.3);
+    --google-shadow-light: rgba(60, 64, 67, 0.15);
 
 }
 
@@ -26,16 +32,15 @@ body {
     color: var(--dark-800);
 }
 
-/* Dark Button Typography */
-.text-primary { color: var(--darkbtn-primary); }
-.text-secondary { color: var(--darkbtn-secondary); }
-.text-accent { color: var(--darkbtn-accent); }
-.text-success { color: var(--darkbtn-success); }
-.text-info { color: var(--darkbtn-info); }
-.text-warning { color: var(--darkbtn-warning); }
-.text-danger { color: var(--darkbtn-danger); }
-.text-light { color: var(--darkbtn-light); }
-.text-dark { color: var(--darkbtn-dark); }
+/* Google Clean Typography */
+.text-primary { color: var(--google-blue); }
+.text-secondary { color: var(--google-gray); }
+.text-success { color: var(--google-green); }
+.text-warning { color: var(--google-yellow); }
+.text-danger { color: var(--google-red); }
+.text-info { color: var(--google-blue); }
+.text-dark { color: var(--google-dark); }
+.text-light { color: var(--google-gray-lightest); }
 
 /* Buttons */
 .btn {
@@ -52,41 +57,43 @@ body {
     font-size: 0.875rem;
 }
 
-/* Dark Button System */
+/* Google Clean Button System */
 .btn-primary {
-    background: var(--darkbtn-primary);
-    color: var(--darkbtn-white);
-    border: 2px solid var(--darkbtn-primary);
-    border-radius: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    transition: all 0.2s ease-in-out;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(33, 37, 41, 0.2);
+    background: var(--google-blue);
+    color: var(--google-white);
+    border: none;
+    border-radius: 4px;
+    padding: 10px 24px;
+    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    font-weight: 500;
+    font-size: 14px;
+    box-shadow: 0 1px 2px 0 var(--google-shadow-light), 0 1px 3px 1px var(--google-shadow-light);
+    text-transform: none;
 }
 
 .btn-primary:hover {
-    background: var(--darkbtn-dark);
-    border-color: var(--darkbtn-accent);
-    box-shadow: 0 4px 16px rgba(33, 37, 41, 0.3);
+    background: var(--google-blue-hover);
+    box-shadow: 0 1px 3px 0 var(--google-shadow), 0 4px 8px 3px var(--google-shadow-light);
     transform: translateY(-1px);
 }
 
 .btn-secondary {
-    background: var(--darkbtn-secondary);
-    color: var(--darkbtn-white);
-    border: 2px solid var(--darkbtn-secondary);
-    border-radius: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    transition: all 0.2s ease-in-out;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(73, 80, 87, 0.2);
+    background: var(--google-surface);
+    color: var(--google-blue);
+    border: 1px solid var(--google-border);
+    border-radius: 4px;
+    padding: 10px 24px;
+    font-weight: 500;
+    font-size: 14px;
+    box-shadow: 0 1px 2px 0 var(--google-shadow-light);
+    text-transform: none;
+    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 .btn-secondary:hover {
-    background: var(--darkbtn-primary);
-    border-color: var(--darkbtn-accent);
-    box-shadow: 0 4px 16px rgba(73, 80, 87, 0.3);
-    transform: translateY(-1px);
+    background: rgba(26, 115, 232, 0.04);
+    border-color: var(--google-blue);
+    box-shadow: 0 1px 3px 0 var(--google-shadow-light);
 }
 
 .btn-outline-primary {
