@@ -1,35 +1,35 @@
-/* TeknoPhix - Minimalist Dark Yellow Theme */
+/* TeknoPhix - Professional Dark Theme */
 
 :root {
-    /* Primary Colors - Dark Yellow Theme */
-    --primary-50: #fefce8;
-    --primary-100: #fef3c7;
-    --primary-200: #fde68a;
-    --primary-300: #fcd34d;
-    --primary-400: #fbbf24;
-    --primary-500: #f59e0b;
-    --primary-600: #b45309;
-    --primary-700: #92400e;
-    --primary-800: #78350f;
-    --primary-900: #451a03;
-    
-    /* Dark Colors */
-    --dark-50: #f9fafb;
-    --dark-100: #f3f4f6;
-    --dark-200: #e5e7eb;
-    --dark-300: #d1d5db;
-    --dark-400: #9ca3af;
-    --dark-500: #6b7280;
-    --dark-600: #4b5563;
-    --dark-700: #374151;
-    --dark-800: #1f2937;
-    --dark-900: #111827;
-    
+    /* Primary Colors - Professional Slate Theme */
+    --primary-50: #f8fafc;
+    --primary-100: #f1f5f9;
+    --primary-200: #e2e8f0;
+    --primary-300: #cbd5e1;
+    --primary-400: #94a3b8;
+    --primary-500: #64748b;
+    --primary-600: #475569;
+    --primary-700: #334155;
+    --primary-800: #1e293b;
+    --primary-900: #0f172a;
+
+    /* Accent Colors - Professional Blue */
+    --accent-50: #eff6ff;
+    --accent-100: #dbeafe;
+    --accent-200: #bfdbfe;
+    --accent-300: #93c5fd;
+    --accent-400: #60a5fa;
+    --accent-500: #3b82f6;
+    --accent-600: #2563eb;
+    --accent-700: #1d4ed8;
+    --accent-800: #1e40af;
+    --accent-900: #1e3a8a;
+
     /* Status Colors */
-    --success: #059669;
+    --success: #10b981;
     --warning: #f59e0b;
-    --danger: #dc2626;
-    --info: #0284c7;
+    --danger: #ef4444;
+    --info: #06b6d4;
 }
 
 /* Base Styles */
@@ -44,8 +44,8 @@ body {
 }
 
 /* Typography */
-.text-primary { color: var(--primary-600); }
-.text-dark { color: var(--dark-800); }
+.text-primary { color: var(--primary-800); }
+.text-accent { color: var(--accent-500); }
 .text-success { color: var(--success); }
 .text-warning { color: var(--warning); }
 .text-danger { color: var(--danger); }
@@ -66,34 +66,34 @@ body {
 }
 
 .btn-primary {
-    background: var(--primary-600);
+    background: var(--accent-500);
     color: white;
 }
 
 .btn-primary:hover {
-    background: var(--primary-700);
+    background: var(--accent-600);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(180, 83, 9, 0.3);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .btn-secondary {
-    background: var(--dark-600);
+    background: var(--primary-600);
     color: white;
 }
 
 .btn-secondary:hover {
-    background: var(--dark-700);
+    background: var(--primary-700);
     transform: translateY(-1px);
 }
 
 .btn-outline {
     background: transparent;
-    border: 1px solid var(--primary-600);
-    color: var(--primary-600);
+    border: 1px solid var(--accent-500);
+    color: var(--accent-500);
 }
 
 .btn-outline:hover {
-    background: var(--primary-600);
+    background: var(--accent-500);
     color: white;
 }
 
