@@ -24,15 +24,16 @@ $pageTitle = $title ?? 'Dashboard';
             theme: {
                 extend: {
                     colors: {
-                        adminlte: {
-                            primary: '<?= $config->brandColors['primary'] ?>',    // #007bff
-                            secondary: '<?= $config->brandColors['secondary'] ?>', // #6c757d
-                            success: '<?= $config->brandColors['success'] ?>',    // #28a745
-                            info: '<?= $config->brandColors['info'] ?>',          // #17a2b8
-                            warning: '<?= $config->brandColors['warning'] ?>',    // #ffc107
-                            danger: '<?= $config->brandColors['danger'] ?>',      // #dc3545
+                        darkbtn: {
+                            primary: '<?= $config->brandColors['primary'] ?>',    // #212529
+                            secondary: '<?= $config->brandColors['secondary'] ?>', // #495057
+                            accent: '<?= $config->brandColors['accent'] ?>',      // #6c757d
+                            success: '<?= $config->brandColors['success'] ?>',    // #155724
+                            info: '<?= $config->brandColors['info'] ?>',          // #0c5460
+                            warning: '<?= $config->brandColors['warning'] ?>',    // #856404
+                            danger: '<?= $config->brandColors['danger'] ?>',      // #721c24
                             light: '<?= $config->brandColors['light'] ?>',        // #f8f9fa
-                            dark: '<?= $config->brandColors['dark'] ?>',          // #343a40
+                            dark: '<?= $config->brandColors['dark'] ?>',          // #1a1e21
                         }
                     }
                 }
@@ -41,35 +42,36 @@ $pageTitle = $title ?? 'Dashboard';
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        /* Lite AdminLTE Design Theme */
+        /* Dark Button Based Design Theme */
         :root {
-            --adminlte-primary: #007bff;
-            --adminlte-secondary: #6c757d;
-            --adminlte-success: #28a745;
-            --adminlte-info: #17a2b8;
-            --adminlte-warning: #ffc107;
-            --adminlte-danger: #dc3545;
-            --adminlte-light: #f8f9fa;
-            --adminlte-dark: #343a40;
-            --adminlte-white: #ffffff;
-            --adminlte-gray-100: #f8f9fa;
-            --adminlte-gray-200: #e9ecef;
-            --adminlte-gray-300: #dee2e6;
-            --adminlte-gray-400: #ced4da;
-            --adminlte-gray-500: #adb5bd;
-            --adminlte-gray-600: #6c757d;
-            --adminlte-gray-700: #495057;
-            --adminlte-gray-800: #343a40;
-            --adminlte-gray-900: #212529;
+            --darkbtn-primary: #212529;
+            --darkbtn-secondary: #495057;
+            --darkbtn-accent: #6c757d;
+            --darkbtn-success: #155724;
+            --darkbtn-info: #0c5460;
+            --darkbtn-warning: #856404;
+            --darkbtn-danger: #721c24;
+            --darkbtn-light: #f8f9fa;
+            --darkbtn-dark: #1a1e21;
+            --darkbtn-white: #ffffff;
+            --darkbtn-gray-100: #f8f9fa;
+            --darkbtn-gray-200: #e9ecef;
+            --darkbtn-gray-300: #dee2e6;
+            --darkbtn-gray-400: #ced4da;
+            --darkbtn-gray-500: #adb5bd;
+            --darkbtn-gray-600: #6c757d;
+            --darkbtn-gray-700: #495057;
+            --darkbtn-gray-800: #343a40;
+            --darkbtn-gray-900: #212529;
         }
 
-        /* AdminLTE Sidebar Styles */
+        /* Dark Button Sidebar Styles */
         .sidebar {
             transform: translateX(-100%);
             transition: transform 0.3s ease-in-out;
-            background: var(--adminlte-dark);
-            border-right: none;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background: var(--darkbtn-dark);
+            border-right: 2px solid var(--darkbtn-primary);
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
         }
 
         .sidebar.open {
@@ -87,7 +89,7 @@ $pageTitle = $title ?? 'Dashboard';
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-            background: rgba(52, 58, 64, 0.8);
+            background: rgba(26, 30, 33, 0.9);
         }
 
         .sidebar-overlay.active {
@@ -95,16 +97,16 @@ $pageTitle = $title ?? 'Dashboard';
             visibility: visible;
         }
 
-        /* AdminLTE Dropdown Menus */
+        /* Dark Button Dropdown Menus */
         .dropdown-menu {
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
             transition: all 0.2s ease-in-out;
-            background: var(--adminlte-white);
-            border: 1px solid var(--adminlte-gray-300);
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            border-radius: 0.25rem;
+            background: var(--darkbtn-white);
+            border: 2px solid var(--darkbtn-primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
         }
 
         .dropdown-menu.show {
@@ -113,131 +115,170 @@ $pageTitle = $title ?? 'Dashboard';
             transform: translateY(0);
         }
 
-        /* AdminLTE Navigation Links */
+        /* Dark Button Navigation Links */
         .nav-link {
-            transition: all 0.15s ease-in-out;
-            border-radius: 0.25rem;
-            margin: 1px 0;
+            transition: all 0.2s ease-in-out;
+            border-radius: 0.5rem;
+            margin: 3px 0;
             position: relative;
+            border: 1px solid transparent;
         }
 
         .nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--darkbtn-primary);
             color: #ffffff;
+            border-color: var(--darkbtn-accent);
+            box-shadow: 0 2px 8px rgba(33, 37, 41, 0.3);
         }
 
         .nav-link.active {
-            background: var(--adminlte-primary);
+            background: var(--darkbtn-primary);
             color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.25);
+            border-color: var(--darkbtn-accent);
+            box-shadow: 0 4px 12px rgba(33, 37, 41, 0.4);
         }
 
         .nav-link.active::before {
             content: '';
             position: absolute;
-            left: 0;
+            left: -1px;
             top: 0;
             bottom: 0;
-            width: 3px;
-            background: #ffffff;
-            border-radius: 0 2px 2px 0;
+            width: 4px;
+            background: var(--darkbtn-accent);
+            border-radius: 0 4px 4px 0;
         }
 
-        /* AdminLTE Cards */
+        /* Dark Button Cards */
         .card {
-            background: var(--adminlte-white);
-            border: 1px solid var(--adminlte-gray-300);
-            border-radius: 0.25rem;
-            box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgba(0, 0, 0, 0.2);
-            transition: all 0.15s ease-in-out;
+            background: var(--darkbtn-white);
+            border: 2px solid var(--darkbtn-primary);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(33, 37, 41, 0.15);
+            transition: all 0.2s ease-in-out;
         }
 
         .card:hover {
-            box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1);
-            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(33, 37, 41, 0.25);
+            transform: translateY(-2px);
+            border-color: var(--darkbtn-accent);
         }
 
         .card-header {
-            background: var(--adminlte-gray-100);
-            border-bottom: 1px solid var(--adminlte-gray-300);
-            padding: 0.75rem 1.25rem;
-            border-radius: 0.25rem 0.25rem 0 0;
+            background: var(--darkbtn-primary);
+            color: var(--darkbtn-white);
+            border-bottom: 2px solid var(--darkbtn-accent);
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem 0.75rem 0 0;
+            font-weight: 600;
         }
 
         .card-body {
-            padding: 1.25rem;
+            padding: 1.5rem;
         }
 
-        /* AdminLTE Buttons */
+        /* Dark Button System */
         .btn-primary {
-            background: var(--adminlte-primary);
+            background: var(--darkbtn-primary);
             color: #ffffff;
-            border: 1px solid var(--adminlte-primary);
-            border-radius: 0.25rem;
-            padding: 0.375rem 0.75rem;
-            transition: all 0.15s ease-in-out;
-            font-weight: 400;
+            border: 2px solid var(--darkbtn-primary);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.2s ease-in-out;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(33, 37, 41, 0.2);
         }
 
         .btn-primary:hover {
-            background: #0056b3;
-            border-color: #0056b3;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            background: var(--darkbtn-dark);
+            border-color: var(--darkbtn-accent);
+            box-shadow: 0 4px 16px rgba(33, 37, 41, 0.3);
+            transform: translateY(-1px);
         }
 
         .btn-secondary {
-            background: var(--adminlte-secondary);
+            background: var(--darkbtn-secondary);
             color: #ffffff;
-            border: 1px solid var(--adminlte-secondary);
+            border: 2px solid var(--darkbtn-secondary);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(73, 80, 87, 0.2);
         }
 
         .btn-secondary:hover {
-            background: #545b62;
-            border-color: #545b62;
+            background: var(--darkbtn-primary);
+            border-color: var(--darkbtn-accent);
+            box-shadow: 0 4px 16px rgba(73, 80, 87, 0.3);
+            transform: translateY(-1px);
         }
 
         .btn-success {
-            background: var(--adminlte-success);
+            background: var(--darkbtn-success);
             color: #ffffff;
-            border: 1px solid var(--adminlte-success);
+            border: 2px solid var(--darkbtn-success);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(21, 87, 36, 0.2);
         }
 
         .btn-success:hover {
-            background: #1e7e34;
-            border-color: #1e7e34;
+            background: #0f4419;
+            border-color: var(--darkbtn-accent);
+            box-shadow: 0 4px 16px rgba(21, 87, 36, 0.3);
+            transform: translateY(-1px);
         }
 
         .btn-info {
-            background: var(--adminlte-info);
+            background: var(--darkbtn-info);
             color: #ffffff;
-            border: 1px solid var(--adminlte-info);
+            border: 2px solid var(--darkbtn-info);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(12, 84, 96, 0.2);
         }
 
         .btn-info:hover {
-            background: #117a8b;
-            border-color: #117a8b;
+            background: #083d44;
+            border-color: var(--darkbtn-accent);
+            box-shadow: 0 4px 16px rgba(12, 84, 96, 0.3);
+            transform: translateY(-1px);
         }
 
         .btn-warning {
-            background: var(--adminlte-warning);
-            color: #212529;
-            border: 1px solid var(--adminlte-warning);
+            background: var(--darkbtn-warning);
+            color: #ffffff;
+            border: 2px solid var(--darkbtn-warning);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(133, 100, 4, 0.2);
         }
 
         .btn-warning:hover {
-            background: #e0a800;
-            border-color: #e0a800;
+            background: #664d03;
+            border-color: var(--darkbtn-accent);
+            box-shadow: 0 4px 16px rgba(133, 100, 4, 0.3);
+            transform: translateY(-1px);
         }
 
         .btn-danger {
-            background: var(--adminlte-danger);
+            background: var(--darkbtn-danger);
             color: #ffffff;
-            border: 1px solid var(--adminlte-danger);
+            border: 2px solid var(--darkbtn-danger);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(114, 28, 36, 0.2);
         }
 
         .btn-danger:hover {
-            background: #c82333;
-            border-color: #c82333;
+            background: #58151c;
+            border-color: var(--darkbtn-accent);
+            box-shadow: 0 4px 16px rgba(114, 28, 36, 0.3);
+            transform: translateY(-1px);
         }
 
         /* Mobile optimizations */
@@ -274,23 +315,25 @@ $pageTitle = $title ?? 'Dashboard';
             }
         }
 
-        /* AdminLTE Focus styles */
+        /* Dark Button Focus styles */
         .focus-ring:focus {
             outline: none;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.3);
         }
 
-        /* AdminLTE Form Controls */
+        /* Dark Button Form Controls */
         .form-control {
-            border: 1px solid var(--adminlte-gray-400);
-            border-radius: 0.25rem;
-            padding: 0.375rem 0.75rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            border: 2px solid var(--darkbtn-primary);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            transition: all 0.2s ease-in-out;
+            background: var(--darkbtn-white);
         }
 
         .form-control:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            border-color: var(--darkbtn-accent);
+            box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.15);
+            background: var(--darkbtn-light);
         }
 
         /* Status indicators */
@@ -299,7 +342,7 @@ $pageTitle = $title ?? 'Dashboard';
         .status-inactive { color: #dc2626; }
     </style>
 </head>
-<body style="background-color: var(--adminlte-light);" class="text-gray-800">
+<body style="background-color: var(--darkbtn-light);" class="text-gray-800">
     <div class="flex h-screen overflow-hidden" id="app-container">
         <!-- Mobile Overlay -->
         <div class="fixed inset-0 z-40 lg:hidden sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -412,56 +455,65 @@ $pageTitle = $title ?? 'Dashboard';
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- AdminLTE Header -->
-            <header class="bg-white shadow-sm border-b flex-shrink-0" style="border-color: var(--adminlte-gray-300);">
-                <div class="flex items-center justify-between px-4 py-3 lg:px-6">
+            <!-- Dark Button Header -->
+            <header class="bg-white shadow-lg border-b-2 flex-shrink-0" style="border-color: var(--darkbtn-primary);">
+                <div class="flex items-center justify-between px-6 py-4 lg:px-8">
                     <div class="flex items-center">
                         <button onclick="toggleSidebar()" id="mobile-menu-btn"
-                                class="lg:hidden p-2 rounded hover:bg-gray-100 focus:outline-none focus-ring transition-all"
-                                style="color: var(--adminlte-secondary);">
+                                class="lg:hidden p-3 rounded-lg hover:bg-gray-100 focus:outline-none focus-ring transition-all btn-secondary"
+                                style="color: var(--darkbtn-primary);">
                             <i class="fas fa-bars text-lg"></i>
                         </button>
-                        <h2 class="ml-2 text-xl font-semibold lg:ml-0 lg:text-2xl truncate" style="color: var(--adminlte-dark);">
+                        <h2 class="ml-3 text-2xl font-bold lg:ml-0 lg:text-3xl truncate" style="color: var(--darkbtn-primary);">
                             <?= $title ?? 'Dashboard' ?>
                         </h2>
                     </div>
                     
-                    <div class="flex items-center space-x-2">
+                    <div class="flex items-center space-x-3">
                         <div class="relative">
-                            <button class="flex items-center p-2 rounded hover:bg-gray-100 transition-all" style="color: var(--adminlte-secondary);">
+                            <button class="btn-secondary flex items-center p-3 transition-all">
                                 <i class="fas fa-bell text-lg"></i>
-                                <span class="absolute -top-1 -right-1 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold" style="background-color: var(--adminlte-danger);">3</span>
+                                <span class="absolute -top-1 -right-1 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold" style="background-color: var(--darkbtn-danger);">3</span>
                             </button>
                         </div>
 
                         <div class="relative">
-                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="flex items-center space-x-2 p-2 rounded hover:bg-gray-100 focus-ring transition-all" style="color: var(--adminlte-dark);">
-                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm" style="background-color: var(--adminlte-primary);">
-                                    <i class="fas fa-user"></i>
+                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="btn-primary flex items-center space-x-3 focus-ring transition-all">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white shadow-lg" style="background-color: var(--darkbtn-accent); border: 2px solid var(--darkbtn-primary);">
+                                    <i class="fas fa-user text-lg"></i>
                                 </div>
                                 <div class="hidden sm:block text-left">
-                                    <div class="text-sm font-medium"><?= session()->get('full_name') ?? 'User' ?></div>
-                                    <div class="text-xs capitalize" style="color: var(--adminlte-secondary);"><?= session()->get('role') ?? '' ?></div>
+                                    <div class="text-sm font-bold"><?= session()->get('full_name') ?? 'User' ?></div>
+                                    <div class="text-xs capitalize opacity-80"><?= session()->get('role') ?? '' ?></div>
                                 </div>
-                                <i class="fas fa-chevron-down text-xs transition-transform" id="user-menu-arrow"></i>
+                                <i class="fas fa-chevron-down text-sm transition-transform" id="user-menu-arrow"></i>
                             </button>
 
-                            <!-- AdminLTE Dropdown Menu -->
-                            <div class="absolute right-0 mt-2 w-56 bg-white shadow-lg py-1 z-50 dropdown-menu" id="user-menu" style="border: 1px solid var(--adminlte-gray-300); border-radius: 0.25rem;">
-                                <div class="px-4 py-3" style="border-bottom: 1px solid var(--adminlte-gray-300);">
-                                    <div class="font-medium" style="color: var(--adminlte-dark);"><?= session()->get('full_name') ?? 'User' ?></div>
-                                    <div class="text-sm" style="color: var(--adminlte-secondary);"><?= session()->get('email') ?? '' ?></div>
-                                    <div class="text-xs capitalize font-medium" style="color: var(--adminlte-primary);"><?= session()->get('role') ?? '' ?></div>
+                            <!-- Dark Button Dropdown Menu -->
+                            <div class="absolute right-0 mt-3 w-64 bg-white shadow-2xl py-2 z-50 dropdown-menu" id="user-menu">
+                                <div class="px-6 py-4" style="background: var(--darkbtn-primary); color: white; border-bottom: 2px solid var(--darkbtn-accent);">
+                                    <div class="font-bold text-lg"><?= session()->get('full_name') ?? 'User' ?></div>
+                                    <div class="text-sm opacity-80"><?= session()->get('email') ?? '' ?></div>
+                                    <div class="text-xs capitalize font-semibold mt-1" style="color: var(--darkbtn-accent);"><?= session()->get('role') ?? '' ?></div>
                                 </div>
-                                <a href="<?= base_url('dashboard/profile') ?>" class="flex items-center px-4 py-2 text-sm hover:bg-gray-100 transition-colors" style="color: var(--adminlte-dark);">
-                                    <i class="fas fa-user mr-3 w-4" style="color: var(--adminlte-secondary);"></i>Profile
+                                <a href="<?= base_url('dashboard/profile') ?>" class="flex items-center px-6 py-3 text-sm font-medium hover:bg-gray-100 transition-colors" style="color: var(--darkbtn-primary);">
+                                    <div class="w-8 h-8 rounded flex items-center justify-center mr-3" style="background: var(--darkbtn-secondary);">
+                                        <i class="fas fa-user text-white text-sm"></i>
+                                    </div>
+                                    Profile
                                 </a>
-                                <a href="<?= base_url('dashboard/settings') ?>" class="flex items-center px-4 py-2 text-sm hover:bg-gray-100 transition-colors" style="color: var(--adminlte-dark);">
-                                    <i class="fas fa-cog mr-3 w-4" style="color: var(--adminlte-secondary);"></i>Settings
+                                <a href="<?= base_url('dashboard/settings') ?>" class="flex items-center px-6 py-3 text-sm font-medium hover:bg-gray-100 transition-colors" style="color: var(--darkbtn-primary);">
+                                    <div class="w-8 h-8 rounded flex items-center justify-center mr-3" style="background: var(--darkbtn-secondary);">
+                                        <i class="fas fa-cog text-white text-sm"></i>
+                                    </div>
+                                    Settings
                                 </a>
-                                <div style="border-top: 1px solid var(--adminlte-gray-300);" class="my-1"></div>
-                                <a href="<?= base_url('auth/logout') ?>" class="flex items-center px-4 py-2 text-sm hover:bg-red-50 transition-colors" style="color: var(--adminlte-danger);">
-                                    <i class="fas fa-sign-out-alt mr-3 w-4"></i>Logout
+                                <div style="border-top: 2px solid var(--darkbtn-primary);" class="my-2"></div>
+                                <a href="<?= base_url('auth/logout') ?>" class="flex items-center px-6 py-3 text-sm font-medium hover:bg-red-50 transition-colors" style="color: var(--darkbtn-danger);">
+                                    <div class="w-8 h-8 rounded flex items-center justify-center mr-3" style="background: var(--darkbtn-danger);">
+                                        <i class="fas fa-sign-out-alt text-white text-sm"></i>
+                                    </div>
+                                    Logout
                                 </a>
                             </div>
                         </div>
@@ -469,23 +521,27 @@ $pageTitle = $title ?? 'Dashboard';
                 </div>
             </header>
 
-            <!-- AdminLTE Page Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto" style="background-color: var(--adminlte-light);">
-                <div class="container mx-auto px-4 py-6 lg:px-6 lg:py-8">
+            <!-- Dark Button Page Content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto" style="background-color: var(--darkbtn-light);">
+                <div class="container mx-auto px-6 py-8 lg:px-8 lg:py-10">
                     <?php if (session()->getFlashdata('success')): ?>
-                        <div class="mb-4 px-4 py-3 border-l-4 rounded" role="alert" style="background-color: #d4edda; border-color: var(--adminlte-success); color: #155724;">
+                        <div class="mb-6 px-6 py-4 border-l-4 rounded-lg shadow-lg" role="alert" style="background-color: #d4edda; border-color: var(--darkbtn-success); color: var(--darkbtn-success);">
                             <div class="flex items-center">
-                                <i class="fas fa-check-circle mr-3" style="color: var(--adminlte-success);"></i>
-                                <span class="font-medium"><?= session()->getFlashdata('success') ?></span>
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: var(--darkbtn-success);">
+                                    <i class="fas fa-check-circle text-white"></i>
+                                </div>
+                                <span class="font-bold text-lg"><?= session()->getFlashdata('success') ?></span>
                             </div>
                         </div>
                     <?php endif; ?>
 
                     <?php if (session()->getFlashdata('error')): ?>
-                        <div class="mb-4 px-4 py-3 border-l-4 rounded" role="alert" style="background-color: #f8d7da; border-color: var(--adminlte-danger); color: #721c24;">
+                        <div class="mb-6 px-6 py-4 border-l-4 rounded-lg shadow-lg" role="alert" style="background-color: #f8d7da; border-color: var(--darkbtn-danger); color: var(--darkbtn-danger);">
                             <div class="flex items-center">
-                                <i class="fas fa-exclamation-circle mr-3" style="color: var(--adminlte-danger);"></i>
-                                <span class="font-medium"><?= session()->getFlashdata('error') ?></span>
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: var(--darkbtn-danger);">
+                                    <i class="fas fa-exclamation-circle text-white"></i>
+                                </div>
+                                <span class="font-bold text-lg"><?= session()->getFlashdata('error') ?></span>
                             </div>
                         </div>
                     <?php endif; ?>

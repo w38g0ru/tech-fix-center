@@ -22,15 +22,16 @@ $config = config('App');
             theme: {
                 extend: {
                     colors: {
-                        adminlte: {
-                            primary: '<?= $config->brandColors['primary'] ?>',    // #007bff
-                            secondary: '<?= $config->brandColors['secondary'] ?>', // #6c757d
-                            success: '<?= $config->brandColors['success'] ?>',    // #28a745
-                            info: '<?= $config->brandColors['info'] ?>',          // #17a2b8
-                            warning: '<?= $config->brandColors['warning'] ?>',    // #ffc107
-                            danger: '<?= $config->brandColors['danger'] ?>',      // #dc3545
+                        darkbtn: {
+                            primary: '<?= $config->brandColors['primary'] ?>',    // #212529
+                            secondary: '<?= $config->brandColors['secondary'] ?>', // #495057
+                            accent: '<?= $config->brandColors['accent'] ?>',      // #6c757d
+                            success: '<?= $config->brandColors['success'] ?>',    // #155724
+                            info: '<?= $config->brandColors['info'] ?>',          // #0c5460
+                            warning: '<?= $config->brandColors['warning'] ?>',    // #856404
+                            danger: '<?= $config->brandColors['danger'] ?>',      // #721c24
                             light: '<?= $config->brandColors['light'] ?>',        // #f8f9fa
-                            dark: '<?= $config->brandColors['dark'] ?>',          // #343a40
+                            dark: '<?= $config->brandColors['dark'] ?>',          // #1a1e21
                         }
                     }
                 }
@@ -38,26 +39,29 @@ $config = config('App');
         }
     </script>
     <style>
-        .adminlte-gradient-bg {
-            background: linear-gradient(135deg, #343a40 0%, #212529 100%);
+        .darkbtn-gradient-bg {
+            background: linear-gradient(135deg, #1a1e21 0%, #212529 100%);
         }
-        .adminlte-card {
+        .darkbtn-card {
             background: #ffffff;
-            border: 1px solid #dee2e6;
-            box-shadow: 0 0 1px rgba(0,0,0,0.125), 0 1px 3px rgba(0,0,0,0.2);
-            border-radius: 0.25rem;
+            border: 2px solid #212529;
+            box-shadow: 0 4px 16px rgba(33, 37, 41, 0.2);
+            border-radius: 0.75rem;
         }
-        .btn-adminlte-primary {
-            background: #007bff;
-            border-color: #007bff;
+        .btn-darkbtn-primary {
+            background: #212529;
+            border: 2px solid #212529;
             color: #ffffff;
-            transition: all 0.15s ease-in-out;
-            border-radius: 0.25rem;
+            transition: all 0.2s ease-in-out;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(33, 37, 41, 0.2);
         }
-        .btn-adminlte-primary:hover {
-            background: #0056b3;
-            border-color: #0056b3;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        .btn-darkbtn-primary:hover {
+            background: #1a1e21;
+            border-color: #6c757d;
+            box-shadow: 0 4px 16px rgba(33, 37, 41, 0.3);
+            transform: translateY(-1px);
         }
     </style>
 </head>
@@ -68,46 +72,52 @@ $config = config('App');
         <div class="glass-effect rounded-3xl shadow-2xl overflow-hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
 
-                <!-- Left Side - AdminLTE Branding -->
-                <div class="adminlte-gradient-bg p-12 flex flex-col justify-center items-center text-white relative overflow-hidden">
-                    <!-- AdminLTE Background Pattern -->
-                    <div class="absolute inset-0 opacity-5">
-                        <div class="absolute top-10 left-10 w-32 h-32 border border-white/30"></div>
-                        <div class="absolute bottom-20 right-10 w-24 h-24 border border-white/30"></div>
-                        <div class="absolute top-1/2 left-1/4 w-16 h-16 border border-white/30"></div>
+                <!-- Left Side - Dark Button Branding -->
+                <div class="darkbtn-gradient-bg p-16 flex flex-col justify-center items-center text-white relative overflow-hidden">
+                    <!-- Dark Button Background Pattern -->
+                    <div class="absolute inset-0 opacity-10">
+                        <div class="absolute top-16 left-16 w-40 h-40 border-2 border-white/20 rounded-lg"></div>
+                        <div class="absolute bottom-24 right-16 w-28 h-28 border-2 border-white/20 rounded-lg"></div>
+                        <div class="absolute top-1/2 left-1/4 w-20 h-20 border-2 border-white/20 rounded-lg"></div>
                     </div>
 
                     <!-- Content -->
                     <div class="relative z-10 text-center">
-                        <div class="inline-flex items-center justify-center w-20 h-20 mb-8" style="background-color: #007bff; border-radius: 0.25rem; box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);">
-                            <i class="fas fa-tools text-3xl text-white"></i>
+                        <div class="inline-flex items-center justify-center w-24 h-24 mb-10 rounded-lg shadow-2xl" style="background-color: #212529; border: 2px solid #6c757d;">
+                            <i class="fas fa-tools text-4xl text-white"></i>
                         </div>
-                        <h1 class="text-3xl font-bold mb-4"><?= $config->appName ?></h1>
-                        <p class="text-lg text-gray-300 mb-8 leading-relaxed"><?= $config->appDescription ?></p>
+                        <h1 class="text-4xl font-bold mb-6"><?= $config->appName ?></h1>
+                        <p class="text-xl text-gray-300 mb-12 leading-relaxed"><?= $config->appDescription ?></p>
 
-                        <!-- AdminLTE Feature List -->
-                        <div class="space-y-3 text-gray-200">
-                            <div class="flex items-center justify-center">
-                                <i class="fas fa-shield-alt mr-3" style="color: #007bff;"></i>
-                                <span>Secure & Professional</span>
+                        <!-- Dark Button Feature Cards -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-center bg-black/20 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: #212529; border: 1px solid #6c757d;">
+                                    <i class="fas fa-shield-alt text-white"></i>
+                                </div>
+                                <span class="text-lg font-semibold">Secure & Professional</span>
                             </div>
-                            <div class="flex items-center justify-center">
-                                <i class="fas fa-users mr-3" style="color: #007bff;"></i>
-                                <span>Trusted by Technicians</span>
+                            <div class="flex items-center justify-center bg-black/20 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: #212529; border: 1px solid #6c757d;">
+                                    <i class="fas fa-users text-white"></i>
+                                </div>
+                                <span class="text-lg font-semibold">Trusted by Technicians</span>
                             </div>
-                            <div class="flex items-center justify-center">
-                                <i class="fas fa-clock mr-3" style="color: #007bff;"></i>
-                                <span>24/7 Access</span>
+                            <div class="flex items-center justify-center bg-black/20 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: #212529; border: 1px solid #6c757d;">
+                                    <i class="fas fa-clock text-white"></i>
+                                </div>
+                                <span class="text-lg font-semibold">24/7 Access</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Side - AdminLTE Login Form -->
-                <div class="p-12 flex flex-col justify-center bg-white">
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-bold mb-3" style="color: #343a40;">Welcome Back</h2>
-                        <p class="text-lg" style="color: #6c757d;">Please sign in to your account</p>
+                <!-- Right Side - Dark Button Login Form -->
+                <div class="p-16 flex flex-col justify-center bg-white">
+                    <div class="mb-10">
+                        <h2 class="text-3xl font-bold mb-4" style="color: #212529;">Welcome Back</h2>
+                        <p class="text-xl font-medium" style="color: #495057;">Please sign in to your account</p>
                     </div>
 
                     <!-- Alert Messages -->
@@ -150,14 +160,16 @@ $config = config('App');
                     <form action="<?= base_url('auth/processLogin') ?>" method="POST" id="loginForm" class="space-y-6">
                         <?= csrf_field() ?>
 
-                        <!-- AdminLTE Email Field -->
-                        <div class="mb-4">
-                            <label for="email" class="block text-sm font-medium mb-2" style="color: #495057;">
-                                Email Address <span style="color: #dc3545;">*</span>
+                        <!-- Dark Button Email Field -->
+                        <div class="mb-6">
+                            <label for="email" class="block text-lg font-bold mb-3" style="color: #212529;">
+                                Email Address <span style="color: #721c24;">*</span>
                             </label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-envelope" style="color: #6c757d;"></i>
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <div class="w-8 h-8 rounded flex items-center justify-center" style="background: #212529;">
+                                        <i class="fas fa-envelope text-white text-sm"></i>
+                                    </div>
                                 </div>
                                 <input type="email"
                                        id="email"
@@ -166,19 +178,20 @@ $config = config('App');
                                        required
                                        autocomplete="email"
                                        placeholder="Enter your email address"
-                                       class="form-control w-full pl-10 pr-3 py-2 text-base"
-                                       style="border: 1px solid #ced4da; border-radius: 0.25rem; transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;">
+                                       class="form-control w-full pl-16 pr-4 py-4 text-lg font-medium">
                             </div>
                         </div>
 
-                        <!-- AdminLTE Password Field -->
-                        <div class="mb-4">
-                            <label for="password" class="block text-sm font-medium mb-2" style="color: #495057;">
-                                Password <span style="color: #dc3545;">*</span>
+                        <!-- Dark Button Password Field -->
+                        <div class="mb-6">
+                            <label for="password" class="block text-lg font-bold mb-3" style="color: #212529;">
+                                Password <span style="color: #721c24;">*</span>
                             </label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-lock" style="color: #6c757d;"></i>
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <div class="w-8 h-8 rounded flex items-center justify-center" style="background: #212529;">
+                                        <i class="fas fa-lock text-white text-sm"></i>
+                                    </div>
                                 </div>
                                 <input type="password"
                                        id="password"
@@ -186,12 +199,13 @@ $config = config('App');
                                        required
                                        autocomplete="current-password"
                                        placeholder="Enter your password"
-                                       class="form-control w-full pl-10 pr-10 py-2 text-base"
-                                       style="border: 1px solid #ced4da; border-radius: 0.25rem; transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;">
+                                       class="form-control w-full pl-16 pr-16 py-4 text-lg font-medium">
                                 <button type="button"
                                         onclick="togglePassword()"
-                                        class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                    <i id="passwordToggle" class="fas fa-eye hover:text-blue-600 transition-colors" style="color: #6c757d;"></i>
+                                        class="absolute inset-y-0 right-0 pr-4 flex items-center">
+                                    <div class="w-8 h-8 rounded flex items-center justify-center hover:bg-gray-100 transition-colors" style="background: #495057;">
+                                        <i id="passwordToggle" class="fas fa-eye text-white text-sm"></i>
+                                    </div>
                                 </button>
                             </div>
                         </div>

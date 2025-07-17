@@ -36,17 +36,17 @@ class App extends BaseConfig
     public string $contactPhone = '+977-1-4567890';
     public string $companyAddress = 'Gaighat, Udayapur, Nepal';
 
-    // Brand Colors (Lite AdminLTE Design)
+    // Brand Colors (Dark Button Based Design)
     public array $brandColors = [
-        'primary' => '#007bff',      // AdminLTE Blue (Primary)
-        'secondary' => '#6c757d',    // AdminLTE Gray (Secondary)
-        'accent' => '#17a2b8',       // AdminLTE Cyan (Info/Accent)
-        'warning' => '#ffc107',      // AdminLTE Yellow (Warning)
-        'danger' => '#dc3545',       // AdminLTE Red (Danger)
-        'success' => '#28a745',      // AdminLTE Green (Success)
-        'info' => '#17a2b8',         // AdminLTE Cyan (Info)
-        'dark' => '#343a40',         // AdminLTE Dark Gray
-        'light' => '#f8f9fa'         // AdminLTE Light Gray
+        'primary' => '#212529',      // Dark Gray (Primary)
+        'secondary' => '#495057',    // Medium Dark Gray (Secondary)
+        'accent' => '#6c757d',       // Light Dark Gray (Accent)
+        'warning' => '#856404',      // Dark Yellow (Warning)
+        'danger' => '#721c24',       // Dark Red (Danger)
+        'success' => '#155724',      // Dark Green (Success)
+        'info' => '#0c5460',         // Dark Cyan (Info)
+        'dark' => '#1a1e21',         // Very Dark Gray
+        'light' => '#f8f9fa'         // Light Gray
     ];
 
     // Social Media Links
