@@ -1,0 +1,475 @@
+/**
+ * AdminLTE-style Responsive CSS
+ * 
+ * Mobile-first responsive design for the admin dashboard
+ * Compatible with Tailwind CSS and provides additional
+ * responsive utilities and components.
+ */
+
+/* Mobile-first breakpoints */
+:root {
+    --mobile: 320px;
+    --tablet: 768px;
+    --desktop: 1024px;
+    --wide: 1280px;
+    --ultra-wide: 1536px;
+}
+
+/* Base responsive utilities */
+.container-responsive {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+    .container-responsive {
+        max-width: 640px;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .container-responsive {
+        max-width: 768px;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container-responsive {
+        max-width: 1024px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .container-responsive {
+        max-width: 1280px;
+    }
+}
+
+/* Mobile navigation styles */
+@media (max-width: 1023px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 50;
+        width: 280px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 40;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+    
+    .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* Mobile header adjustments */
+    .mobile-header {
+        padding: 1rem;
+    }
+    
+    .mobile-header h1 {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+    
+    /* Mobile search bar */
+    .mobile-search {
+        display: none;
+    }
+    
+    .mobile-search.active {
+        display: block;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid #e5e7eb;
+        padding: 1rem;
+        z-index: 30;
+    }
+    
+    /* Mobile dropdown menus */
+    .mobile-dropdown {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: white;
+        z-index: 60;
+        transform: translateY(100%);
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .mobile-dropdown.active {
+        transform: translateY(0);
+    }
+}
+
+/* Tablet-specific styles */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .tablet-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .tablet-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .tablet-grid-3 > :nth-child(3n) {
+        grid-column: span 2;
+    }
+    
+    /* Tablet table styles */
+    .tablet-table {
+        font-size: 0.875rem;
+    }
+    
+    .tablet-table th,
+    .tablet-table td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    /* Hide less important columns on tablet */
+    .tablet-hide {
+        display: none;
+    }
+}
+
+/* Mobile-specific styles */
+@media (max-width: 767px) {
+    /* Mobile grid system */
+    .mobile-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .mobile-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    /* Mobile card styles */
+    .mobile-card {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .mobile-card-compact {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    /* Mobile table styles */
+    .mobile-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .mobile-table-stack {
+        display: block;
+    }
+    
+    .mobile-table-stack thead {
+        display: none;
+    }
+    
+    .mobile-table-stack tbody,
+    .mobile-table-stack tr,
+    .mobile-table-stack td {
+        display: block;
+        width: 100%;
+    }
+    
+    .mobile-table-stack tr {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+    }
+    
+    .mobile-table-stack td {
+        border: none;
+        padding: 0.5rem 0;
+        position: relative;
+        padding-left: 50%;
+    }
+    
+    .mobile-table-stack td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: 600;
+        color: #374151;
+    }
+    
+    /* Mobile form styles */
+    .mobile-form {
+        padding: 1rem;
+    }
+    
+    .mobile-form .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .mobile-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #374151;
+    }
+    
+    .mobile-form input,
+    .mobile-form select,
+    .mobile-form textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+    }
+    
+    /* Mobile button styles */
+    .mobile-btn {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .mobile-btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .mobile-btn-group .mobile-btn {
+        margin-bottom: 0;
+    }
+    
+    /* Mobile modal styles */
+    .mobile-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        padding: 1rem;
+        overflow-y: auto;
+    }
+    
+    .mobile-modal-content {
+        background: white;
+        border-radius: 0.75rem;
+        max-width: 100%;
+        margin: auto;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    /* Mobile pagination */
+    .mobile-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+    }
+    
+    .mobile-pagination button {
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        background: white;
+        color: #374151;
+        font-size: 0.875rem;
+    }
+    
+    .mobile-pagination button.active {
+        background: #3b82f6;
+        color: white;
+        border-color: #3b82f6;
+    }
+    
+    /* Hide desktop elements on mobile */
+    .mobile-hide {
+        display: none;
+    }
+    
+    /* Mobile-specific text sizes */
+    .mobile-text-xs { font-size: 0.75rem; }
+    .mobile-text-sm { font-size: 0.875rem; }
+    .mobile-text-base { font-size: 1rem; }
+    .mobile-text-lg { font-size: 1.125rem; }
+    .mobile-text-xl { font-size: 1.25rem; }
+    
+    /* Mobile spacing utilities */
+    .mobile-p-2 { padding: 0.5rem; }
+    .mobile-p-4 { padding: 1rem; }
+    .mobile-p-6 { padding: 1.5rem; }
+    .mobile-m-2 { margin: 0.5rem; }
+    .mobile-m-4 { margin: 1rem; }
+    .mobile-m-6 { margin: 1.5rem; }
+    
+    /* Mobile flexbox utilities */
+    .mobile-flex-col {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .mobile-flex-row {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .mobile-justify-center {
+        justify-content: center;
+    }
+    
+    .mobile-items-center {
+        align-items: center;
+    }
+    
+    .mobile-space-y-2 > * + * {
+        margin-top: 0.5rem;
+    }
+    
+    .mobile-space-y-4 > * + * {
+        margin-top: 1rem;
+    }
+}
+
+/* Touch-friendly styles */
+@media (hover: none) and (pointer: coarse) {
+    /* Increase touch targets */
+    button,
+    .btn,
+    a[role="button"],
+    input[type="button"],
+    input[type="submit"] {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Remove hover effects on touch devices */
+    .hover-effect:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    /* Touch-friendly dropdown */
+    .dropdown-menu {
+        min-width: 200px;
+        padding: 0.5rem 0;
+    }
+    
+    .dropdown-menu a,
+    .dropdown-menu button {
+        padding: 0.75rem 1rem;
+        display: block;
+        width: 100%;
+        text-align: left;
+    }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .print-only {
+        display: block !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .sidebar,
+    .navbar,
+    .mobile-menu,
+    .dropdown-menu {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+    
+    .card,
+    .table {
+        break-inside: avoid;
+    }
+    
+    .page-break {
+        page-break-before: always;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .card,
+    .table,
+    .form-control {
+        border-width: 2px;
+    }
+    
+    .btn {
+        border-width: 2px;
+        font-weight: 700;
+    }
+    
+    .text-muted {
+        color: #000 !important;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
