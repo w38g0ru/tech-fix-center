@@ -416,7 +416,20 @@ class Auth extends BaseController
     {
         try {
             $googleOAuth = new GoogleOAuthService();
+
+            // Check if Google OAuth is properly configured
+            $config = new \Config\GoogleOAuth();
+            if (!$config->isConfigured()) {
+                log_message('error', 'Google OAuth not configured properly');
+                return redirect()->to(base_url('auth/login'))
+                    ->with('error', 'Google authentication is not configured. Please contact administrator.');
+            }
+
             $authUrl = $googleOAuth->getAuthUrl();
+
+            if (empty($authUrl)) {
+                throw new \Exception('Failed to generate Google OAuth URL');
+            }
 
             return redirect()->to($authUrl);
 

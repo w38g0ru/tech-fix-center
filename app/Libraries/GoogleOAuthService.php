@@ -15,7 +15,12 @@ class GoogleOAuthService
     {
         $this->config = new GoogleOAuth();
         $this->client = new Google_Client();
-        
+
+        // Validate configuration
+        if (empty($this->config->clientId) || empty($this->config->clientSecret)) {
+            throw new \Exception('Google OAuth configuration is missing client_id or client_secret');
+        }
+
         $this->client->setClientId($this->config->clientId);
         $this->client->setClientSecret($this->config->clientSecret);
         $this->client->setRedirectUri($this->config->getRedirectUri());
