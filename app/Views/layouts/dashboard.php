@@ -67,10 +67,10 @@ $pageTitle = $title ?? 'Dashboard';
             --quasar-text-secondary: #757575;
         }
 
-        /* Quasar Improved Layout Sidebar */
+        /* Quasar Collapsible Navigation Sidebar */
         .sidebar {
             transform: translateX(-100%);
-            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
             background: var(--quasar-surface);
             border-right: 1px solid var(--quasar-separator);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
@@ -79,9 +79,39 @@ $pageTitle = $title ?? 'Dashboard';
             z-index: 1000;
         }
 
+        /* Collapsed sidebar state */
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar.collapsed .nav-text,
+        .sidebar.collapsed .nav-subtitle,
+        .sidebar.collapsed .nav-header,
+        .sidebar.collapsed .logo-text {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .sidebar.collapsed .nav-icon-container {
+            margin-right: 0;
+        }
+
+        /* Responsive behavior */
         @media (min-width: 1024px) {
             .sidebar {
                 width: 280px;
+                transform: translateX(0);
+            }
+
+            .sidebar.collapsed {
+                width: 80px;
             }
         }
 
@@ -89,6 +119,36 @@ $pageTitle = $title ?? 'Dashboard';
             .sidebar {
                 width: 320px;
             }
+
+            .sidebar.collapsed {
+                width: 80px;
+            }
+        }
+
+        /* Hamburger menu animation */
+        .hamburger-line {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: currentColor;
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
+        }
+
+        .hamburger-line:not(:last-child) {
+            margin-bottom: 4px;
+        }
+
+        .hamburger.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
         }
 
         .sidebar.open {
@@ -530,6 +590,49 @@ $pageTitle = $title ?? 'Dashboard';
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 16px 64px rgba(0, 0, 0, 0.08);
         }
 
+        /* Tooltip for collapsed sidebar */
+        .nav-link[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--quasar-dark);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            z-index: 1000;
+            margin-left: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .sidebar.collapsed .nav-link[title]:hover::after {
+            opacity: 1;
+        }
+
+        .nav-link[title]:hover::before {
+            content: '';
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 6px solid transparent;
+            border-right-color: var(--quasar-dark);
+            margin-left: 6px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .sidebar.collapsed .nav-link[title]:hover::before {
+            opacity: 1;
+        }
+
         /* Status indicators */
         .status-active { color: #059669; }
         .status-pending { color: #f59e0b; }
@@ -544,13 +647,13 @@ $pageTitle = $title ?? 'Dashboard';
         <!-- Sidebar -->
         <div class="fixed inset-y-0 left-0 z-50 w-80 shadow-2xl sidebar lg:static lg:inset-0 lg:z-auto lg:w-72 xl:w-80" id="sidebar">
 
-            <!-- Quasar Improved Layout Logo -->
-            <div class="flex items-center justify-center h-24 px-8 relative" style="background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover)); border-bottom: 3px solid var(--quasar-accent);">
+            <!-- Quasar Collapsible Logo -->
+            <div class="flex items-center justify-center h-24 px-8 relative logo-section" style="background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover)); border-bottom: 3px solid var(--quasar-accent);">
                 <div class="flex items-center">
-                    <div class="h-14 w-14 rounded-xl flex items-center justify-center mr-5 shadow-xl" style="background-color: var(--quasar-surface); border: 2px solid var(--quasar-accent);">
+                    <div class="h-14 w-14 rounded-xl flex items-center justify-center shadow-xl logo-icon" style="background-color: var(--quasar-surface); border: 2px solid var(--quasar-accent);">
                         <i class="fas fa-tools text-2xl" style="color: var(--quasar-primary);"></i>
                     </div>
-                    <div>
+                    <div class="logo-text ml-5 transition-all duration-300">
                         <h1 class="text-2xl font-bold text-white"><?= $config->appShortName ?></h1>
                         <p class="text-sm text-blue-100 font-semibold">Control Center</p>
                     </div>
@@ -562,47 +665,53 @@ $pageTitle = $title ?? 'Dashboard';
                 <div class="absolute bottom-4 left-4 w-1 h-1 rounded-full" style="background: var(--quasar-secondary); opacity: 0.5;"></div>
             </div>
 
-            <!-- Quasar Improved Layout Navigation -->
+            <!-- Quasar Collapsible Navigation -->
             <nav class="mt-8 px-4">
                 <!-- Navigation Header -->
-                <div class="mb-6">
+                <div class="mb-6 nav-header">
                     <h3 class="text-xs font-bold uppercase tracking-wider px-2" style="color: var(--quasar-text-secondary);">Main Menu</h3>
                     <div class="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mt-2"></div>
                 </div>
 
                 <div class="space-y-2">
                     <a href="<?= base_url('dashboard') ?>"
-                       class="nav-link group flex items-center px-4 py-4 font-medium rounded-xl transition-all duration-300 <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
-                        <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(25, 118, 210, 0.1);">
+                       class="nav-link group flex items-center px-4 py-4 font-medium rounded-xl transition-all duration-300 <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>"
+                       style="color: var(--quasar-text-primary);"
+                       title="Dashboard">
+                        <div class="nav-icon-container w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(25, 118, 210, 0.1);">
                             <i class="fas fa-tachometer-alt text-xl transition-all duration-300" style="color: var(--quasar-primary);"></i>
                         </div>
-                        <div class="flex-1">
+                        <div class="flex-1 nav-text">
                             <div class="font-bold text-base">Dashboard</div>
-                            <div class="text-sm font-medium opacity-70" style="color: var(--quasar-text-secondary);">Overview & Analytics</div>
+                            <div class="nav-subtitle text-sm font-medium opacity-70" style="color: var(--quasar-text-secondary);">Overview & Analytics</div>
                         </div>
                         <div class="w-2 h-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100" style="background: var(--quasar-primary);"></div>
                     </a>
 
                     <a href="<?= base_url('dashboard/jobs') ?>"
-                       class="nav-link group flex items-center px-4 py-4 font-medium rounded-xl transition-all duration-300 <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
-                        <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(38, 166, 154, 0.1);">
+                       class="nav-link group flex items-center px-4 py-4 font-medium rounded-xl transition-all duration-300 <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>"
+                       style="color: var(--quasar-text-primary);"
+                       title="Jobs">
+                        <div class="nav-icon-container w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(38, 166, 154, 0.1);">
                             <i class="fas fa-wrench text-xl transition-all duration-300" style="color: var(--quasar-secondary);"></i>
                         </div>
-                        <div class="flex-1">
+                        <div class="flex-1 nav-text">
                             <div class="font-bold text-base">Jobs</div>
-                            <div class="text-sm font-medium opacity-70" style="color: var(--quasar-text-secondary);">Repair Management</div>
+                            <div class="nav-subtitle text-sm font-medium opacity-70" style="color: var(--quasar-text-secondary);">Repair Management</div>
                         </div>
                         <div class="w-2 h-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100" style="background: var(--quasar-secondary);"></div>
                     </a>
 
                     <a href="<?= base_url('dashboard/users') ?>"
-                       class="nav-link group flex items-center px-4 py-4 font-medium rounded-xl transition-all duration-300 <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
-                        <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(156, 39, 176, 0.1);">
+                       class="nav-link group flex items-center px-4 py-4 font-medium rounded-xl transition-all duration-300 <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>"
+                       style="color: var(--quasar-text-primary);"
+                       title="Customers">
+                        <div class="nav-icon-container w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(156, 39, 176, 0.1);">
                             <i class="fas fa-users text-xl transition-all duration-300" style="color: var(--quasar-accent);"></i>
                         </div>
-                        <div class="flex-1">
+                        <div class="flex-1 nav-text">
                             <div class="font-bold text-base">Customers</div>
-                            <div class="text-sm font-medium opacity-70" style="color: var(--quasar-text-secondary);">Client Database</div>
+                            <div class="nav-subtitle text-sm font-medium opacity-70" style="color: var(--quasar-text-secondary);">Client Database</div>
                         </div>
                         <div class="w-2 h-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100" style="background: var(--quasar-accent);"></div>
                     </a>
@@ -610,26 +719,30 @@ $pageTitle = $title ?? 'Dashboard';
 
                 <!-- Secondary Navigation -->
                 <div class="mt-8">
-                    <div class="mb-4">
+                    <div class="mb-4 nav-header">
                         <h3 class="text-xs font-bold uppercase tracking-wider px-2" style="color: var(--quasar-text-secondary);">Management</h3>
                         <div class="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mt-2"></div>
                     </div>
 
                     <div class="space-y-1">
                         <a href="<?= base_url('dashboard/inventory') ?>"
-                           class="nav-link group flex items-center px-4 py-3 font-medium rounded-lg transition-all duration-300 <?= strpos(uri_string(), 'inventory') !== false ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
-                            <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(255, 152, 0, 0.1);">
+                           class="nav-link group flex items-center px-4 py-3 font-medium rounded-lg transition-all duration-300 <?= strpos(uri_string(), 'inventory') !== false ? 'active' : '' ?>"
+                           style="color: var(--quasar-text-primary);"
+                           title="Inventory">
+                            <div class="nav-icon-container w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(255, 152, 0, 0.1);">
                                 <i class="fas fa-boxes text-sm" style="color: var(--quasar-warning);"></i>
                             </div>
-                            <span class="font-semibold">Inventory</span>
+                            <span class="nav-text font-semibold">Inventory</span>
                         </a>
 
                         <a href="<?= base_url('dashboard/reports') ?>"
-                           class="nav-link group flex items-center px-4 py-3 font-medium rounded-lg transition-all duration-300" style="color: var(--quasar-text-primary);">
-                            <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(33, 150, 243, 0.1);">
+                           class="nav-link group flex items-center px-4 py-3 font-medium rounded-lg transition-all duration-300"
+                           style="color: var(--quasar-text-primary);"
+                           title="Reports">
+                            <div class="nav-icon-container w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(33, 150, 243, 0.1);">
                                 <i class="fas fa-chart-bar text-sm" style="color: var(--quasar-info);"></i>
                             </div>
-                            <span class="font-semibold">Reports</span>
+                            <span class="nav-text font-semibold">Reports</span>
                         </a>
                     </div>
                 </div>
@@ -712,10 +825,15 @@ $pageTitle = $title ?? 'Dashboard';
 
                 <div class="relative flex items-center justify-between px-6 py-5 lg:px-8">
                     <div class="flex items-center flex-1">
-                        <button onclick="toggleSidebar()" id="mobile-menu-btn"
-                                class="lg:hidden p-3 rounded-xl hover:bg-white hover:bg-opacity-50 focus:outline-none focus-ring transition-all shadow-sm"
+                        <!-- Hamburger Menu Button -->
+                        <button onclick="toggleSidebarCollapse()" id="sidebar-toggle-btn"
+                                class="p-3 rounded-xl hover:bg-white hover:bg-opacity-50 focus:outline-none focus-ring transition-all shadow-sm hamburger"
                                 style="color: var(--quasar-text-secondary); background: rgba(255, 255, 255, 0.8);">
-                            <i class="fas fa-bars text-lg"></i>
+                            <div class="hamburger-container">
+                                <span class="hamburger-line"></span>
+                                <span class="hamburger-line"></span>
+                                <span class="hamburger-line"></span>
+                            </div>
                         </button>
 
                         <!-- Page Title Section -->
@@ -886,13 +1004,49 @@ $pageTitle = $title ?? 'Dashboard';
 
 
     <script>
-        // Dashboard State Management
+        // Dashboard State Management with Collapsible Navigation
         const DashboardState = {
             sidebarOpen: false,
+            sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
             userMenuOpen: false
         };
 
-        // Sidebar Functions
+        // Initialize sidebar state on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const hamburger = document.getElementById('sidebar-toggle-btn');
+
+            if (DashboardState.sidebarCollapsed && window.innerWidth >= 1024) {
+                sidebar.classList.add('collapsed');
+                hamburger.classList.add('active');
+            }
+        });
+
+        // Toggle sidebar collapse/expand (main function)
+        function toggleSidebarCollapse() {
+            const sidebar = document.getElementById('sidebar');
+            const hamburger = document.getElementById('sidebar-toggle-btn');
+
+            if (window.innerWidth < 1024) {
+                // Mobile behavior - toggle sidebar visibility
+                toggleSidebar();
+                return;
+            }
+
+            // Desktop behavior - toggle collapse state
+            DashboardState.sidebarCollapsed = !DashboardState.sidebarCollapsed;
+            localStorage.setItem('sidebarCollapsed', DashboardState.sidebarCollapsed);
+
+            if (DashboardState.sidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                hamburger.classList.add('active');
+            } else {
+                sidebar.classList.remove('collapsed');
+                hamburger.classList.remove('active');
+            }
+        }
+
+        // Mobile sidebar toggle (legacy function)
         function toggleSidebar() {
             DashboardState.sidebarOpen = !DashboardState.sidebarOpen;
             updateSidebarDisplay();
@@ -906,6 +1060,9 @@ $pageTitle = $title ?? 'Dashboard';
             DashboardState.sidebarOpen = false;
             updateSidebarDisplay();
             document.body.style.overflow = '';
+
+            const hamburger = document.getElementById('sidebar-toggle-btn');
+            hamburger.classList.remove('active');
         }
 
         function updateSidebarDisplay() {
@@ -959,11 +1116,30 @@ $pageTitle = $title ?? 'Dashboard';
                 });
             }, 5000);
 
-            // Handle window resize
+            // Handle window resize with collapsible support
             window.addEventListener('resize', function() {
+                const sidebar = document.getElementById('sidebar');
+                const hamburger = document.getElementById('sidebar-toggle-btn');
+
                 if (window.innerWidth >= 1024) {
+                    // Desktop mode
                     document.body.style.overflow = '';
-                    closeSidebar();
+                    closeSidebar(); // Close mobile sidebar if open
+
+                    // Restore collapsed state if it was set
+                    if (DashboardState.sidebarCollapsed) {
+                        sidebar.classList.add('collapsed');
+                        hamburger.classList.add('active');
+                    } else {
+                        sidebar.classList.remove('collapsed');
+                        hamburger.classList.remove('active');
+                    }
+                } else {
+                    // Mobile mode - remove collapsed state
+                    sidebar.classList.remove('collapsed');
+                    if (!DashboardState.sidebarOpen) {
+                        hamburger.classList.remove('active');
+                    }
                 }
             });
 
