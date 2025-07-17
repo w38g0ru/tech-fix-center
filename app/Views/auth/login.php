@@ -22,17 +22,22 @@ $config = config('App');
             theme: {
                 extend: {
                     colors: {
-                        yellow: {
-                            50: '#fffbeb',
-                            100: '#fef3c7',
-                            200: '#fde68a',
-                            300: '#fcd34d',
-                            400: '<?= $config->brandColors['accent'] ?>',
-                            500: '#f59e0b',
-                            600: '<?= $config->brandColors['primary'] ?>',
-                            700: '<?= $config->brandColors['secondary'] ?>',
-                            800: '#92400e',
+                        primary: {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            600: '#4b5563',
+                            700: '#374151',
+                            800: '<?= $config->brandColors['primary'] ?>',
                             900: '<?= $config->brandColors['dark'] ?>'
+                        },
+                        accent: {
+                            50: '#eff6ff',
+                            500: '<?= $config->brandColors['accent'] ?>',
+                            600: '#2563eb'
                         }
                     }
                 }
@@ -41,23 +46,21 @@ $config = config('App');
     </script>
     <style>
         .gradient-bg {
-            background: linear-gradient(135deg, #92400e 0%, #451a03 100%);
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         }
         .glass-effect {
-            backdrop-filter: blur(15px);
-            background: rgba(255, 255, 255, 0.98);
-            border: 2px solid rgba(217, 119, 6, 0.2);
-            box-shadow: 0 20px 60px rgba(217, 119, 6, 0.15);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
         }
         .btn-primary {
-            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             transition: all 0.3s ease;
-            border-radius: 12px;
-            font-weight: 600;
         }
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(217, 119, 6, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
         }
     </style>
 </head>
@@ -68,46 +71,44 @@ $config = config('App');
         <div class="glass-effect rounded-3xl shadow-2xl overflow-hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
 
-                <!-- Left Side - Dark Yellow Minimal Branding -->
-                <div class="bg-gradient-to-br from-yellow-800 to-yellow-900 p-16 flex flex-col justify-center items-center text-white relative overflow-hidden">
-                    <!-- Minimal Background Pattern -->
-                    <div class="absolute inset-0 opacity-5">
-                        <div class="absolute top-16 left-16 w-40 h-40 border-2 border-yellow-400 rounded-3xl"></div>
-                        <div class="absolute bottom-24 right-16 w-28 h-28 border-2 border-yellow-400 rounded-3xl"></div>
-                        <div class="absolute top-1/2 left-1/4 w-20 h-20 border-2 border-yellow-400 rounded-3xl"></div>
+                <!-- Left Side - Standard Minimal Branding -->
+                <div class="bg-gradient-to-br from-primary-800 to-primary-900 p-12 flex flex-col justify-center items-center text-white relative overflow-hidden">
+                    <!-- Background Pattern -->
+                    <div class="absolute inset-0 opacity-10">
+                        <div class="absolute top-10 left-10 w-32 h-32 border border-white/20 rounded-full"></div>
+                        <div class="absolute bottom-20 right-10 w-24 h-24 border border-white/20 rounded-full"></div>
+                        <div class="absolute top-1/2 left-1/4 w-16 h-16 border border-white/20 rounded-full"></div>
                     </div>
 
                     <!-- Content -->
                     <div class="relative z-10 text-center">
-                        <div class="inline-flex items-center justify-center w-28 h-28 bg-yellow-600 rounded-3xl shadow-2xl mb-10">
-                            <i class="fas fa-tools text-5xl text-white"></i>
+                        <div class="inline-flex items-center justify-center w-24 h-24 bg-accent-500 rounded-2xl shadow-xl mb-8">
+                            <i class="fas fa-tools text-4xl text-white"></i>
                         </div>
-                        <h1 class="text-5xl font-bold mb-6 tracking-tight"><?= $config->appName ?></h1>
-                        <p class="text-2xl text-yellow-200 mb-12 leading-relaxed font-light"><?= $config->appDescription ?></p>
-
-                        <!-- Minimal Feature Cards -->
-                        <div class="space-y-6">
-                            <div class="flex items-center justify-center bg-yellow-800/30 backdrop-blur-sm rounded-2xl p-4 border border-yellow-600/20">
-                                <i class="fas fa-shield-alt mr-4 text-yellow-400 text-xl"></i>
-                                <span class="text-lg font-medium">Secure & Professional</span>
+                        <h1 class="text-4xl font-bold mb-4"><?= $config->appName ?></h1>
+                        <p class="text-xl text-primary-200 mb-8 leading-relaxed"><?= $config->appDescription ?></p>
+                        <div class="space-y-4 text-primary-100">
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-shield-alt mr-3 text-accent-400"></i>
+                                <span>Secure & Professional</span>
                             </div>
-                            <div class="flex items-center justify-center bg-yellow-800/30 backdrop-blur-sm rounded-2xl p-4 border border-yellow-600/20">
-                                <i class="fas fa-users mr-4 text-yellow-400 text-xl"></i>
-                                <span class="text-lg font-medium">Trusted by Technicians</span>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-users mr-3 text-accent-400"></i>
+                                <span>Trusted by Technicians</span>
                             </div>
-                            <div class="flex items-center justify-center bg-yellow-800/30 backdrop-blur-sm rounded-2xl p-4 border border-yellow-600/20">
-                                <i class="fas fa-clock mr-4 text-yellow-400 text-xl"></i>
-                                <span class="text-lg font-medium">24/7 Access</span>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-clock mr-3 text-accent-400"></i>
+                                <span>24/7 Access</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Side - Dark Yellow Minimal Login Form -->
-                <div class="p-16 flex flex-col justify-center bg-white">
-                    <div class="mb-10">
-                        <h2 class="text-4xl font-bold text-gray-800 mb-4 tracking-tight">Welcome Back</h2>
-                        <p class="text-gray-600 text-xl font-light">Please sign in to your account</p>
+                <!-- Right Side - Standard Minimal Login Form -->
+                <div class="p-12 flex flex-col justify-center bg-white">
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-bold text-primary-800 mb-3">Welcome Back</h2>
+                        <p class="text-primary-600 text-lg">Please sign in to your account</p>
                     </div>
 
                     <!-- Alert Messages -->
@@ -151,13 +152,13 @@ $config = config('App');
                         <?= csrf_field() ?>
 
                         <!-- Email Field -->
-                        <div class="space-y-4">
-                            <label for="email" class="block text-lg font-semibold text-gray-700">
-                                Email Address <span class="text-yellow-600">*</span>
+                        <div class="space-y-3">
+                            <label for="email" class="block text-sm font-semibold text-primary-700">
+                                Email Address <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                                    <i class="fas fa-envelope text-yellow-600 text-lg"></i>
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fas fa-envelope text-primary-400"></i>
                                 </div>
                                 <input type="email"
                                        id="email"
@@ -166,18 +167,18 @@ $config = config('App');
                                        required
                                        autocomplete="email"
                                        placeholder="Enter your email address"
-                                       class="w-full pl-14 pr-5 py-5 border-2 border-yellow-200 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:border-yellow-600 transition-all duration-300 text-lg bg-yellow-50/50">
+                                       class="w-full pl-12 pr-4 py-4 border border-primary-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200 text-lg">
                             </div>
                         </div>
 
                         <!-- Password Field -->
-                        <div class="space-y-4">
-                            <label for="password" class="block text-lg font-semibold text-gray-700">
-                                Password <span class="text-yellow-600">*</span>
+                        <div class="space-y-3">
+                            <label for="password" class="block text-sm font-semibold text-primary-700">
+                                Password <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                                    <i class="fas fa-lock text-yellow-600 text-lg"></i>
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fas fa-lock text-primary-400"></i>
                                 </div>
                                 <input type="password"
                                        id="password"
@@ -185,11 +186,11 @@ $config = config('App');
                                        required
                                        autocomplete="current-password"
                                        placeholder="Enter your password"
-                                       class="w-full pl-14 pr-16 py-5 border-2 border-yellow-200 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:border-yellow-600 transition-all duration-300 text-lg bg-yellow-50/50">
+                                       class="w-full pl-12 pr-14 py-4 border border-primary-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200 text-lg">
                                 <button type="button"
                                         onclick="togglePassword()"
-                                        class="absolute inset-y-0 right-0 pr-5 flex items-center">
-                                    <i id="passwordToggle" class="fas fa-eye text-yellow-600 hover:text-yellow-700 transition-colors text-lg"></i>
+                                        class="absolute inset-y-0 right-0 pr-4 flex items-center">
+                                    <i id="passwordToggle" class="fas fa-eye text-primary-400 hover:text-accent-500 transition-colors"></i>
                                 </button>
                             </div>
                         </div>
