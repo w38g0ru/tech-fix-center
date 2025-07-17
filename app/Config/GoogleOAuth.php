@@ -16,28 +16,20 @@ class GoogleOAuth extends BaseConfig
     /**
      * Local development redirect URI
      */
-    public string $localRedirectUri = 'http://tfc.local/auth/callback';
+    public string $localRedirectUri = 'http://tfc.local/auth/google/callback';
 
     public function __construct()
     {
         parent::__construct();
 
-        // Load credentials from multiple sources
+        // Load credentials from separate config file if exists, otherwise use base64 fallback
         $credentialsFile = APPPATH . 'Config/GoogleCredentials.php';
-
-        // Try credentials file first
         if (file_exists($credentialsFile)) {
             $credentials = include $credentialsFile;
             $this->clientId = $credentials['client_id'] ?? '';
             $this->clientSecret = $credentials['client_secret'] ?? '';
         } else {
-            // Fallback to environment variables
-            $this->clientId = env('GOOGLE_CLIENT_ID', '');
-            $this->clientSecret = env('GOOGLE_CLIENT_SECRET', '');
-        }
-
-        // If still empty, use base64 encoded fallback
-        if (empty($this->clientId) || empty($this->clientSecret)) {
+            // Fallback to base64 encoded values for production
             $this->clientId = base64_decode('ODE3ODY0NjIwMDA5LXJzNGE4OWRrMzcwOHMwbjZobjFnbXVzdmpqbWpsa2VudS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbQ==');
             $this->clientSecret = base64_decode('R09DU1BYLUZYT2VMdTVDVzlpMHBQRUV4MTVLUW5OampCdQ==');
         }
