@@ -1,23 +1,28 @@
-/* TeknoPhix - Google Clean Design */
+/* TeknoPhix - Quasar Minimalist Design */
 
 :root {
-    /* Google Clean Color Palette */
-    --google-blue: #1a73e8;
-    --google-blue-hover: #1557b0;
-    --google-gray: #5f6368;
-    --google-gray-light: #9aa0a6;
-    --google-gray-lighter: #dadce0;
-    --google-gray-lightest: #f8f9fa;
-    --google-green: #34a853;
-    --google-yellow: #fbbc04;
-    --google-red: #ea4335;
-    --google-dark: #202124;
-    --google-white: #ffffff;
-    --google-surface: #ffffff;
-    --google-background: #fafafa;
-    --google-border: #e8eaed;
-    --google-shadow: rgba(60, 64, 67, 0.3);
-    --google-shadow-light: rgba(60, 64, 67, 0.15);
+    /* Quasar Minimalist Color Palette */
+    --quasar-primary: #1976d2;
+    --quasar-primary-hover: #1565c0;
+    --quasar-secondary: #26a69a;
+    --quasar-secondary-hover: #00897b;
+    --quasar-accent: #9c27b0;
+    --quasar-accent-hover: #7b1fa2;
+    --quasar-warning: #ff9800;
+    --quasar-danger: #f44336;
+    --quasar-success: #4caf50;
+    --quasar-info: #2196f3;
+    --quasar-dark: #1d1d1d;
+    --quasar-light: #fafafa;
+    --quasar-white: #ffffff;
+    --quasar-surface: #ffffff;
+    --quasar-background: #f5f5f5;
+    --quasar-border: #e0e0e0;
+    --quasar-separator: #e0e0e0;
+    --quasar-shadow: rgba(0, 0, 0, 0.2);
+    --quasar-shadow-light: rgba(0, 0, 0, 0.12);
+    --quasar-text-primary: #212121;
+    --quasar-text-secondary: #757575;
 
 }
 
@@ -32,15 +37,16 @@ body {
     color: var(--dark-800);
 }
 
-/* Google Clean Typography */
-.text-primary { color: var(--google-blue); }
-.text-secondary { color: var(--google-gray); }
-.text-success { color: var(--google-green); }
-.text-warning { color: var(--google-yellow); }
-.text-danger { color: var(--google-red); }
-.text-info { color: var(--google-blue); }
-.text-dark { color: var(--google-dark); }
-.text-light { color: var(--google-gray-lightest); }
+/* Quasar Minimalist Typography */
+.text-primary { color: var(--quasar-primary); }
+.text-secondary { color: var(--quasar-secondary); }
+.text-accent { color: var(--quasar-accent); }
+.text-success { color: var(--quasar-success); }
+.text-warning { color: var(--quasar-warning); }
+.text-danger { color: var(--quasar-danger); }
+.text-info { color: var(--quasar-info); }
+.text-dark { color: var(--quasar-dark); }
+.text-light { color: var(--quasar-light); }
 
 /* Buttons */
 .btn {
@@ -57,43 +63,49 @@ body {
     font-size: 0.875rem;
 }
 
-/* Google Clean Button System */
+/* Quasar Minimalist Button System */
 .btn-primary {
-    background: var(--google-blue);
-    color: var(--google-white);
+    background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover));
+    color: white;
     border: none;
     border-radius: 4px;
-    padding: 10px 24px;
-    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    padding: 12px 24px;
+    transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 500;
     font-size: 14px;
-    box-shadow: 0 1px 2px 0 var(--google-shadow-light), 0 1px 3px 1px var(--google-shadow-light);
-    text-transform: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-primary:hover {
-    background: var(--google-blue-hover);
-    box-shadow: 0 1px 3px 0 var(--google-shadow), 0 4px 8px 3px var(--google-shadow-light);
-    transform: translateY(-1px);
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
-    background: var(--google-surface);
-    color: var(--google-blue);
-    border: 1px solid var(--google-border);
+    background: var(--quasar-surface);
+    color: var(--quasar-primary);
+    border: 1px solid var(--quasar-primary);
     border-radius: 4px;
-    padding: 10px 24px;
+    padding: 12px 24px;
     font-weight: 500;
     font-size: 14px;
-    box-shadow: 0 1px 2px 0 var(--google-shadow-light);
-    text-transform: none;
-    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+    transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-secondary:hover {
-    background: rgba(26, 115, 232, 0.04);
-    border-color: var(--google-blue);
-    box-shadow: 0 1px 3px 0 var(--google-shadow-light);
+    background: rgba(25, 118, 210, 0.04);
+    border-color: var(--quasar-primary-hover);
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
 }
 
 .btn-outline-primary {

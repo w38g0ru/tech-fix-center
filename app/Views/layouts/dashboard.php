@@ -24,15 +24,16 @@ $pageTitle = $title ?? 'Dashboard';
             theme: {
                 extend: {
                     colors: {
-                        google: {
-                            blue: '<?= $config->brandColors['primary'] ?>',      // #1a73e8
-                            gray: '<?= $config->brandColors['secondary'] ?>',    // #5f6368
-                            green: '<?= $config->brandColors['accent'] ?>',      // #34a853
-                            yellow: '<?= $config->brandColors['warning'] ?>',    // #fbbc04
-                            red: '<?= $config->brandColors['danger'] ?>',        // #ea4335
-                            info: '<?= $config->brandColors['info'] ?>',         // #4285f4
-                            dark: '<?= $config->brandColors['dark'] ?>',         // #202124
-                            light: '<?= $config->brandColors['light'] ?>',       // #ffffff
+                        quasar: {
+                            primary: '<?= $config->brandColors['primary'] ?>',    // #1976d2
+                            secondary: '<?= $config->brandColors['secondary'] ?>', // #26a69a
+                            accent: '<?= $config->brandColors['accent'] ?>',      // #9c27b0
+                            warning: '<?= $config->brandColors['warning'] ?>',    // #ff9800
+                            danger: '<?= $config->brandColors['danger'] ?>',      // #f44336
+                            success: '<?= $config->brandColors['success'] ?>',    // #4caf50
+                            info: '<?= $config->brandColors['info'] ?>',          // #2196f3
+                            dark: '<?= $config->brandColors['dark'] ?>',          // #1d1d1d
+                            light: '<?= $config->brandColors['light'] ?>',        // #fafafa
                         }
                     }
                 }
@@ -41,33 +42,40 @@ $pageTitle = $title ?? 'Dashboard';
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        /* Google Clean Design Theme */
+        /* Quasar Minimalist Design Theme */
         :root {
-            --google-blue: #1a73e8;
-            --google-blue-hover: #1557b0;
-            --google-gray: #5f6368;
-            --google-gray-light: #9aa0a6;
-            --google-gray-lighter: #dadce0;
-            --google-gray-lightest: #f8f9fa;
-            --google-green: #34a853;
-            --google-yellow: #fbbc04;
-            --google-red: #ea4335;
-            --google-dark: #202124;
-            --google-white: #ffffff;
-            --google-surface: #ffffff;
-            --google-background: #fafafa;
-            --google-border: #e8eaed;
-            --google-shadow: rgba(60, 64, 67, 0.3);
-            --google-shadow-light: rgba(60, 64, 67, 0.15);
+            --quasar-primary: #1976d2;
+            --quasar-primary-hover: #1565c0;
+            --quasar-secondary: #26a69a;
+            --quasar-secondary-hover: #00897b;
+            --quasar-accent: #9c27b0;
+            --quasar-accent-hover: #7b1fa2;
+            --quasar-warning: #ff9800;
+            --quasar-danger: #f44336;
+            --quasar-success: #4caf50;
+            --quasar-info: #2196f3;
+            --quasar-dark: #1d1d1d;
+            --quasar-light: #fafafa;
+            --quasar-white: #ffffff;
+            --quasar-surface: #ffffff;
+            --quasar-background: #f5f5f5;
+            --quasar-border: #e0e0e0;
+            --quasar-separator: #e0e0e0;
+            --quasar-shadow: rgba(0, 0, 0, 0.2);
+            --quasar-shadow-light: rgba(0, 0, 0, 0.12);
+            --quasar-text-primary: #212121;
+            --quasar-text-secondary: #757575;
         }
 
-        /* Google Clean Sidebar Styles */
+        /* Quasar Minimalist Improved Sidebar */
         .sidebar {
             transform: translateX(-100%);
-            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-            background: var(--google-surface);
-            border-right: 1px solid var(--google-border);
-            box-shadow: 0 1px 2px 0 var(--google-shadow-light), 0 1px 3px 1px var(--google-shadow-light);
+            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--quasar-surface);
+            border-right: 1px solid var(--quasar-separator);
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+            width: 280px;
+            backdrop-filter: blur(10px);
         }
 
         .sidebar.open {
@@ -80,12 +88,13 @@ $pageTitle = $title ?? 'Dashboard';
             }
         }
 
-        /* Mobile Overlay */
+        /* Quasar Mobile Overlay */
         .sidebar-overlay {
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-            background: rgba(32, 33, 36, 0.6);
+            transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
         }
 
         .sidebar-overlay.active {
@@ -93,16 +102,16 @@ $pageTitle = $title ?? 'Dashboard';
             visibility: visible;
         }
 
-        /* Google Clean Dropdown Menus */
+        /* Quasar Minimalist Dropdown Menus */
         .dropdown-menu {
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-8px);
-            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
-            background: var(--google-surface);
-            border: 1px solid var(--google-border);
-            box-shadow: 0 2px 10px 0 var(--google-shadow);
-            border-radius: 8px;
+            transform: translateY(-8px) scale(0.95);
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--quasar-surface);
+            border: none;
+            box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+            border-radius: 4px;
         }
 
         .dropdown-menu.show {
@@ -111,120 +120,189 @@ $pageTitle = $title ?? 'Dashboard';
             transform: translateY(0);
         }
 
-        /* Google Clean Navigation Links */
+        /* Quasar Minimalist Improved Navigation Links */
         .nav-link {
-            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
-            border-radius: 24px;
-            margin: 4px 8px;
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 8px;
+            margin: 2px 12px;
             position: relative;
             font-weight: 500;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
         }
 
         .nav-link:hover {
-            background: rgba(26, 115, 232, 0.08);
-            color: var(--google-blue);
+            background: rgba(25, 118, 210, 0.08);
+            color: var(--quasar-primary);
+            transform: translateX(4px);
         }
 
         .nav-link.active {
-            background: rgba(26, 115, 232, 0.12);
-            color: var(--google-blue);
+            background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover));
+            color: white;
             font-weight: 600;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
         }
 
-        .nav-link.active::before {
+        .nav-link.active::after {
             content: '';
             position: absolute;
-            left: 0;
+            right: 0;
             top: 50%;
             transform: translateY(-50%);
             width: 4px;
-            height: 24px;
-            background: var(--google-blue);
-            border-radius: 0 2px 2px 0;
+            height: 32px;
+            background: var(--quasar-accent);
+            border-radius: 2px 0 0 2px;
         }
 
-        /* Google Clean Cards */
+        /* Quasar Minimalist Cards */
         .card {
-            background: var(--google-surface);
-            border: 1px solid var(--google-border);
-            border-radius: 8px;
-            box-shadow: 0 1px 2px 0 var(--google-shadow-light), 0 1px 3px 1px var(--google-shadow-light);
-            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            background: var(--quasar-surface);
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
         }
 
         .card:hover {
-            box-shadow: 0 1px 3px 0 var(--google-shadow), 0 4px 8px 3px var(--google-shadow-light);
-            transform: translateY(-1px);
+            box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
         }
 
         .card-header {
-            background: var(--google-surface);
-            color: var(--google-dark);
-            border-bottom: 1px solid var(--google-border);
+            background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover));
+            color: white;
+            border-bottom: none;
             padding: 16px 24px;
-            border-radius: 8px 8px 0 0;
+            border-radius: 0;
             font-weight: 500;
             font-size: 16px;
+            position: relative;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--quasar-accent);
         }
 
         .card-body {
             padding: 24px;
+            background: var(--quasar-surface);
         }
 
-        /* Google Clean Button System */
+        /* Quasar Minimalist Button System */
         .btn-primary {
-            background: var(--google-blue);
-            color: var(--google-white);
+            background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover));
+            color: white;
             border: none;
             border-radius: 4px;
-            padding: 10px 24px;
-            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            padding: 12px 24px;
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: 500;
             font-size: 14px;
-            box-shadow: 0 1px 2px 0 var(--google-shadow-light), 0 1px 3px 1px var(--google-shadow-light);
-            text-transform: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
         }
 
         .btn-primary:hover {
-            background: var(--google-blue-hover);
-            box-shadow: 0 1px 3px 0 var(--google-shadow), 0 4px 8px 3px var(--google-shadow-light);
-            transform: translateY(-1px);
+            box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
         }
 
         .btn-secondary {
-            background: var(--google-surface);
-            color: var(--google-blue);
-            border: 1px solid var(--google-border);
+            background: var(--quasar-surface);
+            color: var(--quasar-primary);
+            border: 1px solid var(--quasar-primary);
             border-radius: 4px;
-            padding: 10px 24px;
+            padding: 12px 24px;
             font-weight: 500;
             font-size: 14px;
-            box-shadow: 0 1px 2px 0 var(--google-shadow-light);
-            text-transform: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(25, 118, 210, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-secondary:hover::before {
+            left: 100%;
         }
 
         .btn-secondary:hover {
-            background: rgba(26, 115, 232, 0.04);
-            border-color: var(--google-blue);
-            box-shadow: 0 1px 3px 0 var(--google-shadow-light);
+            background: rgba(25, 118, 210, 0.04);
+            border-color: var(--quasar-primary-hover);
+            box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+            transform: translateY(-1px);
         }
 
         .btn-success {
-            background: var(--google-green);
-            color: var(--google-white);
+            background: linear-gradient(135deg, var(--quasar-success), #388e3c);
+            color: white;
             border: none;
             border-radius: 4px;
-            padding: 10px 24px;
+            padding: 12px 24px;
             font-weight: 500;
             font-size: 14px;
-            box-shadow: 0 1px 2px 0 var(--google-shadow-light);
-            text-transform: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-success:hover {
-            background: #2d8f47;
-            box-shadow: 0 1px 3px 0 var(--google-shadow-light);
-            transform: translateY(-1px);
+            box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
         }
 
         .btn-info {
@@ -315,31 +393,34 @@ $pageTitle = $title ?? 'Dashboard';
             }
         }
 
-        /* Google Clean Focus styles */
+        /* Quasar Minimalist Focus styles */
         .focus-ring:focus {
             outline: none;
-            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
         }
 
-        /* Google Clean Form Controls */
+        /* Quasar Minimalist Form Controls */
         .form-control {
-            border: 1px solid var(--google-border);
+            border: 1px solid var(--quasar-separator);
             border-radius: 4px;
             padding: 12px 16px;
-            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
-            background: var(--google-surface);
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--quasar-surface);
             font-size: 14px;
             line-height: 20px;
+            position: relative;
         }
 
         .form-control:focus {
-            border-color: var(--google-blue);
-            box-shadow: 0 0 0 1px var(--google-blue);
+            border-color: var(--quasar-primary);
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
             outline: none;
+            transform: translateY(-1px);
         }
 
         .form-control:hover {
-            border-color: var(--google-gray);
+            border-color: var(--quasar-text-secondary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
         }
 
         /* Status indicators */
@@ -348,7 +429,7 @@ $pageTitle = $title ?? 'Dashboard';
         .status-inactive { color: #dc2626; }
     </style>
 </head>
-<body style="background-color: var(--google-background);" class="text-gray-800">
+<body style="background-color: var(--quasar-background);" class="text-gray-800">
     <div class="flex h-screen overflow-hidden" id="app-container">
         <!-- Mobile Overlay -->
         <div class="fixed inset-0 z-40 lg:hidden sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -356,39 +437,62 @@ $pageTitle = $title ?? 'Dashboard';
         <!-- Sidebar -->
         <div class="fixed inset-y-0 left-0 z-50 w-64 shadow-2xl sidebar lg:static lg:inset-0 lg:z-auto" id="sidebar">
 
-            <!-- Google Clean Logo -->
-            <div class="flex items-center justify-center h-16 px-6" style="background-color: var(--google-surface); border-bottom: 1px solid var(--google-border);">
+            <!-- Quasar Minimalist Improved Logo -->
+            <div class="flex items-center justify-center h-20 px-6 relative" style="background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover)); border-bottom: 2px solid var(--quasar-accent);">
                 <div class="flex items-center">
-                    <div class="h-10 w-10 rounded-full flex items-center justify-center mr-3" style="background-color: var(--google-blue);">
-                        <i class="fas fa-tools text-white text-lg"></i>
+                    <div class="h-12 w-12 rounded-lg flex items-center justify-center mr-4 shadow-lg" style="background-color: var(--quasar-surface); border: 2px solid var(--quasar-accent);">
+                        <i class="fas fa-tools text-2xl" style="color: var(--quasar-primary);"></i>
                     </div>
                     <div>
-                        <h1 class="text-lg font-medium" style="color: var(--google-dark);"><?= $config->appShortName ?></h1>
-                        <p class="text-xs" style="color: var(--google-gray);">Dashboard</p>
+                        <h1 class="text-xl font-bold text-white"><?= $config->appShortName ?></h1>
+                        <p class="text-sm text-blue-100 font-medium">Control Center</p>
                     </div>
                 </div>
+                <!-- Decorative accent -->
+                <div class="absolute bottom-0 left-0 right-0 h-1" style="background: linear-gradient(90deg, var(--quasar-accent), var(--quasar-secondary));"></div>
             </div>
 
-            <!-- Navigation -->
-            <nav class="mt-6">
-                <div class="px-2 py-4">
+            <!-- Quasar Minimalist Improved Navigation -->
+            <nav class="mt-8">
+                <!-- Navigation Header -->
+                <div class="px-6 mb-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider" style="color: var(--quasar-text-secondary);">Main Menu</h3>
+                </div>
+
+                <div class="px-3 space-y-1">
                     <a href="<?= base_url('dashboard') ?>"
-                       class="nav-link flex items-center px-4 py-3 font-medium <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>" style="color: var(--google-gray);">
-                        <i class="fas fa-tachometer-alt mr-4 w-5 text-center"></i>
-                        Dashboard
+                       class="nav-link flex items-center px-4 py-4 font-medium <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: rgba(25, 118, 210, 0.1);">
+                            <i class="fas fa-tachometer-alt text-lg" style="color: var(--quasar-primary);"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-semibold">Dashboard</div>
+                            <div class="text-xs" style="color: var(--quasar-text-secondary);">Overview & Stats</div>
+                        </div>
                     </a>
 
                     <a href="<?= base_url('dashboard/jobs') ?>"
-                       class="nav-link flex items-center px-4 py-3 font-medium <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>" style="color: var(--google-gray);">
-                        <i class="fas fa-wrench mr-4 w-5 text-center"></i>
-                        Jobs
+                       class="nav-link flex items-center px-4 py-4 font-medium <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: rgba(38, 166, 154, 0.1);">
+                            <i class="fas fa-wrench text-lg" style="color: var(--quasar-secondary);"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-semibold">Jobs</div>
+                            <div class="text-xs" style="color: var(--quasar-text-secondary);">Repair Tasks</div>
+                        </div>
                     </a>
 
                     <a href="<?= base_url('dashboard/users') ?>"
-                       class="nav-link flex items-center px-4 py-3 font-medium <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>" style="color: var(--google-gray);">
-                        <i class="fas fa-users mr-4 w-5 text-center"></i>
-                        Customers
+                       class="nav-link flex items-center px-4 py-4 font-medium <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>" style="color: var(--quasar-text-primary);">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: rgba(156, 39, 176, 0.1);">
+                            <i class="fas fa-users text-lg" style="color: var(--quasar-accent);"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-semibold">Customers</div>
+                            <div class="text-xs" style="color: var(--quasar-text-secondary);">Client Management</div>
+                        </div>
                     </a>
+                </div>
                     
 
                     <a href="<?= base_url('dashboard/inventory') ?>"
@@ -461,56 +565,68 @@ $pageTitle = $title ?? 'Dashboard';
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Google Clean Header -->
-            <header class="bg-white shadow-sm border-b flex-shrink-0" style="border-color: var(--google-border); box-shadow: 0 1px 2px 0 var(--google-shadow-light);">
+            <!-- Quasar Minimalist Header -->
+            <header class="bg-white shadow-sm border-b flex-shrink-0" style="border-color: var(--quasar-separator); box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);">
                 <div class="flex items-center justify-between px-6 py-4 lg:px-8">
                     <div class="flex items-center">
                         <button onclick="toggleSidebar()" id="mobile-menu-btn"
-                                class="lg:hidden p-2 rounded-full hover:bg-gray-100 focus:outline-none focus-ring transition-all"
-                                style="color: var(--google-gray);">
+                                class="lg:hidden p-3 rounded-lg hover:bg-gray-100 focus:outline-none focus-ring transition-all"
+                                style="color: var(--quasar-text-secondary);">
                             <i class="fas fa-bars text-lg"></i>
                         </button>
-                        <h2 class="ml-3 text-xl font-normal lg:ml-0 lg:text-2xl truncate" style="color: var(--google-dark);">
-                            <?= $title ?? 'Dashboard' ?>
-                        </h2>
+                        <div class="ml-3 lg:ml-0">
+                            <h2 class="text-2xl font-light truncate" style="color: var(--quasar-text-primary);">
+                                <?= $title ?? 'Dashboard' ?>
+                            </h2>
+                            <div class="h-1 w-16 mt-1 rounded" style="background: linear-gradient(90deg, var(--quasar-primary), var(--quasar-accent));"></div>
+                        </div>
                     </div>
                     
-                    <div class="flex items-center space-x-2">
+                    <div class="flex items-center space-x-3">
                         <div class="relative">
-                            <button class="p-2 rounded-full hover:bg-gray-100 transition-all" style="color: var(--google-gray);">
+                            <button class="p-3 rounded-lg hover:bg-gray-100 transition-all" style="color: var(--quasar-text-secondary);">
                                 <i class="fas fa-bell text-lg"></i>
-                                <span class="absolute -top-1 -right-1 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-medium" style="background-color: var(--google-red);">3</span>
+                                <span class="absolute -top-1 -right-1 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold" style="background: linear-gradient(135deg, var(--quasar-danger), #d32f2f);">3</span>
                             </button>
                         </div>
 
                         <div class="relative">
-                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="flex items-center space-x-2 p-2 rounded-full hover:bg-gray-100 focus-ring transition-all" style="color: var(--google-dark);">
-                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-white" style="background-color: var(--google-blue);">
-                                    <i class="fas fa-user text-sm"></i>
+                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 focus-ring transition-all" style="color: var(--quasar-text-primary);">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white shadow-lg" style="background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover));">
+                                    <i class="fas fa-user text-lg"></i>
                                 </div>
                                 <div class="hidden sm:block text-left">
-                                    <div class="text-sm font-medium"><?= session()->get('full_name') ?? 'User' ?></div>
-                                    <div class="text-xs capitalize" style="color: var(--google-gray);"><?= session()->get('role') ?? '' ?></div>
+                                    <div class="text-sm font-semibold"><?= session()->get('full_name') ?? 'User' ?></div>
+                                    <div class="text-xs capitalize font-medium" style="color: var(--quasar-text-secondary);"><?= session()->get('role') ?? '' ?></div>
                                 </div>
-                                <i class="fas fa-chevron-down text-xs transition-transform" id="user-menu-arrow"></i>
+                                <i class="fas fa-chevron-down text-sm transition-transform" id="user-menu-arrow"></i>
                             </button>
 
-                            <!-- Google Clean Dropdown Menu -->
-                            <div class="absolute right-0 mt-2 w-56 bg-white shadow-lg py-2 z-50 dropdown-menu" id="user-menu">
-                                <div class="px-4 py-3" style="border-bottom: 1px solid var(--google-border);">
-                                    <div class="font-medium" style="color: var(--google-dark);"><?= session()->get('full_name') ?? 'User' ?></div>
-                                    <div class="text-sm" style="color: var(--google-gray);"><?= session()->get('email') ?? '' ?></div>
-                                    <div class="text-xs capitalize font-medium mt-1" style="color: var(--google-blue);"><?= session()->get('role') ?? '' ?></div>
+                            <!-- Quasar Minimalist Dropdown Menu -->
+                            <div class="absolute right-0 mt-3 w-64 bg-white shadow-lg py-2 z-50 dropdown-menu" id="user-menu">
+                                <div class="px-6 py-4" style="background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover)); border-bottom: 2px solid var(--quasar-accent);">
+                                    <div class="font-bold text-white text-lg"><?= session()->get('full_name') ?? 'User' ?></div>
+                                    <div class="text-sm text-blue-100"><?= session()->get('email') ?? '' ?></div>
+                                    <div class="text-xs capitalize font-semibold mt-1 px-2 py-1 rounded" style="background: var(--quasar-accent); color: white; display: inline-block;"><?= session()->get('role') ?? '' ?></div>
                                 </div>
-                                <a href="<?= base_url('dashboard/profile') ?>" class="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors" style="color: var(--google-dark);">
-                                    <i class="fas fa-user mr-3 w-4" style="color: var(--google-gray);"></i>Profile
+                                <a href="<?= base_url('dashboard/profile') ?>" class="flex items-center px-6 py-3 text-sm hover:bg-gray-50 transition-colors" style="color: var(--quasar-text-primary);">
+                                    <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(25, 118, 210, 0.1);">
+                                        <i class="fas fa-user text-sm" style="color: var(--quasar-primary);"></i>
+                                    </div>
+                                    <span class="font-medium">Profile</span>
                                 </a>
-                                <a href="<?= base_url('dashboard/settings') ?>" class="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors" style="color: var(--google-dark);">
-                                    <i class="fas fa-cog mr-3 w-4" style="color: var(--google-gray);"></i>Settings
+                                <a href="<?= base_url('dashboard/settings') ?>" class="flex items-center px-6 py-3 text-sm hover:bg-gray-50 transition-colors" style="color: var(--quasar-text-primary);">
+                                    <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(38, 166, 154, 0.1);">
+                                        <i class="fas fa-cog text-sm" style="color: var(--quasar-secondary);"></i>
+                                    </div>
+                                    <span class="font-medium">Settings</span>
                                 </a>
-                                <div style="border-top: 1px solid var(--google-border);" class="my-1"></div>
-                                <a href="<?= base_url('auth/logout') ?>" class="flex items-center px-4 py-2 text-sm hover:bg-red-50 transition-colors" style="color: var(--google-red);">
-                                    <i class="fas fa-sign-out-alt mr-3 w-4"></i>Logout
+                                <div style="border-top: 1px solid var(--quasar-separator);" class="my-2"></div>
+                                <a href="<?= base_url('auth/logout') ?>" class="flex items-center px-6 py-3 text-sm hover:bg-red-50 transition-colors" style="color: var(--quasar-danger);">
+                                    <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(244, 67, 54, 0.1);">
+                                        <i class="fas fa-sign-out-alt text-sm" style="color: var(--quasar-danger);"></i>
+                                    </div>
+                                    <span class="font-medium">Logout</span>
                                 </a>
                             </div>
                         </div>
@@ -518,23 +634,27 @@ $pageTitle = $title ?? 'Dashboard';
                 </div>
             </header>
 
-            <!-- Google Clean Page Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto" style="background-color: var(--google-background);">
-                <div class="container mx-auto px-6 py-6 lg:px-8 lg:py-8">
+            <!-- Quasar Minimalist Page Content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto" style="background-color: var(--quasar-background);">
+                <div class="container mx-auto px-6 py-8 lg:px-8 lg:py-10">
                     <?php if (session()->getFlashdata('success')): ?>
-                        <div class="mb-4 px-4 py-3 rounded-lg" role="alert" style="background-color: #e8f5e8; border: 1px solid var(--google-green); color: var(--google-green);">
+                        <div class="mb-6 px-6 py-4 rounded-lg shadow-lg" role="alert" style="background: linear-gradient(135deg, #e8f5e8, #f1f8e9); border-left: 4px solid var(--quasar-success); color: var(--quasar-success);">
                             <div class="flex items-center">
-                                <i class="fas fa-check-circle mr-3" style="color: var(--google-green);"></i>
-                                <span class="font-medium"><?= session()->getFlashdata('success') ?></span>
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: var(--quasar-success);">
+                                    <i class="fas fa-check-circle text-white"></i>
+                                </div>
+                                <span class="font-semibold text-lg"><?= session()->getFlashdata('success') ?></span>
                             </div>
                         </div>
                     <?php endif; ?>
 
                     <?php if (session()->getFlashdata('error')): ?>
-                        <div class="mb-4 px-4 py-3 rounded-lg" role="alert" style="background-color: #fce8e6; border: 1px solid var(--google-red); color: var(--google-red);">
+                        <div class="mb-6 px-6 py-4 rounded-lg shadow-lg" role="alert" style="background: linear-gradient(135deg, #fce8e6, #ffebee); border-left: 4px solid var(--quasar-danger); color: var(--quasar-danger);">
                             <div class="flex items-center">
-                                <i class="fas fa-exclamation-circle mr-3" style="color: var(--google-red);"></i>
-                                <span class="font-medium"><?= session()->getFlashdata('error') ?></span>
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4" style="background: var(--quasar-danger);">
+                                    <i class="fas fa-exclamation-circle text-white"></i>
+                                </div>
+                                <span class="font-semibold text-lg"><?= session()->getFlashdata('error') ?></span>
                             </div>
                         </div>
                     <?php endif; ?>

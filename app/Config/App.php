@@ -36,17 +36,17 @@ class App extends BaseConfig
     public string $contactPhone = '+977-1-4567890';
     public string $companyAddress = 'Gaighat, Udayapur, Nepal';
 
-    // Brand Colors (Google Clean Design)
+    // Brand Colors (Quasar Minimalist Design)
     public array $brandColors = [
-        'primary' => '#1a73e8',      // Google Blue (Primary)
-        'secondary' => '#5f6368',    // Google Gray (Secondary)
-        'accent' => '#34a853',       // Google Green (Accent)
-        'warning' => '#fbbc04',      // Google Yellow (Warning)
-        'danger' => '#ea4335',       // Google Red (Danger)
-        'success' => '#34a853',      // Google Green (Success)
-        'info' => '#4285f4',         // Google Blue (Info)
-        'dark' => '#202124',         // Google Dark Gray
-        'light' => '#ffffff'         // Pure White
+        'primary' => '#1976d2',      // Quasar Blue (Primary)
+        'secondary' => '#26a69a',    // Quasar Teal (Secondary)
+        'accent' => '#9c27b0',       // Quasar Purple (Accent)
+        'warning' => '#ff9800',      // Quasar Orange (Warning)
+        'danger' => '#f44336',       // Quasar Red (Danger)
+        'success' => '#4caf50',      // Quasar Green (Success)
+        'info' => '#2196f3',         // Quasar Light Blue (Info)
+        'dark' => '#1d1d1d',         // Quasar Dark
+        'light' => '#fafafa'         // Quasar Light
     ];
 
     // Social Media Links
