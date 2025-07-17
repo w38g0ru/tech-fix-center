@@ -428,6 +428,32 @@ class Inventory extends BaseController
         $errors = [];
 
         try {
+            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+            if ($fileExtension === 'xlsx' || $fileExtension === 'xls') {
+                // Process XLSX/XLS file
+                return $this->processExcelFile($filePath);
+            } else {
+                // Process CSV file
+                return $this->processCsvFile($filePath);
+            }
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'error' => 'File processing error: ' . $e->getMessage(),
+                'successful' => 0,
+                'failed' => 0
+            ];
+        }
+    }
+
+    private function processCsvFile($filePath)
+    {
+        $successful = 0;
+        $failed = 0;
+        $errors = [];
+
+        try {
             // Read CSV file
             if (($handle = fopen($filePath, "r")) !== FALSE) {
                 $header = fgetcsv($handle); // Skip header row
@@ -477,6 +503,102 @@ class Inventory extends BaseController
             return [
                 'success' => false,
                 'error' => $e->getMessage()
+            ];
+        }
+    }
+
+    private function processExcelFile($filePath)
+    {
+        $successful = 0;
+        $failed = 0;
+        $errors = [];
+
+        try {
+            // Load PhpSpreadsheet
+            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
+            $worksheet = $spreadsheet->getActiveSheet();
+            $highestRow = $worksheet->getHighestRow();
+
+            // Process each row (skip header row)
+            for ($row = 2; $row <= $highestRow; $row++) {
+                try {
+                    // Read row data
+                    $deviceName = trim($worksheet->getCell('A' . $row)->getCalculatedValue() ?? '');
+                    $brand = trim($worksheet->getCell('B' . $row)->getCalculatedValue() ?? '');
+                    $model = trim($worksheet->getCell('C' . $row)->getCalculatedValue() ?? '');
+                    $totalStock = (int)($worksheet->getCell('D' . $row)->getCalculatedValue() ?? 0);
+                    $purchasePrice = (float)($worksheet->getCell('E' . $row)->getCalculatedValue() ?? 0);
+                    $sellingPrice = (float)($worksheet->getCell('F' . $row)->getCalculatedValue() ?? 0);
+                    $minimumOrderLevel = (int)($worksheet->getCell('G' . $row)->getCalculatedValue() ?? 0);
+                    $category = trim($worksheet->getCell('H' . $row)->getCalculatedValue() ?? '');
+                    $description = trim($worksheet->getCell('I' . $row)->getCalculatedValue() ?? '');
+                    $supplier = trim($worksheet->getCell('J' . $row)->getCalculatedValue() ?? '');
+                    $status = trim($worksheet->getCell('K' . $row)->getCalculatedValue() ?? 'active');
+
+                    // Skip empty rows
+                    if (empty($deviceName) && empty($brand) && empty($model)) {
+                        continue;
+                    }
+
+                    // Set default values for empty fields
+                    if (empty($category)) {
+                        $category = $deviceName; // Use device name as category
+                    }
+                    if (empty($description)) {
+                        $description = "$deviceName for $brand $model";
+                    }
+                    if (empty($supplier)) {
+                        $supplier = 'Default Supplier';
+                    }
+                    if (empty($status)) {
+                        $status = 'active';
+                    }
+
+                    $itemData = [
+                        'device_name' => "$deviceName $brand $model",
+                        'brand' => $brand,
+                        'model' => $model,
+                        'total_stock' => $totalStock,
+                        'purchase_price' => $purchasePrice > 0 ? $purchasePrice : null,
+                        'selling_price' => $sellingPrice > 0 ? $sellingPrice : null,
+                        'minimum_order_level' => $minimumOrderLevel,
+                        'category' => $category,
+                        'description' => $description,
+                        'supplier' => $supplier,
+                        'status' => $status,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+
+                    if ($this->inventoryModel->save($itemData)) {
+                        $successful++;
+                    } else {
+                        $failed++;
+                        $errors[] = "Row $row: " . implode(', ', $this->inventoryModel->errors());
+                    }
+
+                } catch (\Exception $e) {
+                    $failed++;
+                    $errors[] = "Row $row: " . $e->getMessage();
+                }
+            }
+
+            // Log the import
+            $this->logImport(basename($filePath), $highestRow - 1, $successful, $failed, $errors);
+
+            return [
+                'success' => true,
+                'successful' => $successful,
+                'failed' => $failed,
+                'errors' => $errors
+            ];
+
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'error' => 'Excel file processing error: ' . $e->getMessage(),
+                'successful' => 0,
+                'failed' => 0
             ];
         }
     }
