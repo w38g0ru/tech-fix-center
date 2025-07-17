@@ -58,4 +58,19 @@ class GoogleOAuth extends BaseConfig
         // Disable for all other domains (local development, etc.)
         return false;
     }
+
+    /**
+     * Get debug information for troubleshooting
+     */
+    public function getDebugInfo(): array
+    {
+        return [
+            'client_id' => $this->clientId,
+            'client_secret_length' => strlen($this->clientSecret),
+            'redirect_uri' => $this->getRedirectUri(),
+            'scopes' => $this->scopes,
+            'is_configured' => $this->isConfigured(),
+            'current_host' => $_SERVER['HTTP_HOST'] ?? 'unknown'
+        ];
+    }
 }

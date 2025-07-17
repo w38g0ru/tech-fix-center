@@ -14,6 +14,12 @@ class GoogleOAuthService
     public function __construct()
     {
         $this->config = new GoogleOAuth();
+
+        // Only proceed if configuration is valid
+        if (!$this->config->isConfigured()) {
+            throw new \Exception('Google OAuth is not configured for this environment');
+        }
+
         $this->client = new Google_Client();
 
         // Validate configuration

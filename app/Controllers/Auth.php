@@ -415,9 +415,7 @@ class Auth extends BaseController
     public function googleLogin()
     {
         try {
-            $googleOAuth = new GoogleOAuthService();
-
-            // Check if Google OAuth is properly configured
+            // Check if Google OAuth is properly configured FIRST
             $config = new \Config\GoogleOAuth();
             if (!$config->isConfigured()) {
                 log_message('error', 'Google OAuth not configured properly');
@@ -425,6 +423,8 @@ class Auth extends BaseController
                     ->with('error', 'Google authentication is not configured. Please contact administrator.');
             }
 
+            // Only create the service if configuration is valid
+            $googleOAuth = new GoogleOAuthService();
             $authUrl = $googleOAuth->getAuthUrl();
 
             if (empty($authUrl)) {
