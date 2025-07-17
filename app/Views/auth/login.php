@@ -23,10 +23,16 @@ $config = config('App');
                 extend: {
                     colors: {
                         primary: {
-                            50: '#eff6ff',
-                            500: '#3b82f6',
+                            50: '#fefce8',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
                             600: '<?= $config->brandColors['primary'] ?>',
-                            700: '#1d4ed8'
+                            700: '#92400e',
+                            800: '#78350f',
+                            900: '#451a03'
                         },
                         success: {
                             50: '#f0fdf4',
@@ -43,12 +49,21 @@ $config = config('App');
     </script>
     <style>
         .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
         }
         .glass-effect {
             backdrop-filter: blur(10px);
             background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(180, 83, 9, 0.2);
+            box-shadow: 0 8px 32px rgba(180, 83, 9, 0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(180, 83, 9, 0.3);
         }
     </style>
 </head>

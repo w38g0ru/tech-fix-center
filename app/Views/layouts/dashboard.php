@@ -25,10 +25,28 @@ $pageTitle = $title ?? 'Dashboard';
                 extend: {
                     colors: {
                         primary: {
-                            50: '#eff6ff',
-                            500: '#3b82f6',
-                            600: '<?= $config->brandColors['primary'] ?>',
-                            700: '#1d4ed8',
+                            50: '#fefce8',   // Yellow-50
+                            100: '#fef3c7',  // Yellow-100
+                            200: '#fde68a',  // Yellow-200
+                            300: '#fcd34d',  // Yellow-300
+                            400: '#fbbf24',  // Yellow-400
+                            500: '#f59e0b',  // Yellow-500
+                            600: '<?= $config->brandColors['primary'] ?>',  // Dark yellow-600
+                            700: '#92400e',  // Yellow-700
+                            800: '#78350f',  // Yellow-800
+                            900: '#451a03',  // Yellow-900
+                        },
+                        dark: {
+                            50: '#f9fafb',   // Gray-50
+                            100: '#f3f4f6',  // Gray-100
+                            200: '#e5e7eb',  // Gray-200
+                            300: '#d1d5db',  // Gray-300
+                            400: '#9ca3af',  // Gray-400
+                            500: '#6b7280',  // Gray-500
+                            600: '#4b5563',  // Gray-600
+                            700: '#374151',  // Gray-700
+                            800: '#1f2937',  // Gray-800
+                            900: '#111827',  // Gray-900
                         }
                     }
                 }
@@ -37,10 +55,21 @@ $pageTitle = $title ?? 'Dashboard';
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
+        /* Minimalist Dark Yellow Theme */
+        :root {
+            --primary-50: #fefce8;
+            --primary-600: #b45309;
+            --primary-700: #92400e;
+            --dark-800: #1f2937;
+            --dark-900: #111827;
+        }
+
         /* Responsive Sidebar Styles */
         .sidebar {
             transform: translateX(-100%);
             transition: transform 0.3s ease-in-out;
+            background: var(--dark-900);
+            border-right: 1px solid var(--primary-600);
         }
 
         .sidebar.open {
@@ -58,6 +87,7 @@ $pageTitle = $title ?? 'Dashboard';
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            background: rgba(17, 24, 39, 0.8);
         }
 
         .sidebar-overlay.active {
@@ -71,6 +101,8 @@ $pageTitle = $title ?? 'Dashboard';
             visibility: hidden;
             transform: translateY(-10px);
             transition: all 0.2s ease-in-out;
+            background: var(--dark-800);
+            border: 1px solid var(--primary-600);
         }
 
         .dropdown-menu.show {
@@ -79,31 +111,77 @@ $pageTitle = $title ?? 'Dashboard';
             transform: translateY(0);
         }
 
+        /* Navigation Links */
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            border-radius: 8px;
+            margin: 2px 0;
+        }
+
+        .nav-link:hover {
+            background: rgba(180, 83, 9, 0.1);
+            color: #fbbf24;
+        }
+
+        .nav-link.active {
+            background: var(--primary-600);
+            color: white;
+            box-shadow: 0 2px 4px rgba(180, 83, 9, 0.3);
+        }
+
+        /* Cards and Components */
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-600);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--primary-600);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-700);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(180, 83, 9, 0.3);
+        }
+
         /* Mobile optimizations */
         @media (max-width: 1023px) {
             body {
                 -webkit-overflow-scrolling: touch;
             }
 
-            /* Prevent zoom on input focus */
             input, select, textarea {
                 font-size: 16px !important;
             }
 
-            /* Improve touch targets */
             button, a {
                 min-height: 44px;
                 min-width: 44px;
             }
         }
 
-        /* Ensure proper scrolling */
+        /* Scrolling */
         .scroll-container {
             -webkit-overflow-scrolling: touch;
             overflow-y: auto;
         }
 
-        /* Mobile-first responsive tables */
+        /* Tables */
         @media (max-width: 768px) {
             .table-responsive {
                 overflow-x: auto;
@@ -115,111 +193,121 @@ $pageTitle = $title ?? 'Dashboard';
             }
         }
 
-        /* Focus styles for accessibility */
+        /* Focus styles */
         .focus-ring:focus {
-            outline: 2px solid #2563eb;
+            outline: 2px solid var(--primary-600);
             outline-offset: 2px;
         }
+
+        /* Status indicators */
+        .status-active { color: #059669; }
+        .status-pending { color: #f59e0b; }
+        .status-inactive { color: #dc2626; }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-primary-50 text-dark-800">
     <div class="flex h-screen overflow-hidden" id="app-container">
         <!-- Mobile Overlay -->
-        <div class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+        <div class="fixed inset-0 z-40 lg:hidden sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
         <!-- Sidebar -->
-        <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg sidebar lg:static lg:inset-0 lg:z-auto" id="sidebar">
-            
+        <div class="fixed inset-y-0 left-0 z-50 w-64 shadow-2xl sidebar lg:static lg:inset-0 lg:z-auto" id="sidebar">
+
             <!-- Logo -->
-            <div class="flex items-center justify-center h-16 px-4 bg-primary-600">
+            <div class="flex items-center justify-center h-16 px-4 bg-primary-600 border-b border-primary-700">
                 <div class="flex items-center">
-                    <div class="h-8 w-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-3">
-                        <i class="fas fa-tools text-white text-lg"></i>
+                    <div class="h-10 w-10 bg-primary-50 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+                        <i class="fas fa-tools text-primary-600 text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-lg font-bold text-white"><?= $config->appShortName ?></h1>
-                        <p class="text-xs text-white text-opacity-80">Dashboard</p>
+                        <h1 class="text-lg font-bold text-white tracking-tight"><?= $config->appShortName ?></h1>
+                        <p class="text-xs text-primary-100 font-medium">Dashboard</p>
                     </div>
                 </div>
             </div>
 
             <!-- Navigation -->
-            <nav class="mt-8">
-                <div class="px-4 space-y-2">
-                    <a href="<?= base_url('dashboard') ?>" 
-                       class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
-                        <i class="fas fa-tachometer-alt mr-3"></i>
+            <nav class="mt-6">
+                <div class="px-3 space-y-1">
+                    <a href="<?= base_url('dashboard') ?>"
+                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>">
+                        <i class="fas fa-tachometer-alt mr-3 w-5"></i>
                         Dashboard
                     </a>
-                    
-                    <a href="<?= base_url('dashboard/jobs') ?>" 
-                       class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'jobs') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
-                        <i class="fas fa-wrench mr-3"></i>
+
+                    <a href="<?= base_url('dashboard/jobs') ?>"
+                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>">
+                        <i class="fas fa-wrench mr-3 w-5"></i>
                         Jobs
                     </a>
-                    
-                    <a href="<?= base_url('dashboard/users') ?>" 
-                       class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'users') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
-                        <i class="fas fa-users mr-3"></i>
+
+                    <a href="<?= base_url('dashboard/users') ?>"
+                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>">
+                        <i class="fas fa-users mr-3 w-5"></i>
                         Customers
                     </a>
                     
 
-                    <a href="<?= base_url('dashboard/inventory') ?>" 
-                       class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'inventory') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
-                        <i class="fas fa-boxes mr-3"></i>
+                    <a href="<?= base_url('dashboard/inventory') ?>"
+                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'inventory') !== false ? 'active' : '' ?>">
+                        <i class="fas fa-boxes mr-3 w-5"></i>
                         Inventory
                     </a>
-                    
+
                     <a href="<?= base_url('dashboard/movements') ?>"
-                       class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'movements') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
-                        <i class="fas fa-exchange-alt mr-3"></i>
+                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'movements') !== false ? 'active' : '' ?>">
+                        <i class="fas fa-exchange-alt mr-3 w-5"></i>
                         Stock Movements
                     </a>
 
                     <a href="<?= base_url('dashboard/photos') ?>"
-                       class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'photos') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
-                        <i class="fas fa-camera mr-3"></i>
+                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'photos') !== false ? 'active' : '' ?>">
+                        <i class="fas fa-camera mr-3 w-5"></i>
                         Photoproof
                     </a>
 
                     <a href="<?= base_url('dashboard/referred') ?>"
-                       class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'referred') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
-                        <i class="fas fa-shipping-fast mr-3"></i>
+                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'referred') !== false ? 'active' : '' ?>">
+                        <i class="fas fa-shipping-fast mr-3 w-5"></i>
                         Dispatch
                     </a>
 
                     <a href="<?= base_url('dashboard/parts-requests') ?>"
-                       class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'parts-requests') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
-                        <i class="fas fa-tools mr-3"></i>
+                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'parts-requests') !== false ? 'active' : '' ?>">
+                        <i class="fas fa-tools mr-3 w-5"></i>
                         Parts Requests
                     </a>
 
                     <?php helper('auth'); ?>
                     <?php if (canCreateTechnician()): ?>
+                        <div class="border-t border-gray-700 my-4 mx-3"></div>
+                        <div class="px-3 mb-2">
+                            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Admin</p>
+                        </div>
+
                         <a href="<?= base_url('dashboard/service-centers') ?>"
-                           class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'service-centers') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
-                            <i class="fas fa-building mr-3"></i>
+                           class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'service-centers') !== false ? 'active' : '' ?>">
+                            <i class="fas fa-building mr-3 w-5"></i>
                             Service Centers
                         </a>
                         <a href="<?= base_url('dashboard/technicians') ?>"
-                           class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'technicians') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
-                            <i class="fas fa-user-cog mr-3"></i>
+                           class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'technicians') !== false ? 'active' : '' ?>">
+                            <i class="fas fa-user-cog mr-3 w-5"></i>
                             Technicians
                         </a>
 
                         <a href="<?= base_url('dashboard/user-management') ?>"
-                           class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'user-management') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
-                            <i class="fas fa-users mr-3"></i>
+                           class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'user-management') !== false ? 'active' : '' ?>">
+                            <i class="fas fa-users mr-3 w-5"></i>
                             User Management
                         </a>
                     <?php endif; ?>
 
-                    <div class="border-t border-gray-200 my-4"></div>
+                    <div class="border-t border-gray-700 my-4 mx-3"></div>
 
                     <a href="<?= base_url('dashboard/user-guide') ?>"
-                       class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 <?= strpos(uri_string(), 'user-guide') !== false ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600' : '' ?>">
-                        <i class="fas fa-question-circle mr-3"></i>
+                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'user-guide') !== false ? 'active' : '' ?>">
+                        <i class="fas fa-question-circle mr-3 w-5"></i>
                         User Guide
                     </a>
 
@@ -231,51 +319,54 @@ $pageTitle = $title ?? 'Dashboard';
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
-            <header class="bg-white shadow-sm border-b border-gray-200 flex-shrink-0">
+            <header class="bg-white shadow-sm border-b border-primary-200 flex-shrink-0">
                 <div class="flex items-center justify-between px-4 py-4 lg:px-6">
                     <div class="flex items-center">
                         <button onclick="toggleSidebar()" id="mobile-menu-btn"
-                                class="text-gray-500 hover:text-gray-700 lg:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors focus-ring">
+                                class="text-gray-500 hover:text-primary-600 lg:hidden p-2 rounded-lg hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all focus-ring">
                             <i class="fas fa-bars text-lg"></i>
                         </button>
-                        <h2 class="ml-2 text-lg font-semibold text-gray-800 lg:ml-0 lg:text-xl truncate">
+                        <h2 class="ml-2 text-xl font-bold text-dark-800 lg:ml-0 lg:text-2xl truncate">
                             <?= $title ?? 'Dashboard' ?>
                         </h2>
                     </div>
                     
-                    <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-3">
                         <div class="relative">
-                            <button class="flex items-center text-gray-500 hover:text-gray-700">
+                            <button class="flex items-center text-gray-500 hover:text-primary-600 p-2 rounded-lg hover:bg-primary-50 transition-all">
                                 <i class="fas fa-bell text-lg"></i>
-                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+                                <span class="absolute -top-1 -right-1 bg-primary-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
                             </button>
                         </div>
-                        
+
                         <div class="relative">
-                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="flex items-center space-x-2 text-gray-700 hover:text-gray-900 p-2 rounded-md hover:bg-gray-100 focus-ring">
-                                <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center">
+                            <button onclick="toggleUserMenu()" id="user-menu-btn" class="flex items-center space-x-3 text-gray-700 hover:text-dark-900 p-2 rounded-lg hover:bg-primary-50 focus-ring transition-all">
+                                <div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center shadow-md">
                                     <i class="fas fa-user text-white text-sm"></i>
                                 </div>
-                                <span class="text-sm font-medium"><?= session()->get('full_name') ?? 'User' ?></span>
+                                <div class="hidden sm:block text-left">
+                                    <div class="text-sm font-semibold"><?= session()->get('full_name') ?? 'User' ?></div>
+                                    <div class="text-xs text-gray-500 capitalize"><?= session()->get('role') ?? '' ?></div>
+                                </div>
                                 <i class="fas fa-chevron-down text-xs transition-transform" id="user-menu-arrow"></i>
                             </button>
 
                             <!-- Dropdown Menu -->
-                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border dropdown-menu" id="user-menu">
-                                <div class="px-4 py-2 text-sm text-gray-700 border-b">
-                                    <div class="font-medium"><?= session()->get('full_name') ?? 'User' ?></div>
-                                    <div class="text-xs text-gray-500"><?= session()->get('email') ?? '' ?></div>
-                                    <div class="text-xs text-gray-500 capitalize"><?= session()->get('role') ?? '' ?></div>
+                            <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl py-2 z-50 border border-primary-200 dropdown-menu" id="user-menu">
+                                <div class="px-4 py-3 border-b border-primary-100">
+                                    <div class="font-semibold text-dark-800"><?= session()->get('full_name') ?? 'User' ?></div>
+                                    <div class="text-sm text-gray-500"><?= session()->get('email') ?? '' ?></div>
+                                    <div class="text-xs text-primary-600 capitalize font-medium"><?= session()->get('role') ?? '' ?></div>
                                 </div>
-                                <a href="<?= base_url('dashboard/profile') ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    <i class="fas fa-user mr-2"></i>Profile
+                                <a href="<?= base_url('dashboard/profile') ?>" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-colors">
+                                    <i class="fas fa-user mr-3 w-4"></i>Profile
                                 </a>
-                                <a href="<?= base_url('dashboard/settings') ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    <i class="fas fa-cog mr-2"></i>Settings
+                                <a href="<?= base_url('dashboard/settings') ?>" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-colors">
+                                    <i class="fas fa-cog mr-3 w-4"></i>Settings
                                 </a>
-                                <div class="border-t"></div>
-                                <a href="<?= base_url('auth/logout') ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                <div class="border-t border-primary-100 my-1"></div>
+                                <a href="<?= base_url('auth/logout') ?>" class="flex items-center px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                    <i class="fas fa-sign-out-alt mr-3 w-4"></i>Logout
                                 </a>
                             </div>
                         </div>
@@ -284,17 +375,23 @@ $pageTitle = $title ?? 'Dashboard';
             </header>
 
             <!-- Page Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-primary-50">
                 <div class="container mx-auto px-4 py-6 lg:px-6 lg:py-8">
                     <?php if (session()->getFlashdata('success')): ?>
-                        <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                            <span class="block sm:inline"><?= session()->getFlashdata('success') ?></span>
+                        <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-4 rounded-xl shadow-sm" role="alert">
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span class="font-medium"><?= session()->getFlashdata('success') ?></span>
+                            </div>
                         </div>
                     <?php endif; ?>
-                    
+
                     <?php if (session()->getFlashdata('error')): ?>
-                        <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                            <span class="block sm:inline"><?= session()->getFlashdata('error') ?></span>
+                        <div class="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-4 rounded-xl shadow-sm" role="alert">
+                            <div class="flex items-center">
+                                <i class="fas fa-exclamation-circle text-red-500 mr-3"></i>
+                                <span class="font-medium"><?= session()->getFlashdata('error') ?></span>
+                            </div>
                         </div>
                     <?php endif; ?>
 

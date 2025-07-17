@@ -2,14 +2,14 @@
 
 <?= $this->section('content') ?>
 
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
     <div>
-        <h1 class="text-2xl font-semibold text-gray-900">Bulk Import Inventory</h1>
-        <p class="mt-1 text-sm text-gray-600">Import multiple inventory items from CSV or Excel file</p>
+        <h1 class="text-3xl font-bold text-dark-900">Bulk Import Inventory</h1>
+        <p class="mt-2 text-dark-600">Import multiple inventory items from CSV or Excel file</p>
     </div>
     <div class="mt-4 sm:mt-0">
         <a href="<?= base_url('dashboard/inventory') ?>"
-           class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
+           class="btn btn-secondary">
             <i class="fas fa-arrow-left mr-2"></i>
             Back to Inventory
         </a>
@@ -43,70 +43,78 @@
     </div>
 <?php endif; ?>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <!-- Upload Form -->
     <div class="lg:col-span-2">
-        <div class="bg-white shadow rounded-lg p-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Upload Inventory File</h3>
-            <p class="text-sm text-gray-600 mb-6">Upload a CSV file to bulk import inventory items with pricing information.</p>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-xl font-bold text-dark-900 flex items-center">
+                    <i class="fas fa-upload text-primary-600 mr-3"></i>
+                    Upload Inventory File
+                </h3>
+            </div>
+            <div class="card-body">
+                <p class="text-dark-600 mb-6">Upload a CSV or Excel file to bulk import inventory items with pricing information.</p>
 
-            <form action="<?= base_url('dashboard/inventory/process-bulk-import') ?>" method="POST" enctype="multipart/form-data" class="space-y-6">
-                <?= csrf_field() ?>
+                <form action="<?= base_url('dashboard/inventory/process-bulk-import') ?>" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    <?= csrf_field() ?>
 
-                <!-- File Upload -->
-                <div>
-                    <label for="import_file" class="block text-sm font-medium text-gray-700 mb-2">
-                        Select CSV File <span class="text-red-500">*</span>
-                    </label>
-                    <input type="file"
-                           id="import_file"
-                           name="import_file"
-                           accept=".csv,.xlsx,.xls"
-                           required
-                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
-                    <p class="mt-2 text-sm text-gray-500">
-                        <i class="fas fa-info-circle mr-1"></i>
-                        Supported formats: CSV, Excel (.xlsx, .xls). Maximum file size: 10MB.
-                    </p>
-                </div>
+                    <!-- File Upload -->
+                    <div class="form-group">
+                        <label for="import_file" class="form-label">
+                            Select File <span class="text-danger">*</span>
+                        </label>
+                        <input type="file"
+                               id="import_file"
+                               name="import_file"
+                               accept=".csv,.xlsx,.xls"
+                               required
+                               class="form-control file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200">
+                        <p class="mt-2 text-sm text-dark-500">
+                            <i class="fas fa-info-circle text-primary-600 mr-2"></i>
+                            Supported: CSV, Excel (.xlsx, .xls). Max size: 10MB.
+                        </p>
+                    </div>
 
-                <!-- Update Existing Option -->
-                <div class="flex items-center">
-                    <input type="checkbox"
-                           id="update_existing"
-                           name="update_existing"
-                           value="1"
-                           class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
-                    <label for="update_existing" class="ml-2 block text-sm text-gray-900">
-                        Update existing items (if device name, brand, and model match)
-                    </label>
-                </div>
+                    <!-- Update Existing Option -->
+                    <div class="flex items-center p-4 bg-primary-50 rounded-lg border border-primary-200">
+                        <input type="checkbox"
+                               id="update_existing"
+                               name="update_existing"
+                               value="1"
+                               class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-primary-300 rounded">
+                        <label for="update_existing" class="ml-3 text-sm font-medium text-dark-700">
+                            Update existing items (if device name, brand, and model match)
+                        </label>
+                    </div>
 
-                <!-- Action Buttons -->
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <button type="submit"
-                            class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                        <i class="fas fa-upload mr-2"></i>
-                        Import Inventory
-                    </button>
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-upload mr-2"></i>
+                            Import Inventory
+                        </button>
 
-                    <a href="<?= base_url('dashboard/inventory/downloadTemplate') ?>"
-                       class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                        <i class="fas fa-download mr-2"></i>
-                        Download Template
-                    </a>
-                </div>
-            </form>
+                        <a href="<?= base_url('dashboard/inventory/downloadTemplate') ?>" class="btn btn-outline btn-lg">
+                            <i class="fas fa-download mr-2"></i>
+                            Download Template
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
     <!-- Information Panel -->
     <div class="lg:col-span-1">
-        <div class="bg-white shadow rounded-lg p-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">
-                <i class="fas fa-info-circle text-blue-500 mr-2"></i>
-                Import Information
-            </h3>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-lg font-bold text-dark-900 flex items-center">
+                    <i class="fas fa-info-circle text-primary-600 mr-3"></i>
+                    Import Information
+                </h3>
+            </div>
+            <div class="card-body space-y-6">
 
             <!-- CSV Format -->
             <div class="mb-6">
