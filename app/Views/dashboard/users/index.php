@@ -8,8 +8,8 @@
         <p class="mt-1 text-sm text-gray-600">Manage your repair shop customers</p>
     </div>
     <div class="mt-4 sm:mt-0">
-        <a href="<?= base_url('dashboard/users/create') ?>" 
-           class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:bg-primary-700 active:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
+        <a href="<?= base_url('dashboard/users/create') ?>"
+           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
             <i class="fas fa-plus mr-2"></i>
             Add Customer
         </a>
@@ -27,8 +27,8 @@
                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
         </div>
         <div class="flex gap-2">
-            <button type="submit" 
-                    class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+            <button type="submit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 <i class="fas fa-search mr-2"></i>Search
             </button>
             <?php if (!empty($search)): ?>
@@ -74,8 +74,8 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-10 w-10">
-                                        <div class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
-                                            <i class="fas fa-user text-primary-600"></i>
+                                        <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                            <i class="fas fa-user text-blue-600"></i>
                                         </div>
                                     </div>
                                     <div class="ml-4">
@@ -106,7 +106,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex items-center justify-end space-x-2">
                                     <a href="<?= base_url('dashboard/users/edit/' . $user['id']) ?>"
-                                       class="text-primary-600 hover:text-primary-900 p-1 rounded-full hover:bg-primary-50">
+                                       class="text-blue-600 hover:text-blue-900 p-1 rounded-full hover:bg-blue-50">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <?php helper('auth'); ?>
@@ -128,8 +128,8 @@
                                 <i class="fas fa-users text-4xl mb-4"></i>
                                 <p class="text-lg font-medium">No customers found</p>
                                 <p class="text-sm">Get started by adding your first customer.</p>
-                                <a href="<?= base_url('dashboard/users/create') ?>" 
-                                   class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700">
+                                <a href="<?= base_url('dashboard/users/create') ?>"
+                                   class="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
                                     <i class="fas fa-plus mr-2"></i>
                                     Add Customer
                                 </a>

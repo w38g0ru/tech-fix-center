@@ -8,8 +8,8 @@
         <p class="mt-1 text-sm text-gray-600">Manage repair jobs and track progress</p>
     </div>
     <div class="mt-4 sm:mt-0">
-        <a href="<?= base_url('dashboard/jobs/create') ?>" 
-           class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:bg-primary-700 active:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
+        <a href="<?= base_url('dashboard/jobs/create') ?>"
+           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
             <i class="fas fa-plus mr-2"></i>
             Create Job
         </a>
@@ -124,8 +124,8 @@
                 <option value="Returned" <?= ($status ?? '') === 'Returned' ? 'selected' : '' ?>>Returned</option>
                 <option value="Completed" <?= ($status ?? '') === 'Completed' ? 'selected' : '' ?>>Completed</option>
             </select>
-            <button type="submit" 
-                    class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+            <button type="submit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 <i class="fas fa-search mr-2"></i>Search
             </button>
             <?php if (!empty($search) || !empty($status)): ?>
@@ -240,7 +240,7 @@
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>"
-                                       class="text-primary-600 hover:text-primary-900 p-1 rounded-full hover:bg-primary-50">
+                                       class="text-blue-600 hover:text-blue-900 p-1 rounded-full hover:bg-blue-50">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <?php helper('auth'); ?>
@@ -262,8 +262,8 @@
                                 <i class="fas fa-wrench text-4xl mb-4"></i>
                                 <p class="text-lg font-medium">No jobs found</p>
                                 <p class="text-sm">Get started by creating your first job.</p>
-                                <a href="<?= base_url('dashboard/jobs/create') ?>" 
-                                   class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700">
+                                <a href="<?= base_url('dashboard/jobs/create') ?>"
+                                   class="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
                                     <i class="fas fa-plus mr-2"></i>
                                     Create Job
                                 </a>
