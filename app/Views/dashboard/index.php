@@ -3,100 +3,100 @@
 <?= $this->section('content') ?>
 
 <!-- Stats Cards -->
-<div class="stats-grid">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <!-- Total Jobs -->
-    <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(37, 99, 235, 0.1); color: #2563eb;">
-            <i class="fas fa-wrench"></i>
+    <div class="bg-white p-6 rounded-lg shadow-sm flex items-center">
+        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mr-4">
+            <i class="fas fa-wrench text-xl"></i>
         </div>
-        <div class="stat-content">
-            <h3><?= $jobStats['total'] ?></h3>
-            <p>Total Jobs</p>
-            <div style="margin-top: 8px; font-size: 12px;">
-                <span style="color: #059669; font-weight: 500;"><?= $jobStats['completed'] ?> Completed</span>
-                <span style="color: #d97706; font-weight: 500; margin-left: 16px;"><?= $jobStats['pending'] ?> Pending</span>
+        <div class="flex-1">
+            <h3 class="text-2xl font-bold text-gray-900"><?= $jobStats['total'] ?></h3>
+            <p class="text-sm text-gray-600">Total Jobs</p>
+            <div class="mt-2 text-xs">
+                <span class="text-green-600 font-medium"><?= $jobStats['completed'] ?> Completed</span>
+                <span class="text-orange-600 font-medium ml-4"><?= $jobStats['pending'] ?> Pending</span>
             </div>
         </div>
     </div>
 
     <!-- Total Customers -->
-    <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(5, 150, 105, 0.1); color: #059669;">
-            <i class="fas fa-users"></i>
+    <div class="bg-white p-6 rounded-lg shadow-sm flex items-center">
+        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mr-4">
+            <i class="fas fa-users text-xl"></i>
         </div>
-        <div class="stat-content">
-            <h3><?= $userStats['total'] ?></h3>
-            <p>Total Customers</p>
-            <div style="margin-top: 8px; font-size: 12px;">
-                <span style="color: #2563eb; font-weight: 500;"><?= $userStats['registered'] ?> Registered</span>
-                <span style="color: #6b7280; font-weight: 500; margin-left: 16px;"><?= $userStats['walk_in'] ?> Walk-in</span>
+        <div class="flex-1">
+            <h3 class="text-2xl font-bold text-gray-900"><?= $userStats['total'] ?></h3>
+            <p class="text-sm text-gray-600">Total Customers</p>
+            <div class="mt-2 text-xs">
+                <span class="text-blue-600 font-medium"><?= $userStats['registered'] ?> Registered</span>
+                <span class="text-gray-500 font-medium ml-4"><?= $userStats['walk_in'] ?> Walk-in</span>
             </div>
         </div>
     </div>
 
     <!-- Total Technicians -->
-    <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(147, 51, 234, 0.1); color: #9333ea;">
-            <i class="fas fa-user-cog"></i>
+    <div class="bg-white p-6 rounded-lg shadow-sm flex items-center">
+        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mr-4">
+            <i class="fas fa-user-cog text-xl"></i>
         </div>
-        <div class="stat-content">
-            <h3><?= $technicianStats['total'] ?></h3>
-            <p>Total Technicians</p>
-            <div style="margin-top: 8px; font-size: 12px;">
-                <span style="color: #059669; font-weight: 500;">Active technicians</span>
+        <div class="flex-1">
+            <h3 class="text-2xl font-bold text-gray-900"><?= $technicianStats['total'] ?></h3>
+            <p class="text-sm text-gray-600">Total Technicians</p>
+            <div class="mt-2 text-xs">
+                <span class="text-green-600 font-medium">Active technicians</span>
             </div>
         </div>
     </div>
 
     <!-- Inventory Items -->
-    <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(255, 152, 0, 0.1); color: #ff9800;">
-            <i class="fas fa-boxes"></i>
+    <div class="bg-white p-6 rounded-lg shadow-sm flex items-center">
+        <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center mr-4">
+            <i class="fas fa-boxes text-xl"></i>
         </div>
-        <div class="stat-content">
-            <h3><?= $inventoryStats['total_items'] ?></h3>
-            <p>Inventory Items</p>
-            <div style="margin-top: 8px; font-size: 12px;">
-                <span style="color: #dc2626; font-weight: 500;"><?= $inventoryStats['low_stock'] ?> Low Stock</span>
-                <span style="color: #6b7280; font-weight: 500; margin-left: 16px;"><?= $inventoryStats['total_stock'] ?> Total Stock</span>
+        <div class="flex-1">
+            <h3 class="text-2xl font-bold text-gray-900"><?= $inventoryStats['total_items'] ?></h3>
+            <p class="text-sm text-gray-600">Inventory Items</p>
+            <div class="mt-2 text-xs">
+                <span class="text-red-600 font-medium"><?= $inventoryStats['low_stock'] ?> Low Stock</span>
+                <span class="text-gray-500 font-medium ml-4"><?= $inventoryStats['total_stock'] ?> Total Stock</span>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Recent Activity -->
-<div class="grid grid-2" style="margin-top: 30px;">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
     <!-- Recent Jobs -->
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Recent Jobs</h3>
-            <a href="<?= base_url('dashboard/jobs') ?>" class="btn btn-primary" style="font-size: 12px; padding: 6px 12px;">
-                <i class="fas fa-eye"></i>View All
+    <div class="bg-white rounded-lg shadow-sm">
+        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900">Recent Jobs</h3>
+            <a href="<?= base_url('dashboard/jobs') ?>" class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 transition-colors">
+                <i class="fas fa-eye mr-1"></i>View All
             </a>
         </div>
-        
+
         <?php if (!empty($recentJobs)): ?>
-            <div style="overflow-x: auto;">
-                <table class="table">
-                    <thead>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
                         <tr>
-                            <th>Customer</th>
-                            <th>Device</th>
-                            <th>Status</th>
-                            <th>Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Device</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="bg-white divide-y divide-gray-200">
                         <?php foreach ($recentJobs as $job): ?>
-                            <tr>
-                                <td>
-                                    <div style="font-weight: 500;">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="font-medium text-gray-900">
                                         <?= esc($job['customer_name'] ?? $job['walk_in_customer_name'] ?? 'N/A') ?>
                                     </div>
                                 </td>
-                                <td>
-                                    <div style="font-weight: 500;"><?= esc($job['device_name']) ?></div>
-                                    <div style="font-size: 12px; color: #666;"><?= esc($job['serial_number']) ?></div>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="font-medium text-gray-900"><?= esc($job['device_name']) ?></div>
+                                    <div class="text-xs text-gray-500"><?= esc($job['serial_number']) ?></div>
                                 </td>
                                 <td>
                                     <?php
