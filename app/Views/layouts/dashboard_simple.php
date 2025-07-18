@@ -28,6 +28,9 @@ $pageTitle = $title ?? 'Dashboard';
         .dashboard {
             display: flex;
             min-height: 100vh;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
         }
 
         /* Sidebar */
@@ -158,11 +161,15 @@ $pageTitle = $title ?? 'Dashboard';
             flex: 1;
             margin-left: 0;
             transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            width: 100%;
+            max-width: 100%;
         }
 
         @media (min-width: 768px) {
             .main {
                 margin-left: 260px;
+                width: calc(100% - 260px);
             }
         }
 
@@ -313,6 +320,10 @@ $pageTitle = $title ?? 'Dashboard';
         /* Content */
         .content {
             padding: 20px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-x: hidden;
         }
 
         /* Hide menu button on desktop */
@@ -334,6 +345,11 @@ $pageTitle = $title ?? 'Dashboard';
 
             .user-name {
                 display: none;
+            }
+
+            .main {
+                width: 100%;
+                max-width: 100%;
             }
         }
 
@@ -399,6 +415,8 @@ $pageTitle = $title ?? 'Dashboard';
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             padding: 20px;
             margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .card-header {
