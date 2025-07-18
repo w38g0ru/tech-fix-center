@@ -37,66 +37,81 @@
 </div>
 
 <!-- Inventory Stats -->
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(37, 99, 235, 0.1); color: #2563eb;">
-            <i class="fas fa-boxes"></i>
-        </div>
-        <div class="stat-content">
-            <h3><?= $inventoryStats['total_items'] ?></h3>
-            <p>Total Items</p>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(5, 150, 105, 0.1); color: #059669;">
-            <i class="fas fa-cubes"></i>
-        </div>
-        <div class="stat-content">
-            <h3><?= $inventoryStats['total_stock'] ?></h3>
-            <p>Total Stock</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-boxes text-white text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $inventoryStats['total_items'] ?></h3>
+                <p class="text-sm font-medium text-gray-600">Total Items</p>
+            </div>
         </div>
     </div>
 
-    <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(217, 119, 6, 0.1); color: #d97706;">
-            <i class="fas fa-exclamation-triangle"></i>
-        </div>
-        <div class="stat-content">
-            <h3><?= $inventoryStats['low_stock'] ?></h3>
-            <p>Low Stock</p>
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-green-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-cubes text-white text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $inventoryStats['total_stock'] ?></h3>
+                <p class="text-sm font-medium text-gray-600">Total Stock</p>
+            </div>
         </div>
     </div>
 
-    <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(220, 38, 38, 0.1); color: #dc2626;">
-            <i class="fas fa-times-circle"></i>
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-orange-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-exclamation-triangle text-white text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $inventoryStats['low_stock'] ?></h3>
+                <p class="text-sm font-medium text-gray-600">Low Stock</p>
+            </div>
         </div>
-        <div class="stat-content">
-            <h3><?= $inventoryStats['out_of_stock'] ?></h3>
-            <p>Out of Stock</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-red-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-times-circle text-white text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $inventoryStats['out_of_stock'] ?></h3>
+                <p class="text-sm font-medium text-gray-600">Out of Stock</p>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- Search Bar -->
-<div class="card">
-    <form method="GET" action="<?= base_url('dashboard/inventory') ?>" style="display: flex; gap: 12px; align-items: end; flex-wrap: wrap;">
-        <div class="form-group" style="flex: 1; min-width: 250px; margin-bottom: 0;">
-            <label class="form-label">Search Inventory</label>
-            <input type="text"
-                   name="search"
-                   value="<?= esc($search ?? '') ?>"
-                   placeholder="Search by device name, brand, or model..."
-                   class="form-input">
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+    <form method="GET" action="<?= base_url('dashboard/inventory') ?>" class="flex flex-col lg:flex-row gap-4">
+        <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Search Inventory</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400"></i>
+                </div>
+                <input type="text"
+                       name="search"
+                       value="<?= esc($search ?? '') ?>"
+                       placeholder="Search by device name, brand, or model..."
+                       class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+            </div>
         </div>
-        <div style="display: flex; gap: 8px;">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-search"></i>Search
+        <div class="flex items-end gap-3">
+            <button type="submit"
+                    class="px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors duration-200 flex items-center">
+                <i class="fas fa-search mr-2"></i>Search
             </button>
             <?php if (!empty($search)): ?>
-                <a href="<?= base_url('dashboard/inventory') ?>" class="btn btn-secondary">
-                    <i class="fas fa-times"></i>Clear
+                <a href="<?= base_url('dashboard/inventory') ?>"
+                   class="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors duration-200 flex items-center">
+                    <i class="fas fa-times mr-2"></i>Clear
                 </a>
             <?php endif; ?>
         </div>
@@ -104,18 +119,19 @@
 </div>
 
 <!-- Inventory Table -->
-<div style="overflow-x: auto;">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Item Details</th>
-                <th>Brand & Model</th>
-                <th>Stock Level</th>
-                <th>Pricing</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Details</th>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand & Model</th>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock Level</th>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pricing</th>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
         <tbody>
             <?php if (!empty($items)): ?>
                 <?php foreach ($items as $item): ?>
