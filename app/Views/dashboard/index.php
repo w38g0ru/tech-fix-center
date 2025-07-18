@@ -2,63 +2,109 @@
 
 <?= $this->section('content') ?>
 
+<!-- Welcome Section -->
+<div class="mb-8 animate-fade-in">
+    <div class="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 rounded-2xl p-8 text-white relative overflow-hidden shadow-2xl">
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="relative z-10">
+            <h1 class="text-3xl font-bold mb-2">Welcome back! 👋</h1>
+            <p class="text-blue-100 text-lg">Here's what's happening at TeknoPhix today</p>
+            <div class="mt-4 flex items-center space-x-4">
+                <div class="flex items-center text-blue-200">
+                    <i class="fas fa-clock mr-2"></i>
+                    <span class="text-sm"><?= date('l, F j, Y') ?></span>
+                </div>
+                <div class="flex items-center text-blue-200">
+                    <i class="fas fa-map-marker-alt mr-2"></i>
+                    <span class="text-sm">TeknoPhix Center</span>
+                </div>
+            </div>
+        </div>
+        <div class="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full animate-bounce-gentle"></div>
+        <div class="absolute -bottom-8 -left-8 w-32 h-32 bg-white/5 rounded-full"></div>
+        <div class="absolute top-1/2 right-1/4 w-16 h-16 bg-white/5 rounded-full"></div>
+    </div>
+</div>
+
 <!-- Stats Cards -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <!-- Total Jobs -->
-    <div class="bg-white p-6 rounded-lg shadow-sm flex items-center">
-        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mr-4">
-            <i class="fas fa-wrench text-xl"></i>
-        </div>
-        <div class="flex-1">
-            <h3 class="text-2xl font-bold text-gray-900"><?= $jobStats['total'] ?></h3>
-            <p class="text-sm text-gray-600">Total Jobs</p>
-            <div class="mt-2 text-xs">
-                <span class="text-green-600 font-medium"><?= $jobStats['completed'] ?> Completed</span>
-                <span class="text-orange-600 font-medium ml-4"><?= $jobStats['pending'] ?> Pending</span>
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 group animate-slide-up">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-wrench text-white text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $jobStats['total'] ?></h3>
+                <p class="text-sm font-medium text-gray-600">Total Jobs</p>
+                <div class="mt-3 flex items-center space-x-4">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <?= $jobStats['completed'] ?> Completed
+                    </span>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                        <?= $jobStats['pending'] ?> Pending
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Total Customers -->
-    <div class="bg-white p-6 rounded-lg shadow-sm flex items-center">
-        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mr-4">
-            <i class="fas fa-users text-xl"></i>
-        </div>
-        <div class="flex-1">
-            <h3 class="text-2xl font-bold text-gray-900"><?= $userStats['total'] ?></h3>
-            <p class="text-sm text-gray-600">Total Customers</p>
-            <div class="mt-2 text-xs">
-                <span class="text-blue-600 font-medium"><?= $userStats['registered'] ?> Registered</span>
-                <span class="text-gray-500 font-medium ml-4"><?= $userStats['walk_in'] ?> Walk-in</span>
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-green-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-users text-white text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $userStats['total'] ?></h3>
+                <p class="text-sm font-medium text-gray-600">Total Customers</p>
+                <div class="mt-3 flex items-center space-x-4">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <?= $userStats['registered'] ?> Registered
+                    </span>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        <?= $userStats['walk_in'] ?> Walk-in
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Total Technicians -->
-    <div class="bg-white p-6 rounded-lg shadow-sm flex items-center">
-        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mr-4">
-            <i class="fas fa-user-cog text-xl"></i>
-        </div>
-        <div class="flex-1">
-            <h3 class="text-2xl font-bold text-gray-900"><?= $technicianStats['total'] ?></h3>
-            <p class="text-sm text-gray-600">Total Technicians</p>
-            <div class="mt-2 text-xs">
-                <span class="text-green-600 font-medium">Active technicians</span>
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-purple-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-user-cog text-white text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $technicianStats['total'] ?></h3>
+                <p class="text-sm font-medium text-gray-600">Total Technicians</p>
+                <div class="mt-3">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Active Team
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Inventory Items -->
-    <div class="bg-white p-6 rounded-lg shadow-sm flex items-center">
-        <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center mr-4">
-            <i class="fas fa-boxes text-xl"></i>
-        </div>
-        <div class="flex-1">
-            <h3 class="text-2xl font-bold text-gray-900"><?= $inventoryStats['total_items'] ?></h3>
-            <p class="text-sm text-gray-600">Inventory Items</p>
-            <div class="mt-2 text-xs">
-                <span class="text-red-600 font-medium"><?= $inventoryStats['low_stock'] ?> Low Stock</span>
-                <span class="text-gray-500 font-medium ml-4"><?= $inventoryStats['total_stock'] ?> Total Stock</span>
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-orange-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-boxes text-white text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $inventoryStats['total_items'] ?></h3>
+                <p class="text-sm font-medium text-gray-600">Inventory Items</p>
+                <div class="mt-3 flex items-center space-x-4">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        <?= $inventoryStats['low_stock'] ?> Low Stock
+                    </span>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        <?= $inventoryStats['total_stock'] ?> Total
+                    </span>
+                </div>
             </div>
         </div>
     </div>

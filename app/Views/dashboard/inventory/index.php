@@ -2,28 +2,36 @@
 
 <?= $this->section('content') ?>
 
-<div class="card-header">
+<!-- Page Header -->
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
     <div>
-        <h1 class="card-title">Inventory</h1>
-        <p style="color: #666; font-size: 14px; margin-top: 4px;">Manage your inventory items and stock levels</p>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Inventory Management</h1>
+        <p class="text-gray-600">Track stock levels and manage your inventory items</p>
     </div>
-    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <!-- Import/Export Buttons -->
-        <a href="<?= base_url('dashboard/inventory/downloadTemplate') ?>" class="btn btn-success" title="Download CSV template for bulk import">
-            <i class="fas fa-download"></i>Template
-        </a>
+    <div class="mt-4 lg:mt-0 flex flex-wrap gap-3">
+        <!-- Import/Export Actions -->
+        <div class="flex items-center gap-2 bg-gray-50 rounded-xl p-1">
+            <a href="<?= base_url('dashboard/inventory/downloadTemplate') ?>"
+               class="inline-flex items-center px-4 py-2 text-sm font-medium text-green-700 bg-white rounded-lg hover:bg-green-50 transition-colors duration-200 shadow-sm"
+               title="Download CSV template for bulk import">
+                <i class="fas fa-download mr-2"></i>Template
+            </a>
+            <a href="<?= base_url('dashboard/inventory/bulk-import') ?>"
+               class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 shadow-sm"
+               title="Import items from CSV/Excel file">
+                <i class="fas fa-upload mr-2"></i>Import
+            </a>
+            <a href="<?= base_url('dashboard/inventory/export') ?>"
+               class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+               title="Export all inventory items to CSV">
+                <i class="fas fa-file-export mr-2"></i>Export
+            </a>
+        </div>
 
-        <a href="<?= base_url('dashboard/inventory/bulk-import') ?>" class="btn btn-primary" title="Import items from CSV/Excel file">
-            <i class="fas fa-upload"></i>Import
-        </a>
-
-        <a href="<?= base_url('dashboard/inventory/export') ?>" class="btn btn-secondary" title="Export all inventory items to CSV">
-            <i class="fas fa-file-export"></i>Export
-        </a>
-
-        <!-- Add Item Button -->
-        <a href="<?= base_url('dashboard/inventory/create') ?>" class="btn btn-primary">
-            <i class="fas fa-plus"></i>Add Item
+        <!-- Primary Action -->
+        <a href="<?= base_url('dashboard/inventory/create') ?>"
+           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-semibold rounded-xl hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/30">
+            <i class="fas fa-plus mr-2"></i>Add New Item
         </a>
     </div>
 </div>

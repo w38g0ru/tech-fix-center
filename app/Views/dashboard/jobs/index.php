@@ -2,32 +2,39 @@
 
 <?= $this->section('content') ?>
 
-<div class="card-header">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
     <div>
-        <h1 class="card-title">Jobs</h1>
-        <p style="color: #666; font-size: 14px; margin-top: 4px;">Manage repair jobs and track progress</p>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Job Management</h1>
+        <p class="text-gray-600">Track and manage all repair jobs efficiently</p>
     </div>
-    <a href="<?= base_url('dashboard/jobs/create') ?>" class="btn btn-primary">
-        <i class="fas fa-plus"></i>Create Job
-    </a>
+    <div class="mt-4 sm:mt-0">
+        <a href="<?= base_url('dashboard/jobs/create') ?>"
+           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-lg shadow-green-500/25 hover:shadow-xl hover:shadow-green-500/30">
+            <i class="fas fa-plus mr-2"></i>Create New Job
+        </a>
+    </div>
 </div>
 
 <!-- Job Stats -->
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(37, 99, 235, 0.1); color: #2563eb;">
-            <i class="fas fa-clipboard-list"></i>
-        </div>
-        <div class="stat-content">
-            <h3><?= $jobStats['total'] ?></h3>
-            <p>Total Jobs</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-clipboard-list text-white text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $jobStats['total'] ?></h3>
+                <p class="text-sm font-medium text-gray-600">Total Jobs</p>
+            </div>
         </div>
     </div>
 
-    <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(217, 119, 6, 0.1); color: #d97706;">
-            <i class="fas fa-clock"></i>
-        </div>
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-orange-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-clock text-white text-xl"></i>
+            </div>
         <div class="stat-content">
             <h3><?= $jobStats['pending'] ?></h3>
             <p>Pending</p>

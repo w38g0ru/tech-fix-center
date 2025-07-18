@@ -2,34 +2,45 @@
 
 <?= $this->section('content') ?>
 
-<div class="card-header">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
     <div>
-        <h1 class="card-title">Customers</h1>
-        <p style="color: #666; font-size: 14px; margin-top: 4px;">Manage your repair shop customers</p>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Customer Management</h1>
+        <p class="text-gray-600">Manage your repair shop customers and their information</p>
     </div>
-    <a href="<?= base_url('dashboard/users/create') ?>" class="btn btn-primary">
-        <i class="fas fa-plus"></i>Add Customer
-    </a>
+    <div class="mt-4 sm:mt-0">
+        <a href="<?= base_url('dashboard/users/create') ?>"
+           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30">
+            <i class="fas fa-plus mr-2"></i>Add New Customer
+        </a>
+    </div>
 </div>
 
-<!-- Search Bar -->
-<div class="card">
-    <form method="GET" action="<?= base_url('dashboard/users') ?>" style="display: flex; gap: 12px; align-items: end; flex-wrap: wrap;">
-        <div class="form-group" style="flex: 1; min-width: 250px; margin-bottom: 0;">
-            <label class="form-label">Search Customers</label>
-            <input type="text" 
-                   name="search" 
-                   value="<?= esc($search ?? '') ?>"
-                   placeholder="Search by name or mobile number..."
-                   class="form-input">
+<!-- Search and Filters -->
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+    <form method="GET" action="<?= base_url('dashboard/users') ?>" class="flex flex-col lg:flex-row gap-4">
+        <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Search Customers</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400"></i>
+                </div>
+                <input type="text"
+                       name="search"
+                       value="<?= esc($search ?? '') ?>"
+                       placeholder="Search by name or mobile number..."
+                       class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+            </div>
         </div>
-        <div style="display: flex; gap: 8px;">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-search"></i>Search
+        <div class="flex items-end gap-3">
+            <button type="submit"
+                    class="px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors duration-200 flex items-center">
+                <i class="fas fa-search mr-2"></i>Search
             </button>
             <?php if (!empty($search)): ?>
-                <a href="<?= base_url('dashboard/users') ?>" class="btn btn-secondary">
-                    <i class="fas fa-times"></i>Clear
+                <a href="<?= base_url('dashboard/users') ?>"
+                   class="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors duration-200 flex items-center">
+                    <i class="fas fa-times mr-2"></i>Clear
                 </a>
             <?php endif; ?>
         </div>
