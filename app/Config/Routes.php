@@ -62,6 +62,10 @@ $routes->group('dashboard', function($routes) {
     $routes->get('inventory/export', 'Inventory::exportInventory');
     $routes->get('inventory/downloadTemplate', 'Inventory::downloadTemplate');
 
+    // Reports Routes
+    $routes->get('reports', 'Reports::index');
+    $routes->get('reports/export', 'Reports::export');
+
     // Parts Requests Routes
     $routes->get('parts-requests', 'PartsRequests::index');
     $routes->get('parts-requests/create', 'PartsRequests::create');
