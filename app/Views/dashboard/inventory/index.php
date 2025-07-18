@@ -132,121 +132,108 @@
                     <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
-        <tbody>
-            <?php if (!empty($items)): ?>
-                <?php foreach ($items as $item): ?>
-                    <tr>
-                        <td>
-                            <div style="display: flex; align-items: center;">
-                                <div style="width: 32px; height: 32px; background: rgba(255, 152, 0, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
-                                    <i class="fas fa-box" style="color: #ff9800; font-size: 14px;"></i>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <?php if (!empty($items)): ?>
+                    <?php foreach ($items as $item): ?>
+                        <tr class="hover:bg-gray-50 transition-colors duration-200">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-box text-orange-600 text-sm"></i>
+                                    </div>
+                                    <div class="font-medium text-gray-900">
+                                        <?= esc($item['device_name'] ?? 'N/A') ?>
+                                    </div>
                                 </div>
-                                <div style="font-weight: 500;">
-                                    <?= esc($item['device_name'] ?? 'N/A') ?>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="font-medium text-gray-900">
+                                    <?= esc($item['brand'] ?? 'N/A') ?>
                                 </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div style="font-weight: 500;">
-                                <?= esc($item['brand'] ?? 'N/A') ?>
-                            </div>
-                            <div style="font-size: 12px; color: #666;">
-                                <?= esc($item['model'] ?? 'N/A') ?>
-                            </div>
-                        </td>
-                        <td>
-                            <?php
-                            $stockColor = '#059669';
-                            $stockBg = 'rgba(5, 150, 105, 0.1)';
-                            if ($item['total_stock'] <= 0) {
-                                $stockColor = '#dc2626';
-                                $stockBg = 'rgba(220, 38, 38, 0.1)';
-                            } elseif ($item['total_stock'] <= 10) {
-                                $stockColor = '#d97706';
-                                $stockBg = 'rgba(217, 119, 6, 0.1)';
-                            }
-                            ?>
-                            <span style="padding: 4px 8px; font-size: 12px; font-weight: 600; border-radius: 12px; background: <?= $stockBg ?>; color: <?= $stockColor ?>;">
-                                <?= $item['total_stock'] ?> units
-                            </span>
-                        </td>
-                        <td>
-                            <?php if (!empty($item['selling_price'])): ?>
-                                <div style="font-weight: 500;">NPR <?= number_format($item['selling_price'], 2) ?></div>
-                                <?php if (!empty($item['purchase_price'])): ?>
-                                    <div style="font-size: 12px; color: #666;">Cost: NPR <?= number_format($item['purchase_price'], 2) ?></div>
+                                <div class="text-xs text-gray-500">
+                                    <?= esc($item['model'] ?? 'N/A') ?>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <?php
+                                if ($item['total_stock'] <= 0) {
+                                    $stockClass = 'bg-red-100 text-red-800';
+                                } elseif ($item['total_stock'] <= 10) {
+                                    $stockClass = 'bg-orange-100 text-orange-800';
+                                } else {
+                                    $stockClass = 'bg-green-100 text-green-800';
+                                }
+                                ?>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $stockClass ?>">
+                                    <?= $item['total_stock'] ?> units
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <?php if (!empty($item['selling_price'])): ?>
+                                    <div class="font-medium text-gray-900">NPR <?= number_format($item['selling_price'], 2) ?></div>
+                                    <?php if (!empty($item['purchase_price'])): ?>
+                                        <div class="text-xs text-gray-500">Cost: NPR <?= number_format($item['purchase_price'], 2) ?></div>
+                                    <?php endif; ?>
+                                <?php elseif (!empty($item['purchase_price'])): ?>
+                                    <div class="font-medium text-gray-900">NPR <?= number_format($item['purchase_price'], 2) ?></div>
+                                    <div class="text-xs text-gray-500">Purchase price</div>
+                                <?php else: ?>
+                                    <span class="text-gray-400">No pricing</span>
                                 <?php endif; ?>
-                            <?php elseif (!empty($item['purchase_price'])): ?>
-                                <div>NPR <?= number_format($item['purchase_price'], 2) ?></div>
-                                <div style="font-size: 12px; color: #666;">Purchase price</div>
-                            <?php else: ?>
-                                <span style="color: #999;">No pricing</span>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <?php
-                            $statusColor = '#059669';
-                            $statusBg = 'rgba(5, 150, 105, 0.1)';
-                            switch($item['status'] ?? 'Active') {
-                                case 'Active':
-                                    $statusColor = '#059669';
-                                    $statusBg = 'rgba(5, 150, 105, 0.1)';
-                                    break;
-                                case 'Inactive':
-                                    $statusColor = '#d97706';
-                                    $statusBg = 'rgba(217, 119, 6, 0.1)';
-                                    break;
-                                case 'Discontinued':
-                                    $statusColor = '#dc2626';
-                                    $statusBg = 'rgba(220, 38, 38, 0.1)';
-                                    break;
-                                default:
-                                    $statusColor = '#6b7280';
-                                    $statusBg = 'rgba(107, 114, 128, 0.1)';
-                            }
-                            ?>
-                            <span style="padding: 4px 8px; font-size: 12px; font-weight: 600; border-radius: 12px; background: <?= $statusBg ?>; color: <?= $statusColor ?>;">
-                                <?= esc($item['status'] ?? 'Active') ?>
-                            </span>
-                        </td>
-                        <td>
-                            <div style="display: flex; gap: 8px; justify-content: end;">
-                                <a href="<?= base_url('dashboard/inventory/view/' . $item['id']) ?>"
-                                   style="color: #2563eb; padding: 4px; border-radius: 4px; text-decoration: none;"
-                                   title="View">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>"
-                                   style="color: #059669; padding: 4px; border-radius: 4px; text-decoration: none;"
-                                   title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a href="<?= base_url('dashboard/inventory/delete/' . $item['id']) ?>"
-                                   onclick="return confirm('Are you sure you want to delete this item?')"
-                                   style="color: #dc2626; padding: 4px; border-radius: 4px; text-decoration: none;"
-                                   title="Delete">
-                                    <i class="fas fa-trash"></i>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <?php
+                                $statusClasses = [
+                                    'Active' => 'bg-green-100 text-green-800',
+                                    'Inactive' => 'bg-orange-100 text-orange-800',
+                                    'Discontinued' => 'bg-red-100 text-red-800'
+                                ];
+                                $statusClass = $statusClasses[$item['status'] ?? 'Active'] ?? 'bg-gray-100 text-gray-800';
+                                ?>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $statusClass ?>">
+                                    <?= esc($item['status'] ?? 'Active') ?>
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex items-center justify-end space-x-2">
+                                    <a href="<?= base_url('dashboard/inventory/view/' . $item['id']) ?>"
+                                       class="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors duration-200"
+                                       title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>"
+                                       class="text-green-600 hover:text-green-900 p-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                                       title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="<?= base_url('dashboard/inventory/delete/' . $item['id']) ?>"
+                                       onclick="return confirm('Are you sure you want to delete this item?')"
+                                       class="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors duration-200"
+                                       title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="6" class="px-6 py-16 text-center">
+                            <div class="text-gray-500">
+                                <i class="fas fa-boxes text-5xl mb-4 text-gray-300"></i>
+                                <p class="text-lg font-medium mb-2 text-gray-900">No inventory items found</p>
+                                <p class="text-sm mb-6">Get started by adding your first inventory item.</p>
+                                <a href="<?= base_url('dashboard/inventory/create') ?>"
+                                   class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-semibold rounded-xl hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg shadow-orange-500/25">
+                                    <i class="fas fa-plus mr-2"></i>Add Item
                                 </a>
                             </div>
                         </td>
                     </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="6" style="padding: 40px; text-align: center;">
-                        <div style="color: #666;">
-                            <i class="fas fa-boxes" style="font-size: 48px; margin-bottom: 16px; color: #ccc;"></i>
-                            <p style="font-size: 18px; font-weight: 500; margin-bottom: 8px;">No inventory items found</p>
-                            <p style="font-size: 14px; margin-bottom: 20px;">Get started by adding your first inventory item.</p>
-                            <a href="<?= base_url('dashboard/inventory/create') ?>" class="btn btn-primary">
-                                <i class="fas fa-plus"></i>Add Item
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <?= $this->endSection() ?>
