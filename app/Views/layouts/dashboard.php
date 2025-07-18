@@ -67,76 +67,29 @@ $pageTitle = $title ?? 'Dashboard';
             --quasar-text-secondary: #757575;
         }
 
-        /* Quasar Collapsible Navigation Sidebar */
+        /* Simple Tailwind-based Sidebar */
         .sidebar {
-            transform: translateX(-100%);
-            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-            background: var(--quasar-surface);
-            border-right: 1px solid var(--quasar-separator);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
-            width: 320px;
-            backdrop-filter: blur(15px);
-            z-index: 1000;
+            transition: all 0.3s ease-in-out;
         }
 
-        /* Collapsed sidebar state */
         .sidebar.collapsed {
-            width: 80px;
+            width: 4rem; /* w-16 */
         }
 
         .sidebar.collapsed .nav-text,
         .sidebar.collapsed .nav-subtitle,
         .sidebar.collapsed .nav-header,
         .sidebar.collapsed .logo-text {
-            opacity: 0;
-            transform: translateX(-20px);
-            transition: all 0.2s ease-in-out;
+            display: none;
         }
 
         .sidebar.collapsed .nav-link {
             justify-content: center;
-            padding-left: 1rem;
-            padding-right: 1rem;
         }
 
-        .sidebar.collapsed .nav-icon-container {
-            margin-right: 0;
-        }
-
-        /* Responsive behavior */
-        @media (min-width: 1024px) {
-            .sidebar {
-                width: 280px;
-                transform: translateX(0);
-            }
-
-            .sidebar.collapsed {
-                width: 80px;
-            }
-        }
-
-        @media (min-width: 1280px) {
-            .sidebar {
-                width: 320px;
-            }
-
-            .sidebar.collapsed {
-                width: 80px;
-            }
-        }
-
-        /* Hamburger menu animation */
+        /* Simple hamburger animation */
         .hamburger-line {
-            display: block;
-            width: 20px;
-            height: 2px;
-            background: currentColor;
-            transition: all 0.3s ease-in-out;
-            transform-origin: center;
-        }
-
-        .hamburger-line:not(:last-child) {
-            margin-bottom: 4px;
+            transition: all 0.3s ease;
         }
 
         .hamburger.active .hamburger-line:nth-child(1) {
@@ -151,96 +104,20 @@ $pageTitle = $title ?? 'Dashboard';
             transform: rotate(-45deg) translate(7px, -6px);
         }
 
-        .sidebar.open {
-            transform: translateX(0);
-        }
+        /* Simple overlay - handled by Tailwind classes */
 
-        @media (min-width: 1024px) {
-            .sidebar {
-                transform: translateX(0) !important;
-            }
-        }
-
-        /* Quasar Mobile Overlay */
-        .sidebar-overlay {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-        }
-
-        .sidebar-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Quasar Minimalist Dropdown Menus */
+        /* Simple dropdown menu */
         .dropdown-menu {
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-8px) scale(0.95);
-            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-            background: var(--quasar-surface);
-            border: none;
-            box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
-            border-radius: 4px;
+            transform: translateY(-8px);
+            transition: all 0.2s ease;
         }
 
         .dropdown-menu.show {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
-        }
-
-        /* Quasar Minimalist Improved Navigation Links */
-        .nav-link {
-            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 8px;
-            margin: 2px 12px;
-            position: relative;
-            font-weight: 500;
-            overflow: hidden;
-        }
-
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .nav-link:hover::before {
-            left: 100%;
-        }
-
-        .nav-link:hover {
-            background: rgba(25, 118, 210, 0.08);
-            color: var(--quasar-primary);
-            transform: translateX(4px);
-        }
-
-        .nav-link.active {
-            background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover));
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 32px;
-            background: var(--quasar-accent);
-            border-radius: 2px 0 0 2px;
         }
 
         /* Quasar Improved Layout Cards */
@@ -591,10 +468,14 @@ $pageTitle = $title ?? 'Dashboard';
         }
 
         /* Tooltip for collapsed sidebar */
-        .nav-link[title]:hover::after {
+        .sidebar.collapsed .nav-link[title] {
+            position: relative;
+        }
+
+        .sidebar.collapsed .nav-link[title]:hover::after {
             content: attr(title);
             position: absolute;
-            left: 100%;
+            left: calc(100% + 12px);
             top: 50%;
             transform: translateY(-50%);
             background: var(--quasar-dark);
@@ -605,219 +486,259 @@ $pageTitle = $title ?? 'Dashboard';
             font-weight: 500;
             white-space: nowrap;
             z-index: 1000;
-            margin-left: 12px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease-in-out;
-        }
-
-        .sidebar.collapsed .nav-link[title]:hover::after {
             opacity: 1;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: tooltipFadeIn 0.2s ease-out;
         }
 
-        .nav-link[title]:hover::before {
+        .sidebar.collapsed .nav-link[title]:hover::before {
             content: '';
             position: absolute;
-            left: 100%;
+            left: calc(100% + 6px);
             top: 50%;
             transform: translateY(-50%);
             border: 6px solid transparent;
             border-right-color: var(--quasar-dark);
-            margin-left: 6px;
             z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.2s ease-in-out;
+            opacity: 1;
+            animation: tooltipFadeIn 0.2s ease-out;
         }
 
-        .sidebar.collapsed .nav-link[title]:hover::before {
-            opacity: 1;
+        /* Tooltip animation */
+        @keyframes tooltipFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50%) translateX(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        /* Hide tooltips when not collapsed */
+        .sidebar:not(.collapsed) .nav-link[title]:hover::after,
+        .sidebar:not(.collapsed) .nav-link[title]:hover::before {
+            display: none;
         }
 
         /* Status indicators */
         .status-active { color: #059669; }
         .status-pending { color: #f59e0b; }
         .status-inactive { color: #dc2626; }
+
+        /* Smooth transitions for layout changes */
+        .main-content {
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Improve sidebar scrolling */
+        .sidebar {
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Improve focus states for accessibility */
+        .nav-link:focus {
+            outline: 2px solid var(--quasar-primary);
+            outline-offset: 2px;
+        }
+
+        /* Loading state for navigation */
+        .nav-link.loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .nav-link.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body style="background-color: var(--quasar-background);" class="text-gray-800">
     <div class="flex h-screen overflow-hidden" id="app-container" style="background: var(--quasar-background);">
         <!-- Mobile Overlay -->
-        <div class="fixed inset-0 z-40 lg:hidden sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+        <div class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden hidden" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
         <!-- Sidebar -->
-        <div class="fixed inset-y-0 left-0 z-50 w-80 shadow-2xl sidebar lg:static lg:inset-0 lg:z-auto lg:w-72 xl:w-80" id="sidebar">
+        <div class="fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:z-auto lg:w-72 xl:w-80 sidebar" id="sidebar">
 
-            <!-- Quasar Collapsible Logo -->
-            <div class="flex items-center justify-center h-24 px-8 relative logo-section" style="background: linear-gradient(135deg, var(--quasar-primary), var(--quasar-primary-hover)); border-bottom: 3px solid var(--quasar-accent);">
+            <!-- Logo Section -->
+            <div class="flex items-center h-16 px-4 bg-blue-600 border-b border-blue-700">
                 <div class="flex items-center">
-                    <div class="h-14 w-14 rounded-xl flex items-center justify-center shadow-xl logo-icon" style="background-color: var(--quasar-surface); border: 2px solid var(--quasar-accent);">
-                        <i class="fas fa-tools text-2xl" style="color: var(--quasar-primary);"></i>
+                    <div class="h-10 w-10 bg-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tools text-blue-600 text-lg"></i>
                     </div>
-                    <div class="logo-text ml-5 transition-all duration-300">
-                        <h1 class="text-2xl font-bold text-white"><?= $config->appShortName ?></h1>
-                        <p class="text-sm text-blue-100 font-semibold">Control Center</p>
+                    <div class="logo-text ml-3">
+                        <h1 class="text-lg font-bold text-white"><?= $config->appShortName ?></h1>
+                        <p class="text-xs text-blue-100">Control Center</p>
                     </div>
                 </div>
-                <!-- Enhanced decorative accent -->
-                <div class="absolute bottom-0 left-0 right-0 h-1" style="background: linear-gradient(90deg, var(--quasar-accent), var(--quasar-secondary), var(--quasar-info));"></div>
-                <!-- Corner decorations -->
-                <div class="absolute top-4 right-4 w-2 h-2 rounded-full" style="background: var(--quasar-accent); opacity: 0.7;"></div>
-                <div class="absolute bottom-4 left-4 w-1 h-1 rounded-full" style="background: var(--quasar-secondary); opacity: 0.5;"></div>
             </div>
 
-            <!-- Quasar Collapsible Navigation -->
-            <nav class="mt-8 px-4">
-                <!-- Navigation Header -->
-                <div class="mb-6 nav-header">
-                    <h3 class="text-xs font-bold uppercase tracking-wider px-2" style="color: var(--quasar-text-secondary);">Main Menu</h3>
-                    <div class="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mt-2"></div>
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <!-- Main Menu Header -->
+                <div class="nav-header mb-4">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">Main Menu</h3>
                 </div>
 
-                <div class="space-y-2">
-                    <a href="<?= base_url('dashboard') ?>"
-                       class="nav-link group flex items-center px-4 py-4 font-medium rounded-xl transition-all duration-300 <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'active' : '' ?>"
-                       style="color: var(--quasar-text-primary);"
-                       title="Dashboard">
-                        <div class="nav-icon-container w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(25, 118, 210, 0.1);">
-                            <i class="fas fa-tachometer-alt text-xl transition-all duration-300" style="color: var(--quasar-primary);"></i>
-                        </div>
-                        <div class="flex-1 nav-text">
-                            <div class="font-bold text-base">Dashboard</div>
-                            <div class="nav-subtitle text-sm font-medium opacity-70" style="color: var(--quasar-text-secondary);">Overview & Analytics</div>
-                        </div>
-                        <div class="w-2 h-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100" style="background: var(--quasar-primary);"></div>
-                    </a>
+                <!-- Main Navigation Links -->
+                <a href="<?= base_url('dashboard') ?>"
+                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
+                   title="Dashboard">
+                    <i class="fas fa-tachometer-alt w-5 h-5 mr-3 text-blue-600"></i>
+                    <div class="nav-text">
+                        <div class="font-medium">Dashboard</div>
+                        <div class="nav-subtitle text-xs text-gray-500">Overview & Analytics</div>
+                    </div>
+                </a>
 
-                    <a href="<?= base_url('dashboard/jobs') ?>"
-                       class="nav-link group flex items-center px-4 py-4 font-medium rounded-xl transition-all duration-300 <?= strpos(uri_string(), 'jobs') !== false ? 'active' : '' ?>"
-                       style="color: var(--quasar-text-primary);"
-                       title="Jobs">
-                        <div class="nav-icon-container w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(38, 166, 154, 0.1);">
-                            <i class="fas fa-wrench text-xl transition-all duration-300" style="color: var(--quasar-secondary);"></i>
-                        </div>
-                        <div class="flex-1 nav-text">
-                            <div class="font-bold text-base">Jobs</div>
-                            <div class="nav-subtitle text-sm font-medium opacity-70" style="color: var(--quasar-text-secondary);">Repair Management</div>
-                        </div>
-                        <div class="w-2 h-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100" style="background: var(--quasar-secondary);"></div>
-                    </a>
+                <a href="<?= base_url('dashboard/jobs') ?>"
+                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'jobs') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
+                   title="Jobs">
+                    <i class="fas fa-wrench w-5 h-5 mr-3 text-green-600"></i>
+                    <div class="nav-text">
+                        <div class="font-medium">Jobs</div>
+                        <div class="nav-subtitle text-xs text-gray-500">Repair Management</div>
+                    </div>
+                </a>
 
-                    <a href="<?= base_url('dashboard/users') ?>"
-                       class="nav-link group flex items-center px-4 py-4 font-medium rounded-xl transition-all duration-300 <?= strpos(uri_string(), 'users') !== false ? 'active' : '' ?>"
-                       style="color: var(--quasar-text-primary);"
-                       title="Customers">
-                        <div class="nav-icon-container w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(156, 39, 176, 0.1);">
-                            <i class="fas fa-users text-xl transition-all duration-300" style="color: var(--quasar-accent);"></i>
-                        </div>
-                        <div class="flex-1 nav-text">
-                            <div class="font-bold text-base">Customers</div>
-                            <div class="nav-subtitle text-sm font-medium opacity-70" style="color: var(--quasar-text-secondary);">Client Database</div>
-                        </div>
-                        <div class="w-2 h-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100" style="background: var(--quasar-accent);"></div>
-                    </a>
+                <a href="<?= base_url('dashboard/users') ?>"
+                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'users') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
+                   title="Customers">
+                    <i class="fas fa-users w-5 h-5 mr-3 text-purple-600"></i>
+                    <div class="nav-text">
+                        <div class="font-medium">Customers</div>
+                        <div class="nav-subtitle text-xs text-gray-500">Client Database</div>
+                    </div>
+                </a>
+
+                <!-- Management Section -->
+                <div class="nav-header mt-6 mb-4">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">Management</h3>
                 </div>
 
-                <!-- Secondary Navigation -->
-                <div class="mt-8">
-                    <div class="mb-4 nav-header">
-                        <h3 class="text-xs font-bold uppercase tracking-wider px-2" style="color: var(--quasar-text-secondary);">Management</h3>
-                        <div class="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mt-2"></div>
+                <a href="<?= base_url('dashboard/inventory') ?>"
+                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'inventory') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
+                   title="Inventory">
+                    <i class="fas fa-boxes w-5 h-5 mr-3 text-orange-600"></i>
+                    <span class="nav-text">Inventory</span>
+                </a>
+
+                <a href="<?= base_url('dashboard/reports') ?>"
+                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 text-gray-700 hover:bg-gray-100"
+                   title="Reports">
+                    <i class="fas fa-chart-bar w-5 h-5 mr-3 text-blue-600"></i>
+                    <span class="nav-text">Reports</span>
+                </a>
+
+                <a href="<?= base_url('dashboard/movements') ?>"
+                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'movements') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
+                   title="Stock Movements">
+                    <i class="fas fa-exchange-alt w-5 h-5 mr-3 text-green-600"></i>
+                    <span class="nav-text">Stock Movements</span>
+                </a>
+
+                <a href="<?= base_url('dashboard/photos') ?>"
+                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'photos') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
+                   title="Photoproof">
+                    <i class="fas fa-camera w-5 h-5 mr-3 text-purple-600"></i>
+                    <span class="nav-text">Photoproof</span>
+                </a>
+
+                <a href="<?= base_url('dashboard/referred') ?>"
+                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'referred') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
+                   title="Dispatch">
+                    <i class="fas fa-shipping-fast w-5 h-5 mr-3 text-orange-600"></i>
+                    <span class="nav-text">Dispatch</span>
+                </a>
+
+                <a href="<?= base_url('dashboard/parts-requests') ?>"
+                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'parts-requests') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
+                   title="Parts Requests">
+                    <i class="fas fa-tools w-5 h-5 mr-3 text-red-600"></i>
+                    <span class="nav-text">Parts Requests</span>
+                </a>
+
+                <!-- Admin Section -->
+                <?php helper('auth'); ?>
+                <?php if (canCreateTechnician()): ?>
+                    <div class="nav-header mt-6 mb-4">
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">Administration</h3>
                     </div>
 
-                    <div class="space-y-1">
-                        <a href="<?= base_url('dashboard/inventory') ?>"
-                           class="nav-link group flex items-center px-4 py-3 font-medium rounded-lg transition-all duration-300 <?= strpos(uri_string(), 'inventory') !== false ? 'active' : '' ?>"
-                           style="color: var(--quasar-text-primary);"
-                           title="Inventory">
-                            <div class="nav-icon-container w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(255, 152, 0, 0.1);">
-                                <i class="fas fa-boxes text-sm" style="color: var(--quasar-warning);"></i>
-                            </div>
-                            <span class="nav-text font-semibold">Inventory</span>
-                        </a>
+                    <a href="<?= base_url('dashboard/service-centers') ?>"
+                       class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'service-centers') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
+                       title="Service Centers">
+                        <i class="fas fa-building w-5 h-5 mr-3 text-blue-600"></i>
+                        <span class="nav-text">Service Centers</span>
+                    </a>
 
-                        <a href="<?= base_url('dashboard/reports') ?>"
-                           class="nav-link group flex items-center px-4 py-3 font-medium rounded-lg transition-all duration-300"
-                           style="color: var(--quasar-text-primary);"
-                           title="Reports">
-                            <div class="nav-icon-container w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(33, 150, 243, 0.1);">
-                                <i class="fas fa-chart-bar text-sm" style="color: var(--quasar-info);"></i>
-                            </div>
-                            <span class="nav-text font-semibold">Reports</span>
-                        </a>
-                    </div>
+                    <a href="<?= base_url('dashboard/technicians') ?>"
+                       class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'technicians') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
+                       title="Technicians">
+                        <i class="fas fa-user-cog w-5 h-5 mr-3 text-green-600"></i>
+                        <span class="nav-text">Technicians</span>
+                    </a>
+
+                    <a href="<?= base_url('dashboard/user-management') ?>"
+                       class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'user-management') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
+                       title="User Management">
+                        <i class="fas fa-users w-5 h-5 mr-3 text-purple-600"></i>
+                        <span class="nav-text">User Management</span>
+                    </a>
+                <?php endif; ?>
+
+                <!-- Support Section -->
+                <div class="nav-header mt-6 mb-4">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">Support</h3>
                 </div>
-                    
 
-                    <a href="<?= base_url('dashboard/inventory') ?>"
-                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'inventory') !== false ? 'active' : '' ?>">
-                        <i class="fas fa-boxes mr-3 w-5"></i>
-                        Inventory
-                    </a>
-
-                    <a href="<?= base_url('dashboard/movements') ?>"
-                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'movements') !== false ? 'active' : '' ?>">
-                        <i class="fas fa-exchange-alt mr-3 w-5"></i>
-                        Stock Movements
-                    </a>
-
-                    <a href="<?= base_url('dashboard/photos') ?>"
-                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'photos') !== false ? 'active' : '' ?>">
-                        <i class="fas fa-camera mr-3 w-5"></i>
-                        Photoproof
-                    </a>
-
-                    <a href="<?= base_url('dashboard/referred') ?>"
-                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'referred') !== false ? 'active' : '' ?>">
-                        <i class="fas fa-shipping-fast mr-3 w-5"></i>
-                        Dispatch
-                    </a>
-
-                    <a href="<?= base_url('dashboard/parts-requests') ?>"
-                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'parts-requests') !== false ? 'active' : '' ?>">
-                        <i class="fas fa-tools mr-3 w-5"></i>
-                        Parts Requests
-                    </a>
-
-                    <?php helper('auth'); ?>
-                    <?php if (canCreateTechnician()): ?>
-                        <div class="border-t border-gray-700 my-4 mx-3"></div>
-                        <div class="px-3 mb-2">
-                            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Admin</p>
-                        </div>
-
-                        <a href="<?= base_url('dashboard/service-centers') ?>"
-                           class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'service-centers') !== false ? 'active' : '' ?>">
-                            <i class="fas fa-building mr-3 w-5"></i>
-                            Service Centers
-                        </a>
-                        <a href="<?= base_url('dashboard/technicians') ?>"
-                           class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'technicians') !== false ? 'active' : '' ?>">
-                            <i class="fas fa-user-cog mr-3 w-5"></i>
-                            Technicians
-                        </a>
-
-                        <a href="<?= base_url('dashboard/user-management') ?>"
-                           class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'user-management') !== false ? 'active' : '' ?>">
-                            <i class="fas fa-users mr-3 w-5"></i>
-                            User Management
-                        </a>
-                    <?php endif; ?>
-
-                    <div class="border-t border-gray-700 my-4 mx-3"></div>
-
-                    <a href="<?= base_url('dashboard/user-guide') ?>"
-                       class="nav-link flex items-center px-3 py-3 text-gray-300 font-medium <?= strpos(uri_string(), 'user-guide') !== false ? 'active' : '' ?>">
-                        <i class="fas fa-question-circle mr-3 w-5"></i>
-                        User Guide
-                    </a>
-
-
-                </div>
+                <a href="<?= base_url('dashboard/user-guide') ?>"
+                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'user-guide') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
+                   title="User Guide">
+                    <i class="fas fa-question-circle w-5 h-5 mr-3 text-green-600"></i>
+                    <span class="nav-text">User Guide</span>
+                </a>
             </nav>
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden">
+        <div class="flex-1 flex flex-col overflow-hidden main-content" style="transition: margin-left 0.28s cubic-bezier(0.4, 0, 0.2, 1);">
             <!-- Quasar Improved Layout Header -->
             <header class="bg-white shadow-sm border-b flex-shrink-0 relative" style="border-color: var(--quasar-separator); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
                 <!-- Header Background Gradient -->
@@ -827,13 +748,18 @@ $pageTitle = $title ?? 'Dashboard';
                     <div class="flex items-center flex-1">
                         <!-- Hamburger Menu Button -->
                         <button onclick="toggleSidebarCollapse()" id="sidebar-toggle-btn"
-                                class="p-3 rounded-xl hover:bg-white hover:bg-opacity-50 focus:outline-none focus-ring transition-all shadow-sm hamburger"
-                                style="color: var(--quasar-text-secondary); background: rgba(255, 255, 255, 0.8);">
-                            <div class="hamburger-container">
-                                <span class="hamburger-line"></span>
-                                <span class="hamburger-line"></span>
-                                <span class="hamburger-line"></span>
-                            </div>
+                                class="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 hamburger">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path class="hamburger-line" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Desktop Collapse Button -->
+                        <button onclick="toggleSidebarCollapse()" id="desktop-toggle-btn"
+                                class="hidden lg:block p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8M4 18h16"></path>
+                            </svg>
                         </button>
 
                         <!-- Page Title Section -->
@@ -1014,18 +940,17 @@ $pageTitle = $title ?? 'Dashboard';
         // Initialize sidebar state on page load
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('sidebar');
-            const hamburger = document.getElementById('sidebar-toggle-btn');
 
             if (DashboardState.sidebarCollapsed && window.innerWidth >= 1024) {
                 sidebar.classList.add('collapsed');
-                hamburger.classList.add('active');
+                sidebar.classList.remove('w-72', 'xl:w-80');
+                sidebar.classList.add('w-16');
             }
         });
 
         // Toggle sidebar collapse/expand (main function)
         function toggleSidebarCollapse() {
             const sidebar = document.getElementById('sidebar');
-            const hamburger = document.getElementById('sidebar-toggle-btn');
 
             if (window.innerWidth < 1024) {
                 // Mobile behavior - toggle sidebar visibility
@@ -1039,14 +964,15 @@ $pageTitle = $title ?? 'Dashboard';
 
             if (DashboardState.sidebarCollapsed) {
                 sidebar.classList.add('collapsed');
-                hamburger.classList.add('active');
+                sidebar.classList.remove('w-72', 'xl:w-80');
+                sidebar.classList.add('w-16');
             } else {
-                sidebar.classList.remove('collapsed');
-                hamburger.classList.remove('active');
+                sidebar.classList.remove('collapsed', 'w-16');
+                sidebar.classList.add('w-72', 'xl:w-80');
             }
         }
 
-        // Mobile sidebar toggle (legacy function)
+        // Mobile sidebar toggle
         function toggleSidebar() {
             DashboardState.sidebarOpen = !DashboardState.sidebarOpen;
             updateSidebarDisplay();
@@ -1060,9 +986,6 @@ $pageTitle = $title ?? 'Dashboard';
             DashboardState.sidebarOpen = false;
             updateSidebarDisplay();
             document.body.style.overflow = '';
-
-            const hamburger = document.getElementById('sidebar-toggle-btn');
-            hamburger.classList.remove('active');
         }
 
         function updateSidebarDisplay() {
@@ -1070,11 +993,13 @@ $pageTitle = $title ?? 'Dashboard';
             const overlay = document.getElementById('sidebar-overlay');
 
             if (DashboardState.sidebarOpen) {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                overlay.classList.remove('hidden');
             } else {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
             }
         }
 
@@ -1219,6 +1144,12 @@ $pageTitle = $title ?? 'Dashboard';
                     toggleSidebar();
                 }
 
+                // Ctrl/Cmd + B for sidebar collapse toggle (desktop)
+                if ((e.ctrlKey || e.metaKey) && e.key === 'b' && window.innerWidth >= 1024) {
+                    e.preventDefault();
+                    toggleSidebarCollapse();
+                }
+
                 // Ctrl/Cmd + K for search (if search exists)
                 if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
                     e.preventDefault();
@@ -1278,12 +1209,47 @@ $pageTitle = $title ?? 'Dashboard';
             }, 3000);
         }
 
+        // Navigation loading state
+        function setNavLinkLoading(link, loading = true) {
+            if (loading) {
+                link.classList.add('loading');
+            } else {
+                link.classList.remove('loading');
+            }
+        }
+
+        // Add loading states to navigation links
+        function initNavigationLoading() {
+            document.querySelectorAll('.nav-link[href]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Don't add loading state for same page links
+                    if (this.href === window.location.href) {
+                        return;
+                    }
+
+                    setNavLinkLoading(this, true);
+
+                    // Remove loading state after a timeout (fallback)
+                    setTimeout(() => {
+                        setNavLinkLoading(this, false);
+                    }, 5000);
+                });
+            });
+        }
+
+        // Initialize navigation loading on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initNavigationLoading();
+        });
+
         // Make functions globally available
         window.toggleSidebar = toggleSidebar;
+        window.toggleSidebarCollapse = toggleSidebarCollapse;
         window.closeSidebar = closeSidebar;
         window.toggleUserMenu = toggleUserMenu;
         window.closeUserMenu = closeUserMenu;
         window.showNotification = showNotification;
+        window.setNavLinkLoading = setNavLinkLoading;
     </script>
 </body>
 </html>
