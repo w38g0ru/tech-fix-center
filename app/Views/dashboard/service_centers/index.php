@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/dashboard') ?>
+<?= $this->extend('layouts/dashboard_simple') ?>
 
 <?= $this->section('title') ?>
 <?= $title ?>
