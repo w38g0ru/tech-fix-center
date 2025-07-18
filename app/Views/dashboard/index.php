@@ -113,7 +113,7 @@
 <!-- Recent Activity -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
     <!-- Recent Jobs -->
-    <div class="bg-white rounded-lg shadow-sm">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100">
         <div class="flex items-center justify-between p-6 border-b border-gray-200">
             <h3 class="text-lg font-semibold text-gray-900">Recent Jobs</h3>
             <a href="<?= base_url('dashboard/jobs') ?>" class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 transition-colors">
@@ -144,30 +144,20 @@
                                     <div class="font-medium text-gray-900"><?= esc($job['device_name']) ?></div>
                                     <div class="text-xs text-gray-500"><?= esc($job['serial_number']) ?></div>
                                 </td>
-                                <td>
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <?php
-                                    $statusColor = '#6b7280';
-                                    $statusBg = 'rgba(107, 114, 128, 0.1)';
-                                    switch($job['status']) {
-                                        case 'Completed':
-                                            $statusColor = '#059669';
-                                            $statusBg = 'rgba(5, 150, 105, 0.1)';
-                                            break;
-                                        case 'In Progress':
-                                            $statusColor = '#2563eb';
-                                            $statusBg = 'rgba(37, 99, 235, 0.1)';
-                                            break;
-                                        case 'Pending':
-                                            $statusColor = '#d97706';
-                                            $statusBg = 'rgba(217, 119, 6, 0.1)';
-                                            break;
-                                    }
+                                    $statusClasses = [
+                                        'Completed' => 'bg-green-100 text-green-800',
+                                        'In Progress' => 'bg-blue-100 text-blue-800',
+                                        'Pending' => 'bg-orange-100 text-orange-800'
+                                    ];
+                                    $statusClass = $statusClasses[$job['status']] ?? 'bg-gray-100 text-gray-800';
                                     ?>
-                                    <span style="padding: 4px 8px; font-size: 12px; font-weight: 600; border-radius: 12px; background: <?= $statusBg ?>; color: <?= $statusColor ?>;">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $statusClass ?>">
                                         <?= esc($job['status']) ?>
                                     </span>
                                 </td>
-                                <td style="font-size: 12px; color: #666;">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     <?= date('M j, Y', strtotime($job['created_at'])) ?>
                                 </td>
                             </tr>
@@ -176,46 +166,47 @@
                 </table>
             </div>
         <?php else: ?>
-            <div style="padding: 40px; text-align: center; color: #666;">
-                <i class="fas fa-wrench" style="font-size: 48px; margin-bottom: 16px; color: #ccc;"></i>
-                <p>No recent jobs found</p>
+            <div class="p-16 text-center text-gray-500">
+                <i class="fas fa-wrench text-5xl mb-4 text-gray-300"></i>
+                <p class="text-lg font-medium text-gray-900">No recent jobs found</p>
+                <p class="text-sm mt-2">Jobs will appear here once you start creating them</p>
             </div>
         <?php endif; ?>
     </div>
 
     <!-- Low Stock Items -->
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Low Stock Items</h3>
-            <a href="<?= base_url('dashboard/inventory') ?>" class="btn btn-primary" style="font-size: 12px; padding: 6px 12px;">
-                <i class="fas fa-eye"></i>View All
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900">Low Stock Items</h3>
+            <a href="<?= base_url('dashboard/inventory') ?>" class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 transition-colors">
+                <i class="fas fa-eye mr-1"></i>View All
             </a>
         </div>
-        
+
         <?php if (!empty($lowStockItems)): ?>
-            <div style="overflow-x: auto;">
-                <table class="table">
-                    <thead>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
                         <tr>
-                            <th>Item</th>
-                            <th>Stock</th>
-                            <th>Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="bg-white divide-y divide-gray-200">
                         <?php foreach ($lowStockItems as $item): ?>
-                            <tr>
-                                <td>
-                                    <div style="font-weight: 500;"><?= esc($item['device_name']) ?></div>
-                                    <div style="font-size: 12px; color: #666;"><?= esc($item['brand']) ?> <?= esc($item['model']) ?></div>
+                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="font-medium text-gray-900"><?= esc($item['device_name']) ?></div>
+                                    <div class="text-xs text-gray-500"><?= esc($item['brand']) ?> <?= esc($item['model']) ?></div>
                                 </td>
-                                <td>
-                                    <span style="font-weight: 600; color: #dc2626;">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="font-semibold text-red-600">
                                         <?= $item['total_stock'] ?> units
                                     </span>
                                 </td>
-                                <td>
-                                    <span style="padding: 4px 8px; font-size: 12px; font-weight: 600; border-radius: 12px; background: rgba(220, 38, 38, 0.1); color: #dc2626;">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                         Low Stock
                                     </span>
                                 </td>
@@ -225,9 +216,10 @@
                 </table>
             </div>
         <?php else: ?>
-            <div style="padding: 40px; text-align: center; color: #666;">
-                <i class="fas fa-boxes" style="font-size: 48px; margin-bottom: 16px; color: #ccc;"></i>
-                <p>All items are well stocked</p>
+            <div class="p-16 text-center text-gray-500">
+                <i class="fas fa-boxes text-5xl mb-4 text-gray-300"></i>
+                <p class="text-lg font-medium text-gray-900">All items are well stocked</p>
+                <p class="text-sm mt-2">No items currently below minimum stock levels</p>
             </div>
         <?php endif; ?>
     </div>
