@@ -37,13 +37,14 @@ class Jobs extends BaseController
 
         $search = $this->request->getGet('search');
         $status = $this->request->getGet('status');
+        $perPage = 20; // Items per page
 
         if ($search) {
-            $jobs = $this->jobModel->searchJobs($search);
+            $jobs = $this->jobModel->searchJobs($search, $perPage);
         } elseif ($status) {
-            $jobs = $this->jobModel->getJobsByStatus($status);
+            $jobs = $this->jobModel->getJobsByStatus($status, $perPage);
         } else {
-            $jobs = $this->jobModel->getJobsWithDetails();
+            $jobs = $this->jobModel->getJobsWithDetails($perPage);
         }
 
         $data = [
@@ -51,7 +52,8 @@ class Jobs extends BaseController
             'jobs' => $jobs,
             'search' => $search,
             'status' => $status,
-            'jobStats' => $this->jobModel->getJobStats()
+            'jobStats' => $this->jobModel->getJobStats(),
+            'pager' => $this->jobModel->pager
         ];
 
         return view('dashboard/jobs/index', $data);

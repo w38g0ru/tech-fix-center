@@ -105,16 +105,21 @@ class JobModel extends Model
     /**
      * Get jobs with customer and technician details
      */
-    public function getJobsWithDetails()
+    public function getJobsWithDetails($perPage = null)
     {
-        return $this->select('jobs.*, users.name as customer_name, users.mobile_number,
+        $builder = $this->select('jobs.*, users.name as customer_name, users.mobile_number,
                             technicians.name as technician_name, technicians.contact_number as technician_contact,
                             service_centers.name as service_center_name')
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->join('technicians', 'technicians.id = jobs.technician_id', 'left')
                     ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
-                    ->orderBy('jobs.created_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('jobs.created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
@@ -135,9 +140,9 @@ class JobModel extends Model
     /**
      * Search jobs
      */
-    public function searchJobs($search)
+    public function searchJobs($search, $perPage = null)
     {
-        return $this->select('jobs.*, users.name as customer_name, users.mobile_number, 
+        $builder = $this->select('jobs.*, users.name as customer_name, users.mobile_number,
                             technicians.name as technician_name')
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->join('technicians', 'technicians.id = jobs.technician_id', 'left')
@@ -147,22 +152,32 @@ class JobModel extends Model
                         ->orLike('users.name', $search)
                         ->orLike('technicians.name', $search)
                     ->groupEnd()
-                    ->orderBy('jobs.created_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('jobs.created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
      * Get jobs by status
      */
-    public function getJobsByStatus($status)
+    public function getJobsByStatus($status, $perPage = null)
     {
-        return $this->select('jobs.*, users.name as customer_name, users.mobile_number, 
+        $builder = $this->select('jobs.*, users.name as customer_name, users.mobile_number,
                             technicians.name as technician_name')
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->join('technicians', 'technicians.id = jobs.technician_id', 'left')
                     ->where('jobs.status', $status)
-                    ->orderBy('jobs.created_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('jobs.created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**

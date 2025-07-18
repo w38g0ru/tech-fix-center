@@ -81,26 +81,36 @@ class TechnicianModel extends Model
     /**
      * Search technicians by name, email, or contact
      */
-    public function searchTechnicians($search)
+    public function searchTechnicians($search, $perPage = null)
     {
-        return $this->like('name', $search)
+        $builder = $this->like('name', $search)
                     ->orLike('email', $search)
                     ->orLike('contact_number', $search)
-                    ->orderBy('created_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
      * Get available technicians (with least pending jobs)
      */
-    public function getAvailableTechnicians()
+    public function getAvailableTechnicians($perPage = null)
     {
-        return $this->select('technicians.*, COUNT(CASE WHEN jobs.status IN ("Pending", "In Progress") THEN 1 END) as active_jobs')
+        $builder = $this->select('technicians.*, COUNT(CASE WHEN jobs.status IN ("Pending", "In Progress") THEN 1 END) as active_jobs')
                     ->join('jobs', 'jobs.technician_id = technicians.id', 'left')
                     ->groupBy('technicians.id')
                     ->orderBy('active_jobs', 'ASC')
-                    ->orderBy('technicians.name', 'ASC')
-                    ->findAll();
+                    ->orderBy('technicians.name', 'ASC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**

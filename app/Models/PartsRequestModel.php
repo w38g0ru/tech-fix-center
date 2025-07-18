@@ -122,9 +122,9 @@ class PartsRequestModel extends Model
     /**
      * Get parts requests with related data
      */
-    public function getPartsRequestsWithDetails()
+    public function getPartsRequestsWithDetails($perPage = null)
     {
-        return $this->select('parts_requests.*, 
+        $builder = $this->select('parts_requests.*,
                             technicians.name as technician_name,
                             jobs.device_name as job_device,
                             requester.username as requested_by_name,
@@ -133,8 +133,13 @@ class PartsRequestModel extends Model
                     ->join('jobs', 'jobs.id = parts_requests.job_id', 'left')
                     ->join('admin_users as requester', 'requester.id = parts_requests.requested_by', 'left')
                     ->join('admin_users as approver', 'approver.id = parts_requests.approved_by', 'left')
-                    ->orderBy('parts_requests.created_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('parts_requests.created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**

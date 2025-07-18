@@ -61,24 +61,34 @@ class UserModel extends Model
     /**
      * Get users with job count
      */
-    public function getUsersWithJobCount()
+    public function getUsersWithJobCount($perPage = null)
     {
-        return $this->select('users.*, COUNT(jobs.id) as job_count')
+        $builder = $this->select('users.*, COUNT(jobs.id) as job_count')
                     ->join('jobs', 'jobs.user_id = users.id', 'left')
                     ->groupBy('users.id')
-                    ->orderBy('users.created_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('users.created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
      * Search users by name or mobile
      */
-    public function searchUsers($search)
+    public function searchUsers($search, $perPage = null)
     {
-        return $this->like('name', $search)
+        $builder = $this->like('name', $search)
                     ->orLike('mobile_number', $search)
-                    ->orderBy('created_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**

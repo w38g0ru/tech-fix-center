@@ -64,43 +64,58 @@ class InventoryMovementModel extends Model
     /**
      * Get movements with item and job details
      */
-    public function getMovementsWithDetails()
+    public function getMovementsWithDetails($perPage = null)
     {
-        return $this->select('inventory_movements.*, 
+        $builder = $this->select('inventory_movements.*,
                             inventory_items.device_name, inventory_items.brand, inventory_items.model,
                             jobs.device_name as job_device, users.name as customer_name')
                     ->join('inventory_items', 'inventory_items.id = inventory_movements.item_id', 'left')
                     ->join('jobs', 'jobs.id = inventory_movements.job_id', 'left')
                     ->join('users', 'users.id = jobs.user_id', 'left')
-                    ->orderBy('inventory_movements.moved_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('inventory_movements.moved_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
      * Get movements by item
      */
-    public function getMovementsByItem($itemId)
+    public function getMovementsByItem($itemId, $perPage = null)
     {
-        return $this->select('inventory_movements.*, 
+        $builder = $this->select('inventory_movements.*,
                             jobs.device_name as job_device, users.name as customer_name')
                     ->join('jobs', 'jobs.id = inventory_movements.job_id', 'left')
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->where('inventory_movements.item_id', $itemId)
-                    ->orderBy('inventory_movements.moved_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('inventory_movements.moved_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
      * Get movements by job
      */
-    public function getMovementsByJob($jobId)
+    public function getMovementsByJob($jobId, $perPage = null)
     {
-        return $this->select('inventory_movements.*, 
+        $builder = $this->select('inventory_movements.*,
                             inventory_items.device_name, inventory_items.brand, inventory_items.model')
                     ->join('inventory_items', 'inventory_items.id = inventory_movements.item_id', 'left')
                     ->where('inventory_movements.job_id', $jobId)
-                    ->orderBy('inventory_movements.moved_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('inventory_movements.moved_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**

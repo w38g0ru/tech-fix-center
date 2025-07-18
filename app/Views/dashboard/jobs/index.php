@@ -213,6 +213,12 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Pagination -->
+    <?php if (isset($pager) && $pager): ?>
+        <?php helper('pagination'); ?>
+        <?= renderPagination($pager) ?>
+    <?php endif; ?>
 </div>
 
 <?= $this->endSection() ?>

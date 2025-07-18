@@ -64,35 +64,50 @@ class ReferredModel extends Model
     /**
      * Get referred items with photo count
      */
-    public function getReferredWithPhotos()
+    public function getReferredWithPhotos($perPage = null)
     {
-        return $this->select('referred.*, COUNT(photos.id) as photo_count')
+        $builder = $this->select('referred.*, COUNT(photos.id) as photo_count')
                     ->join('photos', 'photos.referred_id = referred.id', 'left')
                     ->groupBy('referred.id')
-                    ->orderBy('referred.created_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('referred.created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
      * Search referred items
      */
-    public function searchReferred($search)
+    public function searchReferred($search, $perPage = null)
     {
-        return $this->like('customer_name', $search)
+        $builder = $this->like('customer_name', $search)
                     ->orLike('customer_phone', $search)
                     ->orLike('device_name', $search)
-                    ->orderBy('created_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
      * Get referred items by status
      */
-    public function getReferredByStatus($status)
+    public function getReferredByStatus($status, $perPage = null)
     {
-        return $this->where('status', $status)
-                    ->orderBy('created_at', 'DESC')
-                    ->findAll();
+        $builder = $this->where('status', $status)
+                    ->orderBy('created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**

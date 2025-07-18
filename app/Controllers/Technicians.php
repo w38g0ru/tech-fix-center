@@ -28,11 +28,13 @@ class Technicians extends BaseController
             return redirect()->to('/dashboard')->with('error', 'You do not have permission to access technicians.');
         }
 
-        $technicians = $this->technicianModel->findAll();
+        $perPage = 20; // Items per page
+        $technicians = $this->technicianModel->paginate($perPage);
 
         $data = [
             'title' => 'Technicians',
-            'technicians' => $technicians
+            'technicians' => $technicians,
+            'pager' => $this->technicianModel->pager
         ];
 
         return view('dashboard/technicians/index', $data);

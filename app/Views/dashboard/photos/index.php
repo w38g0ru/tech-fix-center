@@ -169,6 +169,11 @@
             </div>
         </div>
     <?php endif; ?>
+
+    <!-- Pagination -->
+    <?php if (isset($pager) && $pager): ?>
+        <?= renderPagination($pager) ?>
+    <?php endif; ?>
 </div>
 
 <!-- Photo Modal -->

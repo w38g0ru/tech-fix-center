@@ -30,28 +30,44 @@ class Inventory extends BaseController
         }
 
         $search = $this->request->getGet('search');
+        $perPage = 20; // Items per page
 
         if ($search) {
             $items = $this->inventoryModel->like('device_name', $search)
                                          ->orLike('brand', $search)
                                          ->orLike('model', $search)
-                                         ->findAll();
+                                         ->paginate($perPage);
         } else {
-            $items = $this->inventoryModel->findAll();
+            $items = $this->inventoryModel->paginate($perPage);
         }
 
-        // Simplified version to avoid errors
+        // Calculate inventory statistics
+        $allItems = $this->inventoryModel->findAll();
+        $totalItems = count($allItems);
+        $totalStock = array_sum(array_column($allItems, 'total_stock'));
+        $lowStock = 0;
+        $outOfStock = 0;
+
+        foreach ($allItems as $item) {
+            if ($item['total_stock'] <= 0) {
+                $outOfStock++;
+            } elseif ($item['total_stock'] <= ($item['minimum_order_level'] ?: 5)) {
+                $lowStock++;
+            }
+        }
+
         $data = [
             'title' => 'Inventory',
             'items' => $items ?: [],
             'search' => $search,
             'inventoryStats' => [
-                'total_items' => 0,
-                'total_stock' => 0,
-                'low_stock' => 0,
-                'out_of_stock' => 0
+                'total_items' => $totalItems,
+                'total_stock' => $totalStock,
+                'low_stock' => $lowStock,
+                'out_of_stock' => $outOfStock
             ],
-            'userRole' => 'admin'
+            'userRole' => 'admin',
+            'pager' => $this->inventoryModel->pager
         ];
 
         return view('dashboard/inventory/index', $data);

@@ -64,11 +64,16 @@ class ServiceCenterModel extends Model
     /**
      * Get active service centers
      */
-    public function getActiveServiceCenters()
+    public function getActiveServiceCenters($perPage = null)
     {
-        return $this->where('status', 'Active')
-                    ->orderBy('name', 'ASC')
-                    ->findAll();
+        $builder = $this->where('status', 'Active')
+                    ->orderBy('name', 'ASC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
@@ -90,25 +95,35 @@ class ServiceCenterModel extends Model
     /**
      * Search service centers
      */
-    public function searchServiceCenters($search)
+    public function searchServiceCenters($search, $perPage = null)
     {
-        return $this->like('name', $search)
+        $builder = $this->like('name', $search)
                     ->orLike('contact_person', $search)
                     ->orLike('phone', $search)
                     ->orLike('email', $search)
-                    ->orderBy('name', 'ASC')
-                    ->findAll();
+                    ->orderBy('name', 'ASC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
      * Get service centers with job counts
      */
-    public function getServiceCentersWithJobCounts()
+    public function getServiceCentersWithJobCounts($perPage = null)
     {
-        return $this->select('service_centers.*, COUNT(jobs.id) as job_count')
+        $builder = $this->select('service_centers.*, COUNT(jobs.id) as job_count')
                     ->join('jobs', 'jobs.service_center_id = service_centers.id', 'left')
                     ->groupBy('service_centers.id')
-                    ->orderBy('service_centers.name', 'ASC')
-                    ->findAll();
+                    ->orderBy('service_centers.name', 'ASC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 }

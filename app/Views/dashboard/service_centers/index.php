@@ -133,6 +133,13 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- Pagination -->
+                    <?php if (isset($pager) && $pager): ?>
+                        <div class="d-flex justify-content-center mt-4">
+                            <?= renderPagination($pager) ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

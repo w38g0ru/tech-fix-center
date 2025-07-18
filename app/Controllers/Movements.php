@@ -29,12 +29,14 @@ class Movements extends BaseController
             return redirect()->to('/auth/login');
         }
 
-        $movements = $this->movementModel->getMovementsWithDetails();
+        $perPage = 20; // Items per page
+        $movements = $this->movementModel->getMovementsWithDetails($perPage);
 
         $data = [
             'title' => 'Stock Movements',
             'movements' => $movements,
-            'movementStats' => $this->movementModel->getMovementStats()
+            'movementStats' => $this->movementModel->getMovementStats(),
+            'pager' => $this->movementModel->pager
         ];
 
         return view('dashboard/movements/index', $data);

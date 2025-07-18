@@ -31,16 +31,17 @@ class UserManagement extends BaseController
         $search = $this->request->getGet('search');
         $role = $this->request->getGet('role');
         $status = $this->request->getGet('status');
-
-        $users = $this->adminUserModel->orderBy('created_at', 'DESC')->findAll();
+        $perPage = 20; // Items per page
 
         // Apply filters
         if ($search) {
-            $users = $this->adminUserModel->searchUsers($search);
+            $users = $this->adminUserModel->searchUsers($search, $perPage);
         } elseif ($role) {
-            $users = $this->adminUserModel->where('role', $role)->findAll();
+            $users = $this->adminUserModel->where('role', $role)->paginate($perPage);
         } elseif ($status) {
-            $users = $this->adminUserModel->where('status', $status)->findAll();
+            $users = $this->adminUserModel->where('status', $status)->paginate($perPage);
+        } else {
+            $users = $this->adminUserModel->orderBy('created_at', 'DESC')->paginate($perPage);
         }
 
         $data = [
@@ -49,7 +50,8 @@ class UserManagement extends BaseController
             'search' => $search,
             'role' => $role,
             'status' => $status,
-            'userStats' => $this->adminUserModel->getUserStats()
+            'userStats' => $this->adminUserModel->getUserStats(),
+            'pager' => $this->adminUserModel->pager
         ];
 
         return view('dashboard/user_management/index', $data);

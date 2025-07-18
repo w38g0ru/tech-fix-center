@@ -32,11 +32,13 @@ class Photos extends BaseController
             return redirect()->to('/auth/login');
         }
 
-        $photos = $this->photoModel->getPhotosWithDetails();
+        $perPage = 20; // Items per page
+        $photos = $this->photoModel->getPhotosWithDetails($perPage);
 
         $data = [
             'title' => 'Photoproof Gallery',
-            'photos' => $photos
+            'photos' => $photos,
+            'pager' => $this->photoModel->pager
         ];
 
         return view('dashboard/photos/index', $data);
@@ -57,9 +59,9 @@ class Photos extends BaseController
 
         $data = [
             'title' => 'Upload Photoproof',
-            'jobs' => $this->jobModel->getJobsWithDetails(),
-            'referred' => $this->referredModel->findAll(),
-            'inventory' => $this->inventoryModel->findAll(),
+            'jobs' => $this->jobModel->getJobsWithDetails(), // Keep all for dropdown
+            'referred' => $this->referredModel->findAll(), // Keep all for dropdown
+            'inventory' => $this->inventoryModel->findAll(), // Keep all for dropdown
             'preSelectedType' => $preSelectedType,
             'preSelectedJobId' => $preSelectedJobId,
             'preSelectedReferredId' => $preSelectedReferredId,

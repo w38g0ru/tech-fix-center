@@ -28,10 +28,14 @@ class ServiceCenters extends BaseController
             return redirect()->to(base_url('dashboard'))->with('error', 'Access denied. Admin privileges required.');
         }
 
+        $perPage = 20; // Items per page
+        $serviceCenters = $this->serviceCenterModel->getServiceCentersWithJobCounts($perPage);
+
         $data = [
             'title' => 'Service Centers',
-            'serviceCenters' => $this->serviceCenterModel->getServiceCentersWithJobCounts(),
-            'stats' => $this->serviceCenterModel->getServiceCenterStats()
+            'serviceCenters' => $serviceCenters,
+            'stats' => $this->serviceCenterModel->getServiceCenterStats(),
+            'pager' => $this->serviceCenterModel->pager
         ];
 
         return view('dashboard/service_centers/index', $data);
@@ -244,11 +248,15 @@ class ServiceCenters extends BaseController
             return redirect()->to(base_url('dashboard/service-centers'));
         }
 
+        $perPage = 20; // Items per page
+        $serviceCenters = $this->serviceCenterModel->searchServiceCenters($search, $perPage);
+
         $data = [
             'title' => 'Search Results - Service Centers',
-            'serviceCenters' => $this->serviceCenterModel->searchServiceCenters($search),
+            'serviceCenters' => $serviceCenters,
             'search' => $search,
-            'stats' => $this->serviceCenterModel->getServiceCenterStats()
+            'stats' => $this->serviceCenterModel->getServiceCenterStats(),
+            'pager' => $this->serviceCenterModel->pager
         ];
 
         return view('dashboard/service_centers/index', $data);

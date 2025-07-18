@@ -61,31 +61,46 @@ class PhotoModel extends Model
     /**
      * Get photos by job ID
      */
-    public function getPhotosByJob($jobId)
+    public function getPhotosByJob($jobId, $perPage = null)
     {
-        return $this->where('job_id', $jobId)
-                    ->orderBy('uploaded_at', 'DESC')
-                    ->findAll();
+        $builder = $this->where('job_id', $jobId)
+                    ->orderBy('uploaded_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
      * Get photos by referred ID
      */
-    public function getPhotosByReferred($referredId)
+    public function getPhotosByReferred($referredId, $perPage = null)
     {
-        return $this->where('referred_id', $referredId)
-                    ->orderBy('uploaded_at', 'DESC')
-                    ->findAll();
+        $builder = $this->where('referred_id', $referredId)
+                    ->orderBy('uploaded_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
      * Get photos by inventory ID
      */
-    public function getPhotosByInventory($inventoryId)
+    public function getPhotosByInventory($inventoryId, $perPage = null)
     {
-        return $this->where('inventory_id', $inventoryId)
-                    ->orderBy('uploaded_at', 'DESC')
-                    ->findAll();
+        $builder = $this->where('inventory_id', $inventoryId)
+                    ->orderBy('uploaded_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
@@ -125,9 +140,9 @@ class PhotoModel extends Model
     /**
      * Get photos with all related data
      */
-    public function getPhotosWithDetails()
+    public function getPhotosWithDetails($perPage = null)
     {
-        return $this->select('photos.*,
+        $builder = $this->select('photos.*,
                              jobs.device_name as job_device,
                              jobs.status as job_status,
                              users.name as customer_name,
@@ -141,8 +156,13 @@ class PhotoModel extends Model
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->join('referred', 'referred.id = photos.referred_id', 'left')
                     ->join('inventory_items', 'inventory_items.id = photos.inventory_id', 'left')
-                    ->orderBy('photos.uploaded_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('photos.uploaded_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**

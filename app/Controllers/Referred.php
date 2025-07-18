@@ -28,13 +28,14 @@ class Referred extends BaseController
 
         $search = $this->request->getGet('search');
         $status = $this->request->getGet('status');
-        
+        $perPage = 20; // Items per page
+
         if ($search) {
-            $referred = $this->referredModel->searchReferred($search);
+            $referred = $this->referredModel->searchReferred($search, $perPage);
         } elseif ($status) {
-            $referred = $this->referredModel->getReferredByStatus($status);
+            $referred = $this->referredModel->getReferredByStatus($status, $perPage);
         } else {
-            $referred = $this->referredModel->getReferredWithPhotos();
+            $referred = $this->referredModel->getReferredWithPhotos($perPage);
         }
 
         $data = [
@@ -42,7 +43,8 @@ class Referred extends BaseController
             'referred' => $referred,
             'search' => $search,
             'status' => $status,
-            'referredStats' => $this->referredModel->getReferredStats()
+            'referredStats' => $this->referredModel->getReferredStats(),
+            'pager' => $this->referredModel->pager
         ];
 
         return view('dashboard/referred/index', $data);

@@ -31,10 +31,11 @@ class PartsRequests extends BaseController
 
         $userRole = getUserRole();
         $userId = getUserId();
+        $perPage = 20; // Items per page
 
         // Get parts requests based on user role
         if (in_array($userRole, ['superadmin', 'admin'])) {
-            $partsRequests = $this->partsRequestModel->getPartsRequestsWithDetails();
+            $partsRequests = $this->partsRequestModel->getPartsRequestsWithDetails($perPage);
         } elseif ($userRole === 'technician') {
             // Get technician ID from admin_users table
             $technicianId = $this->getTechnicianIdByUserId($userId);
@@ -65,7 +66,8 @@ class PartsRequests extends BaseController
             'title' => 'Parts Requests',
             'partsRequests' => $partsRequests ?: [],
             'userRole' => $userRole,
-            'stats' => $stats
+            'stats' => $stats,
+            'pager' => $this->partsRequestModel->pager
         ];
 
         return view('dashboard/parts_requests/index', $data);

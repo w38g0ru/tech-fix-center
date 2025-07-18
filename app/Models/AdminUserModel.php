@@ -110,24 +110,34 @@ class AdminUserModel extends Model
     /**
      * Get users by role
      */
-    public function getUsersByRole($role)
+    public function getUsersByRole($role, $perPage = null)
     {
-        return $this->where('role', $role)
+        $builder = $this->where('role', $role)
                     ->where('status', 'active')
-                    ->orderBy('name', 'ASC')
-                    ->findAll();
+                    ->orderBy('name', 'ASC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
      * Search users
      */
-    public function searchUsers($search)
+    public function searchUsers($search, $perPage = null)
     {
-        return $this->like('name', $search)
+        $builder = $this->like('name', $search)
                     ->orLike('email', $search)
                     ->orLike('mobile_number', $search)
-                    ->orderBy('created_at', 'DESC')
-                    ->findAll();
+                    ->orderBy('created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
     }
 
     /**
