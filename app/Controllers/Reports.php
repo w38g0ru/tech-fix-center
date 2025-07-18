@@ -88,15 +88,17 @@ class Reports extends BaseController
     private function getCustomerStats($startDate, $endDate)
     {
         $totalCustomers = $this->userModel->countAllResults();
-        
+
         $newCustomers = $this->userModel->where('created_at >=', $startDate)
                                        ->where('created_at <=', $endDate . ' 23:59:59')
                                        ->countAllResults();
 
+        $registeredCustomers = $this->userModel->where('user_type', 'Registered')->countAllResults();
+
         return [
             'total' => $totalCustomers,
             'new' => $newCustomers,
-            'active' => $this->userModel->where('status', 'active')->countAllResults()
+            'active' => $registeredCustomers
         ];
     }
 
@@ -135,8 +137,8 @@ class Reports extends BaseController
 
     private function getRevenueStats($startDate, $endDate)
     {
-        // Calculate revenue from completed jobs
-        $revenueData = $this->jobModel->select('SUM(total_cost) as total_revenue, COUNT(*) as completed_jobs')
+        // Calculate revenue from completed jobs using 'charge' column
+        $revenueData = $this->jobModel->select('SUM(charge) as total_revenue, COUNT(*) as completed_jobs')
                                      ->where('status', 'Completed')
                                      ->where('created_at >=', $startDate)
                                      ->where('created_at <=', $endDate . ' 23:59:59')
@@ -168,7 +170,7 @@ class Reports extends BaseController
                                   ->where('created_at <=', $monthEnd . ' 23:59:59')
                                   ->countAllResults();
             
-            $revenue = $this->jobModel->select('SUM(total_cost) as revenue')
+            $revenue = $this->jobModel->select('SUM(charge) as revenue')
                                     ->where('status', 'Completed')
                                     ->where('created_at >=', $monthStart)
                                     ->where('created_at <=', $monthEnd . ' 23:59:59')
@@ -217,37 +219,41 @@ class Reports extends BaseController
 
     private function exportJobs($format, $startDate, $endDate)
     {
-        $jobs = $this->jobModel->where('created_at >=', $startDate)
-                              ->where('created_at <=', $endDate . ' 23:59:59')
+        $jobs = $this->jobModel->select('jobs.*, users.name as customer_name')
+                              ->join('users', 'users.id = jobs.user_id', 'left')
+                              ->where('jobs.created_at >=', $startDate)
+                              ->where('jobs.created_at <=', $endDate . ' 23:59:59')
                               ->findAll();
 
         if ($format === 'csv') {
             $filename = 'jobs_report_' . date('Y-m-d') . '.csv';
-            
+
             header('Content-Type: text/csv');
             header('Content-Disposition: attachment; filename="' . $filename . '"');
-            
+
             $output = fopen('php://output', 'w');
-            
+
             // CSV headers
-            fputcsv($output, ['ID', 'Customer', 'Device', 'Issue', 'Status', 'Total Cost', 'Created Date']);
-            
+            fputcsv($output, ['ID', 'Customer', 'Walk-in Customer', 'Device', 'Problem', 'Status', 'Charge', 'Created Date']);
+
             foreach ($jobs as $job) {
+                $customerName = $job['customer_name'] ?: $job['walk_in_customer_name'];
                 fputcsv($output, [
                     $job['id'],
-                    $job['customer_name'],
+                    $customerName,
+                    $job['walk_in_customer_name'],
                     $job['device_name'],
-                    $job['issue_description'],
+                    $job['problem'],
                     $job['status'],
-                    $job['total_cost'],
+                    $job['charge'],
                     $job['created_at']
                 ]);
             }
-            
+
             fclose($output);
             exit;
         }
-        
+
         return redirect()->back()->with('error', 'Export format not supported');
     }
 
@@ -259,29 +265,28 @@ class Reports extends BaseController
 
         if ($format === 'csv') {
             $filename = 'customers_report_' . date('Y-m-d') . '.csv';
-            
+
             header('Content-Type: text/csv');
             header('Content-Disposition: attachment; filename="' . $filename . '"');
-            
+
             $output = fopen('php://output', 'w');
-            
-            fputcsv($output, ['ID', 'Name', 'Email', 'Phone', 'Status', 'Created Date']);
-            
+
+            fputcsv($output, ['ID', 'Name', 'Mobile Number', 'User Type', 'Created Date']);
+
             foreach ($customers as $customer) {
                 fputcsv($output, [
                     $customer['id'],
                     $customer['name'],
-                    $customer['email'],
-                    $customer['phone'],
-                    $customer['status'],
+                    $customer['mobile_number'],
+                    $customer['user_type'],
                     $customer['created_at']
                 ]);
             }
-            
+
             fclose($output);
             exit;
         }
-        
+
         return redirect()->back()->with('error', 'Export format not supported');
     }
 

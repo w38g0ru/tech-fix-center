@@ -70,7 +70,7 @@
                 <div class="ml-4">
                     <p class="text-sm font-medium text-gray-500">Total Customers</p>
                     <p class="text-2xl font-bold text-gray-900"><?= number_format($customerStats['total']) ?></p>
-                    <p class="text-sm text-blue-600"><?= $customerStats['new'] ?> new this period</p>
+                    <p class="text-sm text-blue-600"><?= $customerStats['new'] ?> new, <?= $customerStats['active'] ?> registered</p>
                 </div>
             </div>
         </div>
