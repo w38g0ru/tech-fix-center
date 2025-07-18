@@ -2,18 +2,14 @@
 
 <?= $this->section('content') ?>
 
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+<div class="card-header">
     <div>
-        <h1 class="text-2xl font-semibold text-gray-900">Jobs</h1>
-        <p class="mt-1 text-sm text-gray-600">Manage repair jobs and track progress</p>
+        <h1 class="card-title">Jobs</h1>
+        <p style="color: #666; font-size: 14px; margin-top: 4px;">Manage repair jobs and track progress</p>
     </div>
-    <div class="mt-4 sm:mt-0">
-        <a href="<?= base_url('dashboard/jobs/create') ?>"
-           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
-            <i class="fas fa-plus mr-2"></i>
-            Create Job
-        </a>
-    </div>
+    <a href="<?= base_url('dashboard/jobs/create') ?>" class="btn btn-primary">
+        <i class="fas fa-plus"></i>Create Job
+    </a>
 </div>
 
 <!-- Job Stats -->
