@@ -32,9 +32,12 @@ class Inventory extends BaseController
         $search = $this->request->getGet('search');
 
         if ($search) {
-            $items = $this->inventoryModel->searchItems($search);
+            $items = $this->inventoryModel->like('device_name', $search)
+                                         ->orLike('brand', $search)
+                                         ->orLike('model', $search)
+                                         ->findAll();
         } else {
-            $items = $this->inventoryModel->getItemsWithMovements();
+            $items = $this->inventoryModel->findAll();
         }
 
         // Simplified version to avoid errors

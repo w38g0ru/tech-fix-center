@@ -34,7 +34,7 @@
 
         <!-- Add Item Button -->
         <a href="<?= base_url('dashboard/inventory/create') ?>"
-           class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:bg-primary-700 active:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
+           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
             <i class="fas fa-plus mr-2"></i>
             Add Item
         </a>
@@ -100,11 +100,11 @@
                    name="search" 
                    value="<?= esc($search ?? '') ?>"
                    placeholder="Search inventory by device name, brand, or model..."
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
         </div>
         <div class="flex gap-2">
-            <button type="submit" 
-                    class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+            <button type="submit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 <i class="fas fa-search mr-2"></i>Search
             </button>
             <?php if (!empty($search)): ?>
@@ -221,8 +221,8 @@
                                        class="text-blue-600 hover:text-blue-900 p-1 rounded-full hover:bg-blue-50">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>" 
-                                       class="text-primary-600 hover:text-primary-900 p-1 rounded-full hover:bg-primary-50">
+                                    <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>"
+                                       class="text-blue-600 hover:text-blue-900 p-1 rounded-full hover:bg-blue-50">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <a href="<?= base_url('dashboard/inventory/delete/' . $item['id']) ?>" 
@@ -241,8 +241,8 @@
                                 <i class="fas fa-boxes text-4xl mb-4"></i>
                                 <p class="text-lg font-medium">No inventory items found</p>
                                 <p class="text-sm">Get started by adding your first inventory item.</p>
-                                <a href="<?= base_url('dashboard/inventory/create') ?>" 
-                                   class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700">
+                                <a href="<?= base_url('dashboard/inventory/create') ?>"
+                                   class="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
                                     <i class="fas fa-plus mr-2"></i>
                                     Add Item
                                 </a>
