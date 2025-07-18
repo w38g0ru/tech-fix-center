@@ -237,8 +237,24 @@ $pageTitle = $title ?? 'Dashboard';
             const overlay = document.getElementById('overlay');
             const menuBtn = document.getElementById('menuBtn');
 
-            sidebar.classList.toggle('translate-x-0');
-            overlay.classList.toggle('show');
+            // Toggle sidebar visibility using Tailwind classes
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+            } else {
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+            }
+
+            // Toggle overlay visibility
+            if (overlay.classList.contains('opacity-0')) {
+                overlay.classList.remove('opacity-0', 'invisible');
+                overlay.classList.add('opacity-100', 'visible');
+            } else {
+                overlay.classList.remove('opacity-100', 'visible');
+                overlay.classList.add('opacity-0', 'invisible');
+            }
+
             menuBtn.classList.toggle('active');
         }
 
@@ -247,96 +263,60 @@ $pageTitle = $title ?? 'Dashboard';
             const overlay = document.getElementById('overlay');
             const menuBtn = document.getElementById('menuBtn');
 
+            // Hide sidebar
             sidebar.classList.remove('translate-x-0');
-            overlay.classList.remove('show');
+            sidebar.classList.add('-translate-x-full');
+
+            // Hide overlay
+            overlay.classList.remove('opacity-100', 'visible');
+            overlay.classList.add('opacity-0', 'invisible');
+
             menuBtn.classList.remove('active');
         }
 
         // User menu toggle
         function toggleUserMenu() {
             const dropdown = document.getElementById('userDropdown');
-            dropdown.classList.toggle('show');
+            if (dropdown.classList.contains('opacity-0')) {
+                dropdown.classList.remove('opacity-0', 'invisible', '-translate-y-2');
+                dropdown.classList.add('opacity-100', 'visible', 'translate-y-0');
+            } else {
+                dropdown.classList.remove('opacity-100', 'visible', 'translate-y-0');
+                dropdown.classList.add('opacity-0', 'invisible', '-translate-y-2');
+            }
         }
 
         // Close dropdowns when clicking outside
         document.addEventListener('click', function(e) {
-            const userMenu = document.querySelector('.relative');
+            const userMenu = e.target.closest('.relative');
             const dropdown = document.getElementById('userDropdown');
 
-            if (userMenu && !userMenu.contains(e.target)) {
-                dropdown.classList.remove('show');
+            if (!userMenu && dropdown) {
+                dropdown.classList.remove('opacity-100', 'visible', 'translate-y-0');
+                dropdown.classList.add('opacity-0', 'invisible', '-translate-y-2');
             }
         });
 
-        // Close sidebar on mobile when clicking nav links
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                if (window.innerWidth < 1024) {
-                    closeSidebar();
-                }
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Close sidebar on mobile when clicking nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth < 1024) {
+                        closeSidebar();
+                    }
+                });
             });
+
+            // Ensure sidebar is hidden on mobile initially
+            if (window.innerWidth < 1024) {
+                closeSidebar();
+            }
         });
 
         // Handle window resize
         window.addEventListener('resize', function() {
             if (window.innerWidth >= 1024) {
-                closeSidebar();
-            }
-        });
-    </script>
-</body>
-</html>
-
-    <script>
-        // Sidebar toggle
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            const menuBtn = document.getElementById('menuBtn');
-
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('show');
-            menuBtn.classList.toggle('active');
-        }
-
-        function closeSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            const menuBtn = document.getElementById('menuBtn');
-
-            sidebar.classList.remove('open');
-            overlay.classList.remove('show');
-            menuBtn.classList.remove('active');
-        }
-
-        // User menu toggle
-        function toggleUserMenu() {
-            const dropdown = document.getElementById('userDropdown');
-            dropdown.classList.toggle('show');
-        }
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(e) {
-            const userMenu = document.querySelector('.user-menu');
-            const dropdown = document.getElementById('userDropdown');
-
-            if (!userMenu.contains(e.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
-
-        // Close sidebar on mobile when clicking nav links
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                if (window.innerWidth < 768) {
-                    closeSidebar();
-                }
-            });
-        });
-
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            if (window.innerWidth >= 768) {
                 closeSidebar();
             }
         });
