@@ -226,27 +226,50 @@
 </div>
 
 <!-- Quick Actions -->
-<div class="card" style="margin-top: 30px;">
-    <div class="card-header">
-        <h3 class="card-title">Quick Actions</h3>
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 mt-8">
+    <div class="p-6 border-b border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-900">Quick Actions</h3>
+        <p class="text-sm text-gray-500 mt-1">Frequently used actions for faster workflow</p>
     </div>
-    
-    <div class="grid grid-4" style="padding: 20px;">
-        <a href="<?= base_url('dashboard/jobs/create') ?>" class="btn btn-primary" style="justify-content: center; padding: 16px;">
-            <i class="fas fa-plus"></i>Create Job
-        </a>
-        
-        <a href="<?= base_url('dashboard/users/create') ?>" class="btn btn-success" style="justify-content: center; padding: 16px;">
-            <i class="fas fa-user-plus"></i>Add Customer
-        </a>
-        
-        <a href="<?= base_url('dashboard/inventory/create') ?>" class="btn btn-secondary" style="justify-content: center; padding: 16px;">
-            <i class="fas fa-box"></i>Add Item
-        </a>
-        
-        <a href="<?= base_url('dashboard/reports') ?>" class="btn btn-primary" style="justify-content: center; padding: 16px; background: #9333ea;">
-            <i class="fas fa-chart-bar"></i>View Reports
-        </a>
+
+    <div class="p-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <a href="<?= base_url('dashboard/jobs/create') ?>"
+               class="group flex flex-col items-center justify-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-xl border border-blue-200 hover:border-blue-300 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200 shadow-lg shadow-blue-500/25">
+                    <i class="fas fa-plus text-white text-lg"></i>
+                </div>
+                <span class="font-semibold text-blue-900 text-center">Create Job</span>
+                <span class="text-xs text-blue-600 mt-1">New repair job</span>
+            </a>
+
+            <a href="<?= base_url('dashboard/users/create') ?>"
+               class="group flex flex-col items-center justify-center p-6 bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-xl border border-green-200 hover:border-green-300 transition-all duration-200 hover:shadow-lg hover:shadow-green-500/25">
+                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200 shadow-lg shadow-green-500/25">
+                    <i class="fas fa-user-plus text-white text-lg"></i>
+                </div>
+                <span class="font-semibold text-green-900 text-center">Add Customer</span>
+                <span class="text-xs text-green-600 mt-1">New customer</span>
+            </a>
+
+            <a href="<?= base_url('dashboard/inventory/create') ?>"
+               class="group flex flex-col items-center justify-center p-6 bg-gradient-to-br from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 rounded-xl border border-orange-200 hover:border-orange-300 transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/25">
+                <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200 shadow-lg shadow-orange-500/25">
+                    <i class="fas fa-box text-white text-lg"></i>
+                </div>
+                <span class="font-semibold text-orange-900 text-center">Add Item</span>
+                <span class="text-xs text-orange-600 mt-1">Inventory item</span>
+            </a>
+
+            <a href="<?= base_url('dashboard/reports') ?>"
+               class="group flex flex-col items-center justify-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-xl border border-purple-200 hover:border-purple-300 transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/25">
+                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200 shadow-lg shadow-purple-500/25">
+                    <i class="fas fa-chart-bar text-white text-lg"></i>
+                </div>
+                <span class="font-semibold text-purple-900 text-center">View Reports</span>
+                <span class="text-xs text-purple-600 mt-1">Analytics</span>
+            </a>
+        </div>
     </div>
 </div>
 
