@@ -594,171 +594,26 @@ $pageTitle = $title ?? 'Dashboard';
         <div class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden hidden" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
         <!-- Sidebar -->
-        <div class="fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:z-auto lg:w-72 xl:w-80 sidebar" id="sidebar">
+        <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:z-auto lg:w-60 sidebar" id="sidebar">
 
             <!-- Logo Section -->
-            <div class="flex items-center h-16 px-4 bg-blue-600 border-b border-blue-700">
+            <div class="flex items-center h-12 px-4 border-b border-gray-200">
                 <div class="flex items-center">
-                    <div class="h-10 w-10 bg-white rounded-lg flex items-center justify-center">
-                        <i class="fas fa-tools text-blue-600 text-lg"></i>
-                    </div>
-                    <div class="logo-text ml-3">
-                        <h1 class="text-lg font-bold text-white"><?= $config->appShortName ?></h1>
-                        <p class="text-xs text-blue-100">Control Center</p>
-                    </div>
+                    <h1 class="text-lg font-semibold text-gray-900"><?= $config->appShortName ?></h1>
                 </div>
             </div>
 
             <!-- Navigation -->
-            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-                <!-- Main Menu Header -->
-                <div class="nav-header mb-4">
-                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 border-b border-gray-200 pb-2">Main Menu</h3>
-                </div>
-
-                <!-- Dashboard -->
-                <a href="<?= base_url('dashboard') ?>"
-                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                   title="Dashboard">
-                    <i class="fas fa-tachometer-alt w-5 h-5 mr-3 text-blue-600"></i>
-                    <div class="nav-text">
-                        <div class="font-medium">Dashboard</div>
-                        <div class="nav-subtitle text-xs text-gray-500">Overview & Analytics</div>
-                    </div>
-                </a>
-
-                <!-- Jobs -->
-                <a href="<?= base_url('dashboard/jobs') ?>"
-                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'jobs') !== false && !strpos(uri_string(), 'parts-requests') ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                   title="Jobs">
-                    <i class="fas fa-wrench w-5 h-5 mr-3 text-green-600"></i>
-                    <div class="nav-text">
-                        <div class="font-medium">Jobs</div>
-                        <div class="nav-subtitle text-xs text-gray-500">Repair Management</div>
-                    </div>
-                </a>
-
-                <!-- Customers -->
-                <a href="<?= base_url('dashboard/users') ?>"
-                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'users') !== false && !strpos(uri_string(), 'user-management') ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                   title="Customers">
-                    <i class="fas fa-users w-5 h-5 mr-3 text-purple-600"></i>
-                    <div class="nav-text">
-                        <div class="font-medium">Customers</div>
-                        <div class="nav-subtitle text-xs text-gray-500">Client Database</div>
-                    </div>
-                </a>
-
-                <!-- Management Section -->
-                <div class="nav-header mt-6 mb-4">
-                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 border-b border-gray-200 pb-2">Management</h3>
-                </div>
-
-                <!-- Inventory -->
-                <a href="<?= base_url('dashboard/inventory') ?>"
-                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'inventory') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                   title="Inventory">
-                    <i class="fas fa-boxes w-5 h-5 mr-3 text-orange-600"></i>
-                    <span class="nav-text">Inventory</span>
-                </a>
-
-                <!-- Stock Management -->
-                <a href="<?= base_url('dashboard/movements') ?>"
-                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'movements') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                   title="Stock Management">
-                    <i class="fas fa-warehouse w-5 h-5 mr-3 text-indigo-600"></i>
-                    <span class="nav-text">Stock Management</span>
-                </a>
-
-                <!-- Reports -->
-                <a href="<?= base_url('dashboard/reports') ?>"
-                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'reports') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                   title="Reports">
-                    <i class="fas fa-chart-bar w-5 h-5 mr-3 text-blue-600"></i>
-                    <span class="nav-text">Reports</span>
-                </a>
-
-                <!-- Stock Movements -->
-                <a href="<?= base_url('dashboard/movements') ?>"
-                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'movements') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                   title="Stock Movements">
-                    <i class="fas fa-exchange-alt w-5 h-5 mr-3 text-green-600"></i>
-                    <span class="nav-text">Stock Movements</span>
-                </a>
-
-                <!-- Photoproof -->
-                <a href="<?= base_url('dashboard/photos') ?>"
-                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'photos') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                   title="Photoproof">
-                    <i class="fas fa-camera w-5 h-5 mr-3 text-purple-600"></i>
-                    <span class="nav-text">Photoproof</span>
-                </a>
-
-                <!-- Dispatch -->
-                <a href="<?= base_url('dashboard/referred') ?>"
-                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'referred') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                   title="Dispatch">
-                    <i class="fas fa-shipping-fast w-5 h-5 mr-3 text-orange-600"></i>
-                    <span class="nav-text">Dispatch</span>
-                </a>
-
-                <!-- Parts Requests -->
-                <a href="<?= base_url('dashboard/parts-requests') ?>"
-                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'parts-requests') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                   title="Parts Requests">
-                    <i class="fas fa-tools w-5 h-5 mr-3 text-red-600"></i>
-                    <span class="nav-text">Parts Requests</span>
-                </a>
-
-                <!-- Administration Section -->
-                <?php helper('auth'); ?>
-                <?php if (canCreateTechnician()): ?>
-                    <div class="nav-header mt-6 mb-4">
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 border-b border-gray-200 pb-2">Administration</h3>
-                    </div>
-
-                    <!-- Service Centers -->
-                    <a href="<?= base_url('dashboard/service-centers') ?>"
-                       class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'service-centers') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                       title="Service Centers">
-                        <i class="fas fa-building w-5 h-5 mr-3 text-blue-600"></i>
-                        <span class="nav-text">Service Centers</span>
-                    </a>
-
-                    <!-- Technicians -->
-                    <a href="<?= base_url('dashboard/technicians') ?>"
-                       class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'technicians') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                       title="Technicians">
-                        <i class="fas fa-user-cog w-5 h-5 mr-3 text-green-600"></i>
-                        <span class="nav-text">Technicians</span>
-                    </a>
-
-                    <!-- User Management -->
-                    <a href="<?= base_url('dashboard/user-management') ?>"
-                       class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'user-management') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                       title="User Management">
-                        <i class="fas fa-users-cog w-5 h-5 mr-3 text-purple-600"></i>
-                        <span class="nav-text">User Management</span>
-                    </a>
-                <?php endif; ?>
-
-                <!-- Support Section -->
-                <div class="nav-header mt-6 mb-4">
-                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 border-b border-gray-200 pb-2">Support</h3>
-                </div>
-
-                <!-- User Guide -->
-                <a href="<?= base_url('dashboard/user-guide') ?>"
-                   class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 <?= strpos(uri_string(), 'user-guide') !== false ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100' ?>"
-                   title="User Guide">
-                    <i class="fas fa-question-circle w-5 h-5 mr-3 text-green-600"></i>
-                    <span class="nav-text">User Guide</span>
-                </a>
+            <nav class="flex-1 py-6 overflow-y-auto">
+                <?php
+                helper('menu');
+                echo renderMenuItems('light', true);
+                ?>
             </nav>
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden main-content" style="transition: margin-left 0.28s cubic-bezier(0.4, 0, 0.2, 1);">
+        <div class="flex-1 flex flex-col overflow-hidden main-content lg:ml-60" style="transition: margin-left 0.28s cubic-bezier(0.4, 0, 0.2, 1);">
             <!-- Quasar Improved Layout Header -->
             <header class="bg-white shadow-sm border-b flex-shrink-0 relative" style="border-color: var(--quasar-separator); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
                 <!-- Header Background Gradient -->
@@ -963,7 +818,7 @@ $pageTitle = $title ?? 'Dashboard';
 
             if (DashboardState.sidebarCollapsed && window.innerWidth >= 1024) {
                 sidebar.classList.add('collapsed');
-                sidebar.classList.remove('w-72', 'xl:w-80');
+                sidebar.classList.remove('lg:w-60');
                 sidebar.classList.add('w-16');
             }
         });
@@ -984,11 +839,11 @@ $pageTitle = $title ?? 'Dashboard';
 
             if (DashboardState.sidebarCollapsed) {
                 sidebar.classList.add('collapsed');
-                sidebar.classList.remove('w-72', 'xl:w-80');
+                sidebar.classList.remove('lg:w-60');
                 sidebar.classList.add('w-16');
             } else {
                 sidebar.classList.remove('collapsed', 'w-16');
-                sidebar.classList.add('w-72', 'xl:w-80');
+                sidebar.classList.add('lg:w-60');
             }
         }
 

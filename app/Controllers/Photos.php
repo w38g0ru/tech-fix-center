@@ -255,18 +255,25 @@ class Photos extends BaseController
 
     public function byReferred($referredId)
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
         $referred = $this->referredModel->find($referredId);
-        
+
         if (!$referred) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Referred item not found');
         }
 
-        $photos = $this->photoModel->getPhotosByReferred($referredId);
+        $perPage = 20; // Items per page
+        $photos = $this->photoModel->getPhotosByReferred($referredId, $perPage);
 
         $data = [
             'title' => 'Dispatch Photos - #' . $referredId,
             'referred' => $referred,
-            'photos' => $photos
+            'photos' => $photos,
+            'pager' => $this->photoModel->pager
         ];
 
         return view('dashboard/photos/by_referred', $data);

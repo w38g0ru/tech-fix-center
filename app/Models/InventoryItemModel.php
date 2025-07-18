@@ -99,11 +99,16 @@ class InventoryItemModel extends Model
     /**
      * Get low stock items
      */
-    public function getLowStockItems($threshold = 10)
+    public function getLowStockItems($limit = null, $threshold = 10)
     {
-        return $this->where('total_stock <=', $threshold)
-                    ->orderBy('total_stock', 'ASC')
-                    ->findAll();
+        $builder = $this->where('total_stock <=', $threshold)
+                        ->orderBy('total_stock', 'ASC');
+
+        if ($limit !== null) {
+            $builder->limit($limit);
+        }
+
+        return $builder->findAll();
     }
 
     /**

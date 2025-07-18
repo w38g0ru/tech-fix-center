@@ -15,6 +15,7 @@ $config = config('App');
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="<?= base_url('favicon.ico') ?>">
 
+    <!-- External Resources -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -22,15 +23,16 @@ $config = config('App');
             theme: {
                 extend: {
                     colors: {
-                        google: {
-                            blue: '<?= $config->brandColors['primary'] ?>',      // #1a73e8
-                            gray: '<?= $config->brandColors['secondary'] ?>',    // #5f6368
-                            green: '<?= $config->brandColors['accent'] ?>',      // #34a853
-                            yellow: '<?= $config->brandColors['warning'] ?>',    // #fbbc04
-                            red: '<?= $config->brandColors['danger'] ?>',        // #ea4335
-                            info: '<?= $config->brandColors['info'] ?>',         // #4285f4
-                            dark: '<?= $config->brandColors['dark'] ?>',         // #202124
-                            light: '<?= $config->brandColors['light'] ?>',       // #ffffff
+                        quasar: {
+                            primary: '<?= $config->brandColors['primary'] ?>',    // #1976d2
+                            secondary: '<?= $config->brandColors['secondary'] ?>', // #26a69a
+                            accent: '<?= $config->brandColors['accent'] ?>',      // #9c27b0
+                            warning: '<?= $config->brandColors['warning'] ?>',    // #ff9800
+                            danger: '<?= $config->brandColors['danger'] ?>',      // #f44336
+                            success: '<?= $config->brandColors['success'] ?>',    // #4caf50
+                            info: '<?= $config->brandColors['info'] ?>',          // #2196f3
+                            dark: '<?= $config->brandColors['dark'] ?>',          // #1d1d1d
+                            light: '<?= $config->brandColors['light'] ?>',        // #fafafa
                         }
                     }
                 }
@@ -38,108 +40,165 @@ $config = config('App');
         }
     </script>
     <style>
-        .google-gradient-bg {
-            background: linear-gradient(135deg, #4285f4 0%, #1a73e8 100%);
+        /* Minimalist Design Theme - Matching Dashboard */
+        :root {
+            --primary: #1976d2;
+            --primary-hover: #1565c0;
+            --secondary: #26a69a;
+            --accent: #9c27b0;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --success: #4caf50;
+            --info: #2196f3;
+            --dark: #1d1d1d;
+            --light: #fafafa;
         }
-        .google-card {
-            background: #ffffff;
-            border: 1px solid #dadce0;
-            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .form-input {
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
-        }
-        .btn-google-primary {
-            background: #1a73e8;
-            border: none;
-            color: #ffffff;
-            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
-            border-radius: 4px;
-            font-weight: 500;
+            padding: 12px 16px;
             font-size: 14px;
-            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            transition: all 0.2s ease;
+            background: #ffffff;
         }
-        .btn-google-primary:hover {
-            background: #1557b0;
-            box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
             transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .alert {
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+        }
+
+        .alert-error {
+            background: #ffebee;
+            border: 1px solid #ffcdd2;
+            color: #c62828;
+        }
+
+        .alert-success {
+            background: #e8f5e8;
+            border: 1px solid #c8e6c9;
+            color: #2e7d32;
         }
     </style>
 </head>
-<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-4">
 
-    <div class="w-full max-w-6xl">
-        <!-- Horizontal Login Container -->
-        <div class="glass-effect rounded-3xl shadow-2xl overflow-hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
+    <div class="w-full max-w-4xl">
+        <!-- Login Container -->
+        <div class="card overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[500px]">
 
-                <!-- Left Side - Google Clean Branding -->
-                <div class="google-gradient-bg p-12 flex flex-col justify-center items-center text-white relative overflow-hidden">
-                    <!-- Google Clean Background Pattern -->
+                <!-- Left Side - Branding -->
+                <div class="bg-gradient-to-br from-blue-600 to-blue-700 p-8 flex flex-col justify-center items-center text-white relative">
+                    <!-- Subtle Background Pattern -->
                     <div class="absolute inset-0 opacity-10">
-                        <div class="absolute top-10 left-10 w-32 h-32 border border-white/30 rounded-full"></div>
-                        <div class="absolute bottom-20 right-10 w-24 h-24 border border-white/30 rounded-full"></div>
-                        <div class="absolute top-1/2 left-1/4 w-16 h-16 border border-white/30 rounded-full"></div>
+                        <div class="absolute top-8 left-8 w-24 h-24 border border-white/20 rounded-full"></div>
+                        <div class="absolute bottom-16 right-8 w-16 h-16 border border-white/20 rounded-full"></div>
+                        <div class="absolute top-1/2 left-1/4 w-12 h-12 border border-white/20 rounded-full"></div>
                     </div>
 
                     <!-- Content -->
                     <div class="relative z-10 text-center">
-                        <div class="inline-flex items-center justify-center w-20 h-20 mb-8 rounded-full shadow-lg" style="background-color: #ffffff;">
-                            <i class="fas fa-tools text-3xl" style="color: #1a73e8;"></i>
+                        <div class="inline-flex items-center justify-center w-16 h-16 mb-6 bg-white/10 rounded-full backdrop-blur-sm">
+                            <i class="fas fa-tools text-2xl text-white"></i>
                         </div>
-                        <h1 class="text-3xl font-normal mb-4"><?= $config->appName ?></h1>
-                        <p class="text-lg text-blue-100 mb-8 leading-relaxed font-light"><?= $config->appDescription ?></p>
+                        <h1 class="text-2xl font-semibold mb-3"><?= $config->appShortName ?></h1>
+                        <p class="text-blue-100 mb-6 text-sm leading-relaxed"><?= $config->appDescription ?></p>
 
-                        <!-- Google Clean Feature List -->
-                        <div class="space-y-3 text-blue-100">
+                        <!-- Feature List -->
+                        <div class="space-y-2 text-blue-100 text-sm">
                             <div class="flex items-center justify-center">
-                                <i class="fas fa-shield-alt mr-3 text-white"></i>
-                                <span class="font-normal">Secure & Professional</span>
+                                <i class="fas fa-shield-alt mr-2 text-white text-xs"></i>
+                                <span>Secure & Professional</span>
                             </div>
                             <div class="flex items-center justify-center">
-                                <i class="fas fa-users mr-3 text-white"></i>
-                                <span class="font-normal">Trusted by Technicians</span>
+                                <i class="fas fa-users mr-2 text-white text-xs"></i>
+                                <span>Trusted by Technicians</span>
                             </div>
                             <div class="flex items-center justify-center">
-                                <i class="fas fa-clock mr-3 text-white"></i>
-                                <span class="font-normal">24/7 Access</span>
+                                <i class="fas fa-clock mr-2 text-white text-xs"></i>
+                                <span>24/7 Access</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Side - Google Clean Login Form -->
-                <div class="p-12 flex flex-col justify-center bg-white">
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-normal mb-3" style="color: #202124;">Welcome Back</h2>
-                        <p class="text-base" style="color: #5f6368;">Please sign in to your account</p>
+                <!-- Right Side - Login Form -->
+                <div class="p-8 flex flex-col justify-center bg-white">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-semibold mb-2 text-gray-900">Welcome Back</h2>
+                        <p class="text-sm text-gray-600">Please sign in to your account</p>
                     </div>
 
                     <!-- Alert Messages -->
                     <?php if (session()->getFlashdata('error')): ?>
-                        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                        <div class="alert alert-error">
                             <div class="flex items-center">
-                                <i class="fas fa-exclamation-triangle text-red-500 mr-3"></i>
-                                <p class="text-red-700 font-medium"><?= esc(session()->getFlashdata('error')) ?></p>
+                                <i class="fas fa-exclamation-circle mr-2 text-sm"></i>
+                                <span class="text-sm"><?= esc(session()->getFlashdata('error')) ?></span>
                             </div>
                         </div>
                     <?php endif; ?>
 
                     <?php if (session()->getFlashdata('success')): ?>
-                        <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
+                        <div class="alert alert-success">
                             <div class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                                <p class="text-green-700 font-medium"><?= esc(session()->getFlashdata('success')) ?></p>
+                                <i class="fas fa-check-circle mr-2 text-sm"></i>
+                                <span class="text-sm"><?= esc(session()->getFlashdata('success')) ?></span>
                             </div>
                         </div>
                     <?php endif; ?>
 
                     <!-- Validation Errors -->
                     <?php if (session('errors')): ?>
-                        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                        <div class="alert alert-error">
                             <div class="flex items-start">
-                                <i class="fas fa-exclamation-circle text-red-500 mr-3 mt-0.5"></i>
+                                <i class="fas fa-exclamation-triangle mr-2 mt-0.5 text-sm"></i>
                                 <div>
-                                    <p class="text-red-700 font-medium mb-2">Please fix the following errors:</p>
-                                    <ul class="text-red-600 text-sm space-y-1">
+                                    <p class="text-sm font-medium mb-2">Please fix the following errors:</p>
+                                    <ul class="text-sm space-y-1">
                                         <?php foreach (session('errors') as $error): ?>
                                             <li>• <?= esc($error) ?></li>
                                         <?php endforeach; ?>

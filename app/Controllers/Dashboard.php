@@ -42,7 +42,7 @@ class Dashboard extends BaseController
             'technicianStats' => $this->technicianModel->getTechnicianStats(),
             'recentJobs' => $this->jobModel->getRecentJobs(5),
             'recentMovements' => $this->movementModel->getRecentMovements(5),
-            'lowStockItems' => $this->inventoryModel->getLowStockItems(10)
+            'lowStockItems' => $this->inventoryModel->getLowStockItems(5, 10)
         ];
 
         return view('dashboard/index', $data);

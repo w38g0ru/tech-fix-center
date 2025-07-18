@@ -143,6 +143,14 @@ $routes->group('dashboard', function($routes) {
 
 });
 
+// Test Routes (for development/testing)
+$routes->group('test', function($routes) {
+    $routes->get('role-switcher', 'TestController::roleSwitcher');
+    $routes->get('set-role/(:segment)', 'TestController::setRole/$1');
+    $routes->get('menu-test', 'TestController::menuTest');
+    $routes->get('menu-debug', 'TestController::menuDebug');
+});
+
 // Test route for admin dashboard
 $routes->get('test-admin', function() {
     return view('admin/dashboard', [

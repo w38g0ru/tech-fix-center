@@ -81,100 +81,30 @@ $pageTitle = $title ?? 'Dashboard';
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
+
     <div class="flex min-h-screen">
         <!-- Overlay -->
         <div class="overlay fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 invisible transition-all duration-300 lg:hidden" id="overlay" onclick="closeSidebar()"></div>
 
         <!-- Sidebar -->
-        <div class="sidebar fixed top-0 left-0 -translate-x-full lg:translate-x-0 w-64 h-full bg-gradient-to-b from-gray-900 to-gray-800 shadow-2xl z-50 transition-transform duration-300 overflow-y-auto" id="sidebar">
+        <div class="sidebar fixed top-0 left-0 -translate-x-full lg:translate-x-0 w-60 h-full bg-gray-900 shadow-xl z-50 transition-transform duration-300 overflow-y-auto" id="sidebar">
             <!-- Logo -->
-            <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 flex items-center border-b border-blue-500/20">
-                <div class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center text-white mr-3 shadow-lg">
-                    <i class="fas fa-tools text-lg"></i>
-                </div>
+            <div class="text-white p-4 flex items-center border-b border-gray-800">
                 <div class="logo-text">
-                    <h1 class="text-lg font-bold tracking-wide"><?= $config->appShortName ?></h1>
-                    <p class="text-xs text-blue-100 font-medium">Control Center</p>
+                    <h1 class="text-lg font-semibold"><?= $config->appShortName ?></h1>
                 </div>
             </div>
 
             <!-- Navigation -->
-            <nav class="py-6 px-3">
-                <!-- Main Menu -->
-                <div class="mb-8">
-                    <div class="px-3 pb-3 mb-4">
-                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Main Menu</h3>
-                    </div>
-
-                    <a href="<?= base_url('dashboard') ?>"
-                       class="nav-link group flex items-center px-3 py-3 mb-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25' : '' ?>">
-                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3 <?= (uri_string() == 'dashboard' || uri_string() == '') ? 'bg-white/20' : 'bg-white/5 group-hover:bg-white/10' ?>">
-                            <i class="fas fa-tachometer-alt text-sm"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="font-semibold text-sm">Dashboard</div>
-                            <div class="text-xs opacity-75 mt-0.5">Overview & Analytics</div>
-                        </div>
-                    </a>
-
-                    <a href="<?= base_url('dashboard/jobs') ?>"
-                       class="nav-link group flex items-center px-3 py-3 mb-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 <?= strpos(uri_string(), 'jobs') !== false ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/25' : '' ?>">
-                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3 <?= strpos(uri_string(), 'jobs') !== false ? 'bg-white/20' : 'bg-white/5 group-hover:bg-white/10' ?>">
-                            <i class="fas fa-wrench text-sm"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="font-semibold text-sm">Jobs</div>
-                            <div class="text-xs opacity-75 mt-0.5">Repair Management</div>
-                        </div>
-                    </a>
-
-                    <a href="<?= base_url('dashboard/users') ?>"
-                       class="nav-link group flex items-center px-3 py-3 mb-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 <?= strpos(uri_string(), 'users') !== false ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg shadow-purple-500/25' : '' ?>">
-                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3 <?= strpos(uri_string(), 'users') !== false ? 'bg-white/20' : 'bg-white/5 group-hover:bg-white/10' ?>">
-                            <i class="fas fa-users text-sm"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="font-semibold text-sm">Customers</div>
-                            <div class="text-xs opacity-75 mt-0.5">Client Database</div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Management -->
-                <div class="mb-8">
-                    <div class="px-5 pb-2 mb-3">
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Management</h3>
-                    </div>
-
-                    <a href="<?= base_url('dashboard/inventory') ?>"
-                       class="nav-link flex items-center px-5 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 hover:border-l-4 hover:border-blue-600 transition-all duration-200 <?= strpos(uri_string(), 'inventory') !== false ? 'bg-blue-600 text-white border-l-4 border-blue-700' : 'border-l-4 border-transparent' ?>">
-                        <i class="fas fa-boxes w-5 mr-3 text-center text-sm"></i>
-                        <div class="flex-1">
-                            <div class="font-medium text-sm">Inventory</div>
-                        </div>
-                    </a>
-
-                    <a href="<?= base_url('dashboard/reports') ?>"
-                       class="nav-link flex items-center px-5 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 hover:border-l-4 hover:border-blue-600 transition-all duration-200 <?= strpos(uri_string(), 'reports') !== false ? 'bg-blue-600 text-white border-l-4 border-blue-700' : 'border-l-4 border-transparent' ?>">
-                        <i class="fas fa-chart-bar w-5 mr-3 text-center text-sm"></i>
-                        <div class="flex-1">
-                            <div class="font-medium text-sm">Reports</div>
-                        </div>
-                    </a>
-
-                    <a href="<?= base_url('dashboard/technicians') ?>"
-                       class="nav-link flex items-center px-5 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 hover:border-l-4 hover:border-blue-600 transition-all duration-200 <?= strpos(uri_string(), 'technicians') !== false ? 'bg-blue-600 text-white border-l-4 border-blue-700' : 'border-l-4 border-transparent' ?>">
-                        <i class="fas fa-user-cog w-5 mr-3 text-center text-sm"></i>
-                        <div class="flex-1">
-                            <div class="font-medium text-sm">Technicians</div>
-                        </div>
-                    </a>
-                </div>
+            <nav class="py-6">
+                <?php
+                helper('menu');
+                echo renderMenuItems('dark', true);
+                ?>
             </nav>
         </div>
-
         <!-- Main Content -->
-        <div class="flex-1 lg:ml-64 min-h-screen w-full bg-gray-50">
+        <div class="flex-1 lg:ml-60 min-h-screen w-full bg-gray-50">
             <!-- Header -->
             <div class="bg-white/80 backdrop-blur-sm border-b border-gray-200/50 px-4 lg:px-8 py-4 flex items-center justify-between sticky top-0 z-40">
                 <div class="flex items-center">
