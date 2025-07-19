@@ -6,7 +6,7 @@
 <div class="flex items-center justify-between mb-8">
     <div>
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Bug Report #<?= $bugReport['id'] ?></h1>
-        <p class="text-gray-600"><?= esc($bugReport['title']) ?></p>
+        <p class="text-gray-600"><?= esc(substr($bugReport['feedback'], 0, 100)) ?><?= strlen($bugReport['feedback']) > 100 ? '...' : '' ?></p>
     </div>
     <div class="flex space-x-3">
         <a href="<?= base_url('dashboard/bug-reports/edit/' . $bugReport['id']) ?>"
@@ -50,18 +50,19 @@
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <?= $severityClass ?>">
                         <?= esc($bugReport['severity']) ?>
                     </span>
-                    
+
                     <?php
-                    $statusClasses = [
-                        'Open' => 'bg-blue-100 text-blue-800',
-                        'In Progress' => 'bg-yellow-100 text-yellow-800',
-                        'Resolved' => 'bg-green-100 text-green-800',
-                        'Closed' => 'bg-gray-100 text-gray-800'
+                    $typeClasses = [
+                        'UI' => 'bg-purple-100 text-purple-800',
+                        'Functional' => 'bg-blue-100 text-blue-800',
+                        'Crash' => 'bg-red-100 text-red-800',
+                        'Typo' => 'bg-yellow-100 text-yellow-800',
+                        'Other' => 'bg-gray-100 text-gray-800'
                     ];
-                    $statusClass = $statusClasses[$bugReport['status']] ?? 'bg-gray-100 text-gray-800';
+                    $typeClass = $typeClasses[$bugReport['bug_type']] ?? 'bg-gray-100 text-gray-800';
                     ?>
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <?= $statusClass ?>">
-                        <?= esc($bugReport['status']) ?>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <?= $typeClass ?>">
+                        <?= esc($bugReport['bug_type']) ?>
                     </span>
                 </div>
             </div>
