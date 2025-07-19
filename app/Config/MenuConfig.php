@@ -169,7 +169,7 @@ class MenuConfig
                         'url' => 'dashboard/bug-reports',
                         'icon' => 'fas fa-bug',
                         'color' => 'text-red-600',
-                        'active_check' => ['bug-reports'],
+                        'active_check' => ['bug-reports', 'reports'],
                         'gradient' => 'from-red-500 to-red-600',
                         'access_level' => 'admin'
                     ]
