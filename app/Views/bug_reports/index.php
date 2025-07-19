@@ -35,13 +35,13 @@
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <div class="flex items-center">
             <div class="flex-shrink-0">
-                <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-code text-blue-600 text-xl"></i>
                 </div>
             </div>
             <div class="ml-4">
-                <p class="text-sm font-medium text-gray-500">Open</p>
-                <p class="text-2xl font-bold text-gray-900"><?= number_format($stats['open']) ?></p>
+                <p class="text-sm font-medium text-gray-500">Functional</p>
+                <p class="text-2xl font-bold text-gray-900"><?= number_format($stats['functional']) ?></p>
             </div>
         </div>
     </div>
@@ -49,13 +49,13 @@
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <div class="flex items-center">
             <div class="flex-shrink-0">
-                <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-exclamation-triangle text-orange-600 text-xl"></i>
                 </div>
             </div>
             <div class="ml-4">
-                <p class="text-sm font-medium text-gray-500">Resolved</p>
-                <p class="text-2xl font-bold text-gray-900"><?= number_format($stats['resolved']) ?></p>
+                <p class="text-sm font-medium text-gray-500">High Severity</p>
+                <p class="text-2xl font-bold text-gray-900"><?= number_format($stats['high']) ?></p>
             </div>
         </div>
     </div>
@@ -64,7 +64,7 @@
         <div class="flex items-center">
             <div class="flex-shrink-0">
                 <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    <i class="fas fa-exclamation-circle text-red-600 text-xl"></i>
                 </div>
             </div>
             <div class="ml-4">
