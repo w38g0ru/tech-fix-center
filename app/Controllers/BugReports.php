@@ -323,16 +323,26 @@ class BugReports extends BaseController
         try {
             $config = config('App');
 
-            $this->email->setFrom($config->adminEmail ?? 'noreply@teknophix.com', $config->appName);
-            $this->email->setTo($config->adminEmail ?? 'admin@teknophix.com');
-            $this->email->setCC($bugData['reporter_email']);
+            $adminEmail = $config->adminEmail ?? 'infoudayapur@gmail.com';
+            $appName    = $config->appName ?? 'My App';
+            $replyTo    = $bugData['email'] ?? $adminEmail;
 
+            $this->email->setFrom($adminEmail, $appName);
+            $this->email->setTo($adminEmail);
+
+            if (!empty($bugData['reporter_email'])) {
+                $this->email->setCC($bugData['reporter_email']);
+            }
+
+            $this->email->setReplyTo($replyTo);
             $this->email->setSubject('New Bug Report #' . $bugId . ' - ' . $bugData['title']);
 
             $message = $this->buildEmailMessage($bugData, $bugId);
             $this->email->setMessage($message);
 
-            $this->email->send();
+            if (! $this->email->send()) {
+                log_message('error', 'Email sending failed: ' . print_r($this->email->printDebugger(['headers', 'subject']), true));
+            }
 
         } catch (\Exception $e) {
             log_message('error', 'Failed to send bug report email: ' . $e->getMessage());
