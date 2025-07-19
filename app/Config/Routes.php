@@ -130,6 +130,16 @@ $routes->group('dashboard', function($routes) {
     $routes->get('user-management/delete/(:num)', 'UserManagement::delete/$1');
     $routes->post('user-management/updateStatus/(:num)', 'UserManagement::updateStatus/$1');
 
+    // Bug Reports Routes (Admin Only)
+    $routes->get('bug-reports', 'BugReports::index');
+    $routes->get('bug-reports/create', 'BugReports::create');
+    $routes->post('bug-reports/store', 'BugReports::store');
+    $routes->get('bug-reports/view/(:num)', 'BugReports::view/$1');
+    $routes->get('bug-reports/edit/(:num)', 'BugReports::edit/$1');
+    $routes->post('bug-reports/update/(:num)', 'BugReports::update/$1');
+    $routes->get('bug-reports/delete/(:num)', 'BugReports::delete/$1');
+    $routes->get('bug-reports/serve/(:any)', 'BugReports::serve/$1');
+
     // User Guide Route
     $routes->get('user-guide', 'Dashboard::userGuide');
 

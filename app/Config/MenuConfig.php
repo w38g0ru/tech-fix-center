@@ -40,7 +40,8 @@ class MenuConfig
                         'icon' => 'fas fa-tachometer-alt',
                         'color' => 'text-blue-600',
                         'subtitle' => 'Overview & Analytics',
-                        'active_check' => ['dashboard', ''],
+                        'active_check' => [''],
+                        'exclude_check' => ['jobs', 'users', 'inventory', 'movements', 'reports', 'photos', 'referred', 'parts-requests', 'service-centers', 'technicians', 'user-management', 'profile', 'settings', 'user-guide'],
                         'gradient' => 'from-blue-500 to-blue-600',
                         'access_level' => 'all'
                     ],
@@ -162,6 +163,15 @@ class MenuConfig
                         'active_check' => ['user-management'],
                         'gradient' => 'from-purple-500 to-purple-600',
                         'access_level' => 'admin'
+                    ],
+                    [
+                        'name' => 'Bug Reports',
+                        'url' => 'dashboard/bug-reports',
+                        'icon' => 'fas fa-bug',
+                        'color' => 'text-red-600',
+                        'active_check' => ['bug-reports'],
+                        'gradient' => 'from-red-500 to-red-600',
+                        'access_level' => 'admin'
                     ]
                 ]
             ],
@@ -217,7 +227,7 @@ class MenuConfig
     public static function isActive(array $activeCheck, array $excludeCheck = []): bool
     {
         $currentUri = uri_string();
-        
+
         // Check exclusions first
         if (!empty($excludeCheck)) {
             foreach ($excludeCheck as $exclude) {
@@ -226,17 +236,19 @@ class MenuConfig
                 }
             }
         }
-        
+
         // Check active conditions
         foreach ($activeCheck as $check) {
+            // Special case for Dashboard - only active when exactly on dashboard page
             if ($check === '' && ($currentUri === 'dashboard' || $currentUri === '')) {
                 return true;
             }
+            // For other menu items, check if URI contains the check string
             if ($check !== '' && strpos($currentUri, $check) !== false) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
