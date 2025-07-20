@@ -150,6 +150,7 @@ $routes->group('dashboard', function($routes) {
     // Test Activity Logging Routes (for development/testing)
     $routes->get('test-activity', 'TestActivity::index');
     $routes->post('test-activity/post', 'TestActivity::testPost');
+    $routes->get('test-activity/create-table', 'TestActivity::createTable');
 
 
 

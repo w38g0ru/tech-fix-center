@@ -35,12 +35,42 @@
                         </div>
                     <?php endif; ?>
 
+                    <?php if (isset($debug['has_all_fields'])): ?>
+                        <div><strong>Has All Required Fields:</strong>
+                            <span class="<?= $debug['has_all_fields'] ? 'text-green-600' : 'text-red-600' ?>">
+                                <?= $debug['has_all_fields'] ? 'Yes' : 'No' ?>
+                            </span>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($debug['missing_fields']) && !empty($debug['missing_fields'])): ?>
+                        <div class="text-red-600"><strong>Missing Fields:</strong> <?= esc(implode(', ', $debug['missing_fields'])) ?></div>
+                    <?php endif; ?>
+
                     <?php if (isset($debug['direct_insert'])): ?>
                         <div><strong>Direct DB Insert:</strong>
                             <span class="<?= $debug['direct_insert'] === 'Success' ? 'text-green-600' : 'text-red-600' ?>">
                                 <?= esc($debug['direct_insert']) ?>
                             </span>
                         </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($debug['model_insert'])): ?>
+                        <div><strong>Model Insert:</strong>
+                            <span class="<?= $debug['model_insert'] === 'Success' ? 'text-green-600' : 'text-red-600' ?>">
+                                <?= esc($debug['model_insert']) ?>
+                            </span>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($debug['last_query'])): ?>
+                        <div><strong>Last SQL Query:</strong>
+                            <pre class="bg-gray-100 p-2 rounded text-xs mt-1 overflow-x-auto"><?= esc($debug['last_query']) ?></pre>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($debug['model_errors'])): ?>
+                        <div class="text-red-600"><strong>Model Errors:</strong> <?= esc(json_encode($debug['model_errors'])) ?></div>
                     <?php endif; ?>
 
                     <?php if (isset($debug['db_error'])): ?>
@@ -140,7 +170,7 @@
             </div>
             
             <!-- Test POST Activity -->
-            <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Test POST Activity Logging</h2>
                 <p class="text-gray-600 mb-4">Click the button below to test automatic POST activity logging via the ActivityLogFilter.</p>
                 <form method="POST" action="<?= base_url('test-activity/post') ?>">
@@ -149,6 +179,26 @@
                     </button>
                 </form>
             </div>
+
+            <!-- Quick Fix -->
+            <?php if (isset($debug['table_exists']) && (!$debug['table_exists'] || (isset($debug['has_all_fields']) && !$debug['has_all_fields']))): ?>
+                <div class="bg-orange-50 border border-orange-200 rounded-lg p-6">
+                    <h2 class="text-xl font-semibold text-orange-800 mb-4">🔧 Quick Fix</h2>
+                    <p class="text-orange-700 mb-4">
+                        <?php if (!$debug['table_exists']): ?>
+                            The user_activity_logs table doesn't exist.
+                        <?php else: ?>
+                            The table exists but is missing required fields.
+                        <?php endif ?>
+                        Click the button below to create/recreate the table with the correct structure.
+                    </p>
+                    <a href="<?= base_url('test-activity/create-table') ?>"
+                       class="bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-lg"
+                       onclick="return confirm('This will drop and recreate the user_activity_logs table. Any existing data will be lost. Continue?')">
+                        Create/Recreate Table
+                    </a>
+                </div>
+            <?php endif; ?>
             
             <!-- Navigation -->
             <div class="mt-8 text-center">
