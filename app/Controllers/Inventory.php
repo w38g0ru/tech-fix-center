@@ -81,7 +81,7 @@ class Inventory extends BaseController
         }
 
         // Restrict technicians from adding stock
-        if (hasRole(['technician'])) {
+        if (hasRole('technician')) {
             return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot add inventory items.');
         }
 
@@ -97,7 +97,7 @@ class Inventory extends BaseController
         }
 
         // Restrict technicians from adding stock
-        if (hasRole(['technician'])) {
+        if (hasRole('technician')) {
             return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot add inventory items.');
         }
 
@@ -274,7 +274,7 @@ class Inventory extends BaseController
         }
 
         // Restrict technicians from deleting stock
-        if (hasRole(['technician'])) {
+        if (hasRole('technician')) {
             return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot delete inventory items.');
         }
 
@@ -323,7 +323,7 @@ class Inventory extends BaseController
         }
 
         // Restrict technicians from bulk import
-        if (hasRole(['technician'])) {
+        if (hasRole('technician')) {
             return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot import inventory.');
         }
 
@@ -339,7 +339,7 @@ class Inventory extends BaseController
         }
 
         // Restrict technicians from bulk import
-        if (hasRole(['technician'])) {
+        if (hasRole('technician')) {
             return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot import inventory.');
         }
 
@@ -421,7 +421,7 @@ class Inventory extends BaseController
         }
 
         // Check if user has admin privileges
-        if (!hasRole(['superadmin', 'admin'])) {
+        if (!hasAnyRole(['superadmin', 'admin'])) {
             return redirect()->to('/dashboard')->with('error', 'Access denied. Admin privileges required.');
         }
 
@@ -648,7 +648,7 @@ class Inventory extends BaseController
         }
 
         // Check if user has admin privileges
-        if (!hasRole(['superadmin', 'admin'])) {
+        if (!hasAnyRole(['superadmin', 'admin'])) {
             return redirect()->to('/dashboard')->with('error', 'Access denied. Admin privileges required.');
         }
 

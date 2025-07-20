@@ -24,7 +24,7 @@ class ServiceCenters extends BaseController
         }
 
         // Check if user has admin privileges
-        if (!hasRole(['superadmin', 'admin'])) {
+        if (!hasAnyRole(['superadmin', 'admin'])) {
             return redirect()->to(base_url('dashboard'))->with('error', 'Access denied. Admin privileges required.');
         }
 
@@ -49,7 +49,7 @@ class ServiceCenters extends BaseController
         }
 
         // Check if user has admin privileges
-        if (!hasRole(['superadmin', 'admin'])) {
+        if (!hasAnyRole(['superadmin', 'admin'])) {
             return redirect()->to(base_url('dashboard'))->with('error', 'Access denied. Admin privileges required.');
         }
 
@@ -71,7 +71,7 @@ class ServiceCenters extends BaseController
         }
 
         // Check if user has admin privileges
-        if (!hasRole(['superadmin', 'admin'])) {
+        if (!hasAnyRole(['superadmin', 'admin'])) {
             if ($this->request->isAJAX()) {
                 return $this->response->setJSON(['success' => false, 'message' => 'Access denied. Admin privileges required.']);
             }
@@ -134,7 +134,7 @@ class ServiceCenters extends BaseController
         }
 
         // Check if user has admin privileges
-        if (!hasRole(['superadmin', 'admin'])) {
+        if (!hasAnyRole(['superadmin', 'admin'])) {
             return redirect()->to(base_url('dashboard'))->with('error', 'Access denied. Admin privileges required.');
         }
 
@@ -160,7 +160,7 @@ class ServiceCenters extends BaseController
         }
 
         // Check if user has admin privileges
-        if (!hasRole(['superadmin', 'admin'])) {
+        if (!hasAnyRole(['superadmin', 'admin'])) {
             return redirect()->to(base_url('dashboard'))->with('error', 'Access denied. Admin privileges required.');
         }
 
@@ -206,7 +206,7 @@ class ServiceCenters extends BaseController
         }
 
         // Check if user has admin privileges
-        if (!hasRole(['superadmin', 'admin'])) {
+        if (!hasAnyRole(['superadmin', 'admin'])) {
             return redirect()->to(base_url('dashboard'))->with('error', 'Access denied. Admin privileges required.');
         }
 

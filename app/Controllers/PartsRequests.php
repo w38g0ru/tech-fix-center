@@ -81,7 +81,7 @@ class PartsRequests extends BaseController
         }
 
         // Only technicians can create parts requests
-        if (!hasRole(['technician'])) {
+        if (!hasRole('technician')) {
             return redirect()->to(base_url('dashboard'))->with('error', 'Only technicians can create parts requests.');
         }
 
@@ -103,7 +103,7 @@ class PartsRequests extends BaseController
         }
 
         // Only technicians can create parts requests
-        if (!hasRole(['technician'])) {
+        if (!hasRole('technician')) {
             return redirect()->to(base_url('dashboard'))->with('error', 'Only technicians can create parts requests.');
         }
 
@@ -176,7 +176,7 @@ class PartsRequests extends BaseController
     public function approve($id)
     {
         // Check if user is logged in and has admin privileges
-        if (!isLoggedIn() || !hasRole(['superadmin', 'admin'])) {
+        if (!isLoggedIn() || !hasAnyRole(['superadmin', 'admin'])) {
             return redirect()->to(base_url('auth/login'));
         }
 
@@ -214,7 +214,7 @@ class PartsRequests extends BaseController
     public function reject($id)
     {
         // Check if user is logged in and has admin privileges
-        if (!isLoggedIn() || !hasRole(['superadmin', 'admin'])) {
+        if (!isLoggedIn() || !hasAnyRole(['superadmin', 'admin'])) {
             return redirect()->to(base_url('auth/login'));
         }
 
@@ -249,7 +249,7 @@ class PartsRequests extends BaseController
     public function updateStatus($id)
     {
         // Check if user is logged in and has admin privileges
-        if (!isLoggedIn() || !hasRole(['superadmin', 'admin'])) {
+        if (!isLoggedIn() || !hasAnyRole(['superadmin', 'admin'])) {
             return redirect()->to(base_url('auth/login'));
         }
 
