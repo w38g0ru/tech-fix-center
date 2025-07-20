@@ -328,16 +328,7 @@ class Dashboard extends BaseController
         return view('dashboard/user_guide', $data);
     }
 
-    public function mobileTest()
-    {
-        // Check if user is logged in
-        if (!isLoggedIn()) {
-            return redirect()->to('/auth/login');
-        }
 
-        $data = ['title' => 'Mobile Test'];
-        return view('dashboard/mobile_test', $data);
-    }
 
     public function profile()
     {

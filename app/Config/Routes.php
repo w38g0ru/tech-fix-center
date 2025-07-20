@@ -147,32 +147,12 @@ $routes->group('dashboard', function($routes) {
     $routes->get('profile', 'Dashboard::profile');
     $routes->get('settings', 'Dashboard::settings');
 
-    // Mobile Test Route (for debugging)
-    $routes->get('mobile-test', 'Dashboard::mobileTest');
+
 
 
 });
 
-// Test Routes (for development/testing)
-$routes->group('test', function($routes) {
-    $routes->get('role-switcher', 'TestController::roleSwitcher');
-    $routes->get('set-role/(:segment)', 'TestController::setRole/$1');
-    $routes->get('menu-test', 'TestController::menuTest');
-    $routes->get('menu-debug', 'TestController::menuDebug');
-});
 
-// Test route for admin dashboard
-$routes->get('test-admin', function() {
-    return view('admin/dashboard', [
-        'title' => 'Admin Dashboard Test',
-        'stats' => [
-            'total_users' => 1234,
-            'total_sales' => 45678.90,
-            'total_orders' => 892,
-            'monthly_revenue' => 23456.78
-        ]
-    ]);
-});
 
 // Include Admin Routes
 require_once APPPATH . 'Config/AdminRoutes.php';
