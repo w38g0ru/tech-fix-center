@@ -154,11 +154,5 @@ $routes->group('dashboard', function($routes) {
 
 
 
-// Debug Routes (for troubleshooting - remove in production)
-if (ENVIRONMENT === 'development' || ENVIRONMENT === 'testing') {
-    $routes->get('debug/role-check', 'Debug::roleCheck');
-    $routes->get('debug/service-center', 'Debug::serviceCenter');
-}
-
 // Include Admin Routes
 require_once APPPATH . 'Config/AdminRoutes.php';
