@@ -23,10 +23,10 @@ class App extends BaseConfig
      * Application Branding Configuration
      * --------------------------------------------------------------------------
      *
-     * Professional branding settings for TeknoPhix
+     * Professional branding settings for TFC (Tech Fix Center)
      */
-    public string $appName = 'TeknoPhix';
-    public string $appShortName = 'TPX';
+    public string $appName = 'TFC (Tech Fix Center)';
+    public string $appShortName = 'TFC';
     public string $appVersion = '2.0.0';
     public string $appDescription = 'Tech Fix Center - Your trusted partner for technology solutions.';
     public string $companyName = 'infoTech Suppliers & Traders';
@@ -51,10 +51,10 @@ class App extends BaseConfig
 
     // Social Media Links
     public array $socialMedia = [
-        'facebook' => 'https://facebook.com/teknophix',
-        'twitter' => 'https://twitter.com/teknophix',
-        'instagram' => 'https://instagram.com/teknophix',
-        'linkedin' => 'https://linkedin.com/company/teknophix'
+        'facebook' => 'https://facebook.com/techfixcenter',
+        'twitter' => 'https://twitter.com/techfixcenter',
+        'instagram' => 'https://instagram.com/techfixcenter',
+        'linkedin' => 'https://linkedin.com/company/techfixcenter'
     ];
 
     /**

@@ -144,7 +144,8 @@ $config = config('App');
                         <div class="inline-flex items-center justify-center w-16 h-16 mb-6 bg-white/10 rounded-full backdrop-blur-sm">
                             <i class="fas fa-tools text-2xl text-white"></i>
                         </div>
-                        <h1 class="text-2xl font-semibold mb-3"><?= $config->appShortName ?></h1>
+                        <h1 class="text-2xl font-semibold mb-1"><?= $config->appShortName ?></h1>
+                        <p class="text-blue-200 mb-4 text-xs font-medium">Tech Fix Center</p>
                         <p class="text-blue-100 mb-6 text-sm leading-relaxed"><?= $config->appDescription ?></p>
 
                         <!-- Feature List -->

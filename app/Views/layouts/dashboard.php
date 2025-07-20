@@ -597,18 +597,30 @@ $pageTitle = $title ?? 'Dashboard';
         <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:z-auto lg:w-60 sidebar" id="sidebar">
 
             <!-- Logo Section -->
-            <div class="flex items-center h-12 px-4 border-b border-gray-200">
-                <div class="flex items-center">
-                    <h1 class="text-lg font-semibold text-gray-900"><?= $config->appShortName ?></h1>
+            <div class="flex items-center h-16 px-6 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700">
+                <div class="flex items-center space-x-3">
+                    <!-- Logo Icon -->
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                            <i class="fas fa-tools text-blue-600 text-sm"></i>
+                        </div>
+                    </div>
+                    <!-- App Name -->
+                    <div class="flex flex-col">
+                        <h1 class="text-lg font-bold text-white leading-tight"><?= $config->appShortName ?></h1>
+                        <span class="text-xs text-blue-100 font-medium">Tech Fix Center</span>
+                    </div>
                 </div>
             </div>
 
             <!-- Navigation -->
-            <nav class="flex-1 py-6 overflow-y-auto">
-                <?php
-                helper('menu');
-                echo renderMenuItems('light', true);
-                ?>
+            <nav class="flex-1 py-4 overflow-y-auto">
+                <div class="px-2">
+                    <?php
+                    helper('menu');
+                    echo renderMenuItems('light', true);
+                    ?>
+                </div>
             </nav>
         </div>
 
