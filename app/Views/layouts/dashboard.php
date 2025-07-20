@@ -614,8 +614,8 @@ $pageTitle = $title ?? 'Dashboard';
             </div>
 
             <!-- Navigation -->
-            <nav class="flex-1 py-4 overflow-y-auto">
-                <div class="px-2">
+            <nav class="flex-1 py-3 overflow-y-auto">
+                <div class="px-1">
                     <?php
                     helper('menu');
                     echo renderMenuItems('light', true);

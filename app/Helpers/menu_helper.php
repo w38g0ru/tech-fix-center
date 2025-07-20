@@ -55,7 +55,7 @@ if (!function_exists('renderSectionHeader')) {
      */
     function renderSectionHeader(string $sectionName, string $theme, bool $compact): string
     {
-        $marginClass = $compact ? 'mt-8 mb-3' : 'mt-10 mb-4';
+        $marginClass = $compact ? 'mt-6 mb-2' : 'mt-8 mb-3';
 
         if ($theme === 'dark') {
             $textColor = 'text-gray-500';
@@ -66,9 +66,9 @@ if (!function_exists('renderSectionHeader')) {
         return <<<HTML
                 <!-- {$sectionName} Section -->
                 <div class="{$marginClass}">
-                    <div class="px-6 mb-4">
+                    <div class="px-6 mb-2">
                         <h3 class="text-xs font-semibold {$textColor} uppercase tracking-wider">{$sectionName}</h3>
-                        <div class="mt-2 h-px bg-gray-200"></div>
+                        <div class="mt-1 h-px bg-gray-200"></div>
                     </div>
 
 HTML;
@@ -114,9 +114,9 @@ if (!function_exists('renderLightMenuItem')) {
         return <<<HTML
                 <!-- {$name} -->
                 <a href="{$url}"
-                   class="nav-link flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 {$activeClass} mb-2 mx-2 rounded-lg"
+                   class="nav-link flex items-center px-4 py-2 text-sm font-medium transition-all duration-200 {$activeClass} mb-1 mx-2 rounded-md"
                    title="{$name}">
-                    <i class="{$icon} w-5 h-5 mr-4 flex-shrink-0"></i>
+                    <i class="{$icon} w-4 h-4 mr-3 flex-shrink-0"></i>
                     <span class="nav-text">{$name}</span>
                 </a>
 
@@ -139,9 +139,9 @@ if (!function_exists('renderDarkMenuItem')) {
         return <<<HTML
                 <!-- {$name} -->
                 <a href="{$url}"
-                   class="nav-link flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 {$activeClass} mb-2 mx-2 rounded-lg"
+                   class="nav-link flex items-center px-4 py-2 text-sm font-medium transition-all duration-200 {$activeClass} mb-1 mx-2 rounded-md"
                    title="{$name}">
-                    <i class="{$icon} w-5 h-5 mr-4 flex-shrink-0"></i>
+                    <i class="{$icon} w-4 h-4 mr-3 flex-shrink-0"></i>
                     <span class="nav-text">{$name}</span>
                 </a>
 
