@@ -15,7 +15,7 @@ if (!function_exists('log_activity')) {
     {
         try {
             $model = new UserActivityLogModel();
-            
+
             $data = [
                 'user_id' => $userId,
                 'activity_type' => $type,
@@ -23,11 +23,25 @@ if (!function_exists('log_activity')) {
                 'ip_address' => service('request')->getIPAddress(),
                 'user_agent' => service('request')->getUserAgent()->getAgentString(),
             ];
-            
-            return $model->insert($data) !== false;
+
+            // Debug logging
+            log_message('debug', 'Attempting to log activity: ' . json_encode($data));
+
+            $result = $model->insert($data);
+
+            if ($result === false) {
+                $errors = $model->errors();
+                log_message('error', 'Activity logging validation errors: ' . json_encode($errors));
+                return false;
+            }
+
+            log_message('debug', 'Activity logged successfully with ID: ' . $result);
+            return true;
+
         } catch (\Exception $e) {
             // Log the error but don't break the application
             log_message('error', 'Failed to log user activity: ' . $e->getMessage());
+            log_message('error', 'Stack trace: ' . $e->getTraceAsString());
             return false;
         }
     }

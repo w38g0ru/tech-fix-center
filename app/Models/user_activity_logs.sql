@@ -1,7 +1,10 @@
 -- User Activity Logs Table
 -- This table stores user activity logs for login, logout, and data post activities
 
-CREATE TABLE user_activity_logs (
+-- Drop table if exists (for clean reinstall)
+-- DROP TABLE IF EXISTS user_activity_logs;
+
+CREATE TABLE IF NOT EXISTS user_activity_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     activity_type ENUM('login','logout','post') NOT NULL,
@@ -12,8 +15,9 @@ CREATE TABLE user_activity_logs (
     INDEX idx_user_id (user_id),
     INDEX idx_activity_type (activity_type),
     INDEX idx_created_at (created_at),
-    INDEX idx_user_activity (user_id, activity_type),
-    FOREIGN KEY (user_id) REFERENCES admin_users(id) ON DELETE CASCADE
+    INDEX idx_user_activity (user_id, activity_type)
+    -- Note: Foreign key constraint removed to avoid issues if admin_users table structure differs
+    -- Add this back if needed: FOREIGN KEY (user_id) REFERENCES admin_users(id) ON DELETE CASCADE
 );
 
 -- Sample data for testing (optional)

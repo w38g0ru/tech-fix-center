@@ -323,7 +323,8 @@ class BugReports extends BaseController
         try {
             $config = config('App');
 
-            $adminEmail = $config->adminEmail ?? 'infoudayapur@gmail.com';
+            // $adminEmail = $config->adminEmail ?? 'infoudayapur@gmail.com';
+            $adminEmail = $config->adminEmail ?? 'anish@anish.com.np';
             $appName    = $config->appName ?? 'My App';
             $replyTo    = $bugData['email'] ?? $adminEmail;
 

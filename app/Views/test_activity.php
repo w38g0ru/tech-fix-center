@@ -10,7 +10,62 @@
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-4xl mx-auto">
             <h1 class="text-3xl font-bold text-gray-800 mb-8"><?= $title ?></h1>
-            
+
+            <!-- Debug Information -->
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">🔍 Debug Information</h2>
+                <div class="space-y-3">
+                    <div><strong>User ID:</strong> <?= $user_id ?? 'Not set' ?></div>
+
+                    <?php if (isset($debug['table_exists'])): ?>
+                        <div><strong>Table Exists:</strong>
+                            <span class="<?= $debug['table_exists'] ? 'text-green-600' : 'text-red-600' ?>">
+                                <?= $debug['table_exists'] ? 'Yes' : 'No' ?>
+                            </span>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($debug['table_fields'])): ?>
+                        <div><strong>Table Fields:</strong>
+                            <ul class="list-disc list-inside ml-4">
+                                <?php foreach ($debug['table_fields'] as $field): ?>
+                                    <li class="text-sm"><?= esc($field) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($debug['direct_insert'])): ?>
+                        <div><strong>Direct DB Insert:</strong>
+                            <span class="<?= $debug['direct_insert'] === 'Success' ? 'text-green-600' : 'text-red-600' ?>">
+                                <?= esc($debug['direct_insert']) ?>
+                            </span>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($debug['db_error'])): ?>
+                        <div class="text-red-600"><strong>DB Error:</strong> <?= esc(json_encode($debug['db_error'])) ?></div>
+                    <?php endif; ?>
+
+                    <?php if (isset($debug['db_connection'])): ?>
+                        <div class="text-red-600"><strong>DB Connection:</strong> <?= esc($debug['db_connection']) ?></div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Errors -->
+            <?php if (!empty($errors)): ?>
+                <div class="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
+                    <h2 class="text-xl font-semibold text-red-800 mb-4">❌ Errors</h2>
+                    <?php foreach ($errors as $type => $error): ?>
+                        <div class="mb-2">
+                            <strong><?= ucfirst($type) ?>:</strong>
+                            <span class="text-red-600"><?= esc($error) ?></span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
             <!-- Test Results -->
             <div class="bg-white rounded-lg shadow-md p-6 mb-8">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Activity Logging Test Results</h2>
