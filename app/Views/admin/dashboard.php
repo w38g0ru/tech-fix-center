@@ -155,9 +155,9 @@
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h3>
             <div class="space-y-3">
-                <a href="<?= base_url('admin/users/create') ?>" 
-                   class="flex items-center p-3 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors duration-200 group">
-                    <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center mr-3">
+                <a href="<?= base_url('admin/users/create') ?>"
+                   class="flex items-center p-3 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors duration-200 group">
+                    <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
                         <i class="fas fa-user-plus text-white text-sm"></i>
                     </div>
                     <div>
@@ -166,9 +166,9 @@
                     </div>
                 </a>
                 
-                <a href="<?= base_url('admin/products/create') ?>" 
-                   class="flex items-center p-3 bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-colors duration-200 group">
-                    <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center mr-3">
+                <a href="<?= base_url('admin/products/create') ?>"
+                   class="flex items-center p-3 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors duration-200 group">
+                    <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
                         <i class="fas fa-plus text-white text-sm"></i>
                     </div>
                     <div>

@@ -244,21 +244,21 @@
             </a>
 
             <a href="<?= base_url('dashboard/users/create') ?>"
-               class="group flex flex-col items-center justify-center p-6 bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-xl border border-green-200 hover:border-green-300 transition-all duration-200 hover:shadow-lg hover:shadow-green-500/25">
-                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200 shadow-lg shadow-green-500/25">
+               class="group flex flex-col items-center justify-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-xl border border-blue-200 hover:border-blue-300 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200 shadow-lg shadow-blue-500/25">
                     <i class="fas fa-user-plus text-white text-lg"></i>
                 </div>
-                <span class="font-semibold text-green-900 text-center">Add Customer</span>
-                <span class="text-xs text-green-600 mt-1">New customer</span>
+                <span class="font-semibold text-blue-900 text-center">Add Customer</span>
+                <span class="text-xs text-blue-600 mt-1">New customer</span>
             </a>
 
             <a href="<?= base_url('dashboard/inventory/create') ?>"
-               class="group flex flex-col items-center justify-center p-6 bg-gradient-to-br from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 rounded-xl border border-orange-200 hover:border-orange-300 transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/25">
-                <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200 shadow-lg shadow-orange-500/25">
+               class="group flex flex-col items-center justify-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-xl border border-blue-200 hover:border-blue-300 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200 shadow-lg shadow-blue-500/25">
                     <i class="fas fa-box text-white text-lg"></i>
                 </div>
-                <span class="font-semibold text-orange-900 text-center">Add Item</span>
-                <span class="text-xs text-orange-600 mt-1">Inventory item</span>
+                <span class="font-semibold text-blue-900 text-center">Add Item</span>
+                <span class="text-xs text-blue-600 mt-1">Inventory item</span>
             </a>
 
             <a href="<?= base_url('dashboard/reports') ?>"

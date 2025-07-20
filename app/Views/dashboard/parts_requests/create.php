@@ -121,11 +121,11 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-paper-plane"></i> Submit Request
+                            <button type="submit" class="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                <i class="fas fa-paper-plane mr-2"></i>Submit Request
                             </button>
-                            <a href="/parts-requests" class="btn btn-secondary">
-                                <i class="fas fa-times"></i> Cancel
+                            <a href="/parts-requests" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                <i class="fas fa-times mr-2"></i>Cancel
                             </a>
                         </div>
                     </form>

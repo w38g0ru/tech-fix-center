@@ -89,11 +89,11 @@ $pageTitle = $title ?? 'Dashboard';
         <!-- Sidebar -->
         <div class="sidebar fixed top-0 left-0 -translate-x-full lg:translate-x-0 w-60 h-full bg-gray-900 shadow-xl z-50 transition-transform duration-300 overflow-y-auto" id="sidebar">
             <!-- Logo -->
-            <div class="text-white p-4 flex items-center border-b border-gray-800">
-                <div class="logo-text">
-                    <h1 class="text-lg font-semibold"><?= $config->appShortName ?></h1>
-                </div>
-            </div>
+            <header class="flex items-center justify-center p-4 border-b border-gray-800 bg-gray-800 text-white">
+                <h1 class="text-xl font-bold tracking-wide">
+                    <?= htmlspecialchars($config->appShortName) ?>
+                </h1>
+            </header>
 
             <!-- Navigation -->
             <nav class="py-6">

@@ -147,6 +147,10 @@ $routes->group('dashboard', function($routes) {
     $routes->get('profile', 'Dashboard::profile');
     $routes->get('settings', 'Dashboard::settings');
 
+    // Test Activity Logging Routes (for development/testing)
+    $routes->get('test-activity', 'TestActivity::index');
+    $routes->post('test-activity/post', 'TestActivity::testPost');
+
 
 
 

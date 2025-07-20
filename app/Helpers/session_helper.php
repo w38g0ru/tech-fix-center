@@ -110,7 +110,7 @@ if (!function_exists('clearSecureSession')) {
 
         // Destroy session
         session()->destroy();
-        
+
         // Clear any remember me cookies
         if (isset($_COOKIE['remember_token'])) {
             setcookie('remember_token', '', time() - 3600, '/', '', true, true);

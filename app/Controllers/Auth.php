@@ -167,6 +167,10 @@ class Auth extends BaseController
                 // Log successful login
                 log_message('info', "Successful login for user ID: {$user['id']}, email: {$email}");
 
+                // Log user activity
+                helper('activity');
+                log_login_activity($user['id'], "Successful login from IP: {$clientIP}");
+
                 // Determine redirect URL
                 $redirectUrl = $this->getRedirectUrl($user['role']);
 
@@ -211,6 +215,16 @@ class Auth extends BaseController
     {
         // Load auth helper
         helper('auth');
+        helper('activity');
+
+        // Get user ID before clearing session
+        $userId = getUserId();
+        $clientIP = $this->request->getIPAddress();
+
+        // Log logout activity before clearing session
+        if ($userId) {
+            log_logout_activity($userId, "User logged out from IP: {$clientIP}");
+        }
 
         // Use secure session helper for cleanup
         clearSecureSession();
@@ -538,6 +552,11 @@ class Auth extends BaseController
                 'last_login' => date('Y-m-d H:i:s'),
                 'google_id' => $userInfo['id'] // Store Google ID for future reference
             ]);
+
+            // Log Google OAuth login activity
+            helper('activity');
+            $clientIP = $this->request->getIPAddress();
+            log_login_activity($user['id'], "Successful Google OAuth login from IP: {$clientIP}");
 
             // Redirect to intended URL or dashboard
             $redirectUrl = session()->get('redirect_url') ?? $this->getRedirectUrl($user['role']);

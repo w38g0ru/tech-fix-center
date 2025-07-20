@@ -199,6 +199,12 @@ if (!function_exists('clearSecureSession')) {
 
         if ($userId) {
             log_message('info', "User logout: ID {$userId}, Username: {$username}");
+
+            // Log user activity if helper is available
+            if (function_exists('log_logout_activity')) {
+                helper('activity');
+                log_logout_activity($userId, "Session cleared - user logged out");
+            }
         }
 
         // Clear any remember me cookies if they exist

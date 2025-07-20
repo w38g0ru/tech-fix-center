@@ -8,8 +8,8 @@
         <p class="mt-1 text-sm text-gray-600">Manage items sent to external service centers</p>
     </div>
     <div class="mt-4 sm:mt-0">
-        <a href="<?= base_url('dashboard/referred/create') ?>" 
-           class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:bg-primary-700 active:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
+        <a href="<?= base_url('dashboard/referred/create') ?>"
+           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
             <i class="fas fa-plus mr-2"></i>
             Create Dispatch
         </a>
