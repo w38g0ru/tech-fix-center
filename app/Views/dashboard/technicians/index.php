@@ -60,6 +60,9 @@
                         Role
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Job Statistics
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -83,7 +86,10 @@
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900">
-                                            <?= esc($technician['name']) ?>
+                                            <?= esc($technician['full_name']) ?>
+                                        </div>
+                                        <div class="text-sm text-gray-500">
+                                            @<?= esc($technician['username']) ?>
                                         </div>
                                     </div>
                                 </div>
@@ -99,25 +105,39 @@
                                             </a>
                                         </div>
                                     <?php endif; ?>
-                                    <?php if (!empty($technician['contact_number'])): ?>
+                                    <?php if (!empty($technician['phone'])): ?>
                                         <div class="flex items-center">
                                             <i class="fas fa-phone text-gray-400 mr-2"></i>
-                                            <a href="tel:<?= esc($technician['contact_number']) ?>"
+                                            <a href="tel:<?= esc($technician['phone']) ?>"
                                                class="text-primary-600 hover:text-primary-700">
-                                                <?= esc($technician['contact_number']) ?>
+                                                <?= esc($technician['phone']) ?>
                                             </a>
                                         </div>
                                     <?php endif; ?>
-                                    <?php if (empty($technician['email']) && empty($technician['contact_number'])): ?>
+                                    <?php if (empty($technician['email']) && empty($technician['phone'])): ?>
                                         <span class="text-gray-400">No contact info</span>
                                     <?php endif; ?>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <?php helper('auth'); ?>
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?= getRoleColor($technician['role'] ?? 'technician') ?>">
-                                    <i class="<?= getRoleIcon($technician['role'] ?? 'technician') ?> mr-1"></i>
-                                    <?= ucfirst($technician['role'] ?? 'technician') ?>
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?= getRoleColor('technician') ?>">
+                                    <i class="<?= getRoleIcon('technician') ?> mr-1"></i>
+                                    Technician
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <?php
+                                $statusConfig = match($technician['status']) {
+                                    'active' => ['bg-green-100 text-green-800', 'fas fa-check-circle', 'Active'],
+                                    'inactive' => ['bg-gray-100 text-gray-800', 'fas fa-pause-circle', 'Inactive'],
+                                    'suspended' => ['bg-red-100 text-red-800', 'fas fa-ban', 'Suspended'],
+                                    default => ['bg-gray-100 text-gray-800', 'fas fa-question-circle', 'Unknown']
+                                };
+                                ?>
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?= $statusConfig[0] ?>">
+                                    <i class="<?= $statusConfig[1] ?> mr-1"></i>
+                                    <?= $statusConfig[2] ?>
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">

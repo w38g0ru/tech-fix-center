@@ -108,10 +108,10 @@ class JobModel extends Model
     public function getJobsWithDetails($perPage = null)
     {
         $builder = $this->select('jobs.*, users.name as customer_name, users.mobile_number,
-                            technicians.name as technician_name, technicians.contact_number as technician_contact,
+                            admin_users.full_name as technician_name, admin_users.phone as technician_contact,
                             service_centers.name as service_center_name')
                     ->join('users', 'users.id = jobs.user_id', 'left')
-                    ->join('technicians', 'technicians.id = jobs.technician_id', 'left')
+                    ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
                     ->orderBy('jobs.created_at', 'DESC');
 
@@ -128,10 +128,10 @@ class JobModel extends Model
     public function getJobWithDetails($id)
     {
         return $this->select('jobs.*, users.name as customer_name, users.mobile_number, users.user_type,
-                            technicians.name as technician_name, technicians.contact_number as technician_contact,
+                            admin_users.full_name as technician_name, admin_users.phone as technician_contact,
                             service_centers.name as service_center_name, service_centers.contact_person as service_center_contact')
                     ->join('users', 'users.id = jobs.user_id', 'left')
-                    ->join('technicians', 'technicians.id = jobs.technician_id', 'left')
+                    ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
                     ->where('jobs.id', $id)
                     ->first();

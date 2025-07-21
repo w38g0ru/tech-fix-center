@@ -3,19 +3,19 @@
 namespace App\Controllers;
 
 use App\Models\PartsRequestModel;
-use App\Models\TechnicianModel;
+use App\Models\AdminUserModel;
 use App\Models\JobModel;
 
 class PartsRequests extends BaseController
 {
     protected $partsRequestModel;
-    protected $technicianModel;
+    protected $adminUserModel;
     protected $jobModel;
 
     public function __construct()
     {
         $this->partsRequestModel = new PartsRequestModel();
-        $this->technicianModel = new TechnicianModel();
+        $this->adminUserModel = new AdminUserModel();
         $this->jobModel = new JobModel();
         
         // Load auth helper
@@ -87,7 +87,7 @@ class PartsRequests extends BaseController
 
         $data = [
             'title' => 'Create Parts Request',
-            'technicians' => $this->technicianModel->findAll(),
+            'technicians' => $this->adminUserModel->getTechnicians(),
             'jobs' => $this->jobModel->getJobsWithDetails(),
             'urgencyLevels' => $this->partsRequestModel->getUrgencyLevels()
         ];
@@ -211,7 +211,7 @@ class PartsRequests extends BaseController
         $data = [
             'title' => 'Edit Parts Request',
             'partsRequest' => $partsRequest,
-            'technicians' => $this->technicianModel->findAll(),
+            'technicians' => $this->adminUserModel->getTechnicians(),
             'jobs' => $this->jobModel->getJobsWithDetails(),
             'urgencyLevels' => $this->partsRequestModel->getUrgencyLevels(),
             'userRole' => $userRole

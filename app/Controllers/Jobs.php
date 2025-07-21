@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\JobModel;
 use App\Models\UserModel;
-use App\Models\TechnicianModel;
+use App\Models\AdminUserModel;
 use App\Models\PhotoModel;
 use App\Models\ServiceCenterModel;
 
@@ -12,7 +12,7 @@ class Jobs extends BaseController
 {
     protected $jobModel;
     protected $userModel;
-    protected $technicianModel;
+    protected $adminUserModel;
     protected $photoModel;
     protected $serviceCenterModel;
 
@@ -20,7 +20,7 @@ class Jobs extends BaseController
     {
         $this->jobModel = new JobModel();
         $this->userModel = new UserModel();
-        $this->technicianModel = new TechnicianModel();
+        $this->adminUserModel = new AdminUserModel();
         $this->photoModel = new PhotoModel();
         $this->serviceCenterModel = new ServiceCenterModel();
 
@@ -64,7 +64,7 @@ class Jobs extends BaseController
         $data = [
             'title' => 'Create New Job',
             'users' => $this->userModel->findAll(),
-            'technicians' => $this->technicianModel->getAvailableTechnicians(),
+            'technicians' => $this->adminUserModel->getAvailableTechnicians(),
             'serviceCenters' => $this->serviceCenterModel->getActiveServiceCenters(),
             'jobStatuses' => $this->jobModel->getJobStatuses(),
             'dispatchTypes' => $this->jobModel->getDispatchTypes()
@@ -228,7 +228,7 @@ class Jobs extends BaseController
             'title' => 'Edit Job',
             'job' => $job,
             'users' => $this->userModel->findAll(),
-            'technicians' => $this->technicianModel->getAvailableTechnicians(),
+            'technicians' => $this->adminUserModel->getAvailableTechnicians(),
             'serviceCenters' => $this->serviceCenterModel->getActiveServiceCenters(),
             'jobStatuses' => $this->jobModel->getJobStatuses(),
             'dispatchTypes' => $this->jobModel->getDispatchTypes()

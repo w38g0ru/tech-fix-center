@@ -27,7 +27,7 @@
                 <input type="text" 
                        id="name" 
                        name="name" 
-                       value="<?= old('name', $technician['name']) ?>"
+                       value="<?= old('name', $technician['full_name']) ?>"
                        required
                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.name') ? 'border-red-500' : '' ?>">
                 <?php if (session('errors.name')): ?>
@@ -60,7 +60,7 @@
                 <input type="tel" 
                        id="contact_number" 
                        name="contact_number" 
-                       value="<?= old('contact_number', $technician['contact_number']) ?>"
+                       value="<?= old('contact_number', $technician['phone']) ?>"
                        placeholder="Enter contact number"
                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.contact_number') ? 'border-red-500' : '' ?>">
                 <?php if (session('errors.contact_number')): ?>
@@ -69,33 +69,56 @@
                 <p class="mt-1 text-sm text-gray-500">Optional - Technician's contact number</p>
             </div>
 
-            <!-- Role -->
+            <!-- Username -->
             <div>
-                <label for="role" class="block text-sm font-medium text-gray-700 mb-2">
-                    Role <span class="text-red-500">*</span>
+                <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                    Username <span class="text-red-500">*</span>
                 </label>
-                <select id="role"
-                        name="role"
-                        required
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.role') ? 'border-red-500' : '' ?>">
-                    <option value="">Select role</option>
-                    <?php helper('auth'); ?>
-                    <?php if (hasRole('superadmin')): ?>
-                        <option value="superadmin" <?= old('role', $technician['role']) === 'superadmin' ? 'selected' : '' ?>>Super Admin</option>
-                    <?php endif; ?>
-                    <option value="admin" <?= old('role', $technician['role']) === 'admin' ? 'selected' : '' ?>>Admin</option>
-                    <option value="technician" <?= old('role', $technician['role']) === 'technician' ? 'selected' : '' ?>>Technician</option>
-                    <option value="user" <?= old('role', $technician['role']) === 'user' ? 'selected' : '' ?>>User</option>
-                </select>
-                <?php if (session('errors.role')): ?>
-                    <p class="mt-1 text-sm text-red-600"><?= session('errors.role') ?></p>
+                <input type="text"
+                       id="username"
+                       name="username"
+                       value="<?= old('username', $technician['username']) ?>"
+                       required
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.username') ? 'border-red-500' : '' ?>">
+                <?php if (session('errors.username')): ?>
+                    <p class="mt-1 text-sm text-red-600"><?= session('errors.username') ?></p>
                 <?php endif; ?>
-                <p class="mt-1 text-sm text-gray-500">
-                    <strong>Super Admin:</strong> Full system access<br>
-                    <strong>Admin:</strong> Can manage users, jobs, and technicians<br>
-                    <strong>Technician:</strong> Can manage jobs and inventory<br>
-                    <strong>User:</strong> Limited access
-                </p>
+                <p class="mt-1 text-sm text-gray-500">Username for login access</p>
+            </div>
+
+            <!-- Status -->
+            <div>
+                <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+                    Status <span class="text-red-500">*</span>
+                </label>
+                <select id="status"
+                        name="status"
+                        required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.status') ? 'border-red-500' : '' ?>">
+                    <option value="active" <?= old('status', $technician['status']) === 'active' ? 'selected' : '' ?>>Active</option>
+                    <option value="inactive" <?= old('status', $technician['status']) === 'inactive' ? 'selected' : '' ?>>Inactive</option>
+                    <option value="suspended" <?= old('status', $technician['status']) === 'suspended' ? 'selected' : '' ?>>Suspended</option>
+                </select>
+                <?php if (session('errors.status')): ?>
+                    <p class="mt-1 text-sm text-red-600"><?= session('errors.status') ?></p>
+                <?php endif; ?>
+                <p class="mt-1 text-sm text-gray-500">Current status of the technician account</p>
+            </div>
+
+            <!-- Password -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                    New Password
+                </label>
+                <input type="password"
+                       id="password"
+                       name="password"
+                       placeholder="Leave blank to keep current password"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.password') ? 'border-red-500' : '' ?>">
+                <?php if (session('errors.password')): ?>
+                    <p class="mt-1 text-sm text-red-600"><?= session('errors.password') ?></p>
+                <?php endif; ?>
+                <p class="mt-1 text-sm text-gray-500">Leave blank to keep current password</p>
             </div>
 
             <!-- Technician Info -->

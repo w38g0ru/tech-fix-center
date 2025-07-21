@@ -125,11 +125,11 @@ class PartsRequestModel extends Model
     public function getPartsRequestsWithDetails($perPage = null)
     {
         $builder = $this->select('parts_requests.*,
-                            technicians.name as technician_name,
+                            technicians.full_name as technician_name,
                             jobs.device_name as job_device,
                             requester.username as requested_by_name,
                             approver.username as approved_by_name')
-                    ->join('technicians', 'technicians.id = parts_requests.technician_id', 'left')
+                    ->join('admin_users as technicians', 'technicians.id = parts_requests.technician_id AND technicians.role = "technician"', 'left')
                     ->join('jobs', 'jobs.id = parts_requests.job_id', 'left')
                     ->join('admin_users as requester', 'requester.id = parts_requests.requested_by', 'left')
                     ->join('admin_users as approver', 'approver.id = parts_requests.approved_by', 'left')
@@ -165,7 +165,7 @@ class PartsRequestModel extends Model
      */
     public function getPartsRequestsByTechnician($technicianId)
     {
-        return $this->select('parts_requests.*, 
+        return $this->select('parts_requests.*,
                             jobs.device_name as job_device,
                             requester.username as requested_by_name,
                             approver.username as approved_by_name')

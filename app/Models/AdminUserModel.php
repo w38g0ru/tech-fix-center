@@ -87,57 +87,6 @@ class AdminUserModel extends Model
         ]
     ];
 
-    // Callbacks
-    protected $beforeInsert = ['hashPassword'];
-    protected $beforeUpdate = ['hashPassword'];
-
-    // Dates
-    protected $useTimestamps = true;
-    protected $dateFormat = 'datetime';
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
-
-    // Validation
-    protected $validationRules = [
-        'username' => 'required|min_length[3]|max_length[50]|is_unique[admin_users.username,id,{id}]',
-        'email' => 'required|valid_email|is_unique[admin_users.email,id,{id}]',
-        'full_name' => 'required|min_length[2]|max_length[100]',
-        'password' => 'required|min_length[6]',
-        'role' => 'required|in_list[superadmin,admin,technician,user]',
-        'status' => 'permit_empty|in_list[active,inactive,suspended]'
-    ];
-
-    protected $validationMessages = [
-        'username' => [
-            'required' => 'Username is required',
-            'min_length' => 'Username must be at least 3 characters',
-            'max_length' => 'Username cannot exceed 50 characters',
-            'is_unique' => 'Username already exists'
-        ],
-        'email' => [
-            'required' => 'Email is required',
-            'valid_email' => 'Please enter a valid email address',
-            'is_unique' => 'Email already exists'
-        ],
-        'full_name' => [
-            'required' => 'Full name is required',
-            'min_length' => 'Full name must be at least 2 characters',
-            'max_length' => 'Full name cannot exceed 100 characters'
-        ],
-        'password' => [
-            'required' => 'Password is required',
-            'min_length' => 'Password must be at least 6 characters'
-        ],
-        'role' => [
-            'required' => 'Role is required',
-            'in_list' => 'Invalid role selected'
-        ],
-        'status' => [
-            'required' => 'Status is required',
-            'in_list' => 'Invalid status selected'
-        ]
-    ];
-
     /**
      * Hash password before saving
      */
@@ -345,13 +294,13 @@ class AdminUserModel extends Model
     }
 
     /**
-     * Get users by role
+     * Get technicians only (users with role = 'technician')
      */
-    public function getUsersByRole($role, $perPage = null)
+    public function getTechnicians($perPage = null)
     {
-        $builder = $this->where('role', $role)
-                    ->where('status', 'active')
-                    ->orderBy('name', 'ASC');
+        $builder = $this->where('role', 'technician')
+                        ->where('status', 'active')
+                        ->orderBy('full_name', 'ASC');
 
         if ($perPage !== null) {
             return $builder->paginate($perPage);
@@ -361,14 +310,17 @@ class AdminUserModel extends Model
     }
 
     /**
-     * Search users
+     * Get available technicians (with least pending jobs)
      */
-    public function searchUsers($search, $perPage = null)
+    public function getAvailableTechnicians($perPage = null)
     {
-        $builder = $this->like('name', $search)
-                    ->orLike('email', $search)
-                    ->orLike('mobile_number', $search)
-                    ->orderBy('created_at', 'DESC');
+        $builder = $this->select('admin_users.*, COUNT(CASE WHEN jobs.status IN ("Pending", "In Progress") THEN 1 END) as active_jobs')
+                        ->join('jobs', 'jobs.technician_id = admin_users.id', 'left')
+                        ->where('admin_users.role', 'technician')
+                        ->where('admin_users.status', 'active')
+                        ->groupBy('admin_users.id')
+                        ->orderBy('active_jobs', 'ASC')
+                        ->orderBy('admin_users.full_name', 'ASC');
 
         if ($perPage !== null) {
             return $builder->paginate($perPage);
@@ -378,64 +330,92 @@ class AdminUserModel extends Model
     }
 
     /**
-     * Get user statistics
+     * Get technician statistics
      */
-    public function getUserStats()
+    public function getTechnicianStats()
     {
-        $stats = [
-            'total' => $this->countAll(),
-            'active' => $this->where('status', 'active')->countAllResults(false),
-            'inactive' => $this->where('status', 'inactive')->countAllResults(false),
-            'superadmin' => $this->where('role', 'superadmin')->countAllResults(false),
-            'admin' => $this->where('role', 'admin')->countAllResults(false),
-            'manager' => $this->where('role', 'manager')->countAllResults(false),
-            'technician' => $this->where('role', 'technician')->countAllResults(false),
-            'customer' => $this->where('role', 'customer')->countAllResults(false)
+        $total = $this->where('role', 'technician')->countAllResults(false);
+        $active = $this->where('role', 'technician')
+                       ->where('status', 'active')
+                       ->countAllResults(false);
+        $inactive = $this->where('role', 'technician')
+                         ->where('status', 'inactive')
+                         ->countAllResults(false);
+
+        return [
+            'total' => $total,
+            'active' => $active,
+            'inactive' => $inactive
         ];
-
-        return $stats;
     }
 
     /**
-     * Check if email exists
+     * Search technicians
      */
-    public function emailExists($email, $excludeId = null)
+    public function searchTechnicians($search, $perPage = null)
     {
-        $builder = $this->where('email', $email);
-        if ($excludeId) {
-            $builder->where('id !=', $excludeId);
-        }
-        return $builder->countAllResults() > 0;
-    }
+        $builder = $this->where('role', 'technician')
+                        ->groupStart()
+                        ->like('full_name', $search)
+                        ->orLike('email', $search)
+                        ->orLike('username', $search)
+                        ->orLike('phone', $search)
+                        ->groupEnd()
+                        ->orderBy('full_name', 'ASC');
 
-    /**
-     * Get recent users
-     */
-    public function getRecentUsers($limit = 10)
-    {
-        return $this->orderBy('created_at', 'DESC')
-                    ->limit($limit)
-                    ->findAll();
-    }
-
-    /**
-     * Update user status
-     */
-    public function updateStatus($id, $status)
-    {
-        if (!in_array($status, ['active', 'inactive'])) {
-            return false;
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
         }
 
-        return $this->update($id, ['status' => $status]);
+        return $builder->findAll();
     }
 
     /**
-     * Change user password
+     * Create technician user (convenience method)
      */
-    public function changePassword($id, $newPassword)
+    public function createTechnician($data)
     {
-        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        return $this->update($id, ['password' => $hashedPassword]);
+        // Ensure role is set to technician
+        $data['role'] = 'technician';
+
+        // Set default status if not provided
+        if (!isset($data['status'])) {
+            $data['status'] = 'active';
+        }
+
+        // Generate username from full_name if not provided
+        if (!isset($data['username']) && isset($data['full_name'])) {
+            $data['username'] = $this->generateUsernameFromName($data['full_name']);
+        }
+
+        // Generate default password if not provided
+        if (!isset($data['password'])) {
+            $data['password'] = 'technician123'; // Default password
+        }
+
+        return $this->insert($data);
+    }
+
+    /**
+     * Generate username from full name
+     */
+    private function generateUsernameFromName($fullName)
+    {
+        // Convert to lowercase and replace spaces with underscores
+        $username = strtolower(str_replace(' ', '_', $fullName));
+
+        // Remove special characters except underscores
+        $username = preg_replace('/[^a-z0-9_]/', '', $username);
+
+        // Check if username exists and add number if needed
+        $originalUsername = $username;
+        $counter = 1;
+
+        while ($this->where('username', $username)->first()) {
+            $username = $originalUsername . '_' . $counter;
+            $counter++;
+        }
+
+        return $username;
     }
 }
