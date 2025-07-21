@@ -76,12 +76,23 @@ class Reports extends BaseController
                                         ->where('created_at <=', $endDate . ' 23:59:59')
                                         ->countAllResults();
 
+        // Get recent activity (last 7 days)
+        $recentStartDate = date('Y-m-d', strtotime('-7 days'));
+        $recentJobs = $this->jobModel->where('created_at >=', $recentStartDate)
+                                    ->countAllResults();
+
+        $recentCompleted = $this->jobModel->where('status', 'Completed')
+                                         ->where('created_at >=', $recentStartDate)
+                                         ->countAllResults();
+
         return [
             'total' => $totalJobs,
             'completed' => $completedJobs,
             'pending' => $pendingJobs,
             'in_progress' => $inProgressJobs,
-            'completion_rate' => $totalJobs > 0 ? round(($completedJobs / $totalJobs) * 100, 1) : 0
+            'completion_rate' => $totalJobs > 0 ? round(($completedJobs / $totalJobs) * 100, 1) : 0,
+            'recent_jobs' => $recentJobs,
+            'recent_completed' => $recentCompleted
         ];
     }
 
@@ -95,10 +106,16 @@ class Reports extends BaseController
 
         $registeredCustomers = $this->userModel->where('user_type', 'Registered')->countAllResults();
 
+        // Get recent new customers (last 7 days)
+        $recentStartDate = date('Y-m-d', strtotime('-7 days'));
+        $recentNewCustomers = $this->userModel->where('created_at >=', $recentStartDate)
+                                             ->countAllResults();
+
         return [
             'total' => $totalCustomers,
             'new' => $newCustomers,
-            'active' => $registeredCustomers
+            'active' => $registeredCustomers,
+            'recent_new' => $recentNewCustomers
         ];
     }
 
@@ -148,10 +165,20 @@ class Reports extends BaseController
         $completedJobs = $revenueData['completed_jobs'] ?? 0;
         $averageJobValue = $completedJobs > 0 ? $totalRevenue / $completedJobs : 0;
 
+        // Get recent revenue (last 7 days)
+        $recentStartDate = date('Y-m-d', strtotime('-7 days'));
+        $recentRevenueData = $this->jobModel->select('SUM(charge) as recent_revenue')
+                                           ->where('status', 'Completed')
+                                           ->where('created_at >=', $recentStartDate)
+                                           ->first();
+
+        $recentRevenue = $recentRevenueData['recent_revenue'] ?? 0;
+
         return [
             'total_revenue' => $totalRevenue,
             'completed_jobs' => $completedJobs,
-            'average_job_value' => $averageJobValue
+            'average_job_value' => $averageJobValue,
+            'recent_revenue' => $recentRevenue
         ];
     }
 

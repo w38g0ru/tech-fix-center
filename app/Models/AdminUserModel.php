@@ -345,8 +345,29 @@ class AdminUserModel extends Model
         return [
             'total' => $total,
             'active' => $active,
-            'inactive' => $inactive
+            'inactive' => $inactive,
+            'performance' => $this->getTechnicianPerformance()
         ];
+    }
+
+    /**
+     * Get technician performance data
+     */
+    public function getTechnicianPerformance($limit = 10)
+    {
+        $jobModel = new \App\Models\JobModel();
+
+        return $this->select('admin_users.id, admin_users.full_name as name,
+                             COUNT(jobs.id) as completed_jobs,
+                             COALESCE(SUM(jobs.charge), 0) as total_revenue')
+                    ->join('jobs', 'jobs.technician_id = admin_users.id', 'left')
+                    ->where('admin_users.role', 'technician')
+                    ->where('admin_users.status', 'active')
+                    ->groupBy('admin_users.id, admin_users.full_name')
+                    ->orderBy('completed_jobs', 'DESC')
+                    ->orderBy('total_revenue', 'DESC')
+                    ->limit($limit)
+                    ->findAll();
     }
 
     /**
