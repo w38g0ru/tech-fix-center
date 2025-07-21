@@ -152,18 +152,8 @@ class MenuConfig
                         'icon' => 'fas fa-users-cog',
                         'color' => 'text-purple-600',
                         'subtitle' => 'Manage All Users & Roles',
-                        'active_check' => ['user-management'],
+                        'active_check' => ['user-management', 'technicians'],
                         'gradient' => 'from-purple-500 to-purple-600',
-                        'access_level' => 'admin'
-                    ],
-                    [
-                        'name' => 'Technicians',
-                        'url' => 'dashboard/technicians',
-                        'icon' => 'fas fa-user-cog',
-                        'color' => 'text-green-600',
-                        'subtitle' => 'View Technician Details',
-                        'active_check' => ['technicians'],
-                        'gradient' => 'from-green-500 to-green-600',
                         'access_level' => 'admin'
                     ],
                     [
