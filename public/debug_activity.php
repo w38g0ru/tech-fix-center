@@ -2,15 +2,31 @@
 // Simple debug script for user activity logging
 // Access this directly at: http://tfc.local/debug_activity.php
 
-// Load CodeIgniter
-require_once '../vendor/autoload.php';
+// Simple database connection without full CodeIgniter bootstrap
+$dbConfig = [
+    'hostname' => 'localhost',
+    'username' => 'root',  // Change this to your DB username
+    'password' => '',      // Change this to your DB password
+    'database' => 'tech_fix_center', // Change this to your DB name
+    'port'     => 3306,
+];
 
-$pathsConfig = require_once '../app/Config/Paths.php';
-$paths = new \Config\Paths();
-
-// Bootstrap CodeIgniter
-$app = new \CodeIgniter\CodeIgniter($paths);
-$app->initialize();
+// Try to get config from CodeIgniter if possible
+if (file_exists('../app/Config/Database.php')) {
+    require_once '../app/Config/Database.php';
+    if (class_exists('Config\Database')) {
+        $config = new \Config\Database();
+        if (isset($config->default)) {
+            $dbConfig = [
+                'hostname' => $config->default['hostname'],
+                'username' => $config->default['username'],
+                'password' => $config->default['password'],
+                'database' => $config->default['database'],
+                'port'     => $config->default['port'] ?? 3306,
+            ];
+        }
+    }
+}
 
 echo "<h1>User Activity Logging Debug</h1>";
 echo "<style>
@@ -25,39 +41,51 @@ button:hover { background: #005a87; }
 </style>";
 
 try {
-    // Test database connection
-    $db = \Config\Database::connect();
+    // Test database connection using PDO
+    $dsn = "mysql:host={$dbConfig['hostname']};port={$dbConfig['port']};dbname={$dbConfig['database']};charset=utf8mb4";
+    $pdo = new PDO($dsn, $dbConfig['username'], $dbConfig['password'], [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+
     echo "<div class='section'>";
     echo "<h2>1. Database Connection</h2>";
     echo "<span class='success'>✓ Database connected successfully</span><br>";
+    echo "<span class='info'>Database: {$dbConfig['database']} on {$dbConfig['hostname']}</span><br>";
     
     // Check if table exists
     echo "<h2>2. Table Check</h2>";
-    $tableExists = $db->tableExists('user_activity_logs');
-    
+
+    $stmt = $pdo->prepare("SHOW TABLES LIKE 'user_activity_logs'");
+    $stmt->execute();
+    $tableExists = $stmt->rowCount() > 0;
+
     if ($tableExists) {
         echo "<span class='success'>✓ Table 'user_activity_logs' exists</span><br>";
-        
+
         // Show table structure
-        $fields = $db->getFieldData('user_activity_logs');
+        $stmt = $pdo->prepare("DESCRIBE user_activity_logs");
+        $stmt->execute();
+        $fields = $stmt->fetchAll();
+
         echo "<h3>Table Structure:</h3>";
         echo "<ul>";
         foreach ($fields as $field) {
-            echo "<li>{$field->name} ({$field->type})</li>";
+            echo "<li>{$field['Field']} ({$field['Type']})</li>";
         }
         echo "</ul>";
-        
+
         // Check for required fields
-        $fieldNames = array_map(function($field) { return $field->name; }, $fields);
+        $fieldNames = array_column($fields, 'Field');
         $requiredFields = ['id', 'user_id', 'activity_type', 'details', 'ip_address', 'user_agent', 'created_at'];
         $missingFields = array_diff($requiredFields, $fieldNames);
-        
+
         if (empty($missingFields)) {
             echo "<span class='success'>✓ All required fields present</span><br>";
         } else {
             echo "<span class='error'>✗ Missing fields: " . implode(', ', $missingFields) . "</span><br>";
         }
-        
+
     } else {
         echo "<span class='error'>✗ Table 'user_activity_logs' does not exist</span><br>";
     }
@@ -66,26 +94,22 @@ try {
     // Test direct insert
     echo "<div class='section'>";
     echo "<h2>3. Direct Database Insert Test</h2>";
-    
+
     if ($tableExists) {
         try {
-            $testData = [
-                'user_id' => 1,
-                'activity_type' => 'login',
-                'details' => 'Direct insert test',
-                'ip_address' => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
-                'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'Test Agent'
-            ];
-            
-            $builder = $db->table('user_activity_logs');
-            $result = $builder->insert($testData);
-            
+            $stmt = $pdo->prepare("INSERT INTO user_activity_logs (user_id, activity_type, details, ip_address, user_agent) VALUES (?, ?, ?, ?, ?)");
+            $result = $stmt->execute([
+                1, // user_id
+                'login', // activity_type
+                'Direct PDO insert test',
+                $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
+                $_SERVER['HTTP_USER_AGENT'] ?? 'Test Agent'
+            ]);
+
             if ($result) {
-                echo "<span class='success'>✓ Direct insert successful (ID: " . $db->insertID() . ")</span><br>";
+                echo "<span class='success'>✓ Direct insert successful (ID: " . $pdo->lastInsertId() . ")</span><br>";
             } else {
                 echo "<span class='error'>✗ Direct insert failed</span><br>";
-                $error = $db->error();
-                echo "<pre>Error: " . print_r($error, true) . "</pre>";
             }
         } catch (Exception $e) {
             echo "<span class='error'>✗ Direct insert error: " . $e->getMessage() . "</span><br>";
@@ -98,12 +122,13 @@ try {
     // Show recent logs
     echo "<div class='section'>";
     echo "<h2>4. Recent Activity Logs</h2>";
-    
+
     if ($tableExists) {
         try {
-            $query = $db->query("SELECT * FROM user_activity_logs ORDER BY created_at DESC LIMIT 5");
-            $logs = $query->getResultArray();
-            
+            $stmt = $pdo->prepare("SELECT * FROM user_activity_logs ORDER BY created_at DESC LIMIT 5");
+            $stmt->execute();
+            $logs = $stmt->fetchAll();
+
             if (!empty($logs)) {
                 echo "<table border='1' cellpadding='5' cellspacing='0'>";
                 echo "<tr><th>ID</th><th>User ID</th><th>Type</th><th>Details</th><th>IP</th><th>Created</th></tr>";
@@ -137,13 +162,11 @@ try {
 if (isset($_GET['create_table'])) {
     echo "<div class='section'>";
     echo "<h2>Creating Table...</h2>";
-    
+
     try {
-        $db = \Config\Database::connect();
-        
         // Drop existing table
-        $db->query('DROP TABLE IF EXISTS user_activity_logs');
-        
+        $pdo->exec('DROP TABLE IF EXISTS user_activity_logs');
+
         // Create new table
         $sql = "CREATE TABLE user_activity_logs (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -158,11 +181,11 @@ if (isset($_GET['create_table'])) {
             INDEX idx_created_at (created_at),
             INDEX idx_user_activity (user_id, activity_type)
         )";
-        
-        $db->query($sql);
+
+        $pdo->exec($sql);
         echo "<span class='success'>✓ Table created successfully!</span><br>";
         echo "<a href='debug_activity.php'>Refresh page to test</a>";
-        
+
     } catch (Exception $e) {
         echo "<span class='error'>✗ Failed to create table: " . $e->getMessage() . "</span><br>";
     }

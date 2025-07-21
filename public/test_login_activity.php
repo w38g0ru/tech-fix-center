@@ -2,12 +2,17 @@
 // Test login activity logging
 // Access this at: http://tfc.local/test_login_activity.php
 
+// Bootstrap CodeIgniter properly
+define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
+define('SYSTEMPATH', realpath(dirname(__FILE__) . '/../vendor/codeigniter4/framework/system') . DIRECTORY_SEPARATOR);
+define('APPPATH', realpath(dirname(__FILE__) . '/../app') . DIRECTORY_SEPARATOR);
+define('WRITEPATH', realpath(dirname(__FILE__) . '/../writable') . DIRECTORY_SEPARATOR);
+define('ROOTPATH', realpath(FCPATH . '../') . DIRECTORY_SEPARATOR);
+
 require_once '../vendor/autoload.php';
 
-$pathsConfig = require_once '../app/Config/Paths.php';
-$paths = new \Config\Paths();
-
-$app = new \CodeIgniter\CodeIgniter($paths);
+// Load CodeIgniter
+$app = \Config\Services::codeigniter();
 $app->initialize();
 
 echo "<h1>Test Login Activity Logging</h1>";
