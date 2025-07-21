@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
-use App\Models\TechnicianModel;
+use App\Models\AdminUserModel;
 use App\Models\JobModel;
 use App\Models\InventoryItemModel;
 use App\Models\InventoryMovementModel;
@@ -11,7 +11,7 @@ use App\Models\InventoryMovementModel;
 class Dashboard extends BaseController
 {
     protected $userModel;
-    protected $technicianModel;
+    protected $adminUserModel;
     protected $jobModel;
     protected $inventoryModel;
     protected $movementModel;
@@ -19,7 +19,7 @@ class Dashboard extends BaseController
     public function __construct()
     {
         $this->userModel = new UserModel();
-        $this->technicianModel = new TechnicianModel();
+        $this->adminUserModel = new AdminUserModel();
         $this->jobModel = new JobModel();
         $this->inventoryModel = new InventoryItemModel();
         $this->movementModel = new InventoryMovementModel();
@@ -39,7 +39,7 @@ class Dashboard extends BaseController
             'userStats' => $this->userModel->getUserStats(),
             'jobStats' => $this->jobModel->getJobStats(),
             'inventoryStats' => $this->inventoryModel->getInventoryStats(),
-            'technicianStats' => $this->technicianModel->getTechnicianStats(),
+            'technicianStats' => $this->adminUserModel->getTechnicianStats(),
             'recentJobs' => $this->jobModel->getRecentJobs(5),
             'recentMovements' => $this->movementModel->getRecentMovements(5),
             'lowStockItems' => $this->inventoryModel->getLowStockItems(5, 10)
@@ -192,9 +192,9 @@ class Dashboard extends BaseController
         $search = $this->request->getGet('search');
         
         if ($search) {
-            $technicians = $this->technicianModel->searchTechnicians($search);
+            $technicians = $this->adminUserModel->searchTechnicians($search);
         } else {
-            $technicians = $this->technicianModel->getTechniciansWithJobCount();
+            $technicians = $this->adminUserModel->getAvailableTechnicians();
         }
 
         $data = [
@@ -250,7 +250,7 @@ class Dashboard extends BaseController
             'role' => $this->request->getPost('role')
         ];
 
-        if ($this->technicianModel->insert($data)) {
+        if ($this->adminUserModel->createTechnician($data)) {
             return redirect()->to('/dashboard/technicians')->with('success', 'Technician added successfully!');
         } else {
             return redirect()->back()->withInput()->with('error', 'Failed to add technician.');
@@ -259,7 +259,7 @@ class Dashboard extends BaseController
 
     public function editTechnician($id)
     {
-        $technician = $this->technicianModel->find($id);
+        $technician = $this->adminUserModel->where('role', 'technician')->find($id);
         
         if (!$technician) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Technician not found');
@@ -275,7 +275,7 @@ class Dashboard extends BaseController
 
     public function updateTechnician($id)
     {
-        $technician = $this->technicianModel->find($id);
+        $technician = $this->adminUserModel->where('role', 'technician')->find($id);
         
         if (!$technician) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Technician not found');
@@ -295,7 +295,7 @@ class Dashboard extends BaseController
             'contact_number' => $this->request->getPost('contact_number')
         ];
 
-        if ($this->technicianModel->update($id, $data)) {
+        if ($this->adminUserModel->update($id, $data)) {
             return redirect()->to('/dashboard/technicians')->with('success', 'Technician updated successfully!');
         } else {
             return redirect()->back()->withInput()->with('error', 'Failed to update technician.');
@@ -304,13 +304,13 @@ class Dashboard extends BaseController
 
     public function deleteTechnician($id)
     {
-        $technician = $this->technicianModel->find($id);
-        
+        $technician = $this->adminUserModel->where('role', 'technician')->find($id);
+
         if (!$technician) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Technician not found');
         }
 
-        if ($this->technicianModel->delete($id)) {
+        if ($this->adminUserModel->delete($id)) {
             return redirect()->to('/dashboard/technicians')->with('success', 'Technician deleted successfully!');
         } else {
             return redirect()->to('/dashboard/technicians')->with('error', 'Failed to delete technician.');
