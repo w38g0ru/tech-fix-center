@@ -71,6 +71,8 @@ $routes->group('dashboard', function($routes) {
     $routes->get('parts-requests/create', 'PartsRequests::create');
     $routes->post('parts-requests/store', 'PartsRequests::store');
     $routes->get('parts-requests/view/(:num)', 'PartsRequests::view/$1');
+    $routes->get('parts-requests/edit/(:num)', 'PartsRequests::edit/$1');
+    $routes->post('parts-requests/update/(:num)', 'PartsRequests::update/$1');
     $routes->post('parts-requests/approve/(:num)', 'PartsRequests::approve/$1');
     $routes->post('parts-requests/reject/(:num)', 'PartsRequests::reject/$1');
     $routes->post('parts-requests/update-status/(:num)', 'PartsRequests::updateStatus/$1');

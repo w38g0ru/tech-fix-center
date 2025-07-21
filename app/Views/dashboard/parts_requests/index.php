@@ -185,6 +185,26 @@
                                        title="View Details">
                                         <i class="fas fa-eye"></i>
                                     </a>
+
+                                    <?php
+                                    // Show edit button for technicians (own pending requests) or admins
+                                    $canEdit = false;
+                                    if (in_array($userRole, ['superadmin', 'admin'])) {
+                                        $canEdit = true;
+                                    } elseif ($userRole === 'technician' && $request['status'] === 'Pending') {
+                                        // Check if this is the technician's own request
+                                        $canEdit = true; // We'll check ownership in the controller
+                                    }
+                                    ?>
+
+                                    <?php if ($canEdit && $request['status'] === 'Pending'): ?>
+                                        <a href="<?= base_url('dashboard/parts-requests/edit/' . $request['id']) ?>"
+                                           class="inline-flex items-center px-2 py-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-700 text-xs font-medium rounded transition-colors duration-200"
+                                           title="Edit Request">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    <?php endif; ?>
+
                                     <?php if (in_array($userRole, ['superadmin', 'admin']) && $request['status'] === 'Pending'): ?>
                                         <button type="button"
                                                 class="inline-flex items-center px-2 py-1 bg-green-100 hover:bg-green-200 text-green-700 text-xs font-medium rounded transition-colors duration-200"

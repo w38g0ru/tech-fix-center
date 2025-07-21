@@ -8,7 +8,26 @@
         <h1 class="text-2xl font-bold text-gray-900">Parts Request #<?= $partsRequest['id'] ?></h1>
         <p class="mt-1 text-sm text-gray-600">View detailed information about this parts request</p>
     </div>
-    <div class="mt-4 sm:mt-0">
+    <div class="mt-4 sm:mt-0 flex space-x-3">
+        <?php
+        // Show edit button for technicians (own pending requests) or admins
+        $canEdit = false;
+        if (in_array($userRole, ['superadmin', 'admin'])) {
+            $canEdit = true;
+        } elseif ($userRole === 'technician' && $partsRequest['status'] === 'Pending') {
+            // Check if this is the technician's own request (will be validated in controller)
+            $canEdit = true;
+        }
+        ?>
+
+        <?php if ($canEdit && $partsRequest['status'] === 'Pending'): ?>
+            <a href="<?= base_url('dashboard/parts-requests/edit/' . $partsRequest['id']) ?>"
+               class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
+                <i class="fas fa-edit mr-2"></i>
+                Edit Request
+            </a>
+        <?php endif; ?>
+
         <a href="<?= base_url('dashboard/parts-requests') ?>"
            class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
             <i class="fas fa-arrow-left mr-2"></i>
