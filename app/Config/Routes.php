@@ -113,14 +113,9 @@ $routes->group('dashboard', function($routes) {
     $routes->get('service-centers/delete/(:num)', 'ServiceCenters::delete/$1');
     $routes->get('service-centers/search', 'ServiceCenters::search');
 
-    // Technicians Routes
+    // Technicians Routes (View Only - Create/Edit via User Management)
     $routes->get('technicians', 'Technicians::index');
-    $routes->get('technicians/create', 'Technicians::create');
-    $routes->post('technicians/store', 'Technicians::store');
     $routes->get('technicians/view/(:num)', 'Technicians::view/$1');
-    $routes->get('technicians/edit/(:num)', 'Technicians::edit/$1');
-    $routes->post('technicians/update/(:num)', 'Technicians::update/$1');
-    $routes->get('technicians/delete/(:num)', 'Technicians::delete/$1');
 
     // User Management Routes
     $routes->get('user-management', 'UserManagement::index');

@@ -5,16 +5,19 @@
 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
     <div>
         <h1 class="text-2xl font-semibold text-gray-900">Technicians</h1>
-        <p class="mt-1 text-sm text-gray-600">Manage your repair shop technicians</p>
+        <p class="mt-1 text-sm text-gray-600">View and manage technician accounts</p>
     </div>
     <div class="mt-4 sm:mt-0">
         <?php helper('auth'); ?>
         <?php if (canCreateTechnician()): ?>
-            <a href="<?= base_url('dashboard/technicians/create') ?>"
-               class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                <i class="fas fa-plus mr-2"></i>
-                Add Technician
-            </a>
+            <div class="flex items-center space-x-3">
+                <div class="text-sm text-gray-600 bg-blue-50 px-4 py-2 rounded-lg border border-blue-200">
+                    <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                    To add new technicians, use
+                    <a href="<?= base_url('dashboard/user-management/create') ?>"
+                       class="text-blue-600 hover:text-blue-800 font-medium underline">User Management</a>
+                </div>
+            </div>
         <?php endif; ?>
     </div>
 </div>
@@ -220,17 +223,16 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex items-center justify-end space-x-2">
-                                    <?php if (canEditTechnician()): ?>
-                                        <a href="<?= base_url('dashboard/technicians/edit/' . $technician['id']) ?>"
-                                           class="text-primary-600 hover:text-primary-900 p-1 rounded-full hover:bg-primary-50">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    <?php endif; ?>
+                                    <a href="<?= base_url('dashboard/technicians/view/' . $technician['id']) ?>"
+                                       class="text-blue-600 hover:text-blue-900 p-1 rounded-full hover:bg-blue-50"
+                                       title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                     <?php if (canCreateTechnician()): ?>
-                                        <a href="<?= base_url('dashboard/technicians/delete/' . $technician['id']) ?>"
-                                           onclick="return confirm('Are you sure you want to delete this technician?')"
-                                           class="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-50">
-                                            <i class="fas fa-trash"></i>
+                                        <a href="<?= base_url('dashboard/user-management/edit/' . $technician['id']) ?>"
+                                           class="text-primary-600 hover:text-primary-900 p-1 rounded-full hover:bg-primary-50"
+                                           title="Edit in User Management">
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                     <?php endif; ?>
                                 </div>
