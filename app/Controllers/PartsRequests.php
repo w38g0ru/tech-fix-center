@@ -407,9 +407,11 @@ class PartsRequests extends BaseController
 
     private function getTechnicianIdByUserId($userId)
     {
-        // Get technician ID from admin_users relationship
-        $db = \Config\Database::connect();
-        $result = $db->query("SELECT id FROM technicians WHERE admin_user_id = ?", [$userId])->getRow();
-        return $result ? $result->id : null;
+        // Since technicians are now in admin_users table, just return the user ID
+        // if the user has technician role
+        $adminUser = $this->adminUserModel->where('id', $userId)
+                                          ->where('role', 'technician')
+                                          ->first();
+        return $adminUser ? $adminUser['id'] : null;
     }
 }

@@ -143,14 +143,14 @@ class JobModel extends Model
     public function searchJobs($search, $perPage = null)
     {
         $builder = $this->select('jobs.*, users.name as customer_name, users.mobile_number,
-                            technicians.name as technician_name')
+                            admin_users.full_name as technician_name')
                     ->join('users', 'users.id = jobs.user_id', 'left')
-                    ->join('technicians', 'technicians.id = jobs.technician_id', 'left')
+                    ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->groupStart()
                         ->like('jobs.device_name', $search)
                         ->orLike('jobs.serial_number', $search)
                         ->orLike('users.name', $search)
-                        ->orLike('technicians.name', $search)
+                        ->orLike('admin_users.full_name', $search)
                     ->groupEnd()
                     ->orderBy('jobs.created_at', 'DESC');
 
@@ -167,9 +167,9 @@ class JobModel extends Model
     public function getJobsByStatus($status, $perPage = null)
     {
         $builder = $this->select('jobs.*, users.name as customer_name, users.mobile_number,
-                            technicians.name as technician_name')
+                            admin_users.full_name as technician_name')
                     ->join('users', 'users.id = jobs.user_id', 'left')
-                    ->join('technicians', 'technicians.id = jobs.technician_id', 'left')
+                    ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->where('jobs.status', $status)
                     ->orderBy('jobs.created_at', 'DESC');
 
@@ -211,9 +211,9 @@ class JobModel extends Model
      */
     public function getRecentJobs($limit = 10)
     {
-        return $this->select('jobs.*, users.name as customer_name, technicians.name as technician_name')
+        return $this->select('jobs.*, users.name as customer_name, admin_users.full_name as technician_name')
                     ->join('users', 'users.id = jobs.user_id', 'left')
-                    ->join('technicians', 'technicians.id = jobs.technician_id', 'left')
+                    ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->orderBy('jobs.created_at', 'DESC')
                     ->limit($limit)
                     ->findAll();
@@ -239,9 +239,9 @@ class JobModel extends Model
     public function getJobsByDispatchType($dispatchType)
     {
         return $this->select('jobs.*, users.name as customer_name, users.mobile_number,
-                            technicians.name as technician_name, service_centers.name as service_center_name')
+                            admin_users.full_name as technician_name, service_centers.name as service_center_name')
                     ->join('users', 'users.id = jobs.user_id', 'left')
-                    ->join('technicians', 'technicians.id = jobs.technician_id', 'left')
+                    ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
                     ->where('jobs.dispatch_type', $dispatchType)
                     ->orderBy('jobs.created_at', 'DESC')
@@ -254,9 +254,9 @@ class JobModel extends Model
     public function getJobsAtServiceCenters()
     {
         return $this->select('jobs.*, users.name as customer_name, users.mobile_number,
-                            technicians.name as technician_name, service_centers.name as service_center_name')
+                            admin_users.full_name as technician_name, service_centers.name as service_center_name')
                     ->join('users', 'users.id = jobs.user_id', 'left')
-                    ->join('technicians', 'technicians.id = jobs.technician_id', 'left')
+                    ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
                     ->where('jobs.status', 'Referred to Service Center')
                     ->orderBy('jobs.dispatch_date', 'DESC')
@@ -269,9 +269,9 @@ class JobModel extends Model
     public function getOverdueJobsFromServiceCenters()
     {
         return $this->select('jobs.*, users.name as customer_name, users.mobile_number,
-                            technicians.name as technician_name, service_centers.name as service_center_name')
+                            admin_users.full_name as technician_name, service_centers.name as service_center_name')
                     ->join('users', 'users.id = jobs.user_id', 'left')
-                    ->join('technicians', 'technicians.id = jobs.technician_id', 'left')
+                    ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
                     ->where('jobs.status', 'Referred to Service Center')
                     ->where('jobs.expected_return_date <', date('Y-m-d'))

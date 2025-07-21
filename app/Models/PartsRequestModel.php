@@ -147,12 +147,12 @@ class PartsRequestModel extends Model
      */
     public function getPartsRequestWithDetails($id)
     {
-        return $this->select('parts_requests.*, 
-                            technicians.name as technician_name,
+        return $this->select('parts_requests.*,
+                            admin_users.full_name as technician_name,
                             jobs.device_name as job_device,
                             requester.username as requested_by_name,
                             approver.username as approved_by_name')
-                    ->join('technicians', 'technicians.id = parts_requests.technician_id', 'left')
+                    ->join('admin_users', 'admin_users.id = parts_requests.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('jobs', 'jobs.id = parts_requests.job_id', 'left')
                     ->join('admin_users as requester', 'requester.id = parts_requests.requested_by', 'left')
                     ->join('admin_users as approver', 'approver.id = parts_requests.approved_by', 'left')
@@ -182,11 +182,11 @@ class PartsRequestModel extends Model
      */
     public function getPendingPartsRequests()
     {
-        return $this->select('parts_requests.*, 
-                            technicians.name as technician_name,
+        return $this->select('parts_requests.*,
+                            admin_users.full_name as technician_name,
                             jobs.device_name as job_device,
                             requester.username as requested_by_name')
-                    ->join('technicians', 'technicians.id = parts_requests.technician_id', 'left')
+                    ->join('admin_users', 'admin_users.id = parts_requests.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('jobs', 'jobs.id = parts_requests.job_id', 'left')
                     ->join('admin_users as requester', 'requester.id = parts_requests.requested_by', 'left')
                     ->where('parts_requests.status', 'Pending')

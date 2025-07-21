@@ -177,7 +177,7 @@ class PhotoModel extends Model
                              jobs.problem as job_problem,
                              users.name as customer_name,
                              users.mobile_number as customer_phone,
-                             technicians.name as technician_name,
+                             admin_users.full_name as technician_name,
                              referred.customer_name as referred_customer,
                              referred.device_name as referred_device,
                              referred.status as referred_status,
@@ -185,7 +185,7 @@ class PhotoModel extends Model
                              referred.referred_to')
                     ->join('jobs', 'jobs.id = photos.job_id', 'left')
                     ->join('users', 'users.id = jobs.user_id', 'left')
-                    ->join('technicians', 'technicians.id = jobs.technician_id', 'left')
+                    ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('referred', 'referred.id = photos.referred_id', 'left')
                     ->where('photos.id', $id)
                     ->first();
