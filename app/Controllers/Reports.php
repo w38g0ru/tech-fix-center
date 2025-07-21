@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\JobModel;
 use App\Models\UserModel;
 use App\Models\InventoryItemModel;
-use App\Models\TechnicianModel;
+use App\Models\AdminUserModel;
 use App\Models\InventoryMovementModel;
 
 class Reports extends BaseController
@@ -13,7 +13,7 @@ class Reports extends BaseController
     protected $jobModel;
     protected $userModel;
     protected $inventoryModel;
-    protected $technicianModel;
+    protected $adminUserModel;
     protected $movementModel;
 
     public function __construct()
@@ -21,7 +21,7 @@ class Reports extends BaseController
         $this->jobModel = new JobModel();
         $this->userModel = new UserModel();
         $this->inventoryModel = new InventoryItemModel();
-        $this->technicianModel = new TechnicianModel();
+        $this->adminUserModel = new AdminUserModel();
         $this->movementModel = new InventoryMovementModel();
 
         // Load auth helper
@@ -119,7 +119,7 @@ class Reports extends BaseController
 
     private function getTechnicianStats($startDate, $endDate)
     {
-        $totalTechnicians = $this->technicianModel->countAllResults();
+        $totalTechnicians = $this->adminUserModel->where('role', 'technician')->countAllResults();
         
         // Get technician performance (jobs completed)
         $technicianPerformance = $this->jobModel->select('technician_id, COUNT(*) as jobs_completed')
