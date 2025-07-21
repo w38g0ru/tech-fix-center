@@ -209,12 +209,12 @@
                                     <?= $index + 1 ?>
                                 </div>
                                 <div>
-                                    <p class="font-medium text-gray-900"><?= esc($tech['name']) ?></p>
-                                    <p class="text-sm text-gray-500"><?= $tech['completed_jobs'] ?> jobs completed</p>
+                                    <p class="font-medium text-gray-900"><?= esc($tech['name'] ?? $tech['full_name'] ?? 'Unknown Technician') ?></p>
+                                    <p class="text-sm text-gray-500"><?= $tech['completed_jobs'] ?? 0 ?> jobs completed</p>
                                 </div>
                             </div>
                             <div class="text-right">
-                                <p class="text-lg font-bold text-green-600">Rs. <?= number_format($tech['total_revenue'], 0) ?></p>
+                                <p class="text-lg font-bold text-green-600">Rs. <?= number_format($tech['total_revenue'] ?? 0, 0) ?></p>
                                 <p class="text-xs text-gray-500">Revenue</p>
                             </div>
                         </div>

@@ -355,19 +355,47 @@ class AdminUserModel extends Model
      */
     public function getTechnicianPerformance($limit = 10)
     {
-        $jobModel = new \App\Models\JobModel();
+        // Get all active technicians first
+        $technicians = $this->select('id, full_name as name')
+                           ->where('role', 'technician')
+                           ->where('status', 'active')
+                           ->findAll();
 
-        return $this->select('admin_users.id, admin_users.full_name as name,
-                             COUNT(CASE WHEN jobs.status = "Completed" THEN jobs.id END) as completed_jobs,
-                             COALESCE(SUM(CASE WHEN jobs.status = "Completed" THEN jobs.charge ELSE 0 END), 0) as total_revenue')
-                    ->join('jobs', 'jobs.technician_id = admin_users.id', 'left')
-                    ->where('admin_users.role', 'technician')
-                    ->where('admin_users.status', 'active')
-                    ->groupBy('admin_users.id, admin_users.full_name')
-                    ->orderBy('completed_jobs', 'DESC')
-                    ->orderBy('total_revenue', 'DESC')
-                    ->limit($limit)
-                    ->findAll();
+        if (empty($technicians)) {
+            return [];
+        }
+
+        // Get job statistics for each technician
+        $jobModel = new \App\Models\JobModel();
+        $performance = [];
+
+        foreach ($technicians as $technician) {
+            $completedJobs = $jobModel->where('technician_id', $technician['id'])
+                                     ->where('status', 'Completed')
+                                     ->countAllResults();
+
+            $totalRevenue = $jobModel->select('SUM(charge) as total')
+                                    ->where('technician_id', $technician['id'])
+                                    ->where('status', 'Completed')
+                                    ->first();
+
+            $performance[] = [
+                'id' => $technician['id'],
+                'name' => $technician['name'],
+                'completed_jobs' => $completedJobs,
+                'total_revenue' => $totalRevenue['total'] ?? 0
+            ];
+        }
+
+        // Sort by completed jobs and revenue
+        usort($performance, function($a, $b) {
+            if ($a['completed_jobs'] == $b['completed_jobs']) {
+                return $b['total_revenue'] <=> $a['total_revenue'];
+            }
+            return $b['completed_jobs'] <=> $a['completed_jobs'];
+        });
+
+        return array_slice($performance, 0, $limit);
     }
 
     /**
