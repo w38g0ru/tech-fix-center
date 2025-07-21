@@ -149,10 +149,5 @@ $routes->group('dashboard', function($routes) {
 
 });
 
-// Test Activity Logging Routes (for development/testing) - Outside dashboard group for easy access
-$routes->get('test-activity', 'TestActivity::index');
-$routes->post('test-activity/post', 'TestActivity::testPost');
-$routes->get('test-activity/create-table', 'TestActivity::createTable');
-
 // Include Admin Routes
 require_once APPPATH . 'Config/AdminRoutes.php';

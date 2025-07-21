@@ -41,7 +41,6 @@ function init()
     {
         if (i != 0)
         {
-            console.log(contentDivs[id]);
             contentDivs[id].className = 'content hide';
         }
         i ++;

@@ -24,9 +24,6 @@ if (!function_exists('log_activity')) {
                 'user_agent' => service('request')->getUserAgent()->getAgentString(),
             ];
 
-            // Debug logging
-            log_message('debug', 'Attempting to log activity: ' . json_encode($data));
-
             $result = $model->insert($data);
 
             if ($result === false) {
@@ -35,13 +32,11 @@ if (!function_exists('log_activity')) {
                 return false;
             }
 
-            log_message('debug', 'Activity logged successfully with ID: ' . $result);
             return true;
 
         } catch (\Exception $e) {
             // Log the error but don't break the application
             log_message('error', 'Failed to log user activity: ' . $e->getMessage());
-            log_message('error', 'Stack trace: ' . $e->getTraceAsString());
             return false;
         }
     }
