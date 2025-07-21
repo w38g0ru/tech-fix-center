@@ -2,31 +2,42 @@
 // Simple debug script for user activity logging
 // Access this directly at: http://tfc.local/debug_activity.php
 
-// Simple database connection without full CodeIgniter bootstrap
+// Database configuration - UPDATE THESE VALUES FOR YOUR SETUP
 $dbConfig = [
     'hostname' => 'localhost',
-    'username' => 'root',  // Change this to your DB username
-    'password' => '',      // Change this to your DB password
-    'database' => 'tech_fix_center', // Change this to your DB name
+    'username' => 'root',      // Your MySQL username
+    'password' => '',          // Your MySQL password
+    'database' => 'tfc',       // Your database name (likely 'tfc' or 'tech_fix_center')
     'port'     => 3306,
 ];
 
-// Try to get config from CodeIgniter if possible
-if (file_exists('../app/Config/Database.php')) {
-    require_once '../app/Config/Database.php';
-    if (class_exists('Config\Database')) {
-        $config = new \Config\Database();
-        if (isset($config->default)) {
-            $dbConfig = [
-                'hostname' => $config->default['hostname'],
-                'username' => $config->default['username'],
-                'password' => $config->default['password'],
-                'database' => $config->default['database'],
-                'port'     => $config->default['port'] ?? 3306,
-            ];
+// Try to read database config from .env file
+if (file_exists('../.env')) {
+    $envContent = file_get_contents('../.env');
+    $envLines = explode("\n", $envContent);
+
+    foreach ($envLines as $line) {
+        $line = trim($line);
+        if (empty($line) || strpos($line, '#') === 0) continue;
+
+        if (strpos($line, 'database.default.hostname') !== false) {
+            $dbConfig['hostname'] = trim(explode('=', $line, 2)[1]);
+        } elseif (strpos($line, 'database.default.username') !== false) {
+            $dbConfig['username'] = trim(explode('=', $line, 2)[1]);
+        } elseif (strpos($line, 'database.default.password') !== false) {
+            $dbConfig['password'] = trim(explode('=', $line, 2)[1]);
+        } elseif (strpos($line, 'database.default.database') !== false) {
+            $dbConfig['database'] = trim(explode('=', $line, 2)[1]);
+        } elseif (strpos($line, 'database.default.port') !== false) {
+            $dbConfig['port'] = (int)trim(explode('=', $line, 2)[1]);
         }
     }
 }
+
+// If you know your exact database details, update the values above
+// Common database names: 'tfc', 'tech_fix_center', 'techfixcenter'
+// Common usernames: 'root', 'tfc_user', your custom username
+// Password: usually empty for local development, or your custom password
 
 echo "<h1>User Activity Logging Debug</h1>";
 echo "<style>
@@ -39,6 +50,20 @@ pre { background: #f5f5f5; padding: 10px; border-radius: 3px; overflow-x: auto; 
 button { background: #007cba; color: white; padding: 10px 15px; border: none; border-radius: 3px; cursor: pointer; }
 button:hover { background: #005a87; }
 </style>";
+
+// Show detected database config
+echo "<div class='section'>";
+echo "<h2>0. Database Configuration</h2>";
+echo "<span class='info'>Detected database config:</span><br>";
+echo "<ul>";
+echo "<li>Host: {$dbConfig['hostname']}</li>";
+echo "<li>Username: {$dbConfig['username']}</li>";
+echo "<li>Password: " . (empty($dbConfig['password']) ? '(empty)' : '***') . "</li>";
+echo "<li>Database: {$dbConfig['database']}</li>";
+echo "<li>Port: {$dbConfig['port']}</li>";
+echo "</ul>";
+echo "<span class='info'>If these values are wrong, edit the \$dbConfig array at the top of this script.</span>";
+echo "</div>";
 
 try {
     // Test database connection using PDO
