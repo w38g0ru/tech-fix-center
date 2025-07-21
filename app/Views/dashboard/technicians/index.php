@@ -19,30 +19,88 @@
     </div>
 </div>
 
-<!-- Search Bar -->
-<div class="mb-6">
-    <form method="GET" action="<?= base_url('dashboard/technicians') ?>" class="flex flex-col sm:flex-row gap-4">
-        <div class="flex-1">
-            <input type="text" 
-                   name="search" 
-                   value="<?= esc($search ?? '') ?>"
-                   placeholder="Search technicians by name, email, or contact number..."
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+<!-- Technician Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-users text-white text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $technicianStats['total'] ?></h3>
+                <p class="text-sm font-medium text-gray-600">Total Technicians</p>
+            </div>
         </div>
-        <div class="flex gap-2">
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-green-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-user-check text-white text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $technicianStats['active'] ?></h3>
+                <p class="text-sm font-medium text-gray-600">Active Technicians</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+        <div class="flex items-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-orange-500/25 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-user-times text-white text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $technicianStats['inactive'] ?></h3>
+                <p class="text-sm font-medium text-gray-600">Inactive Technicians</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Bar -->
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+    <form method="GET" action="<?= base_url('dashboard/technicians') ?>" class="flex flex-col lg:flex-row gap-4">
+        <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Search Technicians</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400"></i>
+                </div>
+                <input type="text"
+                       name="search"
+                       value="<?= esc($search ?? '') ?>"
+                       placeholder="Search by name, email, username, or phone..."
+                       class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+            </div>
+        </div>
+        <div class="flex items-end gap-3">
             <button type="submit"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    class="px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors duration-200 flex items-center">
                 <i class="fas fa-search mr-2"></i>Search
             </button>
             <?php if (!empty($search)): ?>
-                <a href="<?= base_url('dashboard/technicians') ?>" 
-                   class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                <a href="<?= base_url('dashboard/technicians') ?>"
+                   class="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors duration-200 flex items-center">
                     <i class="fas fa-times mr-2"></i>Clear
                 </a>
             <?php endif; ?>
         </div>
     </form>
 </div>
+
+<!-- Results Count -->
+<?php if (!empty($search)): ?>
+    <div class="mb-4">
+        <p class="text-sm text-gray-600">
+            <i class="fas fa-search mr-1"></i>
+            Search results for "<strong><?= esc($search) ?></strong>"
+            <?php if (isset($pager)): ?>
+                - Showing <?= count($technicians) ?> technician(s)
+            <?php endif; ?>
+        </p>
+    </div>
+<?php endif; ?>
 
 <!-- Technicians Table -->
 <div class="bg-white shadow overflow-hidden sm:rounded-md">
