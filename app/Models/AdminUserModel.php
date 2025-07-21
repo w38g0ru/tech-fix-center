@@ -358,8 +358,8 @@ class AdminUserModel extends Model
         $jobModel = new \App\Models\JobModel();
 
         return $this->select('admin_users.id, admin_users.full_name as name,
-                             COUNT(jobs.id) as completed_jobs,
-                             COALESCE(SUM(jobs.charge), 0) as total_revenue')
+                             COUNT(CASE WHEN jobs.status = "Completed" THEN jobs.id END) as completed_jobs,
+                             COALESCE(SUM(CASE WHEN jobs.status = "Completed" THEN jobs.charge ELSE 0 END), 0) as total_revenue')
                     ->join('jobs', 'jobs.technician_id = admin_users.id', 'left')
                     ->where('admin_users.role', 'technician')
                     ->where('admin_users.status', 'active')
