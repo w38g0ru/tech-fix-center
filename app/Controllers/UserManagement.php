@@ -59,9 +59,14 @@ class UserManagement extends BaseController
 
     public function create()
     {
+        // Check if user is logged in first
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login')->with('error', 'Please log in to access this page.');
+        }
+
         // Check if user can create users (admin or superadmin only)
         if (!canCreateTechnician()) {
-            return redirect()->to('/dashboard')->with('error', 'You do not have permission to create users.');
+            return redirect()->to('/dashboard')->with('error', 'You do not have permission to create users. Only admins and superadmins can create users.');
         }
 
         $data = ['title' => 'Create New User'];
