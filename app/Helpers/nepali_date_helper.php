@@ -1,6 +1,7 @@
 <?php
 
 use Dipesh\NepaliDate\NepaliDate;
+use Dipesh\NepaliDate\lang\Nepali;
 
 if (!function_exists('toNepaliDate')) {
     /**
@@ -17,11 +18,14 @@ if (!function_exists('toNepaliDate')) {
         }
 
         try {
-            // Create NepaliDate instance from English date
-            $nepaliDate = NepaliDate::fromEnglishDate($englishDate);
-            
+            // Create NepaliDate instance from English date with Nepali language
+            $nepaliDate = NepaliDate::fromADDate($englishDate);
+
+            // Create new instance with Nepali language for Devanagari output
+            $nepaliDateWithLang = new NepaliDate($nepaliDate->format('Y-m-d'), new Nepali());
+
             // Return formatted Nepali date
-            return $nepaliDate->format($format);
+            return $nepaliDateWithLang->format($format);
         } catch (Exception $e) {
             // Return original date if conversion fails
             return $englishDate;
@@ -50,13 +54,14 @@ if (!function_exists('toNepaliDateTime')) {
             $time = $dateTime->format('H:i:s');
             
             // Convert date part to Nepali
-            $nepaliDate = NepaliDate::fromEnglishDate($englishDate);
-            
+            $nepaliDate = NepaliDate::fromADDate($englishDate);
+            $nepaliDateWithLang = new NepaliDate($nepaliDate->format('Y-m-d'), new Nepali());
+
             // Combine Nepali date with time
             if (strpos($format, 'H') !== false || strpos($format, 'i') !== false || strpos($format, 's') !== false) {
-                return $nepaliDate->format('Y-m-d') . ' ' . $time;
+                return $nepaliDateWithLang->format('Y-m-d') . ' ' . $time;
             } else {
-                return $nepaliDate->format($format);
+                return $nepaliDateWithLang->format($format);
             }
         } catch (Exception $e) {
             // Return original datetime if conversion fails
@@ -80,19 +85,20 @@ if (!function_exists('formatNepaliDate')) {
         }
 
         try {
-            $nepaliDate = NepaliDate::fromEnglishDate($englishDate);
-            
+            $nepaliDate = NepaliDate::fromADDate($englishDate);
+            $nepaliDateWithLang = new NepaliDate($nepaliDate->format('Y-m-d'), new Nepali());
+
             switch ($style) {
                 case 'short':
-                    return $nepaliDate->format('Y/m/d');
+                    return $nepaliDateWithLang->format('Y/m/d');
                 case 'medium':
-                    return $nepaliDate->format('Y साल M महिना d गते');
+                    return $nepaliDateWithLang->format('Y F d g');
                 case 'long':
-                    return $nepaliDate->format('Y साल M महिना d गते, l');
+                    return $nepaliDateWithLang->format('Y F d g, l');
                 case 'full':
-                    return $nepaliDate->format('l, Y साल M महिना d गते');
+                    return $nepaliDateWithLang->format('l, Y F d g');
                 default:
-                    return $nepaliDate->format('Y-m-d');
+                    return $nepaliDateWithLang->format('Y-m-d');
             }
         } catch (Exception $e) {
             return $englishDate;
@@ -119,19 +125,20 @@ if (!function_exists('formatNepaliDateTime')) {
             $englishDate = $dateTime->format('Y-m-d');
             $time = $dateTime->format('g:i A'); // 12-hour format with AM/PM
             
-            $nepaliDate = NepaliDate::fromEnglishDate($englishDate);
-            
+            $nepaliDate = NepaliDate::fromADDate($englishDate);
+            $nepaliDateWithLang = new NepaliDate($nepaliDate->format('Y-m-d'), new Nepali());
+
             switch ($style) {
                 case 'short':
-                    return $nepaliDate->format('Y/m/d') . ' ' . $time;
+                    return $nepaliDateWithLang->format('Y/m/d') . ' ' . $time;
                 case 'medium':
-                    return $nepaliDate->format('Y साल M महिना d गते') . ', ' . $time;
+                    return $nepaliDateWithLang->format('Y F d g') . ', ' . $time;
                 case 'long':
-                    return $nepaliDate->format('Y साल M महिना d गते, l') . ' ' . $time;
+                    return $nepaliDateWithLang->format('Y F d g, l') . ' ' . $time;
                 case 'full':
-                    return $nepaliDate->format('l, Y साल M महिना d गते') . ' ' . $time;
+                    return $nepaliDateWithLang->format('l, Y F d g') . ' ' . $time;
                 default:
-                    return $nepaliDate->format('Y-m-d') . ' ' . $time;
+                    return $nepaliDateWithLang->format('Y-m-d') . ' ' . $time;
             }
         } catch (Exception $e) {
             return $englishDateTime;
