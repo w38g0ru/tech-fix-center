@@ -125,12 +125,12 @@
             <div class="mt-6 pt-6 border-t border-gray-200">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-500">
                     <div>
-                        <span class="font-medium">Created:</span> 
-                        <?= date('M j, Y g:i A', strtotime($item['created_at'])) ?>
+                        <span class="font-medium">सिर्जना:</span>
+                        <?= formatNepaliDateTime($item['created_at'], 'short') ?>
                     </div>
                     <div>
-                        <span class="font-medium">Last Updated:</span> 
-                        <?= date('M j, Y g:i A', strtotime($item['updated_at'])) ?>
+                        <span class="font-medium">अन्तिम अपडेट:</span>
+                        <?= formatNepaliDateTime($item['updated_at'], 'short') ?>
                     </div>
                 </div>
             </div>

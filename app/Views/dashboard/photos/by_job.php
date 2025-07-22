@@ -112,7 +112,7 @@
                                         <?= esc($photo['photo_type']) ?>
                                     </span>
                                     <span class="text-xs text-gray-300">
-                                        <?= date('M j', strtotime($photo['uploaded_at'])) ?>
+                                        <?= formatNepaliDate($photo['uploaded_at'], 'short') ?>
                                     </span>
                                 </div>
                                 

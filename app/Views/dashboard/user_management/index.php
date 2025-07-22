@@ -206,9 +206,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <?php if (!empty($user['last_login'])): ?>
-                                    <?= date('M j, Y g:i A', strtotime($user['last_login'])) ?>
+                                    <?= formatNepaliDateTime($user['last_login'], 'short') ?>
                                 <?php else: ?>
-                                    <span class="text-gray-400">Never</span>
+                                    <span class="text-gray-400">कहिल्यै नभएको</span>
                                 <?php endif; ?>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

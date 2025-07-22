@@ -198,8 +198,8 @@
                 <div class="flex items-center text-sm">
                     <i class="fas fa-plus-circle text-blue-500 mr-2"></i>
                     <div>
-                        <p class="font-medium">Created</p>
-                        <p class="text-gray-500"><?= date('M j, Y \a\t g:i A', strtotime($bugReport['created_at'])) ?></p>
+                        <p class="font-medium">सिर्जना गरिएको</p>
+                        <p class="text-gray-500"><?= formatNepaliDateTime($bugReport['created_at'], 'medium') ?></p>
                     </div>
                 </div>
             </div>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "074322a426d01ba2c06c38da12f35346",
+    "content-hash": "f1d48cf22fd0a1df4895f4b7ae760467",
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -158,6 +158,57 @@
                 }
             ],
             "time": "2024-11-12T16:29:46+00:00"
+        },
+        {
+            "name": "dipesh/nepali-date",
+            "version": "v2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pokhreldipesh/nepalidate.git",
+                "reference": "cc9534518c3c557a67eb0ff5d0f8cb66de9c924a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pokhreldipesh/nepalidate/zipball/cc9534518c3c557a67eb0ff5d0f8cb66de9c924a",
+                "reference": "cc9534518c3c557a67eb0ff5d0f8cb66de9c924a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.17",
+                "phpunit/phpunit": "^11.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dipesh\\NepaliDate\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "dipesh pokhrel",
+                    "email": "dipeshpokhrel404@gmail.com"
+                }
+            ],
+            "description": "The Nepali Date package is designed for working with the Nepali calendar. It provides functionality for converting dates between the English (AD) and Nepali (BS) calendars, along with a wide range of methods for handling and manipulating Nepali dates. This comprehensive tool facilitates seamless integration and operations within the Nepali calendar system.",
+            "keywords": [
+                "Nepali Date",
+                "date",
+                "date converter",
+                "nepali",
+                "nepali date converter"
+            ],
+            "support": {
+                "issues": "https://github.com/pokhreldipesh/nepalidate/issues",
+                "source": "https://github.com/pokhreldipesh/nepalidate/tree/v2.1.1"
+            },
+            "time": "2024-08-27T10:50:39+00:00"
         },
         {
             "name": "firebase/php-jwt",

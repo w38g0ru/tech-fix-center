@@ -344,7 +344,8 @@ class UserManagement extends BaseController
         $phoneNumbers = array_column($users, 'phone');
 
         // Step 3: Compose SMS message
-        $currentDateTime = date('l, F j, Y \a\t g:i A');
+        helper('nepali_date');
+        $currentDateTime = formatNepaliDateTime(date('Y-m-d H:i:s'), 'medium');
         $message = "Hi message from website sent on {$currentDateTime}. Sample message.";
 
         // Step 4: Send SMS to all numbers
@@ -438,7 +439,8 @@ class UserManagement extends BaseController
         }
 
         // Step 3: Compose SMS message
-        $currentDateTime = date('l, F j, Y \a\t g:i A');
+        helper('nepali_date');
+        $currentDateTime = formatNepaliDateTime(date('Y-m-d H:i:s'), 'medium');
         $message = "Hi {$user['full_name']}, message from website sent on {$currentDateTime}. Sample message.";
 
         // Step 4: Send SMS

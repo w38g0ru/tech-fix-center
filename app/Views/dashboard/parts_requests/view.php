@@ -122,8 +122,8 @@
             </div>
 
             <div class="flex flex-col sm:flex-row sm:justify-between">
-                <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Requested Date</dt>
-                <dd class="text-sm text-gray-900"><?= date('M d, Y H:i', strtotime($partsRequest['created_at'])) ?></dd>
+                <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">अनुरोध मिति</dt>
+                <dd class="text-sm text-gray-900"><?= formatNepaliDateTime($partsRequest['created_at'], 'short') ?></dd>
             </div>
 
             <?php if ($partsRequest['approved_by_name']): ?>

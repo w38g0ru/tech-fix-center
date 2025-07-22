@@ -14,7 +14,7 @@
                     <div class="mt-4 flex items-center space-x-4">
                         <div class="flex items-center text-blue-200">
                             <i class="fas fa-clock mr-2"></i>
-                            <span class="text-sm"><?= date('l, F j, Y') ?></span>
+                            <span class="text-sm"><?= formatNepaliDate(date('Y-m-d'), 'full') ?></span>
                         </div>
                         <div class="flex items-center text-blue-200">
                             <i class="fas fa-map-marker-alt mr-2"></i>
@@ -271,7 +271,7 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <?= date('M j, Y', strtotime($job['created_at'])) ?>
+                                    <?= formatNepaliDate($job['created_at'], 'short') ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

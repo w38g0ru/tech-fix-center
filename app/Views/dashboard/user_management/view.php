@@ -111,9 +111,9 @@
                     <label class="text-sm font-medium text-gray-500">Last Login</label>
                     <p class="mt-1 text-sm text-gray-900">
                         <?php if (!empty($user['last_login'])): ?>
-                            <?= date('F j, Y \a\t g:i A', strtotime($user['last_login'])) ?>
+                            <?= formatNepaliDateTime($user['last_login'], 'medium') ?>
                         <?php else: ?>
-                            <span class="text-gray-400">Never logged in</span>
+                            <span class="text-gray-400">कहिल्यै लगइन गरेको छैन</span>
                         <?php endif; ?>
                     </p>
                 </div>
@@ -132,8 +132,8 @@
                         </div>
                     </div>
                     <div class="ml-3">
-                        <p class="text-sm font-medium text-gray-900">Account Created</p>
-                        <p class="text-sm text-gray-500"><?= date('F j, Y \a\t g:i A', strtotime($user['created_at'])) ?></p>
+                        <p class="text-sm font-medium text-gray-900">खाता सिर्जना</p>
+                        <p class="text-sm text-gray-500"><?= formatNepaliDateTime($user['created_at'], 'medium') ?></p>
                     </div>
                 </div>
                 
@@ -145,8 +145,8 @@
                             </div>
                         </div>
                         <div class="ml-3">
-                            <p class="text-sm font-medium text-gray-900">Profile Updated</p>
-                            <p class="text-sm text-gray-500"><?= date('F j, Y \a\t g:i A', strtotime($user['updated_at'])) ?></p>
+                            <p class="text-sm font-medium text-gray-900">प्रोफाइल अपडेट</p>
+                            <p class="text-sm text-gray-500"><?= formatNepaliDateTime($user['updated_at'], 'medium') ?></p>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -159,8 +159,8 @@
                             </div>
                         </div>
                         <div class="ml-3">
-                            <p class="text-sm font-medium text-gray-900">Last Login</p>
-                            <p class="text-sm text-gray-500"><?= date('F j, Y \a\t g:i A', strtotime($user['last_login'])) ?></p>
+                            <p class="text-sm font-medium text-gray-900">अन्तिम लगइन</p>
+                            <p class="text-sm text-gray-500"><?= formatNepaliDateTime($user['last_login'], 'medium') ?></p>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -207,26 +207,26 @@
             
             <div class="space-y-3">
                 <div class="flex justify-between">
-                    <span class="text-sm text-gray-500">Account Age</span>
+                    <span class="text-sm text-gray-500">खाता उमेर</span>
                     <span class="text-sm font-medium text-gray-900">
                         <?php
                         $created = new DateTime($user['created_at']);
                         $now = new DateTime();
                         $diff = $now->diff($created);
-                        echo $diff->days . ' days';
+                        echo $diff->days . ' दिन';
                         ?>
                     </span>
                 </div>
                 
                 <div class="flex justify-between">
-                    <span class="text-sm text-gray-500">Login Count</span>
+                    <span class="text-sm text-gray-500">लगइन संख्या</span>
                     <span class="text-sm font-medium text-gray-900">
                         <?= !empty($user['last_login']) ? '1+' : '0' ?>
                     </span>
                 </div>
-                
+
                 <div class="flex justify-between">
-                    <span class="text-sm text-gray-500">Profile Updates</span>
+                    <span class="text-sm text-gray-500">प्रोफाइल अपडेट</span>
                     <span class="text-sm font-medium text-gray-900">
                         <?= !empty($user['updated_at']) ? '1+' : '0' ?>
                     </span>

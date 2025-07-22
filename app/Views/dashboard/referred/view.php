@@ -203,8 +203,8 @@
                         </div>
                     </div>
                     <div class="ml-3">
-                        <p class="text-sm font-medium text-gray-900">Dispatch Created</p>
-                        <p class="text-xs text-gray-500"><?= date('M j, Y \a\t g:i A', strtotime($referred['created_at'])) ?></p>
+                        <p class="text-sm font-medium text-gray-900">डिस्प्याच सिर्जना</p>
+                        <p class="text-xs text-gray-500"><?= formatNepaliDateTime($referred['created_at'], 'medium') ?></p>
                     </div>
                 </div>
                 

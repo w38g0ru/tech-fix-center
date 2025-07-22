@@ -73,8 +73,8 @@
                 </div>
                 
                 <div>
-                    <label class="text-sm font-medium text-gray-500">Upload Date</label>
-                    <p class="mt-1 text-sm text-gray-900"><?= date('F j, Y \a\t g:i A', strtotime($photo['uploaded_at'])) ?></p>
+                    <label class="text-sm font-medium text-gray-500">अपलोड मिति</label>
+                    <p class="mt-1 text-sm text-gray-900"><?= formatNepaliDateTime($photo['uploaded_at'], 'medium') ?></p>
                 </div>
                 
                 <div>

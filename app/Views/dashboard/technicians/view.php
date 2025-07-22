@@ -133,12 +133,12 @@
             
             <div class="space-y-3">
                 <div>
-                    <label class="text-sm font-medium text-gray-500">Created Date</label>
-                    <p class="mt-1 text-sm text-gray-900"><?= date('F j, Y', strtotime($technician['created_at'])) ?></p>
+                    <label class="text-sm font-medium text-gray-500">सिर्जना मिति</label>
+                    <p class="mt-1 text-sm text-gray-900"><?= formatNepaliDate($technician['created_at'], 'medium') ?></p>
                 </div>
-                
+
                 <div>
-                    <label class="text-sm font-medium text-gray-500">Created Time</label>
+                    <label class="text-sm font-medium text-gray-500">सिर्जना समय</label>
                     <p class="mt-1 text-sm text-gray-900"><?= date('g:i A', strtotime($technician['created_at'])) ?></p>
                 </div>
                 
