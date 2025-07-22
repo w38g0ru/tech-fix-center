@@ -349,16 +349,53 @@ class UserManagement extends BaseController
 
         // Step 4: Send SMS to all numbers
         $sms = service('sms');
-        $result = $sms->send($phoneNumbers, $message);
 
-        // Step 5: Return response with appropriate HTTP status
-        return $this->response->setJSON([
-            'status'  => $result['status'],
-            'message' => $result['message'] ?? ($result['status'] ? 'SMS sent successfully to all active users!' : 'Failed to send SMS'),
-            'count'   => count($phoneNumbers),
-            'code'    => $result['code'] ?? null,
-            'debug'   => $result['raw'] ?? null  // Optional: remove for production
-        ])->setStatusCode($result['status'] ? 200 : 400);
+        try {
+            $result = $sms->send($phoneNumbers, $message);
+
+            // Check if SMS service returned an error
+            if (!$result['status']) {
+                log_message('error', 'Bulk SMS failed. Count: ' . count($phoneNumbers) . ', Error: ' . ($result['error'] ?? 'Unknown error'));
+
+                return $this->response->setJSON([
+                    'status'  => false,
+                    'message' => 'Failed to send bulk SMS: ' . ($result['error'] ?? 'SMS service error'),
+                    'count'   => count($phoneNumbers),
+                    'code'    => $result['code'] ?? 'BULK_SMS_FAILED',
+                    'debug'   => $result['raw'] ?? null,
+                    'phone_numbers' => $phoneNumbers
+                ])->setStatusCode(500);
+            }
+
+            // SMS sent successfully
+            log_message('info', 'Bulk SMS sent successfully to ' . count($phoneNumbers) . ' users');
+
+            return $this->response->setJSON([
+                'status'  => true,
+                'message' => 'SMS sent successfully to ' . count($phoneNumbers) . ' active users!',
+                'count'   => count($phoneNumbers),
+                'code'    => $result['code'] ?? 'BULK_SMS_SENT',
+                'debug'   => $result['raw'] ?? null,
+                'phone_numbers' => $phoneNumbers
+            ])->setStatusCode(200);
+
+        } catch (\Exception $e) {
+            // Handle any exceptions during SMS sending
+            log_message('error', 'Bulk SMS sending exception. Count: ' . count($phoneNumbers) . ', Error: ' . $e->getMessage());
+
+            return $this->response->setJSON([
+                'status'  => false,
+                'message' => 'SMS service unavailable: ' . $e->getMessage(),
+                'count'   => count($phoneNumbers),
+                'code'    => 'SMS_SERVICE_ERROR',
+                'debug'   => [
+                    'exception' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine()
+                ],
+                'phone_numbers' => $phoneNumbers
+            ])->setStatusCode(503);
+        }
     }
 
     public function sendSmsToUser($id)
@@ -405,15 +442,53 @@ class UserManagement extends BaseController
 
         // Step 4: Send SMS
         $sms = service('sms');
-        $result = $sms->send($user['phone'], $message);
 
-        // Step 5: Return response with appropriate HTTP status
-        return $this->response->setJSON([
-            'status'  => $result['status'],
-            'message' => $result['message'],
-            'code'    => $result['code'] ?? null,
-            'debug'   => $result['raw'] ?? null  // Optional: remove for production
-        ])->setStatusCode($result['status'] ? 200 : 400);
+        try {
+            $result = $sms->send($user['phone'], $message);
+
+            // Check if SMS service returned an error
+            if (!$result['status']) {
+                log_message('error', 'SMS failed to send to user ID: ' . $id . ', Phone: ' . $user['phone'] . ', Error: ' . ($result['error'] ?? 'Unknown error'));
+
+                return $this->response->setJSON([
+                    'status'  => false,
+                    'message' => 'Failed to send SMS: ' . ($result['error'] ?? 'SMS service error'),
+                    'code'    => $result['code'] ?? 'SMS_SEND_FAILED',
+                    'debug'   => $result['raw'] ?? null,
+                    'user_id' => $id,
+                    'phone'   => $user['phone']
+                ])->setStatusCode(500);
+            }
+
+            // SMS sent successfully
+            log_message('info', 'SMS sent successfully to user ID: ' . $id . ', Phone: ' . $user['phone']);
+
+            return $this->response->setJSON([
+                'status'  => true,
+                'message' => 'SMS sent successfully to ' . $user['full_name'],
+                'code'    => $result['code'] ?? 'SMS_SENT',
+                'debug'   => $result['raw'] ?? null,
+                'user_id' => $id,
+                'phone'   => $user['phone']
+            ])->setStatusCode(200);
+
+        } catch (\Exception $e) {
+            // Handle any exceptions during SMS sending
+            log_message('error', 'SMS sending exception for user ID: ' . $id . ', Error: ' . $e->getMessage());
+
+            return $this->response->setJSON([
+                'status'  => false,
+                'message' => 'SMS service unavailable: ' . $e->getMessage(),
+                'code'    => 'SMS_SERVICE_ERROR',
+                'debug'   => [
+                    'exception' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine()
+                ],
+                'user_id' => $id,
+                'phone'   => $user['phone']
+            ])->setStatusCode(503);
+        }
     }
 
     /**

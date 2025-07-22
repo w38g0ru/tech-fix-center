@@ -322,11 +322,19 @@ function sendSms() {
 
         if (data.status) {
             // Show success message with count
-            const count = data.count || 0;
-            showAlert(`SMS sent successfully to ${count} user${count !== 1 ? 's' : ''}!`, 'success');
+            showAlert(data.message || 'SMS sent successfully!', 'success');
         } else {
-            // Show error message
-            showAlert('Failed to send SMS: ' + (data.message || 'Unknown error'), 'error');
+            // Show detailed error message
+            let errorMsg = data.message || 'Unknown error occurred';
+            if (data.code) {
+                errorMsg += ` (Code: ${data.code})`;
+            }
+            showAlert('Failed to send SMS: ' + errorMsg, 'error');
+
+            // Log detailed error for debugging
+            if (data.debug) {
+                console.error('SMS Error Details:', data.debug);
+            }
         }
     })
     .catch(error => {
@@ -334,8 +342,17 @@ function sendSms() {
         button.disabled = false;
         button.innerHTML = originalText;
 
-        console.error('Error:', error);
-        showAlert('An error occurred while sending SMS', 'error');
+        console.error('Network/Server Error:', error);
+
+        // Show appropriate error message based on error type
+        let errorMessage = 'Network error occurred while sending SMS';
+        if (error.name === 'TypeError') {
+            errorMessage = 'Unable to connect to SMS service. Please check your internet connection.';
+        } else if (error.message) {
+            errorMessage = `SMS service error: ${error.message}`;
+        }
+
+        showAlert(errorMessage, 'error');
     });
 }
 
@@ -366,10 +383,19 @@ function sendSmsToUser(userId) {
 
         if (data.status) {
             // Show success message
-            showAlert('SMS sent successfully to user!', 'success');
+            showAlert(data.message || 'SMS sent successfully to user!', 'success');
         } else {
-            // Show error message
-            showAlert('Failed to send SMS: ' + (data.message || 'Unknown error'), 'error');
+            // Show detailed error message
+            let errorMsg = data.message || 'Unknown error occurred';
+            if (data.code) {
+                errorMsg += ` (Code: ${data.code})`;
+            }
+            showAlert('Failed to send SMS: ' + errorMsg, 'error');
+
+            // Log detailed error for debugging
+            if (data.debug) {
+                console.error('SMS Error Details:', data.debug);
+            }
         }
     })
     .catch(error => {
@@ -377,8 +403,17 @@ function sendSmsToUser(userId) {
         button.disabled = false;
         button.innerHTML = originalText;
 
-        console.error('Error:', error);
-        showAlert('An error occurred while sending SMS', 'error');
+        console.error('Network/Server Error:', error);
+
+        // Show appropriate error message based on error type
+        let errorMessage = 'Network error occurred while sending SMS';
+        if (error.name === 'TypeError') {
+            errorMessage = 'Unable to connect to SMS service. Please check your internet connection.';
+        } else if (error.message) {
+            errorMessage = `SMS service error: ${error.message}`;
+        }
+
+        showAlert(errorMessage, 'error');
     });
 }
 
