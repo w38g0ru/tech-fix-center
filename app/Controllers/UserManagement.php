@@ -188,18 +188,25 @@ class UserManagement extends BaseController
         }
 
         // Prepare user data for model validation
+        $email = $this->request->getPost('email');
         $userData = [
             'full_name' => $this->request->getPost('name'),
-            'email' => $this->request->getPost('email'),
+            'email' => $email,
             'phone' => $this->request->getPost('mobile_number'),
             'role' => $this->request->getPost('role'),
             'status' => $this->request->getPost('status')
         ];
 
+        // Update username if email changed
+        if ($email !== $user['email']) {
+            $userData['username'] = $this->generateUsername($email);
+        }
+
         // Password is optional for updates
         $password = $this->request->getPost('password');
+        $originalPassword = $password; // Store original for validation
         if ($password) {
-            $userData['password'] = $password;
+            $userData['password'] = password_hash($password, PASSWORD_DEFAULT); // Hash the password
 
             // Additional validation for confirm password
             $confirmPassword = $this->request->getPost('confirm_password');
@@ -213,26 +220,46 @@ class UserManagement extends BaseController
             return redirect()->back()->withInput()->with('error', 'Only super admins can assign super admin role.');
         }
 
+        // Create validation data (use original password for validation if provided)
+        $validationData = $userData;
+        if ($originalPassword) {
+            $validationData['password'] = $originalPassword;
+        }
+
         // For updates, we need to modify validation rules to exclude current record
         $this->adminUserModel->setValidationRule('full_name', "required|min_length[2]|max_length[255]");
         $this->adminUserModel->setValidationRule('email', "required|valid_email|is_unique[admin_users.email,id,{$id}]");
 
+        // Handle username validation if it's being updated
+        if (isset($userData['username'])) {
+            $this->adminUserModel->setValidationRule('username', "required|alpha_numeric_punct|min_length[3]|max_length[50]|is_unique[admin_users.username,id,{$id}]");
+        }
+
         // Make password optional for updates
-        if (!$password) {
+        if (!$originalPassword) {
             $this->adminUserModel->setValidationRule('password', 'permit_empty');
         }
 
         // Validate using AdminUserModel
-        if (!$this->adminUserModel->validate($userData)) {
+        if (!$this->adminUserModel->validate($validationData)) {
             return redirect()->back()->withInput()->with('errors', $this->adminUserModel->errors());
         }
 
         $userData['updated_at'] = date('Y-m-d H:i:s');
 
+        // Debug logging
+        log_message('debug', 'UserManagement::update - Attempting to update user ID ' . $id . ': ' . json_encode($userData));
+
         if ($this->adminUserModel->update($id, $userData)) {
             return redirect()->to('/dashboard/user-management')->with('success', 'User updated successfully!');
         } else {
-            return redirect()->back()->withInput()->with('error', 'Failed to update user.');
+            // Get detailed error information
+            $errors = $this->adminUserModel->errors();
+            if (!empty($errors)) {
+                return redirect()->back()->withInput()->with('errors', $errors);
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Failed to update user. Please check all fields and try again.');
+            }
         }
     }
 
