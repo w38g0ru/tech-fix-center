@@ -12,7 +12,7 @@ class PhotoModel extends Model
     protected $returnType = 'array';
     protected $useSoftDeletes = false;
     protected $protectFields = true;
-    protected $allowedFields = ['job_id', 'referred_id', 'photo_type', 'file_name', 'description'];
+    protected $allowedFields = ['job_id', 'referred_id', 'inventory_id', 'photo_type', 'file_name', 'description', 'uploaded_at'];
 
     // Dates
     protected $useTimestamps = false;

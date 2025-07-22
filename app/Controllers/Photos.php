@@ -186,10 +186,20 @@ class Photos extends BaseController
 
     public function serve($filename)
     {
+        // Sanitize filename to prevent directory traversal
+        $filename = basename($filename);
         $filepath = WRITEPATH . 'uploads/photos/' . $filename;
-        
+
         if (!file_exists($filepath)) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Photo not found');
+        }
+
+        // Verify file is an image
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+        if (!in_array($extension, $allowedExtensions)) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Invalid file type');
         }
 
         // Get file info
@@ -201,6 +211,7 @@ class Photos extends BaseController
         $this->response->setHeader('Content-Type', $mimeType);
         $this->response->setHeader('Content-Length', filesize($filepath));
         $this->response->setHeader('Cache-Control', 'public, max-age=31536000');
+        $this->response->setHeader('Last-Modified', gmdate('D, d M Y H:i:s', filemtime($filepath)) . ' GMT');
 
         // Output file
         readfile($filepath);

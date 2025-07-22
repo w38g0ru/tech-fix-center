@@ -25,6 +25,9 @@ $routes->post('auth/processForgotPassword', 'Auth::processForgotPassword');
 $routes->get('auth/google', 'Auth::googleLogin');
 $routes->get('auth/google/callback', 'Auth::callback');
 
+// Public photo serving route (no authentication required)
+$routes->get('photos/serve/(:any)', 'Photos::serve/$1');
+
 // Dashboard Routes (Protected by Auth in Controllers)
 $routes->group('dashboard', function($routes) {
     $routes->get('/', 'Dashboard::index');
