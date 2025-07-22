@@ -7,28 +7,72 @@
         <h1 class="text-2xl font-semibold text-gray-900">Edit Job #<?= $job['id'] ?></h1>
         <p class="mt-1 text-sm text-gray-600">Update job information</p>
     </div>
-    <div class="flex space-x-2">
-        <a href="<?= base_url('dashboard/jobs/view/' . $job['id']) ?>" 
-           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
+    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+        <a href="<?= base_url('dashboard/jobs/view/' . $job['id']) ?>"
+           class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 transition-all duration-200 shadow-lg shadow-blue-500/25">
             <i class="fas fa-eye mr-2"></i>
             View Job
         </a>
-        <a href="<?= base_url('dashboard/jobs') ?>" 
-           class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+        <a href="<?= base_url('dashboard/jobs') ?>"
+           class="inline-flex items-center justify-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
             <i class="fas fa-arrow-left mr-2"></i>
             Back to Jobs
         </a>
     </div>
 </div>
 
-<div class="max-w-4xl">
-    <div class="bg-white shadow rounded-lg">
-        <form action="<?= base_url('dashboard/jobs/update/' . $job['id']) ?>" method="POST" class="p-6 space-y-6">
+<!-- Error Messages -->
+<?php if (session()->getFlashdata('error')): ?>
+    <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-circle text-red-400"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm text-red-800"><?= session()->getFlashdata('error') ?></p>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php if (session()->getFlashdata('errors')): ?>
+    <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-circle text-red-400"></i>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-sm font-medium text-red-800">Please fix the following errors:</h3>
+                <div class="mt-2 text-sm text-red-700">
+                    <ul class="list-disc pl-5 space-y-1">
+                        <?php foreach (session()->getFlashdata('errors') as $error): ?>
+                            <li><?= esc($error) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<div class="w-full">
+    <div class="bg-white shadow-xl rounded-2xl border border-gray-100">
+        <form action="<?= base_url('dashboard/jobs/update/' . $job['id']) ?>" method="POST" class="p-6 lg:p-8 space-y-8">
             <?= csrf_field() ?>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Customer Selection -->
-                <div>
+            <!-- Customer Information Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-user-circle text-blue-600 mr-3"></i>
+                        Customer Information
+                    </h3>
+                    <p class="mt-1 text-sm text-gray-600">Update customer details for this job</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Customer Selection -->
+                    <div>
                     <?php
                     // Determine current customer type
                     $currentCustomerType = '';
@@ -46,7 +90,7 @@
                             name="customer_type"
                             onchange="toggleCustomerFields()"
                             required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
                         <option value="">Select Customer Type</option>
                         <option value="existing" <?= old('customer_type', $currentCustomerType) === 'existing' ? 'selected' : '' ?>>Existing Customer</option>
                         <option value="walk_in" <?= old('customer_type', $currentCustomerType) === 'walk_in' ? 'selected' : '' ?>>Walk-in Customer</option>
@@ -59,7 +103,7 @@
                         </label>
                         <select id="user_id"
                                 name="user_id"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.user_id') ? 'border-red-500' : '' ?>">
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.user_id') ? 'border-red-500' : '' ?>">
                             <option value="">Select a customer</option>
                             <?php if (!empty($users)): ?>
                                 <?php foreach ($users as $user): ?>
@@ -91,7 +135,7 @@
                                        name="walk_in_customer_name"
                                        value="<?= old('walk_in_customer_name', $job['walk_in_customer_name']) ?>"
                                        placeholder="e.g., रमेश श्रेष्ठ"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.walk_in_customer_name') ? 'border-red-500' : '' ?>">
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.walk_in_customer_name') ? 'border-red-500' : '' ?>">
                                 <?php if (session('errors.walk_in_customer_name')): ?>
                                     <p class="mt-1 text-sm text-red-600"><?= session('errors.walk_in_customer_name') ?></p>
                                 <?php endif; ?>
@@ -107,7 +151,7 @@
                                        name="walk_in_customer_mobile"
                                        value="<?= old('walk_in_customer_mobile', $job['walk_in_customer_mobile'] ?? '') ?>"
                                        placeholder="e.g., 9841234567"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.walk_in_customer_mobile') ? 'border-red-500' : '' ?>">
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.walk_in_customer_mobile') ? 'border-red-500' : '' ?>">
                                 <?php if (session('errors.walk_in_customer_mobile')): ?>
                                     <p class="mt-1 text-sm text-red-600"><?= session('errors.walk_in_customer_mobile') ?></p>
                                 <?php endif; ?>
@@ -126,9 +170,9 @@
                     <label for="technician_id" class="block text-sm font-medium text-gray-700 mb-2">
                         Assign Technician
                     </label>
-                    <select id="technician_id" 
-                            name="technician_id" 
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.technician_id') ? 'border-red-500' : '' ?>">
+                    <select id="technician_id"
+                            name="technician_id"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.technician_id') ? 'border-red-500' : '' ?>">
                         <option value="">Unassigned</option>
                         <?php if (!empty($technicians)): ?>
                             <?php foreach ($technicians as $technician): ?>
@@ -147,18 +191,28 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Device Name -->
-                <div>
+            <!-- Device Information Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-mobile-alt text-green-600 mr-3"></i>
+                        Device Information
+                    </h3>
+                    <p class="mt-1 text-sm text-gray-600">Update device details and specifications</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Device Name -->
+                    <div>
                     <label for="device_name" class="block text-sm font-medium text-gray-700 mb-2">
                         Device Name
                     </label>
-                    <input type="text" 
-                           id="device_name" 
-                           name="device_name" 
+                    <input type="text"
+                           id="device_name"
+                           name="device_name"
                            value="<?= old('device_name', $job['device_name']) ?>"
                            placeholder="e.g., iPhone 12, Samsung Galaxy S21"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.device_name') ? 'border-red-500' : '' ?>">
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.device_name') ? 'border-red-500' : '' ?>">
                     <?php if (session('errors.device_name')): ?>
                         <p class="mt-1 text-sm text-red-600"><?= session('errors.device_name') ?></p>
                     <?php endif; ?>
@@ -169,28 +223,38 @@
                     <label for="serial_number" class="block text-sm font-medium text-gray-700 mb-2">
                         Serial Number
                     </label>
-                    <input type="text" 
-                           id="serial_number" 
-                           name="serial_number" 
+                    <input type="text"
+                           id="serial_number"
+                           name="serial_number"
                            value="<?= old('serial_number', $job['serial_number']) ?>"
                            placeholder="Device serial number or IMEI"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.serial_number') ? 'border-red-500' : '' ?>">
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.serial_number') ? 'border-red-500' : '' ?>">
                     <?php if (session('errors.serial_number')): ?>
                         <p class="mt-1 text-sm text-red-600"><?= session('errors.serial_number') ?></p>
                     <?php endif; ?>
                 </div>
             </div>
 
-            <!-- Problem Description -->
-            <div>
+            <!-- Job Details Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-clipboard-list text-orange-600 mr-3"></i>
+                        Job Details
+                    </h3>
+                    <p class="mt-1 text-sm text-gray-600">Update job status, problem description, and charges</p>
+                </div>
+
+                <!-- Problem Description -->
+                <div>
                 <label for="problem" class="block text-sm font-medium text-gray-700 mb-2">
                     Problem Description
                 </label>
-                <textarea id="problem" 
-                          name="problem" 
+                <textarea id="problem"
+                          name="problem"
                           rows="4"
                           placeholder="Describe the issue with the device..."
-                          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.problem') ? 'border-red-500' : '' ?>"><?= old('problem', $job['problem']) ?></textarea>
+                          class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.problem') ? 'border-red-500' : '' ?>"><?= old('problem', $job['problem']) ?></textarea>
                 <?php if (session('errors.problem')): ?>
                     <p class="mt-1 text-sm text-red-600"><?= session('errors.problem') ?></p>
                 <?php endif; ?>
@@ -201,10 +265,10 @@
                 <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
                     Job Status <span class="text-red-500">*</span>
                 </label>
-                <select id="status" 
-                        name="status" 
+                <select id="status"
+                        name="status"
                         required
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.status') ? 'border-red-500' : '' ?>">
+                        class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.status') ? 'border-red-500' : '' ?>">
                     <option value="">Select status</option>
                     <option value="Pending" <?= old('status', $job['status']) === 'Pending' ? 'selected' : '' ?>>Pending</option>
                     <option value="In Progress" <?= old('status', $job['status']) === 'In Progress' ? 'selected' : '' ?>>In Progress</option>
@@ -219,9 +283,12 @@
                 <?php endif; ?>
             </div>
 
-            <!-- Job Info -->
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <h3 class="text-sm font-medium text-gray-900 mb-2">Job Information</h3>
+                <!-- Job Info -->
+                <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-xl border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                        Current Job Information
+                    </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
                     <div>
                         <p><strong>Job ID:</strong> #<?= $job['id'] ?></p>
@@ -241,15 +308,17 @@
                     </div>
                 </div>
             </div>
+            </div>
 
             <!-- Form Actions -->
-            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
-                <a href="<?= base_url('dashboard/jobs') ?>" 
-                   class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <div class="flex flex-col sm:flex-row items-center justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-8 border-t border-gray-200">
+                <a href="<?= base_url('dashboard/jobs') ?>"
+                   class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                    <i class="fas fa-times mr-2"></i>
                     Cancel
                 </a>
-                <button type="submit" 
-                        class="px-4 py-2 bg-primary-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <button type="submit"
+                        class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 border border-transparent rounded-xl text-sm font-medium text-white hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg shadow-blue-500/25">
                     <i class="fas fa-save mr-2"></i>
                     Update Job
                 </button>
