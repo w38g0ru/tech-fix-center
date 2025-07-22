@@ -355,11 +355,12 @@ class UserManagement extends BaseController
 
             // Check if SMS service returned an error
             if (!$result['status']) {
-                log_message('error', 'Bulk SMS failed. Count: ' . count($phoneNumbers) . ', Error: ' . ($result['error'] ?? 'Unknown error'));
+                $errorMessage = $result['message'] ?? 'SMS service error';
+                log_message('error', 'Bulk SMS failed. Count: ' . count($phoneNumbers) . ', Error: ' . $errorMessage);
 
                 return $this->response->setJSON([
                     'status'  => false,
-                    'message' => 'Failed to send bulk SMS: ' . ($result['error'] ?? 'SMS service error'),
+                    'message' => 'Failed to send bulk SMS: ' . $errorMessage,
                     'count'   => count($phoneNumbers),
                     'code'    => $result['code'] ?? 'BULK_SMS_FAILED',
                     'debug'   => $result['raw'] ?? null,
@@ -448,11 +449,12 @@ class UserManagement extends BaseController
 
             // Check if SMS service returned an error
             if (!$result['status']) {
-                log_message('error', 'SMS failed to send to user ID: ' . $id . ', Phone: ' . $user['phone'] . ', Error: ' . ($result['error'] ?? 'Unknown error'));
+                $errorMessage = $result['message'] ?? 'SMS service error';
+                log_message('error', 'SMS failed to send to user ID: ' . $id . ', Phone: ' . $user['phone'] . ', Error: ' . $errorMessage);
 
                 return $this->response->setJSON([
                     'status'  => false,
-                    'message' => 'Failed to send SMS: ' . ($result['error'] ?? 'SMS service error'),
+                    'message' => 'Failed to send SMS: ' . $errorMessage,
                     'code'    => $result['code'] ?? 'SMS_SEND_FAILED',
                     'debug'   => $result['raw'] ?? null,
                     'user_id' => $id,
