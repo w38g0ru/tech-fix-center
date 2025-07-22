@@ -103,10 +103,15 @@ $pageTitle = $title ?? 'Dashboard';
         <!-- Sidebar -->
         <div class="sidebar fixed top-0 left-0 -translate-x-full lg:translate-x-0 w-60 h-full bg-gray-900 shadow-xl z-50 transition-transform duration-300 overflow-y-auto" id="sidebar">
             <!-- Logo -->
-            <header class="flex items-center justify-center p-4 border-b border-gray-800 bg-gray-800 text-white">
+            <header class="flex items-center justify-between p-4 border-b border-gray-800 bg-gray-800 text-white">
                 <h1 class="text-xl font-bold tracking-wide">
                     <?= htmlspecialchars($config->appShortName) ?>
                 </h1>
+
+                <!-- Mobile Close Button -->
+                <button class="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors duration-200" onclick="closeSidebar()" id="sidebarCloseBtn">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
             </header>
 
             <!-- Navigation -->
@@ -265,11 +270,27 @@ $pageTitle = $title ?? 'Dashboard';
         document.addEventListener('click', function(e) {
             const userMenu = e.target.closest('.relative');
             const userDropdown = document.getElementById('userDropdown');
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menuBtn');
+            const overlay = document.getElementById('overlay');
 
             // Close user dropdown if clicking outside
             if (!userMenu && userDropdown) {
                 userDropdown.classList.remove('opacity-100', 'visible', 'translate-y-0');
                 userDropdown.classList.add('opacity-0', 'invisible', '-translate-y-2');
+            }
+
+            // Close sidebar on mobile when clicking outside (but not on menu button or sidebar itself)
+            if (window.innerWidth < 1024) {
+                const clickedSidebar = e.target.closest('#sidebar');
+                const clickedMenuBtn = e.target.closest('#menuBtn');
+                const clickedOverlay = e.target.closest('#overlay');
+
+                // If sidebar is open and click is outside sidebar and not on menu button
+                if (sidebar && !sidebar.classList.contains('-translate-x-full') &&
+                    !clickedSidebar && !clickedMenuBtn && !clickedOverlay) {
+                    closeSidebar();
+                }
             }
         });
 
@@ -294,6 +315,51 @@ $pageTitle = $title ?? 'Dashboard';
         window.addEventListener('resize', function() {
             if (window.innerWidth >= 1024) {
                 closeSidebar();
+            }
+        });
+
+        // Touch gesture support for mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', function(e) {
+            if (window.innerWidth < 1024) {
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                const deltaX = touchEndX - touchStartX;
+                const deltaY = touchEndY - touchStartY;
+
+                // Swipe right to open sidebar (from left edge)
+                if (deltaX > 50 && Math.abs(deltaY) < 100 && touchStartX < 50) {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar && sidebar.classList.contains('-translate-x-full')) {
+                        toggleSidebar();
+                    }
+                }
+
+                // Swipe left to close sidebar
+                if (deltaX < -50 && Math.abs(deltaY) < 100) {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                        closeSidebar();
+                    }
+                }
+            }
+        }, { passive: true });
+
+        // Keyboard support
+        document.addEventListener('keydown', function(e) {
+            // Escape key to close sidebar on mobile
+            if (e.key === 'Escape' && window.innerWidth < 1024) {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                    closeSidebar();
+                }
             }
         });
     </script>

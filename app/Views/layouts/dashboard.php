@@ -612,7 +612,7 @@ $pageTitle = $title ?? 'Dashboard';
         <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:z-auto lg:w-60 sidebar" id="sidebar">
 
             <!-- Logo Section -->
-            <div class="flex items-center h-16 px-6 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700">
+            <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700">
                 <div class="flex items-center space-x-3">
                     <!-- Logo Icon -->
                     <div class="flex-shrink-0">
@@ -626,6 +626,11 @@ $pageTitle = $title ?? 'Dashboard';
                         <span class="text-xs text-blue-100 font-medium">Tech Fix Center</span>
                     </div>
                 </div>
+
+                <!-- Mobile Close Button -->
+                <button class="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors duration-200" onclick="closeSidebar()" id="sidebarCloseBtn">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
             </div>
 
             <!-- Navigation -->
