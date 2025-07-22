@@ -209,7 +209,7 @@
                                     <?= $index + 1 ?>
                                 </div>
                                 <div>
-                                    <p class="font-medium text-gray-900"><?= esc($tech['name'] ?? $tech['full_name'] ?? 'Unknown Technician') ?></p>
+                                    <p class="font-medium text-gray-900"><?= esc($tech['name'] ?? 'Unknown Technician') ?></p>
                                     <p class="text-sm text-gray-500"><?= $tech['completed_jobs'] ?? 0 ?> jobs completed</p>
                                 </div>
                             </div>

@@ -250,12 +250,13 @@ class PartsRequests extends BaseController
 
         // Validate input
         $rules = [
-            'part_name' => 'required|max_length[255]',
-            'part_number' => 'permit_empty|max_length[100]',
-            'quantity' => 'required|integer|greater_than[0]',
+            'item_name' => 'required|max_length[100]',
+            'brand' => 'permit_empty|max_length[100]',
+            'model' => 'permit_empty|max_length[100]',
+            'quantity_requested' => 'required|integer|greater_than[0]',
             'urgency' => 'required|in_list[Low,Medium,High,Critical]',
             'estimated_cost' => 'permit_empty|decimal',
-            'supplier_preference' => 'permit_empty|max_length[255]',
+            'supplier' => 'permit_empty|max_length[100]',
             'description' => 'permit_empty|max_length[1000]',
             'expected_delivery_date' => 'permit_empty|valid_date'
         ];
@@ -267,12 +268,13 @@ class PartsRequests extends BaseController
         }
 
         $updateData = [
-            'part_name' => $this->request->getPost('part_name'),
-            'part_number' => $this->request->getPost('part_number'),
-            'quantity' => $this->request->getPost('quantity'),
+            'item_name' => $this->request->getPost('item_name'),
+            'brand' => $this->request->getPost('brand'),
+            'model' => $this->request->getPost('model'),
+            'quantity_requested' => $this->request->getPost('quantity_requested'),
             'urgency' => $this->request->getPost('urgency'),
             'estimated_cost' => $this->request->getPost('estimated_cost'),
-            'supplier_preference' => $this->request->getPost('supplier_preference'),
+            'supplier' => $this->request->getPost('supplier'),
             'description' => $this->request->getPost('description'),
             'expected_delivery_date' => $this->request->getPost('expected_delivery_date'),
             'updated_at' => date('Y-m-d H:i:s')
@@ -287,7 +289,7 @@ class PartsRequests extends BaseController
         if ($this->partsRequestModel->update($id, $updateData)) {
             // Log activity
             helper('activity');
-            log_post_activity(getUserId(), "Updated parts request: {$updateData['part_name']}");
+            log_post_activity(getUserId(), "Updated parts request: {$updateData['item_name']}");
 
             return redirect()->to(base_url('dashboard/parts-requests'))
                            ->with('success', 'Parts request updated successfully!');

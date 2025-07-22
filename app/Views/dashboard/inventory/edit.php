@@ -7,14 +7,14 @@
         <h1 class="text-2xl font-semibold text-gray-900">Edit Inventory Item</h1>
         <p class="mt-1 text-sm text-gray-600">Update inventory item details</p>
     </div>
-    <div class="flex gap-2">
-        <a href="<?= base_url('dashboard/inventory/view/' . $item['id']) ?>" 
-           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
+    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+        <a href="<?= base_url('dashboard/inventory/view/' . $item['id']) ?>"
+           class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 transition-all duration-200 shadow-lg shadow-blue-500/25">
             <i class="fas fa-eye mr-2"></i>
             View Item
         </a>
-        <a href="<?= base_url('dashboard/inventory') ?>" 
-           class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+        <a href="<?= base_url('dashboard/inventory') ?>"
+           class="inline-flex items-center justify-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
             <i class="fas fa-arrow-left mr-2"></i>
             Back to Inventory
         </a>

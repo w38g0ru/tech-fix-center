@@ -113,7 +113,7 @@ class JobModel extends Model
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
-                    ->orderBy('jobs.created_at', 'DESC');
+                    ->orderBy('jobs.id', 'DESC');
 
         if ($perPage !== null) {
             return $builder->paginate($perPage);
@@ -152,7 +152,7 @@ class JobModel extends Model
                         ->orLike('users.name', $search)
                         ->orLike('admin_users.full_name', $search)
                     ->groupEnd()
-                    ->orderBy('jobs.created_at', 'DESC');
+                    ->orderBy('jobs.id', 'DESC');
 
         if ($perPage !== null) {
             return $builder->paginate($perPage);
@@ -171,7 +171,7 @@ class JobModel extends Model
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->where('jobs.status', $status)
-                    ->orderBy('jobs.created_at', 'DESC');
+                    ->orderBy('jobs.id', 'DESC');
 
         if ($perPage !== null) {
             return $builder->paginate($perPage);
@@ -214,7 +214,7 @@ class JobModel extends Model
         return $this->select('jobs.*, users.name as customer_name, admin_users.full_name as technician_name')
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
-                    ->orderBy('jobs.created_at', 'DESC')
+                    ->orderBy('jobs.id', 'DESC')
                     ->limit($limit)
                     ->findAll();
     }
@@ -244,7 +244,7 @@ class JobModel extends Model
                     ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
                     ->where('jobs.dispatch_type', $dispatchType)
-                    ->orderBy('jobs.created_at', 'DESC')
+                    ->orderBy('jobs.id', 'DESC')
                     ->findAll();
     }
 

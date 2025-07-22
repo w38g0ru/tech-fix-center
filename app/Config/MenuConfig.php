@@ -99,6 +99,7 @@ class MenuConfig
                         'icon' => 'fas fa-chart-bar',
                         'color' => 'text-blue-600',
                         'active_check' => ['reports'],
+                        'exclude_check' => ['bug-reports'],
                         'gradient' => 'from-blue-500 to-blue-600',
                         'access_level' => 'technician'
                     ],
@@ -161,55 +162,14 @@ class MenuConfig
                         'url' => 'dashboard/bug-reports',
                         'icon' => 'fas fa-bug',
                         'color' => 'text-red-600',
-                        'active_check' => ['bug-reports', 'reports'],
+                        'active_check' => ['bug-reports'],
                         'gradient' => 'from-red-500 to-red-600',
                         'access_level' => 'admin'
                     ]
                 ]
             ],
 
-            // User Section
-            [
-                'section' => 'User',
-                'access_level' => 'all',
-                'items' => [
-                    [
-                        'name' => 'Profile',
-                        'url' => 'dashboard/profile',
-                        'icon' => 'fas fa-user',
-                        'color' => 'text-blue-600',
-                        'active_check' => ['profile'],
-                        'gradient' => 'from-blue-500 to-blue-600',
-                        'access_level' => 'all'
-                    ],
-                    [
-                        'name' => 'Settings',
-                        'url' => 'dashboard/settings',
-                        'icon' => 'fas fa-cog',
-                        'color' => 'text-gray-600',
-                        'active_check' => ['settings'],
-                        'gradient' => 'from-gray-500 to-gray-600',
-                        'access_level' => 'admin'
-                    ]
-                ]
-            ],
 
-            // Support Section
-            [
-                'section' => 'Support',
-                'access_level' => 'all',
-                'items' => [
-                    [
-                        'name' => 'User Guide',
-                        'url' => 'dashboard/user-guide',
-                        'icon' => 'fas fa-question-circle',
-                        'color' => 'text-green-600',
-                        'active_check' => ['user-guide'],
-                        'gradient' => 'from-green-500 to-green-600',
-                        'access_level' => 'all'
-                    ]
-                ]
-            ]
         ];
     }
 

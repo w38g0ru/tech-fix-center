@@ -42,6 +42,21 @@ $pageTitle = $title ?? 'Dashboard';
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
+        /* Viewport and Layout Fixes */
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Ensure full viewport usage */
+        .main-container {
+            min-height: 100vh;
+            width: 100vw;
+        }
+
         /* Quasar Minimalist Design Theme */
         :root {
             --quasar-primary: #1976d2;
@@ -589,7 +604,7 @@ $pageTitle = $title ?? 'Dashboard';
     </style>
 </head>
 <body style="background-color: var(--quasar-background);" class="text-gray-800">
-    <div class="flex h-screen overflow-hidden" id="app-container" style="background: var(--quasar-background);">
+    <div class="flex h-screen overflow-hidden main-container" id="app-container" style="background: var(--quasar-background);">
         <!-- Mobile Overlay -->
         <div class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden hidden" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
@@ -704,18 +719,38 @@ $pageTitle = $title ?? 'Dashboard';
                                     <div class="text-sm text-blue-100"><?= session()->get('email') ?? '' ?></div>
                                     <div class="text-xs capitalize font-semibold mt-1 px-2 py-1 rounded" style="background: var(--quasar-accent); color: white; display: inline-block;"><?= session()->get('role') ?? '' ?></div>
                                 </div>
+                                <!-- User Section -->
                                 <a href="<?= base_url('dashboard/profile') ?>" class="flex items-center px-6 py-3 text-sm hover:bg-gray-50 transition-colors" style="color: var(--quasar-text-primary);">
                                     <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(25, 118, 210, 0.1);">
                                         <i class="fas fa-user text-sm" style="color: var(--quasar-primary);"></i>
                                     </div>
                                     <span class="font-medium">Profile</span>
                                 </a>
+                                <?php if (in_array(session('role'), ['superadmin', 'admin'])): ?>
                                 <a href="<?= base_url('dashboard/settings') ?>" class="flex items-center px-6 py-3 text-sm hover:bg-gray-50 transition-colors" style="color: var(--quasar-text-primary);">
                                     <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(38, 166, 154, 0.1);">
                                         <i class="fas fa-cog text-sm" style="color: var(--quasar-secondary);"></i>
                                     </div>
                                     <span class="font-medium">Settings</span>
                                 </a>
+                                <?php endif; ?>
+
+                                <!-- Support Section -->
+                                <div style="border-top: 1px solid var(--quasar-separator);" class="my-2"></div>
+                                <a href="<?= base_url('dashboard/user-guide') ?>" class="flex items-center px-6 py-3 text-sm hover:bg-gray-50 transition-colors" style="color: var(--quasar-text-primary);">
+                                    <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(76, 175, 80, 0.1);">
+                                        <i class="fas fa-question-circle text-sm" style="color: #4caf50;"></i>
+                                    </div>
+                                    <span class="font-medium">User Guide</span>
+                                </a>
+                                <a href="mailto:support@teknophix.com" class="flex items-center px-6 py-3 text-sm hover:bg-gray-50 transition-colors" style="color: var(--quasar-text-primary);">
+                                    <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(156, 39, 176, 0.1);">
+                                        <i class="fas fa-life-ring text-sm" style="color: #9c27b0;"></i>
+                                    </div>
+                                    <span class="font-medium">Support</span>
+                                </a>
+
+                                <!-- Logout Section -->
                                 <div style="border-top: 1px solid var(--quasar-separator);" class="my-2"></div>
                                 <a href="<?= base_url('auth/logout') ?>" class="flex items-center px-6 py-3 text-sm hover:bg-red-50 transition-colors" style="color: var(--quasar-danger);">
                                     <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3" style="background: rgba(244, 67, 54, 0.1);">
@@ -768,7 +803,8 @@ $pageTitle = $title ?? 'Dashboard';
                     </div>
 
                     <!-- Main Content Area -->
-                    <div class="max-w-7xl mx-auto px-6 py-8 lg:px-8">
+                    <div class="w-full px-6 py-8 lg:px-8">
+                        <div class="max-w-7xl mx-auto w-full">
                         <!-- Flash Messages with Improved Styling -->
                         <?php if (session()->getFlashdata('success')): ?>
                             <div class="mb-8 px-6 py-5 rounded-xl shadow-lg border-l-4" role="alert" style="background: linear-gradient(135deg, #e8f5e8, #f1f8e9); border-color: var(--quasar-success); color: var(--quasar-success);">
@@ -804,9 +840,10 @@ $pageTitle = $title ?? 'Dashboard';
                             </div>
                         <?php endif; ?>
 
-                        <!-- Page Content -->
-                        <div class="space-y-8">
-                            <?= $this->renderSection('content') ?>
+                            <!-- Page Content -->
+                            <div class="space-y-8">
+                                <?= $this->renderSection('content') ?>
+                            </div>
                         </div>
                     </div>
                 </div>

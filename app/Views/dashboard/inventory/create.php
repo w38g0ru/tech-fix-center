@@ -7,16 +7,16 @@
         <h1 class="text-2xl font-semibold text-gray-900">Add New Inventory Item</h1>
         <p class="mt-1 text-sm text-gray-600">Add a new item to your inventory</p>
     </div>
-    <a href="<?= base_url('dashboard/inventory') ?>" 
-       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+    <a href="<?= base_url('dashboard/inventory') ?>"
+       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
         <i class="fas fa-arrow-left mr-2"></i>
         Back to Inventory
     </a>
 </div>
 
-<div class="max-w-2xl">
-    <div class="bg-white shadow rounded-lg">
-        <form action="<?= base_url('dashboard/inventory/store') ?>" method="POST" enctype="multipart/form-data" class="p-6 space-y-6">
+<div class="w-full">
+    <div class="bg-white shadow-xl rounded-2xl border border-gray-100">
+        <form action="<?= base_url('dashboard/inventory/store') ?>" method="POST" enctype="multipart/form-data" class="p-6 lg:p-8 space-y-8">
             <?= csrf_field() ?>
             
             <!-- Device Name -->

@@ -245,8 +245,8 @@ class Dashboard extends BaseController
         }
 
         $data = [
-            'name' => $this->request->getPost('name'),
-            'contact_number' => $this->request->getPost('contact_number'),
+            'full_name' => $this->request->getPost('name'),
+            'phone' => $this->request->getPost('contact_number'),
             'role' => $this->request->getPost('role')
         ];
 
@@ -291,8 +291,8 @@ class Dashboard extends BaseController
         }
 
         $data = [
-            'name' => $this->request->getPost('name'),
-            'contact_number' => $this->request->getPost('contact_number')
+            'full_name' => $this->request->getPost('name'),
+            'phone' => $this->request->getPost('contact_number')
         ];
 
         if ($this->adminUserModel->update($id, $data)) {

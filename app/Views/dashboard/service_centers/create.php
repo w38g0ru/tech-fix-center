@@ -3,45 +3,22 @@
 <?= $this->section('content') ?>
 
 <!-- Page Header -->
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+<div class="flex items-center justify-between mb-6">
     <div>
-        <h1 class="text-3xl font-bold text-gray-900 mb-2"><?= $title ?></h1>
-        <p class="text-gray-600">Add a new service center to the system</p>
+        <h1 class="text-2xl font-semibold text-gray-900"><?= $title ?></h1>
+        <p class="mt-1 text-sm text-gray-600">Add a new service center to the system</p>
     </div>
-    <div class="mt-4 sm:mt-0">
-        <a href="<?= base_url('dashboard/service-centers') ?>"
-           class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Back to Service Centers
-        </a>
-    </div>
+    <a href="<?= base_url('dashboard/service-centers') ?>"
+       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
+        <i class="fas fa-arrow-left mr-2"></i>
+        Back to Service Centers
+    </a>
 </div>
 
-<!-- Error Messages -->
-<?php if (session()->getFlashdata('errors')): ?>
-    <div class="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
-        <div class="flex">
-            <div class="flex-shrink-0">
-                <i class="fas fa-exclamation-circle text-red-400"></i>
-            </div>
-            <div class="ml-3">
-                <h3 class="text-sm font-medium text-red-800">There were errors with your submission</h3>
-                <div class="mt-2 text-sm text-red-700">
-                    <ul class="list-disc pl-5 space-y-1">
-                        <?php foreach (session()->getFlashdata('errors') as $error): ?>
-                            <li><?= esc($error) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php endif; ?>
-
 <!-- Form -->
-<div class="bg-white shadow rounded-lg">
-    <div class="px-6 py-6">
-        <form action="<?= base_url('dashboard/service-centers/store') ?>" method="POST">
+<div class="w-full">
+    <div class="bg-white shadow-xl rounded-2xl border border-gray-100">
+        <form action="<?= base_url('dashboard/service-centers/store') ?>" method="POST" class="p-6 lg:p-8 space-y-8">
             <?= csrf_field() ?>
 
             <!-- Name and Contact Person Row -->

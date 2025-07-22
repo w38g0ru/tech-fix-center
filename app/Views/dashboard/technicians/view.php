@@ -36,7 +36,7 @@
                 
                 <div>
                     <label class="text-sm font-medium text-gray-500">Name</label>
-                    <p class="mt-1 text-lg font-semibold text-gray-900"><?= esc($technician['name']) ?></p>
+                    <p class="mt-1 text-lg font-semibold text-gray-900"><?= esc($technician['full_name']) ?></p>
                 </div>
             </div>
         </div>

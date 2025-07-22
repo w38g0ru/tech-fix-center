@@ -7,95 +7,129 @@
         <h1 class="text-2xl font-semibold text-gray-900">Create New Dispatch</h1>
         <p class="mt-1 text-sm text-gray-600">Create a new dispatch item for external service</p>
     </div>
-    <a href="<?= base_url('dashboard/referred') ?>" 
-       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+    <a href="<?= base_url('dashboard/referred') ?>"
+       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
         <i class="fas fa-arrow-left mr-2"></i>
         Back to Dispatch
     </a>
 </div>
 
-<div class="max-w-2xl">
-    <div class="bg-white shadow rounded-lg">
-        <form action="<?= base_url('dashboard/referred/store') ?>" method="POST" enctype="multipart/form-data" class="p-6 space-y-6">
+<div class="w-full">
+    <div class="bg-white shadow-xl rounded-2xl border border-gray-100">
+        <form action="<?= base_url('dashboard/referred/store') ?>" method="POST" enctype="multipart/form-data" class="p-6 lg:p-8 space-y-8">
             <?= csrf_field() ?>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Customer Name -->
-                <div>
-                    <label for="customer_name" class="block text-sm font-medium text-gray-700 mb-2">
-                        Customer Name <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" 
-                           id="customer_name" 
-                           name="customer_name" 
-                           value="<?= old('customer_name') ?>"
-                           required
-                           placeholder="e.g., राम बहादुर श्रेष्ठ"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.customer_name') ? 'border-red-500' : '' ?>">
-                    <?php if (session('errors.customer_name')): ?>
-                        <p class="mt-1 text-sm text-red-600"><?= session('errors.customer_name') ?></p>
-                    <?php endif; ?>
+
+            <!-- Customer Information Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-user text-blue-600 mr-3"></i>
+                        Customer Information
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-1">Enter customer details for the dispatch</p>
                 </div>
 
-                <!-- Customer Phone -->
-                <div>
-                    <label for="customer_phone" class="block text-sm font-medium text-gray-700 mb-2">
-                        Customer Phone
-                    </label>
-                    <input type="tel" 
-                           id="customer_phone" 
-                           name="customer_phone" 
-                           value="<?= old('customer_phone') ?>"
-                           placeholder="e.g., 9841234567"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.customer_phone') ? 'border-red-500' : '' ?>">
-                    <?php if (session('errors.customer_phone')): ?>
-                        <p class="mt-1 text-sm text-red-600"><?= session('errors.customer_phone') ?></p>
-                    <?php endif; ?>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Customer Name -->
+                    <div>
+                        <label for="customer_name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Customer Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text"
+                               id="customer_name"
+                               name="customer_name"
+                               value="<?= old('customer_name') ?>"
+                               required
+                               placeholder="e.g., राम बहादुर श्रेष्ठ"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.customer_name') ? 'border-red-500' : '' ?>">
+                        <?php if (session('errors.customer_name')): ?>
+                            <p class="mt-1 text-sm text-red-600"><?= session('errors.customer_name') ?></p>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Customer Phone -->
+                    <div>
+                        <label for="customer_phone" class="block text-sm font-medium text-gray-700 mb-2">
+                            Customer Phone
+                        </label>
+                        <input type="tel"
+                               id="customer_phone"
+                               name="customer_phone"
+                               value="<?= old('customer_phone') ?>"
+                               placeholder="e.g., 9841234567"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.customer_phone') ? 'border-red-500' : '' ?>">
+                        <?php if (session('errors.customer_phone')): ?>
+                            <p class="mt-1 text-sm text-red-600"><?= session('errors.customer_phone') ?></p>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
 
-            <!-- Device Name -->
-            <div>
-                <label for="device_name" class="block text-sm font-medium text-gray-700 mb-2">
-                    Device Name
-                </label>
-                <input type="text" 
-                       id="device_name" 
-                       name="device_name" 
-                       value="<?= old('device_name') ?>"
-                       placeholder="e.g., iPhone 12 Pro, MacBook Air M1"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.device_name') ? 'border-red-500' : '' ?>">
-                <?php if (session('errors.device_name')): ?>
-                    <p class="mt-1 text-sm text-red-600"><?= session('errors.device_name') ?></p>
-                <?php endif; ?>
+            <!-- Device Information Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-mobile-alt text-green-600 mr-3"></i>
+                        Device Information
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-1">Specify device details and problem description</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Device Name -->
+                    <div>
+                        <label for="device_name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Device Name
+                        </label>
+                        <input type="text"
+                               id="device_name"
+                               name="device_name"
+                               value="<?= old('device_name') ?>"
+                               placeholder="e.g., iPhone 12 Pro, MacBook Air M1"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.device_name') ? 'border-red-500' : '' ?>">
+                        <?php if (session('errors.device_name')): ?>
+                            <p class="mt-1 text-sm text-red-600"><?= session('errors.device_name') ?></p>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Problem Description -->
+                    <div class="md:col-span-2 xl:col-span-3">
+                        <label for="problem_description" class="block text-sm font-medium text-gray-700 mb-2">
+                            Problem Description
+                        </label>
+                        <textarea id="problem_description"
+                                  name="problem_description"
+                                  rows="4"
+                                  placeholder="Describe the problem that requires external service..."
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.problem_description') ? 'border-red-500' : '' ?>"><?= old('problem_description') ?></textarea>
+                        <?php if (session('errors.problem_description')): ?>
+                            <p class="mt-1 text-sm text-red-600"><?= session('errors.problem_description') ?></p>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
 
-            <!-- Problem Description -->
-            <div>
-                <label for="problem_description" class="block text-sm font-medium text-gray-700 mb-2">
-                    Problem Description
-                </label>
-                <textarea id="problem_description" 
-                          name="problem_description" 
-                          rows="4"
-                          placeholder="Describe the problem that requires external service..."
-                          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.problem_description') ? 'border-red-500' : '' ?>"><?= old('problem_description') ?></textarea>
-                <?php if (session('errors.problem_description')): ?>
-                    <p class="mt-1 text-sm text-red-600"><?= session('errors.problem_description') ?></p>
-                <?php endif; ?>
-            </div>
+            <!-- Service Center Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-building text-purple-600 mr-3"></i>
+                        Service Center Assignment
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-1">Select service center and dispatch details</p>
+                </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Referred To -->
-                <div>
-                    <label for="service_center_id" class="block text-sm font-medium text-gray-700 mb-2">
-                        Referred To <span class="text-red-500">*</span>
-                    </label>
-                    <div class="flex gap-2">
-                        <select id="service_center_id"
-                                name="service_center_id"
-                                onchange="updateReferredTo()"
-                                class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.service_center_id') ? 'border-red-500' : '' ?>">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Referred To -->
+                    <div>
+                        <label for="service_center_id" class="block text-sm font-medium text-gray-700 mb-2">
+                            Referred To <span class="text-red-500">*</span>
+                        </label>
+                        <div class="flex gap-2">
+                            <select id="service_center_id"
+                                    name="service_center_id"
+                                    onchange="updateReferredTo()"
+                                    class="flex-1 px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.service_center_id') ? 'border-red-500' : '' ?>">
                             <option value="">Select Service Center</option>
                             <?php if (!empty($serviceCenters)): ?>
                                 <?php foreach ($serviceCenters as $center): ?>
@@ -105,29 +139,29 @@
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </select>
-                        <button type="button"
-                                onclick="openServiceCenterModal()"
-                                class="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-                                title="Add New Service Center">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <a href="<?= base_url('dashboard/service-centers') ?>"
-                           target="_blank"
-                           class="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                           title="Manage Service Centers">
-                            <i class="fas fa-cog"></i>
-                        </a>
+                            <button type="button"
+                                    onclick="openServiceCenterModal()"
+                                    class="px-3 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200"
+                                    title="Add New Service Center">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <a href="<?= base_url('dashboard/service-centers') ?>"
+                               target="_blank"
+                               class="px-3 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200"
+                               title="Manage Service Centers">
+                                <i class="fas fa-cog"></i>
+                            </a>
                     </div>
 
-                    <!-- Custom Referred To (fallback) -->
-                    <div class="mt-2">
-                        <input type="text"
-                               id="referred_to"
-                               name="referred_to"
-                               value="<?= old('referred_to') ?>"
-                               placeholder="Or enter custom service center name"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.referred_to') ? 'border-red-500' : '' ?>">
-                    </div>
+                        <!-- Custom Referred To (fallback) -->
+                        <div class="mt-2">
+                            <input type="text"
+                                   id="referred_to"
+                                   name="referred_to"
+                                   value="<?= old('referred_to') ?>"
+                                   placeholder="Or enter custom service center name"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm <?= session('errors.referred_to') ? 'border-red-500' : '' ?>">
+                        </div>
 
                     <?php if (session('errors.service_center_id')): ?>
                         <p class="mt-1 text-sm text-red-600"><?= session('errors.service_center_id') ?></p>

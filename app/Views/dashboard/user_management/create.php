@@ -7,19 +7,29 @@
         <h1 class="text-2xl font-semibold text-gray-900">Create New User</h1>
         <p class="mt-1 text-sm text-gray-600">Add a new user to the system (including technicians, admins, and customers)</p>
     </div>
-    <a href="<?= base_url('dashboard/user-management') ?>" 
-       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+    <a href="<?= base_url('dashboard/user-management') ?>"
+       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
         <i class="fas fa-arrow-left mr-2"></i>
         Back to Users
     </a>
 </div>
 
-<div class="max-w-2xl">
-    <div class="bg-white shadow rounded-lg">
-        <form action="<?= base_url('dashboard/user-management/store') ?>" method="POST" class="p-6 space-y-6">
+<div class="w-full">
+    <div class="bg-white shadow-xl rounded-2xl border border-gray-100">
+        <form action="<?= base_url('dashboard/user-management/store') ?>" method="POST" class="p-6 lg:p-8 space-y-8">
             <?= csrf_field() ?>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Basic Information Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-user-circle text-blue-600 mr-3"></i>
+                        Basic Information
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-1">Enter the user's personal details</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 <!-- Name -->
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
@@ -31,7 +41,7 @@
                            value="<?= old('name') ?>"
                            required
                            placeholder="Enter full name"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.name') ? 'border-red-500' : '' ?>">
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.name') ? 'border-red-500' : '' ?>">
                     <?php if (session('errors.name')): ?>
                         <p class="mt-1 text-sm text-red-600"><?= session('errors.name') ?></p>
                     <?php endif; ?>
@@ -47,33 +57,44 @@
                            name="mobile_number"
                            value="<?= old('mobile_number') ?>"
                            placeholder="Enter mobile number"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.mobile_number') ? 'border-red-500' : '' ?>">
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.mobile_number') ? 'border-red-500' : '' ?>">
                     <?php if (session('errors.mobile_number')): ?>
                         <p class="mt-1 text-sm text-red-600"><?= session('errors.mobile_number') ?></p>
                     <?php endif; ?>
                     <p class="mt-1 text-sm text-gray-500">Optional contact number</p>
                 </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address <span class="text-red-500">*</span>
+                    </label>
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           value="<?= old('email') ?>"
+                           required
+                           placeholder="Enter email address"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.email') ? 'border-red-500' : '' ?>">
+                    <?php if (session('errors.email')): ?>
+                        <p class="mt-1 text-sm text-red-600"><?= session('errors.email') ?></p>
+                    <?php endif; ?>
+                    <p class="mt-1 text-sm text-gray-500">Must be a valid email address</p>
+                </div>
+            </div>
             </div>
 
-            <!-- Email -->
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address <span class="text-red-500">*</span>
-                </label>
-                <input type="email" 
-                       id="email" 
-                       name="email" 
-                       value="<?= old('email') ?>"
-                       required
-                       placeholder="Enter email address"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.email') ? 'border-red-500' : '' ?>">
-                <?php if (session('errors.email')): ?>
-                    <p class="mt-1 text-sm text-red-600"><?= session('errors.email') ?></p>
-                <?php endif; ?>
-                <p class="mt-1 text-sm text-gray-500">Must be a valid email address</p>
-            </div>
+            <!-- Security Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-lock text-green-600 mr-3"></i>
+                        Security & Authentication
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-1">Set up login credentials for the user</p>
+                </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Password -->
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
@@ -85,7 +106,7 @@
                                name="password" 
                                required
                                placeholder="Enter password"
-                               class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.password') ? 'border-red-500' : '' ?>">
+                               class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.password') ? 'border-red-500' : '' ?>">
                         <button type="button" 
                                 onclick="togglePassword('password')"
                                 class="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -109,7 +130,7 @@
                                name="confirm_password" 
                                required
                                placeholder="Confirm password"
-                               class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.confirm_password') ? 'border-red-500' : '' ?>">
+                               class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.confirm_password') ? 'border-red-500' : '' ?>">
                         <button type="button" 
                                 onclick="togglePassword('confirm_password')"
                                 class="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -121,8 +142,19 @@
                     <?php endif; ?>
                 </div>
             </div>
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Role & Permissions Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-user-shield text-purple-600 mr-3"></i>
+                        Role & Permissions
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-1">Define user access level and account status</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 <!-- Role -->
                 <div>
                     <label for="role" class="block text-sm font-medium text-gray-700 mb-2">
@@ -131,7 +163,7 @@
                     <select id="role" 
                             name="role" 
                             required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.role') ? 'border-red-500' : '' ?>">
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.role') ? 'border-red-500' : '' ?>">
                         <option value="">Select role</option>
                         <?php helper('auth'); ?>
                         <?php if (hasRole('superadmin')): ?>
@@ -154,7 +186,7 @@
                     </label>
                     <select id="status" 
                             name="status" 
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.status') ? 'border-red-500' : '' ?>">
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.status') ? 'border-red-500' : '' ?>">
                         <option value="active" <?= old('status', 'active') === 'active' ? 'selected' : '' ?>>Active</option>
                         <option value="inactive" <?= old('status') === 'inactive' ? 'selected' : '' ?>>Inactive</option>
                         <option value="suspended" <?= old('status') === 'suspended' ? 'selected' : '' ?>>Suspended</option>
@@ -165,57 +197,91 @@
                     <p class="mt-1 text-sm text-gray-500">Default is Active</p>
                 </div>
             </div>
+            </div>
 
-            <!-- Role Descriptions -->
-            <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-4">
+            <!-- Information & Guidelines Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-info-circle text-blue-600 mr-3"></i>
+                        Guidelines & Role Information
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-1">Important information about user creation and role permissions</p>
+                </div>
+
+            <!-- User Guidelines -->
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
                 <div class="flex items-start">
-                    <i class="fas fa-info-circle text-blue-500 mr-2 mt-0.5"></i>
-                    <div class="text-sm text-blue-800">
-                        <strong>Note:</strong> Use this form to create all types of users, including technicians.
-                        Select "Technician" role to add new repair technicians to your team.
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-blue-500 mt-0.5"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-blue-800 mb-2">User Creation Guidelines</h3>
+                        <div class="text-sm text-blue-700 space-y-1">
+                            <p>• Use this form to create all types of users including technicians, admins, and customers</p>
+                            <p>• Select appropriate role based on user's responsibilities and access requirements</p>
+                            <p>• Default status is "Active" - users can login immediately after creation</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <h3 class="text-sm font-medium text-gray-900 mb-3">Role Descriptions</h3>
-                <div class="text-sm text-gray-600 space-y-2">
-                    <div class="flex items-start">
-                        <i class="fas fa-crown text-red-500 mr-2 mt-0.5"></i>
+            <!-- Role Descriptions -->
+            <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                <h3 class="text-sm font-semibold text-gray-900 mb-3 flex items-center">
+                    <i class="fas fa-users-cog text-gray-600 mr-2"></i>
+                    Role Descriptions
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 text-sm">
+                    <div class="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-100">
+                        <i class="fas fa-crown text-red-500 mt-0.5 flex-shrink-0"></i>
                         <div>
-                            <strong>Super Admin:</strong> Full system access, can manage all users and settings
+                            <div class="font-medium text-gray-900">Super Admin</div>
+                            <div class="text-gray-600 text-xs mt-1">Full system access and control</div>
                         </div>
                     </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-shield-alt text-purple-500 mr-2 mt-0.5"></i>
+                    <div class="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-100">
+                        <i class="fas fa-shield-alt text-purple-500 mt-0.5 flex-shrink-0"></i>
                         <div>
-                            <strong>Admin:</strong> Can manage users, jobs, technicians, and inventory
+                            <div class="font-medium text-gray-900">Admin</div>
+                            <div class="text-gray-600 text-xs mt-1">Manage users, jobs, and inventory</div>
                         </div>
                     </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-cog text-green-500 mr-2 mt-0.5"></i>
+                    <div class="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-100">
+                        <i class="fas fa-user-tie text-blue-500 mt-0.5 flex-shrink-0"></i>
                         <div>
-                            <strong>Technician:</strong> Can manage jobs and inventory, limited user access
+                            <div class="font-medium text-gray-900">Manager</div>
+                            <div class="text-gray-600 text-xs mt-1">Oversee operations and reports</div>
                         </div>
                     </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-user text-gray-500 mr-2 mt-0.5"></i>
+                    <div class="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-100">
+                        <i class="fas fa-tools text-green-500 mt-0.5 flex-shrink-0"></i>
                         <div>
-                            <strong>User:</strong> Basic access to view jobs and limited functionality
+                            <div class="font-medium text-gray-900">Technician</div>
+                            <div class="text-gray-600 text-xs mt-1">Handle repairs and maintenance</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-100">
+                        <i class="fas fa-user text-gray-500 mt-0.5 flex-shrink-0"></i>
+                        <div>
+                            <div class="font-medium text-gray-900">Customer</div>
+                            <div class="text-gray-600 text-xs mt-1">Basic access to own jobs</div>
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
 
             <!-- Form Actions -->
-            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
-                <a href="<?= base_url('dashboard/user-management') ?>" 
-                   class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <div class="flex flex-col sm:flex-row items-center justify-between sm:justify-end space-y-4 sm:space-y-0 sm:space-x-4 pt-8 border-t border-gray-200">
+                <a href="<?= base_url('dashboard/user-management') ?>"
+                   class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                    <i class="fas fa-times mr-2"></i>
                     Cancel
                 </a>
-                <button type="submit" 
-                        class="px-4 py-2 bg-primary-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                    <i class="fas fa-save mr-2"></i>
+                <button type="submit"
+                        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 border border-transparent rounded-xl text-sm font-medium text-white hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg shadow-blue-500/25 transition-all duration-200">
+                    <i class="fas fa-user-plus mr-2"></i>
                     Create User
                 </button>
             </div>

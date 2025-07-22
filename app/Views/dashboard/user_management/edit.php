@@ -7,26 +7,36 @@
         <h1 class="text-2xl font-semibold text-gray-900">Edit User</h1>
         <p class="mt-1 text-sm text-gray-600">Update user information and settings</p>
     </div>
-    <div class="flex space-x-2">
-        <a href="<?= base_url('dashboard/user-management/view/' . $user['id']) ?>" 
-           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
+    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+        <a href="<?= base_url('dashboard/user-management/view/' . $user['id']) ?>"
+           class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 transition-all duration-200 shadow-lg shadow-blue-500/25">
             <i class="fas fa-eye mr-2"></i>
             View User
         </a>
-        <a href="<?= base_url('dashboard/user-management') ?>" 
-           class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+        <a href="<?= base_url('dashboard/user-management') ?>"
+           class="inline-flex items-center justify-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
             <i class="fas fa-arrow-left mr-2"></i>
             Back to Users
         </a>
     </div>
 </div>
 
-<div class="max-w-2xl">
-    <div class="bg-white shadow rounded-lg">
-        <form action="<?= base_url('dashboard/user-management/update/' . $user['id']) ?>" method="POST" class="p-6 space-y-6">
+<div class="w-full">
+    <div class="bg-white shadow-xl rounded-2xl border border-gray-100">
+        <form action="<?= base_url('dashboard/user-management/update/' . $user['id']) ?>" method="POST" class="p-6 lg:p-8 space-y-8">
             <?= csrf_field() ?>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Basic Information Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-user-circle text-blue-600 mr-3"></i>
+                        Basic Information
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-1">Update the user's personal details</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 <!-- Name -->
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
@@ -35,10 +45,10 @@
                     <input type="text"
                            id="name"
                            name="name"
-                           value="<?= old('name', $user['name']) ?>"
+                           value="<?= old('name', $user['full_name'] ?? $user['name'] ?? '') ?>"
                            required
                            placeholder="Enter full name"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.name') ? 'border-red-500' : '' ?>">
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.name') ? 'border-red-500' : '' ?>">
                     <?php if (session('errors.name')): ?>
                         <p class="mt-1 text-sm text-red-600"><?= session('errors.name') ?></p>
                     <?php endif; ?>
@@ -52,35 +62,46 @@
                     <input type="tel"
                            id="mobile_number"
                            name="mobile_number"
-                           value="<?= old('mobile_number', $user['mobile_number']) ?>"
+                           value="<?= old('mobile_number', $user['phone'] ?? $user['mobile_number'] ?? '') ?>"
                            placeholder="Enter mobile number"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.mobile_number') ? 'border-red-500' : '' ?>">
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.mobile_number') ? 'border-red-500' : '' ?>">
                     <?php if (session('errors.mobile_number')): ?>
                         <p class="mt-1 text-sm text-red-600"><?= session('errors.mobile_number') ?></p>
                     <?php endif; ?>
                     <p class="mt-1 text-sm text-gray-500">Optional contact number</p>
                 </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address <span class="text-red-500">*</span>
+                    </label>
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           value="<?= old('email', $user['email']) ?>"
+                           required
+                           placeholder="Enter email address"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.email') ? 'border-red-500' : '' ?>">
+                    <?php if (session('errors.email')): ?>
+                        <p class="mt-1 text-sm text-red-600"><?= session('errors.email') ?></p>
+                    <?php endif; ?>
+                    <p class="mt-1 text-sm text-gray-500">Must be a valid email address</p>
+                </div>
+            </div>
             </div>
 
-            <!-- Email -->
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address <span class="text-red-500">*</span>
-                </label>
-                <input type="email" 
-                       id="email" 
-                       name="email" 
-                       value="<?= old('email', $user['email']) ?>"
-                       required
-                       placeholder="Enter email address"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.email') ? 'border-red-500' : '' ?>">
-                <?php if (session('errors.email')): ?>
-                    <p class="mt-1 text-sm text-red-600"><?= session('errors.email') ?></p>
-                <?php endif; ?>
-                <p class="mt-1 text-sm text-gray-500">Must be a valid email address</p>
-            </div>
+            <!-- Security Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-lock text-green-600 mr-3"></i>
+                        Security & Authentication
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-1">Update login credentials (optional)</p>
+                </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Password (Optional for updates) -->
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
@@ -91,7 +112,7 @@
                                id="password" 
                                name="password" 
                                placeholder="Leave blank to keep current password"
-                               class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.password') ? 'border-red-500' : '' ?>">
+                               class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.password') ? 'border-red-500' : '' ?>">
                         <button type="button" 
                                 onclick="togglePassword('password')"
                                 class="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -114,7 +135,7 @@
                                id="confirm_password" 
                                name="confirm_password" 
                                placeholder="Confirm new password"
-                               class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.confirm_password') ? 'border-red-500' : '' ?>">
+                               class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.confirm_password') ? 'border-red-500' : '' ?>">
                         <button type="button" 
                                 onclick="togglePassword('confirm_password')"
                                 class="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -126,8 +147,19 @@
                     <?php endif; ?>
                 </div>
             </div>
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Role & Permissions Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-user-shield text-purple-600 mr-3"></i>
+                        Role & Permissions
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-1">Update user access level and account status</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 <!-- Role -->
                 <div>
                     <label for="role" class="block text-sm font-medium text-gray-700 mb-2">
@@ -136,7 +168,7 @@
                     <select id="role" 
                             name="role" 
                             required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.role') ? 'border-red-500' : '' ?>">
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.role') ? 'border-red-500' : '' ?>">
                         <option value="">Select role</option>
                         <?php helper('auth'); ?>
                         <?php if (hasRole('superadmin')): ?>
@@ -159,7 +191,7 @@
                     <select id="status" 
                             name="status" 
                             required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.status') ? 'border-red-500' : '' ?>">
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.status') ? 'border-red-500' : '' ?>">
                         <option value="active" <?= old('status', $user['status']) === 'active' ? 'selected' : '' ?>>Active</option>
                         <option value="inactive" <?= old('status', $user['status']) === 'inactive' ? 'selected' : '' ?>>Inactive</option>
                         <option value="suspended" <?= old('status', $user['status']) === 'suspended' ? 'selected' : '' ?>>Suspended</option>
@@ -184,15 +216,17 @@
                     </div>
                 </div>
             </div>
+            </div>
 
             <!-- Form Actions -->
-            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
-                <a href="<?= base_url('dashboard/user-management') ?>" 
-                   class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <div class="flex flex-col sm:flex-row items-center justify-between sm:justify-end space-y-4 sm:space-y-0 sm:space-x-4 pt-8 border-t border-gray-200">
+                <a href="<?= base_url('dashboard/user-management') ?>"
+                   class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                    <i class="fas fa-times mr-2"></i>
                     Cancel
                 </a>
-                <button type="submit" 
-                        class="px-4 py-2 bg-primary-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <button type="submit"
+                        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 border border-transparent rounded-xl text-sm font-medium text-white hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-lg shadow-green-500/25 transition-all duration-200">
                     <i class="fas fa-save mr-2"></i>
                     Update User
                 </button>

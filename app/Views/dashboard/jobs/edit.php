@@ -133,7 +133,7 @@
                         <?php if (!empty($technicians)): ?>
                             <?php foreach ($technicians as $technician): ?>
                                 <option value="<?= $technician['id'] ?>" <?= old('technician_id', $job['technician_id']) == $technician['id'] ? 'selected' : '' ?>>
-                                    <?= esc($technician['name']) ?>
+                                    <?= esc($technician['full_name']) ?>
                                     <?php if (isset($technician['active_jobs'])): ?>
                                         (<?= $technician['active_jobs'] ?> active jobs)
                                     <?php endif; ?>
