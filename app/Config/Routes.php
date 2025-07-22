@@ -129,6 +129,8 @@ $routes->group('dashboard', function($routes) {
     $routes->post('user-management/update/(:num)', 'UserManagement::update/$1');
     $routes->get('user-management/delete/(:num)', 'UserManagement::delete/$1');
     $routes->post('user-management/updateStatus/(:num)', 'UserManagement::updateStatus/$1');
+    $routes->post('user-management/send-sms', 'UserManagement::sendSms');
+    $routes->post('user-management/send-sms/(:num)', 'UserManagement::sendSmsToUser/$1');
 
     // Bug Reports Routes (Admin Only)
     $routes->get('bug-reports', 'BugReports::index');

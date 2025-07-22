@@ -8,6 +8,11 @@
         <p class="mt-1 text-sm text-gray-600">Manage all system users including admins, technicians, and customers</p>
     </div>
     <div class="mt-4 sm:mt-0 flex space-x-3">
+        <button onclick="sendSms()"
+                class="inline-flex items-center px-4 py-2 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition ease-in-out duration-150">
+            <i class="fas fa-sms mr-2"></i>
+            Send SMS
+        </button>
         <a href="<?= base_url('dashboard/technicians') ?>"
            class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
             <i class="fas fa-user-cog mr-2"></i>
@@ -255,4 +260,81 @@
     <?php endif; ?>
 </div>
 
+<?= $this->endSection() ?>
+
+<?= $this->section('scripts') ?>
+<script>
+function sendSms() {
+    // Show loading state
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+
+    // Make AJAX request to send SMS
+    fetch('<?= base_url('dashboard/user-management/send-sms') ?>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': '<?= csrf_token() ?>'
+        },
+        body: JSON.stringify({
+            '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Reset button state
+        button.disabled = false;
+        button.innerHTML = originalText;
+
+        if (data.status) {
+            // Show success message
+            showAlert('SMS sent successfully!', 'success');
+        } else {
+            // Show error message
+            showAlert('Failed to send SMS: ' + (data.error || 'Unknown error'), 'error');
+        }
+    })
+    .catch(error => {
+        // Reset button state
+        button.disabled = false;
+        button.innerHTML = originalText;
+
+        console.error('Error:', error);
+        showAlert('An error occurred while sending SMS', 'error');
+    });
+}
+
+function showAlert(message, type) {
+    // Create alert element
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm ${
+        type === 'success'
+            ? 'bg-green-50 border border-green-200 text-green-800'
+            : 'bg-red-50 border border-red-200 text-red-800'
+    }`;
+
+    alertDiv.innerHTML = `
+        <div class="flex items-center">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
+            <span>${message}</span>
+            <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+
+    // Add to page
+    document.body.appendChild(alertDiv);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (alertDiv.parentElement) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
+</script>
 <?= $this->endSection() ?>

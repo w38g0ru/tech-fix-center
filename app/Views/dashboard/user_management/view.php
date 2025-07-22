@@ -8,12 +8,19 @@
         <p class="mt-1 text-sm text-gray-600">View user information and account details</p>
     </div>
     <div class="flex space-x-2">
-        <a href="<?= base_url('dashboard/user-management/edit/' . $user['id']) ?>" 
+        <?php if (!empty($user['phone'])): ?>
+        <button onclick="sendSmsToUser(<?= $user['id'] ?>)"
+                class="inline-flex items-center px-4 py-2 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition ease-in-out duration-150">
+            <i class="fas fa-sms mr-2"></i>
+            Send SMS
+        </button>
+        <?php endif; ?>
+        <a href="<?= base_url('dashboard/user-management/edit/' . $user['id']) ?>"
            class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700">
             <i class="fas fa-edit mr-2"></i>
             Edit User
         </a>
-        <a href="<?= base_url('dashboard/user-management') ?>" 
+        <a href="<?= base_url('dashboard/user-management') ?>"
            class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
             <i class="fas fa-arrow-left mr-2"></i>
             Back to List
@@ -47,12 +54,33 @@
                 <div>
                     <label class="text-sm font-medium text-gray-500">Email Address</label>
                     <p class="mt-1">
-                        <a href="mailto:<?= esc($user['email']) ?>" 
+                        <a href="mailto:<?= esc($user['email']) ?>"
                            class="text-primary-600 hover:text-primary-700 font-medium">
                             <?= esc($user['email']) ?>
                         </a>
                     </p>
                 </div>
+
+                <div>
+                    <label class="text-sm font-medium text-gray-500">Phone Number</label>
+                    <p class="mt-1 text-lg font-semibold text-gray-900">
+                        <?php if (!empty($user['phone'])): ?>
+                            <a href="tel:<?= esc($user['phone']) ?>"
+                               class="text-primary-600 hover:text-primary-700 font-medium">
+                                <?= esc($user['phone']) ?>
+                            </a>
+                        <?php else: ?>
+                            <span class="text-gray-400">Not provided</span>
+                        <?php endif; ?>
+                    </p>
+                </div>
+
+                <?php if (!empty($user['address'])): ?>
+                <div class="md:col-span-2">
+                    <label class="text-sm font-medium text-gray-500">Address</label>
+                    <p class="mt-1 text-lg font-semibold text-gray-900"><?= esc($user['address']) ?></p>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -211,13 +239,26 @@
             <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
             
             <div class="space-y-3">
-                <a href="mailto:<?= esc($user['email']) ?>" 
+                <?php if (!empty($user['phone'])): ?>
+                <button onclick="sendSmsToUser(<?= $user['id'] ?>)"
+                        class="w-full inline-flex items-center justify-center px-4 py-2 border border-purple-300 rounded-md text-sm font-medium text-purple-700 hover:bg-purple-50">
+                    <i class="fas fa-sms mr-2"></i>
+                    Send SMS to <?= esc($user['full_name']) ?>
+                </button>
+                <?php else: ?>
+                <div class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-400 cursor-not-allowed">
+                    <i class="fas fa-sms mr-2"></i>
+                    No Phone Number
+                </div>
+                <?php endif; ?>
+
+                <a href="mailto:<?= esc($user['email']) ?>"
                    class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
                     <i class="fas fa-envelope mr-2"></i>
                     Send Email
                 </a>
-                
-                <a href="<?= base_url('dashboard/user-management/edit/' . $user['id']) ?>" 
+
+                <a href="<?= base_url('dashboard/user-management/edit/' . $user['id']) ?>"
                    class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
                     <i class="fas fa-edit mr-2"></i>
                     Edit User
@@ -250,4 +291,124 @@
     </div>
 </div>
 
+<?= $this->endSection() ?>
+
+<?= $this->section('scripts') ?>
+<script>
+function sendSms() {
+    // Show loading state
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+
+    // Make AJAX request to send SMS
+    fetch('<?= base_url('dashboard/user-management/send-sms') ?>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': '<?= csrf_token() ?>'
+        },
+        body: JSON.stringify({
+            '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Reset button state
+        button.disabled = false;
+        button.innerHTML = originalText;
+
+        if (data.status) {
+            // Show success message
+            showAlert('SMS sent successfully to all active users!', 'success');
+        } else {
+            // Show error message
+            showAlert('Failed to send SMS: ' + (data.error || 'Unknown error'), 'error');
+        }
+    })
+    .catch(error => {
+        // Reset button state
+        button.disabled = false;
+        button.innerHTML = originalText;
+
+        console.error('Error:', error);
+        showAlert('An error occurred while sending SMS', 'error');
+    });
+}
+
+function sendSmsToUser(userId) {
+    // Show loading state
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+
+    // Make AJAX request to send SMS to specific user
+    fetch('<?= base_url('dashboard/user-management/send-sms/') ?>' + userId, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': '<?= csrf_token() ?>'
+        },
+        body: JSON.stringify({
+            '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Reset button state
+        button.disabled = false;
+        button.innerHTML = originalText;
+
+        if (data.status) {
+            // Show success message
+            showAlert('SMS sent successfully to user!', 'success');
+        } else {
+            // Show error message
+            showAlert('Failed to send SMS: ' + (data.error || 'Unknown error'), 'error');
+        }
+    })
+    .catch(error => {
+        // Reset button state
+        button.disabled = false;
+        button.innerHTML = originalText;
+
+        console.error('Error:', error);
+        showAlert('An error occurred while sending SMS', 'error');
+    });
+}
+
+function showAlert(message, type) {
+    // Create alert element
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm ${
+        type === 'success'
+            ? 'bg-green-50 border border-green-200 text-green-800'
+            : 'bg-red-50 border border-red-200 text-red-800'
+    }`;
+
+    alertDiv.innerHTML = `
+        <div class="flex items-center">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
+            <span>${message}</span>
+            <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+
+    // Add to page
+    document.body.appendChild(alertDiv);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (alertDiv.parentElement) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
+</script>
 <?= $this->endSection() ?>

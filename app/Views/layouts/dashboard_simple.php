@@ -363,5 +363,8 @@ $pageTitle = $title ?? 'Dashboard';
             }
         });
     </script>
+
+    <!-- Additional Scripts -->
+    <?= $this->renderSection('scripts') ?>
 </body>
 </html>

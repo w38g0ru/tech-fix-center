@@ -324,6 +324,37 @@ class UserManagement extends BaseController
         }
     }
 
+    public function sendSmsToUser($id)
+    {
+        $sms = service('sms');
+
+        // Fetch a single user by ID
+        $user = $this->adminUserModel->where('status', 'active')
+                                    ->where('id', $id)
+                                    ->where('phone !=', '')
+                                    ->where('phone IS NOT NULL')
+                                    ->first();
+
+        if (!$user) {
+            return $this->response->setJSON([
+                'status' => false,
+                'error' => 'User not found or no valid phone number.'
+            ]);
+        }
+
+        $phone = $user['phone'];
+
+        // Prepare message
+        $currentDateTime = date('l, F j, Y \a\t g:i A');
+        $message = "Hi {$user['full_name']}, message from website sent on {$currentDateTime}. Sample message.";
+
+        // Send SMS
+        $result = $sms->send($phone, $message);
+
+        return $this->response->setJSON($result);
+    }
+
+
     /**
      * Generate a unique username from email
      */
