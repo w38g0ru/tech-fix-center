@@ -8,55 +8,58 @@
         <p class="mt-1 text-sm text-gray-600">Track inventory stock movements (IN/OUT)</p>
     </div>
     <div class="mt-4 sm:mt-0">
-        <a href="<?= base_url('dashboard/movements/create') ?>" 
-           class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:bg-primary-700 active:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
+        <a href="<?= base_url('dashboard/movements/create') ?>"
+           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30">
             <i class="fas fa-plus mr-2"></i>
-            Add Movement
+            Add Stock
         </a>
     </div>
 </div>
 
 <!-- Movement Stats -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-    <div class="bg-white rounded-lg shadow p-4">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 hover:shadow-2xl transition-all duration-200">
         <div class="flex items-center">
-            <div class="p-2 rounded-full bg-green-100 text-green-600">
-                <i class="fas fa-arrow-down"></i>
+            <div class="p-3 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/25">
+                <i class="fas fa-arrow-down text-lg"></i>
             </div>
-            <div class="ml-3">
-                <p class="text-sm font-medium text-gray-600">Total IN</p>
-                <p class="text-lg font-semibold text-gray-900"><?= $movementStats['total_in'] ?></p>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-600">Stock Added</p>
+                <p class="text-2xl font-bold text-gray-900"><?= $movementStats['total_in'] ?></p>
+                <p class="text-xs text-green-600 font-medium">Total IN movements</p>
             </div>
         </div>
     </div>
-    
-    <div class="bg-white rounded-lg shadow p-4">
+
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 hover:shadow-2xl transition-all duration-200">
         <div class="flex items-center">
-            <div class="p-2 rounded-full bg-red-100 text-red-600">
-                <i class="fas fa-arrow-up"></i>
+            <div class="p-3 rounded-xl bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-500/25">
+                <i class="fas fa-arrow-up text-lg"></i>
             </div>
-            <div class="ml-3">
-                <p class="text-sm font-medium text-gray-600">Total OUT</p>
-                <p class="text-lg font-semibold text-gray-900"><?= $movementStats['total_out'] ?></p>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-600">Stock Used</p>
+                <p class="text-2xl font-bold text-gray-900"><?= $movementStats['total_out'] ?></p>
+                <p class="text-xs text-red-600 font-medium">Total OUT movements</p>
             </div>
         </div>
     </div>
-    
-    <div class="bg-white rounded-lg shadow p-4">
+
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 hover:shadow-2xl transition-all duration-200">
         <div class="flex items-center">
-            <div class="p-2 rounded-full bg-blue-100 text-blue-600">
-                <i class="fas fa-balance-scale"></i>
+            <div class="p-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25">
+                <i class="fas fa-exchange-alt text-lg"></i>
             </div>
-            <div class="ml-3">
+            <div class="ml-4">
                 <p class="text-sm font-medium text-gray-600">Net Movement</p>
-                <p class="text-lg font-semibold text-gray-900"><?= $movementStats['net_movement'] ?></p>
+                <p class="text-2xl font-bold text-gray-900"><?= $movementStats['net_movement'] ?></p>
+                <p class="text-xs text-blue-600 font-medium">IN minus OUT</p>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Movements Table -->
-<div class="bg-white shadow overflow-hidden sm:rounded-md">
+<div class="bg-white shadow-xl rounded-2xl border border-gray-100 overflow-hidden">
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
@@ -127,10 +130,10 @@
                                 <i class="fas fa-exchange-alt text-4xl mb-4"></i>
                                 <p class="text-lg font-medium">No stock movements found</p>
                                 <p class="text-sm">Get started by recording your first stock movement.</p>
-                                <a href="<?= base_url('dashboard/movements/create') ?>" 
-                                   class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700">
+                                <a href="<?= base_url('dashboard/movements/create') ?>"
+                                   class="mt-4 inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg shadow-blue-500/25">
                                     <i class="fas fa-plus mr-2"></i>
-                                    Add Movement
+                                    Add Stock
                                 </a>
                             </div>
                         </td>
