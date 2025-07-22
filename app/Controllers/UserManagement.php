@@ -81,10 +81,14 @@ class UserManagement extends BaseController
         }
 
         // Prepare user data for model validation
+        $email = $this->request->getPost('email');
+        $password = $this->request->getPost('password');
+
         $userData = [
+            'username' => $this->generateUsername($email), // Generate username from email
             'full_name' => $this->request->getPost('name'),
-            'email' => $this->request->getPost('email'),
-            'password' => $this->request->getPost('password'),
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_DEFAULT), // Hash the password
             'phone' => $this->request->getPost('mobile_number'),
             'role' => $this->request->getPost('role'),
             'status' => $this->request->getPost('status') ?: 'active'
@@ -95,23 +99,36 @@ class UserManagement extends BaseController
             return redirect()->back()->withInput()->with('error', 'Only super admins can create super admin accounts.');
         }
 
-        // Additional validation for confirm password
+        // Additional validation for confirm password (before hashing)
         $confirmPassword = $this->request->getPost('confirm_password');
-        if ($userData['password'] !== $confirmPassword) {
+        if ($password !== $confirmPassword) {
             return redirect()->back()->withInput()->with('error', 'Password confirmation does not match.');
         }
 
+        // Create a copy for validation without hashed password
+        $validationData = $userData;
+        $validationData['password'] = $password; // Use original password for validation
+
         // Validate using AdminUserModel
-        if (!$this->adminUserModel->validate($userData)) {
+        if (!$this->adminUserModel->validate($validationData)) {
             return redirect()->back()->withInput()->with('errors', $this->adminUserModel->errors());
         }
 
         $userData['created_at'] = date('Y-m-d H:i:s');
 
+        // Debug logging
+        log_message('debug', 'UserManagement::store - Attempting to create user: ' . json_encode($userData));
+
         if ($this->adminUserModel->insert($userData)) {
             return redirect()->to('/dashboard/user-management')->with('success', 'User created successfully!');
         } else {
-            return redirect()->back()->withInput()->with('error', 'Failed to create user.');
+            // Get detailed error information
+            $errors = $this->adminUserModel->errors();
+            if (!empty($errors)) {
+                return redirect()->back()->withInput()->with('errors', $errors);
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Failed to create user. Please check all required fields and try again.');
+            }
         }
     }
 
@@ -278,5 +295,28 @@ class UserManagement extends BaseController
         } else {
             return redirect()->back()->with('error', 'Failed to update user status.');
         }
+    }
+
+    /**
+     * Generate a unique username from email
+     */
+    private function generateUsername($email)
+    {
+        // Extract username part from email
+        $baseUsername = strtolower(explode('@', $email)[0]);
+
+        // Remove any non-alphanumeric characters except dots and underscores
+        $baseUsername = preg_replace('/[^a-z0-9._]/', '', $baseUsername);
+
+        // Check if username already exists
+        $username = $baseUsername;
+        $counter = 1;
+
+        while ($this->adminUserModel->where('username', $username)->first()) {
+            $username = $baseUsername . $counter;
+            $counter++;
+        }
+
+        return $username;
     }
 }
