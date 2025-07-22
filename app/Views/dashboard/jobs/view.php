@@ -51,7 +51,7 @@
                     <h4 class="text-sm font-medium text-gray-500 mb-2">Job Details</h4>
                     <div class="space-y-2">
                         <p><strong>Job ID:</strong> #<?= $job['id'] ?></p>
-                        <p><strong>Created:</strong> <?= date('F j, Y \a\t g:i A', strtotime($job['created_at'])) ?></p>
+                        <p><strong>सिर्जना:</strong> <?= formatNepaliDateTime($job['created_at'], 'medium') ?></p>
                         <p><strong>Status:</strong> <?= esc($job['status']) ?></p>
                     </div>
                 </div>

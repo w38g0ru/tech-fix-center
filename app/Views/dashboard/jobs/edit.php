@@ -292,7 +292,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
                     <div>
                         <p><strong>Job ID:</strong> #<?= $job['id'] ?></p>
-                        <p><strong>Created:</strong> <?= date('F j, Y \a\t g:i A', strtotime($job['created_at'])) ?></p>
+                        <p><strong>सिर्जना:</strong> <?= formatNepaliDateTime($job['created_at'], 'medium') ?></p>
                     </div>
                     <div>
                         <p><strong>Current Status:</strong> 
