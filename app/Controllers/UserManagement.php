@@ -324,36 +324,97 @@ class UserManagement extends BaseController
         }
     }
 
+    public function sendSms()
+    {
+        // Step 1: Get all active users with valid phone numbers
+        $users = $this->adminUserModel
+                    ->where('status', 'active')
+                    ->where('phone !=', '')
+                    ->where('phone IS NOT NULL')
+                    ->findAll();
+
+        if (empty($users)) {
+            return $this->response->setJSON([
+                'status'  => false,
+                'message' => 'No active users with valid phone numbers found.'
+            ])->setStatusCode(404);
+        }
+
+        // Step 2: Extract phone numbers
+        $phoneNumbers = array_column($users, 'phone');
+
+        // Step 3: Compose SMS message
+        $currentDateTime = date('l, F j, Y \a\t g:i A');
+        $message = "Hi message from website sent on {$currentDateTime}. Sample message.";
+
+        // Step 4: Send SMS to all numbers
+        $sms = service('sms');
+        $result = $sms->send($phoneNumbers, $message);
+
+        // Step 5: Return response with appropriate HTTP status
+        return $this->response->setJSON([
+            'status'  => $result['status'],
+            'message' => $result['message'] ?? ($result['status'] ? 'SMS sent successfully to all active users!' : 'Failed to send SMS'),
+            'count'   => count($phoneNumbers),
+            'code'    => $result['code'] ?? null,
+            'debug'   => $result['raw'] ?? null  // Optional: remove for production
+        ])->setStatusCode($result['status'] ? 200 : 400);
+    }
+
     public function sendSmsToUser($id)
     {
-        $sms = service('sms');
+        $validation = \Config\Services::validation();
 
-        // Fetch a single user by ID
-        $user = $this->adminUserModel->where('status', 'active')
-                                    ->where('id', $id)
-                                    ->where('phone !=', '')
-                                    ->where('phone IS NOT NULL')
-                                    ->first();
+        // Step 1: Validate ID is a positive integer (no leading zeros) using regex
+        $validation->setRules([
+            'id' => [
+                'label' => 'User ID',
+                'rules' => 'required|regex_match[/^[1-9][0-9]*$/]',
+                'errors' => [
+                    'regex_match' => 'The {field} must be a positive integer greater than zero without leading zeros.'
+                ]
+            ]
+        ]);
+
+        if (!$validation->run(['id' => $id])) {
+            return $this->response->setJSON([
+                'status'  => false,
+                'message' => 'Invalid user ID.',
+                'errors'  => $validation->getErrors()
+            ])->setStatusCode(422);
+        }
+
+        // Step 2: Check if user exists, is active, and has a valid phone
+        $user = $this->adminUserModel
+                    ->where('id', $id)
+                    ->where('status', 'active')
+                    ->where('phone !=', '')
+                    ->where('phone IS NOT NULL')
+                    ->first();
 
         if (!$user) {
             return $this->response->setJSON([
-                'status' => false,
-                'error' => 'User not found or no valid phone number.'
-            ]);
+                'status'  => false,
+                'message' => 'User not found, inactive, or missing valid phone number.'
+            ])->setStatusCode(404);
         }
 
-        $phone = $user['phone'];
-
-        // Prepare message
+        // Step 3: Compose SMS message
         $currentDateTime = date('l, F j, Y \a\t g:i A');
         $message = "Hi {$user['full_name']}, message from website sent on {$currentDateTime}. Sample message.";
 
-        // Send SMS
-        $result = $sms->send($phone, $message);
+        // Step 4: Send SMS
+        $sms = service('sms');
+        $result = $sms->send($user['phone'], $message);
 
-        return $this->response->setJSON($result);
+        // Step 5: Return response with appropriate HTTP status
+        return $this->response->setJSON([
+            'status'  => $result['status'],
+            'message' => $result['message'],
+            'code'    => $result['code'] ?? null,
+            'debug'   => $result['raw'] ?? null  // Optional: remove for production
+        ])->setStatusCode($result['status'] ? 200 : 400);
     }
-
 
     /**
      * Generate a unique username from email

@@ -290,11 +290,12 @@ function sendSms() {
         button.innerHTML = originalText;
 
         if (data.status) {
-            // Show success message
-            showAlert('SMS sent successfully!', 'success');
+            // Show success message with count
+            const count = data.count || 0;
+            showAlert(`SMS sent successfully to ${count} user${count !== 1 ? 's' : ''}!`, 'success');
         } else {
             // Show error message
-            showAlert('Failed to send SMS: ' + (data.error || 'Unknown error'), 'error');
+            showAlert('Failed to send SMS: ' + (data.message || 'Unknown error'), 'error');
         }
     })
     .catch(error => {
