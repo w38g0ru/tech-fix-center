@@ -128,13 +128,13 @@
 
             <?php if ($partsRequest['approved_by_name']): ?>
             <div class="flex flex-col sm:flex-row sm:justify-between">
-                <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Approved By</dt>
+                <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">स्वीकृतकर्ता</dt>
                 <dd class="text-sm text-gray-900"><?= esc($partsRequest['approved_by_name']) ?></dd>
             </div>
 
             <div class="flex flex-col sm:flex-row sm:justify-between">
-                <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Approved Date</dt>
-                <dd class="text-sm text-gray-900"><?= date('M d, Y H:i', strtotime($partsRequest['approved_at'])) ?></dd>
+                <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">स्वीकृत मिति</dt>
+                <dd class="text-sm text-gray-900"><?= formatNepaliDateTime($partsRequest['approved_at'], 'short') ?></dd>
             </div>
             <?php endif; ?>
         </dl>
@@ -209,22 +209,22 @@
 
         <?php if ($partsRequest['order_date']): ?>
         <div class="flex flex-col sm:flex-row sm:justify-between">
-            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Order Date</dt>
-            <dd class="text-sm text-gray-900"><?= date('M d, Y', strtotime($partsRequest['order_date'])) ?></dd>
+            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">अर्डर मिति</dt>
+            <dd class="text-sm text-gray-900"><?= formatNepaliDate($partsRequest['order_date'], 'short') ?></dd>
         </div>
         <?php endif; ?>
 
         <?php if ($partsRequest['expected_delivery_date']): ?>
         <div class="flex flex-col sm:flex-row sm:justify-between">
-            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Expected Delivery</dt>
-            <dd class="text-sm text-gray-900"><?= date('M d, Y', strtotime($partsRequest['expected_delivery_date'])) ?></dd>
+            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">अपेक्षित डिलिभरी</dt>
+            <dd class="text-sm text-gray-900"><?= formatNepaliDate($partsRequest['expected_delivery_date'], 'short') ?></dd>
         </div>
         <?php endif; ?>
 
         <?php if ($partsRequest['actual_delivery_date']): ?>
         <div class="flex flex-col sm:flex-row sm:justify-between">
-            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Actual Delivery</dt>
-            <dd class="text-sm text-gray-900"><?= date('M d, Y', strtotime($partsRequest['actual_delivery_date'])) ?></dd>
+            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">वास्तविक डिलिभरी</dt>
+            <dd class="text-sm text-gray-900"><?= formatNepaliDate($partsRequest['actual_delivery_date'], 'short') ?></dd>
         </div>
         <?php endif; ?>
     </dl>

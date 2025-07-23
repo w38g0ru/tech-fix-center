@@ -176,7 +176,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                <?= date('M d, Y', strtotime($request['created_at'])) ?>
+                                <?= formatNepaliDate($request['created_at'], 'short') ?>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex space-x-2">
