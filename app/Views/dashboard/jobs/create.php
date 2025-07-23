@@ -430,17 +430,21 @@ function toggleDispatchFields() {
     const otherDispatchFields = document.getElementById('other_dispatch_fields');
     const serviceCenterSelect = document.getElementById('service_center_id');
 
+    console.log('Status changed to:', status); // Debug log
+
     if (status === 'Referred to Service Center') {
         // Show only service center field
         serviceCenterField.style.display = 'block';
         otherDispatchFields.style.display = 'none';
         serviceCenterSelect.required = true;
+        console.log('Showing service center field only'); // Debug log
     } else {
         // Show other dispatch fields, hide service center
         serviceCenterField.style.display = 'none';
         otherDispatchFields.style.display = 'block';
         serviceCenterSelect.required = false;
         serviceCenterSelect.value = ''; // Clear selection
+        console.log('Showing other dispatch fields'); // Debug log
     }
 }
 
