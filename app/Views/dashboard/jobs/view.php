@@ -110,20 +110,44 @@
         </div>
 
         <!-- Quick Status Update -->
-        <div class="bg-white shadow rounded-lg p-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Status Update</h3>
-            <form action="<?= base_url('dashboard/jobs/updateStatus/' . $job['id']) ?>" method="POST" class="flex items-center space-x-4">
+        <div class="bg-white shadow-lg rounded-lg p-6 border-l-4 border-orange-500">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <i class="fas fa-tasks text-orange-600 mr-2"></i>
+                Quick Status Update
+            </h3>
+            <form action="<?= base_url('dashboard/jobs/updateStatus/' . $job['id']) ?>" method="POST" class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <?= csrf_field() ?>
-                <select name="status" class="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
-                    <option value="Pending" <?= $job['status'] === 'Pending' ? 'selected' : '' ?>>Pending</option>
-                    <option value="In Progress" <?= $job['status'] === 'In Progress' ? 'selected' : '' ?>>In Progress</option>
-                    <option value="Completed" <?= $job['status'] === 'Completed' ? 'selected' : '' ?>>Completed</option>
-                </select>
-                <button type="submit" 
-                        class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-                    Update Status
-                </button>
+                <div class="flex-1 w-full sm:w-auto">
+                    <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Current Status</label>
+                    <select name="status" id="status" class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white">
+                        <option value="Pending" <?= $job['status'] === 'Pending' ? 'selected' : '' ?>>Pending</option>
+                        <option value="In Progress" <?= $job['status'] === 'In Progress' ? 'selected' : '' ?>>In Progress</option>
+                        <option value="Parts Pending" <?= $job['status'] === 'Parts Pending' ? 'selected' : '' ?>>Parts Pending</option>
+                        <option value="Referred to Service Center" <?= $job['status'] === 'Referred to Service Center' ? 'selected' : '' ?>>Referred to Service Center</option>
+                        <option value="Ready to Dispatch to Customer" <?= $job['status'] === 'Ready to Dispatch to Customer' ? 'selected' : '' ?>>Ready to Dispatch to Customer</option>
+                        <option value="Returned" <?= $job['status'] === 'Returned' ? 'selected' : '' ?>>Returned</option>
+                        <option value="Completed" <?= $job['status'] === 'Completed' ? 'selected' : '' ?>>Completed</option>
+                    </select>
+                </div>
+                <div class="w-full sm:w-auto">
+                    <button type="submit"
+                            class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-orange-600 border border-transparent rounded-lg text-sm font-semibold text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors shadow-md">
+                        <i class="fas fa-sync-alt mr-2"></i>
+                        Update Status
+                    </button>
+                </div>
             </form>
+            <p class="mt-3 text-sm text-gray-600">
+                <i class="fas fa-info-circle mr-1"></i>
+                Current status: <span class="font-semibold text-<?= match($job['status']) {
+                    'Pending' => 'yellow-600',
+                    'In Progress' => 'blue-600',
+                    'Completed' => 'green-600',
+                    'Parts Pending' => 'orange-600',
+                    'Referred to Service Center' => 'purple-600',
+                    default => 'gray-600'
+                } ?>"><?= esc($job['status']) ?></span>
+            </p>
         </div>
     </div>
 
