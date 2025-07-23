@@ -4,7 +4,7 @@ namespace App\Libraries;
 
 class SmsService
 {
-    protected string $authToken = 'cdb430b1996fbe2f4bed4434716790728984dc708056d1a3fa1358ec9b9f1319';
+    protected string $authToken = '3b483a2b26ddde842177118fa8db747bb3dec729cb44f60d0f1a05758363d8c5';
     protected string $from = '31001';
     protected string $apiUrl = 'http://aakashsms.com/admin/public/sms/v3/send/';
 
