@@ -6,7 +6,7 @@ class SmsService
 {
     protected string $authToken = 'cdb430b1996fbe2f4bed4434716790728984dc708056d1a3fa1358ec9b9f1319';
     protected string $from = '31001';
-    protected string $apiUrl = 'http://aakashsms.com/admin/public/sms/v1/send/';
+    protected string $apiUrl = 'http://aakashsms.com/admin/public/sms/v3/send/';
 
     protected array $responseMessages = [
         2000 => 'SMS sent successfully',
