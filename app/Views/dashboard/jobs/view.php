@@ -7,17 +7,56 @@
         <h1 class="text-2xl font-semibold text-gray-900">Job #<?= $job['id'] ?> Details</h1>
         <p class="mt-1 text-sm text-gray-600">View complete job information</p>
     </div>
-    <div class="flex space-x-2">
-        <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>" 
-           class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700">
+    <div class="flex flex-wrap gap-2">
+        <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>"
+           class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500">
             <i class="fas fa-edit mr-2"></i>
             Edit Job
         </a>
-        <a href="<?= base_url('dashboard/jobs') ?>" 
-           class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+        <a href="<?= base_url('dashboard/photos/upload?type=Job&job_id=' . $job['id']) ?>"
+           class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+            <i class="fas fa-camera-retro mr-2"></i>
+            Add Photos
+        </a>
+        <button onclick="window.print()"
+                class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i class="fas fa-print mr-2"></i>
+            Print
+        </button>
+        <a href="<?= base_url('dashboard/jobs') ?>"
+           class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
             <i class="fas fa-arrow-left mr-2"></i>
             Back to Jobs
         </a>
+    </div>
+</div>
+
+<!-- Mobile Quick Actions (visible on small screens) -->
+<div class="lg:hidden mb-6">
+    <div class="bg-white shadow rounded-lg p-4">
+        <h3 class="text-sm font-medium text-gray-900 mb-3">Quick Actions</h3>
+        <div class="grid grid-cols-2 gap-2">
+            <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>"
+               class="inline-flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                <i class="fas fa-edit mr-2"></i>
+                Edit
+            </a>
+            <a href="<?= base_url('dashboard/photos/upload?type=Job&job_id=' . $job['id']) ?>"
+               class="inline-flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                <i class="fas fa-camera-retro mr-2"></i>
+                Photos
+            </a>
+            <a href="<?= base_url('dashboard/movements/job/' . $job['id']) ?>"
+               class="inline-flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                <i class="fas fa-exchange-alt mr-2"></i>
+                Movements
+            </a>
+            <button onclick="window.print()"
+                    class="inline-flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                <i class="fas fa-print mr-2"></i>
+                Print
+            </button>
+        </div>
     </div>
 </div>
 
@@ -238,35 +277,38 @@
         </div>
 
         <!-- Job Actions -->
-        <div class="bg-white shadow rounded-lg p-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Actions</h3>
+        <div class="bg-white shadow-lg rounded-lg p-6 border-l-4 border-primary-500">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <i class="fas fa-cogs text-primary-600 mr-2"></i>
+                Job Actions
+            </h3>
             <div class="space-y-3">
-                <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>" 
-                   class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>"
+                   class="w-full inline-flex items-center justify-center px-4 py-3 bg-primary-600 border border-transparent rounded-lg text-sm font-semibold text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors">
                     <i class="fas fa-edit mr-2"></i>
                     Edit Job
                 </a>
-                
+
                 <a href="<?= base_url('dashboard/movements/job/' . $job['id']) ?>"
-                   class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                   class="w-full inline-flex items-center justify-center px-4 py-3 bg-blue-600 border border-transparent rounded-lg text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                     <i class="fas fa-exchange-alt mr-2"></i>
                     View Stock Movements
                 </a>
 
                 <a href="<?= base_url('dashboard/photos/upload?type=Job&job_id=' . $job['id']) ?>"
-                   class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                   class="w-full inline-flex items-center justify-center px-4 py-3 bg-green-600 border border-transparent rounded-lg text-sm font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors">
                     <i class="fas fa-camera-retro mr-2"></i>
                     Add Photoproofs
                 </a>
 
                 <a href="<?= base_url('dashboard/photos/job/' . $job['id']) ?>"
-                   class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                   class="w-full inline-flex items-center justify-center px-4 py-3 bg-purple-600 border border-transparent rounded-lg text-sm font-semibold text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors">
                     <i class="fas fa-images mr-2"></i>
                     View All Photoproofs
                 </a>
-                
-                <button onclick="window.print()" 
-                        class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+
+                <button onclick="window.print()"
+                        class="w-full inline-flex items-center justify-center px-4 py-3 bg-indigo-600 border border-transparent rounded-lg text-sm font-semibold text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors">
                     <i class="fas fa-print mr-2"></i>
                     Print Job Details
                 </button>
