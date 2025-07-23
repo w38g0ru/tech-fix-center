@@ -39,7 +39,7 @@ class JobModel extends Model
         'dispatch_type' => 'permit_empty|in_list[Customer,Service Center,Other]',
         'service_center_id' => 'permit_empty|is_natural_no_zero',
         'dispatch_date' => 'permit_empty|valid_date',
-        'expected_return_date' => 'permit_empty|valid_date',
+        'expected_return_date' => 'required|valid_date',
         'actual_return_date' => 'permit_empty|valid_date',
         'dispatch_notes' => 'permit_empty|max_length[1000]'
     ];
@@ -74,6 +74,7 @@ class JobModel extends Model
             'valid_date' => 'Please enter a valid dispatch date'
         ],
         'expected_return_date' => [
+            'required' => 'Expected return date is required',
             'valid_date' => 'Please enter a valid expected return date'
         ],
         'actual_return_date' => [

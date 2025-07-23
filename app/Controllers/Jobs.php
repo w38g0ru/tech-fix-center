@@ -115,6 +115,11 @@ class Jobs extends BaseController
             'dispatch_notes' => $this->request->getPost('dispatch_notes') ?: null
         ];
 
+        // Additional validation for service center when status is "Referred to Service Center"
+        if ($jobData['status'] === 'Referred to Service Center' && empty($jobData['service_center_id'])) {
+            return redirect()->back()->withInput()->with('error', 'Service center is required when status is "Referred to Service Center".');
+        }
+
         // Validate using JobModel
         if (!$this->jobModel->validate($jobData)) {
             return redirect()->back()->withInput()->with('errors', $this->jobModel->errors());
@@ -283,6 +288,11 @@ class Jobs extends BaseController
             'actual_return_date' => $this->request->getPost('actual_return_date') ?: null,
             'dispatch_notes' => $this->request->getPost('dispatch_notes') ?: null
         ];
+
+        // Additional validation for service center when status is "Referred to Service Center"
+        if ($jobData['status'] === 'Referred to Service Center' && empty($jobData['service_center_id'])) {
+            return redirect()->back()->withInput()->with('error', 'Service center is required when status is "Referred to Service Center".');
+        }
 
         // Validate using JobModel
         if (!$this->jobModel->validate($jobData)) {
