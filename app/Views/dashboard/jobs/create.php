@@ -234,65 +234,10 @@
                 </div>
                 <p class="text-sm text-green-700 mb-4">Configure dispatch and return details for this job</p>
 
-                <!-- Service Center (shown when status is "Referred to Service Center") -->
-                <div id="service_center_field" class="mb-4" style="display: none;">
-                    <label for="service_center_id" class="block text-sm font-medium text-gray-700 mb-2">
-                        Service Center <span class="text-red-500">*</span>
-                    </label>
-                    <select id="service_center_id" name="service_center_id" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
-                        <option value="">Select Service Center</option>
-                        <?php foreach ($serviceCenters as $center): ?>
-                            <option value="<?= esc($center['id']) ?>" <?= old('service_center_id') == $center['id'] ? 'selected' : '' ?>><?= esc($center['name']) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <p class="mt-1 text-sm text-gray-500">Required when referring to service center</p>
-                </div>
-
-                <!-- Other Dispatch Fields (hidden when status is "Referred to Service Center") -->
-                <div id="other_dispatch_fields">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Dispatch Type -->
-                        <div>
-                            <label for="dispatch_type" class="block text-sm font-medium text-gray-700 mb-2">Dispatch Type</label>
-                            <select id="dispatch_type" name="dispatch_type" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
-                                <option value="">Select Dispatch Type</option>
-                                <?php foreach ($dispatchTypes as $key => $value): ?>
-                                    <option value="<?= esc($key) ?>" <?= old('dispatch_type') == $key ? 'selected' : '' ?>><?= esc($value) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <p class="mt-1 text-sm text-gray-500">Where will this job be dispatched?</p>
-                        </div>
-
-                        <!-- Dispatch Date -->
-                        <div>
-                            <label for="dispatch_date" class="block text-sm font-medium text-gray-700 mb-2">Dispatch Date</label>
-                            <input type="date" id="dispatch_date" name="dispatch_date" value="<?= old('dispatch_date') ?>"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
-                            <p class="mt-1 text-sm text-gray-500">When will this job be dispatched?</p>
-                        </div>
-
-                        <!-- Actual Return Date -->
-                        <div>
-                            <label for="actual_return_date" class="block text-sm font-medium text-gray-700 mb-2">Actual Return Date</label>
-                            <input type="date" id="actual_return_date" name="actual_return_date" value="<?= old('actual_return_date') ?>"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
-                            <p class="mt-1 text-sm text-gray-500">When did this job actually return?</p>
-                        </div>
-                    </div>
-
-                    <!-- Dispatch Notes -->
-                    <div class="mt-4">
-                        <label for="dispatch_notes" class="block text-sm font-medium text-gray-700 mb-2">Dispatch Notes</label>
-                        <textarea id="dispatch_notes" name="dispatch_notes" rows="3"
-                                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                                  placeholder="Enter any dispatch-related notes, instructions, or special requirements..."><?= old('dispatch_notes') ?></textarea>
-                        <p class="mt-1 text-sm text-gray-500">Additional information about dispatch requirements</p>
-                    </div>
-                </div>
-
-                <!-- Expected Return Date (Always Required) -->
-                <div class="mt-4">
+                <!-- Expected Return Date (Always Required - Shown First) -->
+                <div class="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                     <label for="expected_return_date" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-calendar-check text-yellow-600 mr-2"></i>
                         Expected Return Date <span class="text-red-500">*</span>
                     </label>
                     <input type="date" id="expected_return_date" name="expected_return_date" value="<?= old('expected_return_date') ?>"
@@ -301,7 +246,78 @@
                     <?php if (session('errors.expected_return_date')): ?>
                         <p class="mt-1 text-sm text-red-600"><?= session('errors.expected_return_date') ?></p>
                     <?php endif; ?>
-                    <p class="mt-1 text-sm text-gray-500">When do you expect this job to return? (Required)</p>
+                    <p class="mt-1 text-sm text-yellow-700 font-medium">⚠️ This field is required for all jobs regardless of status</p>
+                </div>
+
+                <!-- Service Center Selection (shown when status is "Referred to Service Center") -->
+                <div id="service_center_section" class="mb-4" style="display: none;">
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <h4 class="text-sm font-medium text-blue-900 mb-3">
+                            <i class="fas fa-building text-blue-600 mr-2"></i>
+                            Service Center Assignment
+                        </h4>
+                        <div>
+                            <label for="service_center_id" class="block text-sm font-medium text-gray-700 mb-2">
+                                Service Center Name <span class="text-red-500">*</span>
+                            </label>
+                            <select id="service_center_id" name="service_center_id" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                <option value="">Select Service Center</option>
+                                <?php foreach ($serviceCenters as $center): ?>
+                                    <option value="<?= esc($center['id']) ?>" <?= old('service_center_id') == $center['id'] ? 'selected' : '' ?>><?= esc($center['name']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <p class="mt-1 text-sm text-blue-700">Required when referring job to service center</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Dispatch Fields (shown for all other statuses - Optional) -->
+                <div id="other_dispatch_section">
+                    <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                        <h4 class="text-sm font-medium text-gray-900 mb-3">
+                            <i class="fas fa-truck text-gray-600 mr-2"></i>
+                            Additional Dispatch Details <span class="text-sm text-gray-500">(Optional)</span>
+                        </h4>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Dispatch Type -->
+                            <div>
+                                <label for="dispatch_type" class="block text-sm font-medium text-gray-700 mb-2">Dispatch Type</label>
+                                <select id="dispatch_type" name="dispatch_type" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                    <option value="">Select Dispatch Type (Optional)</option>
+                                    <?php foreach ($dispatchTypes as $key => $value): ?>
+                                        <option value="<?= esc($key) ?>" <?= old('dispatch_type') == $key ? 'selected' : '' ?>><?= esc($value) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <p class="mt-1 text-sm text-gray-500">Optional: Where will this job be dispatched?</p>
+                            </div>
+
+                            <!-- Dispatch Date -->
+                            <div>
+                                <label for="dispatch_date" class="block text-sm font-medium text-gray-700 mb-2">Dispatch Date</label>
+                                <input type="date" id="dispatch_date" name="dispatch_date" value="<?= old('dispatch_date') ?>"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                <p class="mt-1 text-sm text-gray-500">Optional: When will this job be dispatched?</p>
+                            </div>
+
+                            <!-- Actual Return Date -->
+                            <div>
+                                <label for="actual_return_date" class="block text-sm font-medium text-gray-700 mb-2">Actual Return Date</label>
+                                <input type="date" id="actual_return_date" name="actual_return_date" value="<?= old('actual_return_date') ?>"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                <p class="mt-1 text-sm text-gray-500">Optional: When did this job actually return?</p>
+                            </div>
+                        </div>
+
+                        <!-- Dispatch Notes -->
+                        <div class="mt-4">
+                            <label for="dispatch_notes" class="block text-sm font-medium text-gray-700 mb-2">Dispatch Notes</label>
+                            <textarea id="dispatch_notes" name="dispatch_notes" rows="3"
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                      placeholder="Optional: Enter any dispatch-related notes, instructions, or special requirements..."><?= old('dispatch_notes') ?></textarea>
+                            <p class="mt-1 text-sm text-gray-500">Optional: Additional information about dispatch requirements</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -426,26 +442,29 @@ function toggleCustomerFields() {
 // Toggle dispatch fields based on job status
 function toggleDispatchFields() {
     const status = document.getElementById('status').value;
-    const serviceCenterField = document.getElementById('service_center_field');
-    const otherDispatchFields = document.getElementById('other_dispatch_fields');
+    const serviceCenterSection = document.getElementById('service_center_section');
+    const otherDispatchSection = document.getElementById('other_dispatch_section');
     const serviceCenterSelect = document.getElementById('service_center_id');
 
     console.log('Status changed to:', status); // Debug log
 
     if (status === 'Referred to Service Center') {
-        // Show only service center field
-        serviceCenterField.style.display = 'block';
-        otherDispatchFields.style.display = 'none';
+        // Show ONLY service center section
+        serviceCenterSection.style.display = 'block';
+        otherDispatchSection.style.display = 'none';
         serviceCenterSelect.required = true;
-        console.log('Showing service center field only'); // Debug log
+        console.log('✅ Showing service center section only - Service center is REQUIRED'); // Debug log
     } else {
-        // Show other dispatch fields, hide service center
-        serviceCenterField.style.display = 'none';
-        otherDispatchFields.style.display = 'block';
+        // Show other dispatch fields (optional), hide service center
+        serviceCenterSection.style.display = 'none';
+        otherDispatchSection.style.display = 'block';
         serviceCenterSelect.required = false;
         serviceCenterSelect.value = ''; // Clear selection
-        console.log('Showing other dispatch fields'); // Debug log
+        console.log('✅ Showing other dispatch fields (optional) - Service center hidden'); // Debug log
     }
+
+    // Expected Return Date is ALWAYS visible and required (no changes needed)
+    console.log('✅ Expected Return Date remains required for all statuses');
 }
 
 // Initialize on page load

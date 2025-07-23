@@ -68,7 +68,8 @@ class JobModel extends Model
             'in_list' => 'Please select a valid dispatch type'
         ],
         'service_center_id' => [
-            'is_natural_no_zero' => 'Please select a valid service center'
+            'is_natural_no_zero' => 'Please select a valid service center',
+            'required' => 'Service center is required when status is "Referred to Service Center"'
         ],
         'dispatch_date' => [
             'valid_date' => 'Please enter a valid dispatch date'
