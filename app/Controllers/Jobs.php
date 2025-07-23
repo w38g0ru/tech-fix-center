@@ -7,6 +7,7 @@ use App\Models\UserModel;
 use App\Models\AdminUserModel;
 use App\Models\PhotoModel;
 use App\Models\ServiceCenterModel;
+use App\Libraries\SmsService;
 
 class Jobs extends BaseController
 {
@@ -15,6 +16,7 @@ class Jobs extends BaseController
     protected $adminUserModel;
     protected $photoModel;
     protected $serviceCenterModel;
+    protected $smsService;
 
     public function __construct()
     {
@@ -23,6 +25,7 @@ class Jobs extends BaseController
         $this->adminUserModel = new AdminUserModel();
         $this->photoModel = new PhotoModel();
         $this->serviceCenterModel = new ServiceCenterModel();
+        $this->smsService = new SmsService();
 
         // Load auth helper
         helper('auth');
@@ -188,6 +191,9 @@ class Jobs extends BaseController
             }
         }
 
+        // Send SMS notification to admin (if not created by anish@anish.com.np)
+        $this->sendJobCreationSmsToAdmin($jobId, $jobData);
+
         // Prepare success message
         $message = 'Job created successfully!';
         if ($uploadedCount > 0) {
@@ -291,7 +297,15 @@ class Jobs extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->jobModel->errors());
         }
 
+        // Store old status for comparison
+        $oldStatus = $job['status'];
+
         if ($this->jobModel->update($id, $jobData)) {
+            // Send SMS if status changed to "Ready to Dispatch to Customer"
+            if ($jobData['status'] === 'Ready to Dispatch to Customer' && $oldStatus !== 'Ready to Dispatch to Customer') {
+                $this->sendReadyForDeliverySmsToCustomer($id, $jobData);
+            }
+
             return redirect()->to('/dashboard/jobs')->with('success', 'Job updated successfully!');
         } else {
             return redirect()->back()->withInput()->with('error', 'Failed to update job.');
@@ -327,15 +341,138 @@ class Jobs extends BaseController
         }
 
         $status = $this->request->getPost('status');
-        
-        if (!in_array($status, ['Pending', 'In Progress', 'Completed'])) {
+
+        // Updated valid statuses to include all possible statuses
+        $validStatuses = [
+            'Pending', 'In Progress', 'Parts Pending',
+            'Referred to Service Center', 'Ready to Dispatch to Customer',
+            'Returned', 'Completed'
+        ];
+
+        if (!in_array($status, $validStatuses)) {
             return redirect()->back()->with('error', 'Invalid status.');
         }
 
+        // Store old status for comparison
+        $oldStatus = $job['status'];
+
         if ($this->jobModel->update($id, ['status' => $status])) {
+            // Send SMS if status changed to "Ready to Dispatch to Customer"
+            if ($status === 'Ready to Dispatch to Customer' && $oldStatus !== 'Ready to Dispatch to Customer') {
+                $this->sendReadyForDeliverySmsToCustomer($id, $job);
+            }
+
             return redirect()->back()->with('success', 'Job status updated successfully!');
         } else {
             return redirect()->back()->with('error', 'Failed to update job status.');
+        }
+    }
+
+    /**
+     * Send SMS notification to admin when a new job is created
+     *
+     * @param int $jobId
+     * @param array $jobData
+     * @return void
+     */
+    private function sendJobCreationSmsToAdmin($jobId, $jobData)
+    {
+        try {
+            // Get current user's email to check if it's anish@anish.com.np
+            $currentUser = session()->get('user');
+            if ($currentUser && $currentUser['email'] === 'anish@anish.com.np') {
+                log_message('info', "SMS not sent for job #{$jobId} - created by anish@anish.com.np");
+                return;
+            }
+
+            // Get admin phone number (assuming admin is the first user or has a specific role)
+            $admin = $this->adminUserModel
+                ->where('email', 'anish@anish.com.np')
+                ->orWhere('role', 'admin')
+                ->where('phone IS NOT NULL')
+                ->where('phone !=', '')
+                ->first();
+
+            if (!$admin || empty($admin['phone'])) {
+                log_message('error', "No admin phone number found for job creation SMS notification");
+                return;
+            }
+
+            // Get customer name for SMS
+            $customerName = 'Walk-in Customer';
+            if (!empty($jobData['user_id'])) {
+                $customer = $this->userModel->find($jobData['user_id']);
+                $customerName = $customer ? $customer['full_name'] : 'Registered Customer';
+            } elseif (!empty($jobData['walk_in_customer_name'])) {
+                $customerName = $jobData['walk_in_customer_name'] . ' (Walk-in)';
+            }
+
+            // Compose SMS message
+            helper('nepali_date');
+            $currentDateTime = formatNepaliDateTime(date('Y-m-d H:i:s'), 'short');
+
+            $message = "New Job Created!\n";
+            $message .= "Job ID: #{$jobId}\n";
+            $message .= "Customer: {$customerName}\n";
+            $message .= "Device: " . ($jobData['device_name'] ?? 'N/A') . "\n";
+            $message .= "Problem: " . (substr($jobData['problem'] ?? 'N/A', 0, 50)) . "\n";
+            $message .= "Status: " . ($jobData['status'] ?? 'N/A') . "\n";
+            $message .= "Time: {$currentDateTime}\n";
+            $message .= "- TeknoPhix";
+
+            $result = $this->smsService->send($admin['phone'], $message);
+
+            if ($result['status']) {
+                log_message('info', "Job creation SMS sent successfully to admin for job #{$jobId}");
+            } else {
+                log_message('error', "Failed to send job creation SMS to admin for job #{$jobId}: " . ($result['message'] ?? 'Unknown error'));
+            }
+
+        } catch (\Exception $e) {
+            log_message('error', "Exception sending job creation SMS for job #{$jobId}: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Send SMS notification to customer when job status changes to "Ready to Dispatch to Customer"
+     *
+     * @param int $jobId
+     * @param array $jobData
+     * @return void
+     */
+    private function sendReadyForDeliverySmsToCustomer($jobId, $jobData)
+    {
+        try {
+            $customerPhone = null;
+
+            // Get customer phone number
+            if (!empty($jobData['user_id'])) {
+                // Registered customer
+                $customer = $this->userModel->find($jobData['user_id']);
+                $customerPhone = $customer['mobile_number'] ?? null;
+            } elseif (!empty($jobData['walk_in_customer_mobile'])) {
+                // Walk-in customer
+                $customerPhone = $jobData['walk_in_customer_mobile'];
+            }
+
+            if (empty($customerPhone)) {
+                log_message('info', "No customer phone number found for ready-for-delivery SMS for job #{$jobId}");
+                return;
+            }
+
+            // Compose SMS message
+            $message = "Your service is ready in Infotech Infotech Suppliers & Traders, Gaighat., please pick up. –";
+
+            $result = $this->smsService->send($customerPhone, $message);
+
+            if ($result['status']) {
+                log_message('info', "Ready-for-delivery SMS sent successfully to customer for job #{$jobId}");
+            } else {
+                log_message('error', "Failed to send ready-for-delivery SMS to customer for job #{$jobId}: " . ($result['message'] ?? 'Unknown error'));
+            }
+
+        } catch (\Exception $e) {
+            log_message('error', "Exception sending ready-for-delivery SMS for job #{$jobId}: " . $e->getMessage());
         }
     }
 }
