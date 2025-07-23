@@ -272,7 +272,7 @@ function sendSms() {
     button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
 
     // Make AJAX request to send SMS
-    fetch('<?= base_url('dashboard/user-management/send-sms') ?>', {
+    fetch('<?= base_url('dashboard/sms/bulk') ?>', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
