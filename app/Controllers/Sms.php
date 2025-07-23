@@ -69,7 +69,7 @@ class Sms extends ResourceController
             // Check if SMS service returned an error
             if (!$result['status']) {
                 $errorMessage = $result['message'] ?? 'SMS service error';
-                log_message('error', 'Bulk SMS failed. Count: ' . count($phoneNumbers) . ', Error: ' . $errorMessage);
+                log_message('error', 'Bulk SMS failed. Count: ' . count($phoneNumbers) . ', Error: ' . $errorMessage . ', Code: ' . ($result['code'] ?? 'unknown'));
 
                 return $this->response->setJSON([
                     'status'  => false,
@@ -80,13 +80,15 @@ class Sms extends ResourceController
             }
 
             // SMS sent successfully
-            log_message('info', 'Bulk SMS sent successfully to ' . count($phoneNumbers) . ' users');
+            $apiMessage = $result['message'] ?? 'SMS queued for delivery';
+            log_message('info', 'Bulk SMS sent successfully to ' . count($phoneNumbers) . ' users. API Message: ' . $apiMessage);
 
             return $this->response->setJSON([
                 'status'  => true,
                 'message' => 'SMS sent successfully to ' . count($phoneNumbers) . ' active users!',
                 'count'   => count($phoneNumbers),
-                'code'    => $result['code'] ?? 'BULK_SMS_SENT'
+                'code'    => 2000,
+                'api_message' => $apiMessage
             ])->setStatusCode(200);
 
         } catch (\Exception $e) {
@@ -156,27 +158,29 @@ class Sms extends ResourceController
         try {
             $result = $this->smsService->send($user['phone'], $message);
 
-            if (!$result['status'] || ($result['code'] ?? null) !== 2000) {
+            if (!$result['status']) {
                 log_message('error', 'SMS failed: ' . json_encode([
                     'user_id' => $id,
                     'phone'   => $user['phone'],
-                    'response_code' => $result['code'] ?? 'unknown',
-                    'response' => $result,
+                    'error_code' => $result['code'] ?? 'unknown',
+                    'error_message' => $result['message'] ?? 'Unknown error',
+                    'full_response' => $result,
                 ]));
 
                 return $this->response->setJSON([
                     'status'  => false,
-                    'message' => 'Failed to send SMS.',
+                    'message' => $result['message'] ?? 'Failed to send SMS.',
                     'code'    => $result['code'] ?? 'UNKNOWN'
                 ])->setStatusCode(500);
             }
 
-            log_message('info', "SMS sent successfully to user ID {$id} at phone {$user['phone']}");
+            log_message('info', "SMS sent successfully to user ID {$id} at phone {$user['phone']}. API Message: " . ($result['message'] ?? 'SMS queued'));
 
             return $this->response->setJSON([
                 'status'  => true,
-                'message' => "SMS sent successfully to {$user['full_name']}.",
-                'code'    => 2000
+                'message' => "SMS sent successfully to {$user['full_name']}!",
+                'code'    => 2000,
+                'api_message' => $result['message'] ?? 'SMS queued for delivery'
             ])->setStatusCode(200);
 
         } catch (\Exception $e) {
@@ -184,7 +188,7 @@ class Sms extends ResourceController
 
             return $this->response->setJSON([
                 'status'  => false,
-                'message' => 'SMS service unavailable.',
+                'message' => 'SMS service unavailable: ' . $e->getMessage(),
                 'code'    => 'SMS_EXCEPTION'
             ])->setStatusCode(503);
         }

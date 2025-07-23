@@ -49,19 +49,37 @@ class SmsService
 
         $decoded = json_decode($rawResponse, true);
 
-        if (!is_array($decoded) || ($decoded['response_code'] ?? null) !== 2000) {
-            $this->logError($logFile, 'API response error', $rawResponse);
+        // Check if JSON decoding failed
+        if (!is_array($decoded)) {
+            $this->logError($logFile, 'JSON decode error', $rawResponse);
             return [
                 'status'  => false,
-                'message' => 'SMS not sent',
-                'code'    => $decoded['response_code'] ?? 'UNKNOWN'
+                'message' => 'Invalid SMS API response format',
+                'code'    => 'JSON_DECODE_ERROR'
             ];
         }
 
+        // AakashSMS API returns: {"error": false, "message": "...", "data": {...}}
+        // Success condition: error = false
+        if (($decoded['error'] ?? true) !== false) {
+            $errorMessage = $decoded['message'] ?? 'Unknown SMS API error';
+            $this->logError($logFile, 'SMS API error', $rawResponse);
+            return [
+                'status'  => false,
+                'message' => $errorMessage,
+                'code'    => 'SMS_API_ERROR'
+            ];
+        }
+
+        // SMS sent successfully
+        $successMessage = $decoded['message'] ?? 'SMS sent successfully';
+        log_message('info', 'SMS API Success: ' . $successMessage);
+
         return [
             'status'  => true,
-            'message' => 'SMS sent',
-            'code'    => 2000
+            'message' => $successMessage,
+            'code'    => 2000,
+            'data'    => $decoded['data'] ?? null
         ];
     }
 
