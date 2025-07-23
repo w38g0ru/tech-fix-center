@@ -14,9 +14,7 @@ class JobModel extends Model
     protected $protectFields = true;
     protected $allowedFields = [
         'user_id', 'walk_in_customer_name', 'walk_in_customer_mobile', 'device_name', 'serial_number', 'problem',
-        'technician_id', 'status', 'charge', 'dispatch_type', 'service_center_id',
-        'dispatch_date', 'expected_return_date', 'actual_return_date',
-        'dispatch_notes'
+        'technician_id', 'status', 'charge', 'service_center_id', 'expected_return_date'
     ];
 
     // Dates
@@ -36,12 +34,8 @@ class JobModel extends Model
         'technician_id' => 'permit_empty|is_natural_no_zero',
         'status' => 'required|in_list[Pending,In Progress,Parts Pending,Referred to Service Center,Ready to Dispatch to Customer,Returned,Completed]',
         'charge' => 'permit_empty|decimal',
-        'dispatch_type' => 'permit_empty|in_list[Customer,Service Center,Other]',
         'service_center_id' => 'permit_empty|is_natural_no_zero',
-        'dispatch_date' => 'permit_empty|valid_date',
-        'expected_return_date' => 'required|valid_date',
-        'actual_return_date' => 'permit_empty|valid_date',
-        'dispatch_notes' => 'permit_empty|max_length[1000]'
+        'expected_return_date' => 'required|valid_date'
     ];
 
     protected $validationMessages = [
@@ -64,25 +58,13 @@ class JobModel extends Model
             'required' => 'Job status is required',
             'in_list' => 'Please select a valid status'
         ],
-        'dispatch_type' => [
-            'in_list' => 'Please select a valid dispatch type'
-        ],
         'service_center_id' => [
             'is_natural_no_zero' => 'Please select a valid service center',
             'required' => 'Service center is required when status is "Referred to Service Center"'
         ],
-        'dispatch_date' => [
-            'valid_date' => 'Please enter a valid dispatch date'
-        ],
         'expected_return_date' => [
             'required' => 'Expected return date is required',
             'valid_date' => 'Please enter a valid expected return date'
-        ],
-        'actual_return_date' => [
-            'valid_date' => 'Please enter a valid actual return date'
-        ],
-        'dispatch_notes' => [
-            'max_length' => 'Dispatch notes cannot exceed 1000 characters'
         ]
     ];
 

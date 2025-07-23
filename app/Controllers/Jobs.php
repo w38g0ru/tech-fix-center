@@ -107,12 +107,8 @@ class Jobs extends BaseController
             'technician_id' => $this->request->getPost('technician_id') ?: null,
             'status' => $this->request->getPost('status'),
             'charge' => $this->request->getPost('charge') ?: null,
-            'dispatch_type' => $this->request->getPost('dispatch_type') ?: null,
             'service_center_id' => $this->request->getPost('service_center_id') ?: null,
-            'dispatch_date' => $this->request->getPost('dispatch_date') ?: null,
-            'expected_return_date' => $this->request->getPost('expected_return_date') ?: null,
-            'actual_return_date' => $this->request->getPost('actual_return_date') ?: null,
-            'dispatch_notes' => $this->request->getPost('dispatch_notes') ?: null
+            'expected_return_date' => $this->request->getPost('expected_return_date') ?: null
         ];
 
         // Additional validation for service center when status is "Referred to Service Center"
@@ -281,12 +277,8 @@ class Jobs extends BaseController
             'technician_id' => $this->request->getPost('technician_id') ?: null,
             'status' => $this->request->getPost('status'),
             'charge' => $this->request->getPost('charge') ?: null,
-            'dispatch_type' => $this->request->getPost('dispatch_type') ?: null,
             'service_center_id' => $this->request->getPost('service_center_id') ?: null,
-            'dispatch_date' => $this->request->getPost('dispatch_date') ?: null,
-            'expected_return_date' => $this->request->getPost('expected_return_date') ?: null,
-            'actual_return_date' => $this->request->getPost('actual_return_date') ?: null,
-            'dispatch_notes' => $this->request->getPost('dispatch_notes') ?: null
+            'expected_return_date' => $this->request->getPost('expected_return_date') ?: null
         ];
 
         // Additional validation for service center when status is "Referred to Service Center"
