@@ -295,67 +295,6 @@
 
 <?= $this->section('scripts') ?>
 <script>
-function sendSms() {
-    // Show loading state
-    const button = event.target.closest('button');
-    const originalText = button.innerHTML;
-    button.disabled = true;
-    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
-
-    // Make AJAX request to send SMS
-    fetch('<?= base_url('dashboard/sms/bulk') ?>', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRF-TOKEN': '<?= csrf_token() ?>'
-        },
-        body: JSON.stringify({
-            '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Reset button state
-        button.disabled = false;
-        button.innerHTML = originalText;
-
-        if (data.status) {
-            // Show success message with count
-            showAlert(data.message || 'SMS sent successfully!', 'success');
-        } else {
-            // Show detailed error message
-            let errorMsg = data.message || 'Unknown error occurred';
-            if (data.code) {
-                errorMsg += ` (Code: ${data.code})`;
-            }
-            showAlert('Failed to send SMS: ' + errorMsg, 'error');
-
-            // Log detailed error for debugging
-            if (data.debug) {
-                console.error('SMS Error Details:', data.debug);
-            }
-        }
-    })
-    .catch(error => {
-        // Reset button state
-        button.disabled = false;
-        button.innerHTML = originalText;
-
-        console.error('Network/Server Error:', error);
-
-        // Show appropriate error message based on error type
-        let errorMessage = 'Network error occurred while sending SMS';
-        if (error.name === 'TypeError') {
-            errorMessage = 'Unable to connect to SMS service. Please check your internet connection.';
-        } else if (error.message) {
-            errorMessage = `SMS service error: ${error.message}`;
-        }
-
-        showAlert(errorMessage, 'error');
-    });
-}
-
 function sendSmsToUser(userId) {
     // Show loading state
     const button = event.target.closest('button');
