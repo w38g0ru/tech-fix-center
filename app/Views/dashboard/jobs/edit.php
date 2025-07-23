@@ -283,6 +283,96 @@
                 <?php endif; ?>
             </div>
 
+                <!-- Charge -->
+                <div>
+                    <label for="charge" class="block text-sm font-medium text-gray-700 mb-2">
+                        Repair Charge (NPR)
+                    </label>
+                    <input type="number"
+                           id="charge"
+                           name="charge"
+                           value="<?= old('charge', $job['charge'] ?? '0.00') ?>"
+                           min="0"
+                           step="0.01"
+                           placeholder="0.00"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.charge') ? 'border-red-500' : '' ?>">
+                    <?php if (session('errors.charge')): ?>
+                        <p class="mt-1 text-sm text-red-600"><?= session('errors.charge') ?></p>
+                    <?php endif; ?>
+                    <p class="mt-1 text-sm text-gray-500">Estimated or final repair cost</p>
+                </div>
+            </div>
+
+            <!-- Dispatch Information Section -->
+            <div class="space-y-6">
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-shipping-fast text-green-600 mr-3"></i>
+                        Dispatch Information
+                    </h3>
+                    <p class="mt-1 text-sm text-gray-600">Update dispatch and return details</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Dispatch Type -->
+                    <div>
+                        <label for="dispatch_type" class="block text-sm font-medium text-gray-700 mb-2">Dispatch Type</label>
+                        <select id="dispatch_type" name="dispatch_type" class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                            <option value="">Select Dispatch Type</option>
+                            <?php foreach ($dispatchTypes as $key => $value): ?>
+                                <option value="<?= esc($key) ?>" <?= old('dispatch_type', $job['dispatch_type'] ?? '') == $key ? 'selected' : '' ?>><?= esc($value) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <p class="mt-1 text-sm text-gray-500">Where will this job be dispatched?</p>
+                    </div>
+
+                    <!-- Service Center -->
+                    <div>
+                        <label for="service_center_id" class="block text-sm font-medium text-gray-700 mb-2">Service Center</label>
+                        <select id="service_center_id" name="service_center_id" class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                            <option value="">Select Service Center</option>
+                            <?php foreach ($serviceCenters as $center): ?>
+                                <option value="<?= esc($center['id']) ?>" <?= old('service_center_id', $job['service_center_id'] ?? '') == $center['id'] ? 'selected' : '' ?>><?= esc($center['name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <p class="mt-1 text-sm text-gray-500">Required if dispatching to service center</p>
+                    </div>
+
+                    <!-- Dispatch Date -->
+                    <div>
+                        <label for="dispatch_date" class="block text-sm font-medium text-gray-700 mb-2">Dispatch Date</label>
+                        <input type="date" id="dispatch_date" name="dispatch_date" value="<?= old('dispatch_date', $job['dispatch_date'] ?? '') ?>"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                        <p class="mt-1 text-sm text-gray-500">When will this job be dispatched?</p>
+                    </div>
+
+                    <!-- Expected Return Date -->
+                    <div>
+                        <label for="expected_return_date" class="block text-sm font-medium text-gray-700 mb-2">Expected Return Date</label>
+                        <input type="date" id="expected_return_date" name="expected_return_date" value="<?= old('expected_return_date', $job['expected_return_date'] ?? '') ?>"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                        <p class="mt-1 text-sm text-gray-500">When do you expect this job to return?</p>
+                    </div>
+
+                    <!-- Actual Return Date -->
+                    <div>
+                        <label for="actual_return_date" class="block text-sm font-medium text-gray-700 mb-2">Actual Return Date</label>
+                        <input type="date" id="actual_return_date" name="actual_return_date" value="<?= old('actual_return_date', $job['actual_return_date'] ?? '') ?>"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                        <p class="mt-1 text-sm text-gray-500">When did this job actually return?</p>
+                    </div>
+                </div>
+
+                <!-- Dispatch Notes -->
+                <div>
+                    <label for="dispatch_notes" class="block text-sm font-medium text-gray-700 mb-2">Dispatch Notes</label>
+                    <textarea id="dispatch_notes" name="dispatch_notes" rows="4"
+                              class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                              placeholder="Enter any dispatch-related notes, instructions, or special requirements..."><?= old('dispatch_notes', $job['dispatch_notes'] ?? '') ?></textarea>
+                    <p class="mt-1 text-sm text-gray-500">Additional information about dispatch requirements</p>
+                </div>
+            </div>
+
                 <!-- Job Info -->
                 <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-xl border border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">

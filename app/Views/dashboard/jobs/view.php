@@ -140,6 +140,67 @@
             </div>
         </div>
 
+        <!-- Dispatch Information -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">
+                <i class="fas fa-shipping-fast text-green-600 mr-2"></i>
+                Dispatch Information
+            </h3>
+
+            <div class="space-y-4">
+                <?php if (!empty($job['dispatch_type'])): ?>
+                    <div class="flex justify-between">
+                        <span class="text-sm font-medium text-gray-500">Dispatch Type:</span>
+                        <span class="text-sm text-gray-900"><?= esc($job['dispatch_type']) ?></span>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($job['service_center_name'])): ?>
+                    <div class="flex justify-between">
+                        <span class="text-sm font-medium text-gray-500">Service Center:</span>
+                        <span class="text-sm text-gray-900"><?= esc($job['service_center_name']) ?></span>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($job['dispatch_date'])): ?>
+                    <div class="flex justify-between">
+                        <span class="text-sm font-medium text-gray-500">Dispatch Date:</span>
+                        <span class="text-sm text-gray-900"><?= formatNepaliDate($job['dispatch_date'], 'short') ?></span>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($job['expected_return_date'])): ?>
+                    <div class="flex justify-between">
+                        <span class="text-sm font-medium text-gray-500">Expected Return:</span>
+                        <span class="text-sm text-gray-900"><?= formatNepaliDate($job['expected_return_date'], 'short') ?></span>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($job['actual_return_date'])): ?>
+                    <div class="flex justify-between">
+                        <span class="text-sm font-medium text-gray-500">Actual Return:</span>
+                        <span class="text-sm text-gray-900"><?= formatNepaliDate($job['actual_return_date'], 'short') ?></span>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($job['dispatch_notes'])): ?>
+                    <div class="pt-3 border-t border-gray-200">
+                        <span class="text-sm font-medium text-gray-500 block mb-2">Dispatch Notes:</span>
+                        <p class="text-sm text-gray-900 bg-gray-50 p-3 rounded-md"><?= nl2br(esc($job['dispatch_notes'])) ?></p>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (empty($job['dispatch_type']) && empty($job['service_center_name']) && empty($job['dispatch_date']) && empty($job['expected_return_date']) && empty($job['actual_return_date']) && empty($job['dispatch_notes'])): ?>
+                    <p class="text-gray-500 italic">No dispatch information available</p>
+                    <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>"
+                       class="mt-2 inline-flex items-center text-sm text-primary-600 hover:text-primary-700">
+                        <i class="fas fa-plus mr-1"></i>
+                        Add Dispatch Information
+                    </a>
+                <?php endif; ?>
+            </div>
+        </div>
+
         <!-- Technician Information -->
         <div class="bg-white shadow rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Assigned Technician</h3>

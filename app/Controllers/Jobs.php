@@ -107,13 +107,12 @@ class Jobs extends BaseController
             'technician_id' => $this->request->getPost('technician_id') ?: null,
             'status' => $this->request->getPost('status'),
             'charge' => $this->request->getPost('charge') ?: null,
-            'dispatch_type' => $this->request->getPost('dispatch_type'),
+            'dispatch_type' => $this->request->getPost('dispatch_type') ?: null,
             'service_center_id' => $this->request->getPost('service_center_id') ?: null,
-            'dispatch_date' => $this->request->getPost('dispatch_date'),
-            'nepali_date' => $this->request->getPost('nepali_date'),
-            'expected_return_date' => $this->request->getPost('expected_return_date'),
-            'actual_return_date' => $this->request->getPost('actual_return_date'),
-            'dispatch_notes' => $this->request->getPost('dispatch_notes')
+            'dispatch_date' => $this->request->getPost('dispatch_date') ?: null,
+            'expected_return_date' => $this->request->getPost('expected_return_date') ?: null,
+            'actual_return_date' => $this->request->getPost('actual_return_date') ?: null,
+            'dispatch_notes' => $this->request->getPost('dispatch_notes') ?: null
         ];
 
         // Validate using JobModel
@@ -276,7 +275,13 @@ class Jobs extends BaseController
             'problem' => $this->request->getPost('problem'),
             'technician_id' => $this->request->getPost('technician_id') ?: null,
             'status' => $this->request->getPost('status'),
-            'charge' => $this->request->getPost('charge') ?: null
+            'charge' => $this->request->getPost('charge') ?: null,
+            'dispatch_type' => $this->request->getPost('dispatch_type') ?: null,
+            'service_center_id' => $this->request->getPost('service_center_id') ?: null,
+            'dispatch_date' => $this->request->getPost('dispatch_date') ?: null,
+            'expected_return_date' => $this->request->getPost('expected_return_date') ?: null,
+            'actual_return_date' => $this->request->getPost('actual_return_date') ?: null,
+            'dispatch_notes' => $this->request->getPost('dispatch_notes') ?: null
         ];
 
         // Validate using JobModel
