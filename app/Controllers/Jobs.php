@@ -387,9 +387,9 @@ class Jobs extends BaseController
 
             // Get admin phone number (assuming admin is the first user or has a specific role)
             $admin = $this->adminUserModel
-                ->where('email', 'anish@anish.com.np')
-                ->orWhere('role', 'admin')
-                ->where('phone IS NOT NULL')
+                ->whereNotIn('email', ['anish@anish.com.np'])
+                ->where('role', 'admin')
+                ->where('phone IS NOT NULL', null, false)
                 ->where('phone !=', '')
                 ->first();
 
@@ -418,7 +418,6 @@ class Jobs extends BaseController
             $message .= "Problem: " . (substr($jobData['problem'] ?? 'N/A', 0, 50)) . "\n";
             $message .= "Status: " . ($jobData['status'] ?? 'N/A') . "\n";
             $message .= "Time: {$currentDateTime}\n";
-            $message .= "- TeknoPhix";
 
             $result = $this->smsService->send($admin['phone'], $message);
 
@@ -461,7 +460,7 @@ class Jobs extends BaseController
             }
 
             // Compose SMS message
-            $message = "Your service is ready in Infotech Infotech Suppliers & Traders, Gaighat., please pick up. –";
+            $message = "Your service is ready for pickup at Infotech Suppliers & Traders, Gaighat. Please collect it at your convenience.–";
 
             $result = $this->smsService->send($customerPhone, $message);
 
