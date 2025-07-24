@@ -467,4 +467,140 @@ class AdminUserModel extends Model
 
         return $username;
     }
+
+    // ========================================
+    // RELATIONSHIP METHODS
+    // ========================================
+
+    /**
+     * Get all jobs assigned to a specific technician
+     * Relationship: admin_users.id -> jobs.technician_id (One-to-Many)
+     *
+     * @param int $technicianId
+     * @param int|null $perPage
+     * @return array
+     */
+    public function getAssignedJobs($technicianId, $perPage = null)
+    {
+        $jobModel = new \App\Models\JobModel();
+        return $jobModel->getJobsByTechnician($technicianId, $perPage);
+    }
+
+    /**
+     * Get technician with job statistics
+     *
+     * @param int $technicianId
+     * @return array|null
+     */
+    public function getTechnicianWithJobStats($technicianId)
+    {
+        $technician = $this->where('id', $technicianId)
+                          ->where('role', 'technician')
+                          ->first();
+
+        if (!$technician) {
+            return null;
+        }
+
+        $jobModel = new \App\Models\JobModel();
+
+        // Get job statistics
+        $totalJobs = $jobModel->where('technician_id', $technicianId)->countAllResults();
+        $completedJobs = $jobModel->where('technician_id', $technicianId)->where('status', 'Completed')->countAllResults();
+        $pendingJobs = $jobModel->where('technician_id', $technicianId)->whereNotIn('status', ['Completed', 'Returned'])->countAllResults();
+
+        // Get total revenue generated
+        $totalRevenue = $jobModel->select('SUM(charge) as total')
+                                ->where('technician_id', $technicianId)
+                                ->where('status', 'Completed')
+                                ->first();
+
+        // Get parts requests
+        $partsRequestModel = new \App\Models\PartsRequestModel();
+        $partsRequests = $partsRequestModel->where('technician_id', $technicianId)->countAllResults();
+
+        $technician['job_stats'] = [
+            'total_jobs' => $totalJobs,
+            'completed_jobs' => $completedJobs,
+            'pending_jobs' => $pendingJobs,
+            'total_revenue' => $totalRevenue['total'] ?? 0,
+            'parts_requests' => $partsRequests,
+            'completion_rate' => $totalJobs > 0 ? round(($completedJobs / $totalJobs) * 100, 2) : 0
+        ];
+
+        return $technician;
+    }
+
+    /**
+     * Get all parts requests made by a technician
+     * Relationship: admin_users.id -> parts_requests.technician_id (One-to-Many)
+     *
+     * @param int $technicianId
+     * @param int|null $perPage
+     * @return array
+     */
+    public function getPartsRequests($technicianId, $perPage = null)
+    {
+        $partsRequestModel = new \App\Models\PartsRequestModel();
+
+        $builder = $partsRequestModel->where('technician_id', $technicianId)
+                                   ->orderBy('created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
+    }
+
+    /**
+     * Get technicians with their workload (enhanced performance method)
+     *
+     * @param int|null $perPage
+     * @return array
+     */
+    public function getTechniciansWithWorkload($perPage = null)
+    {
+        $builder = $this->select('admin_users.*,
+                            COUNT(jobs.id) as total_jobs,
+                            COUNT(CASE WHEN jobs.status IN ("Pending", "In Progress") THEN 1 END) as active_jobs,
+                            COUNT(CASE WHEN jobs.status = "Completed" THEN 1 END) as completed_jobs,
+                            SUM(CASE WHEN jobs.status = "Completed" THEN jobs.charge ELSE 0 END) as total_revenue,
+                            COUNT(DISTINCT parts_requests.id) as parts_requests_count')
+                        ->join('jobs', 'jobs.technician_id = admin_users.id', 'left')
+                        ->join('parts_requests', 'parts_requests.technician_id = admin_users.id', 'left')
+                        ->where('admin_users.role', 'technician')
+                        ->where('admin_users.status', 'active')
+                        ->groupBy('admin_users.id')
+                        ->orderBy('active_jobs', 'ASC')
+                        ->orderBy('admin_users.full_name', 'ASC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
+    }
+
+    /**
+     * Get user activity logs for an admin user
+     * Relationship: admin_users.id -> user_activity_logs.user_id (One-to-Many)
+     *
+     * @param int $userId
+     * @param int|null $perPage
+     * @return array
+     */
+    public function getActivityLogs($userId, $perPage = null)
+    {
+        $activityLogModel = new \App\Models\UserActivityLogModel();
+
+        $builder = $activityLogModel->where('user_id', $userId)
+                                   ->orderBy('created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
+    }
 }

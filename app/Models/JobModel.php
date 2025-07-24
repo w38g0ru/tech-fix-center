@@ -363,16 +363,30 @@ class JobModel extends Model
     }
 
     /**
-     * Get jobs with customer and technician details
+     * Get jobs with customer and technician details (Enhanced with actual DB structure)
      */
     public function getJobsWithDetails($perPage = null)
     {
-        $builder = $this->select('jobs.*, users.name as customer_name, users.mobile_number,
-                            admin_users.full_name as technician_name, admin_users.phone as technician_contact,
-                            service_centers.name as service_center_name')
+        $builder = $this->select('jobs.*,
+                            users.name as customer_name,
+                            users.mobile_number as customer_mobile,
+                            users.user_type as customer_type,
+                            admin_users.full_name as technician_name,
+                            admin_users.email as technician_email,
+                            admin_users.phone as technician_phone,
+                            service_centers.name as service_center_name,
+                            service_centers.address as service_center_address,
+                            service_centers.phone as service_center_phone,
+                            service_centers.contact_person as service_center_contact,
+                            COUNT(DISTINCT photos.id) as photo_count,
+                            COUNT(DISTINCT inventory_movements.id) as parts_used_count,
+                            SUM(CASE WHEN inventory_movements.movement_type = "OUT" THEN inventory_movements.quantity ELSE 0 END) as total_parts_used')
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
+                    ->join('photos', 'photos.job_id = jobs.id', 'left')
+                    ->join('inventory_movements', 'inventory_movements.job_id = jobs.id', 'left')
+                    ->groupBy('jobs.id')
                     ->orderBy('jobs.id', 'DESC');
 
         if ($perPage !== null) {
@@ -383,18 +397,26 @@ class JobModel extends Model
     }
 
     /**
-     * Get job by ID with details
+     * Get single job with complete details
      */
-    public function getJobWithDetails($id)
+    public function getJobWithDetails($jobId)
     {
-        return $this->select('jobs.*, users.name as customer_name, users.mobile_number, users.user_type,
-                            admin_users.full_name as technician_name, admin_users.phone as technician_contact,
-                            service_centers.name as service_center_name, service_centers.contact_person as service_center_contact')
-                    ->join('users', 'users.id = jobs.user_id', 'left')
-                    ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
-                    ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
-                    ->where('jobs.id', $id)
-                    ->first();
+        return $this->select('jobs.*,
+                        users.name as customer_name,
+                        users.mobile_number as customer_mobile,
+                        users.user_type as customer_type,
+                        admin_users.full_name as technician_name,
+                        admin_users.email as technician_email,
+                        admin_users.phone as technician_phone,
+                        service_centers.name as service_center_name,
+                        service_centers.address as service_center_address,
+                        service_centers.phone as service_center_phone,
+                        service_centers.contact_person as service_center_contact')
+                ->join('users', 'users.id = jobs.user_id', 'left')
+                ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
+                ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
+                ->where('jobs.id', $jobId)
+                ->first();
     }
 
     /**
@@ -720,6 +742,158 @@ class JobModel extends Model
             'referred_but_no_service_center' => $this->where('status', 'Referred to Service Center')
                                                     ->where('service_center_id IS NULL')
                                                     ->findAll()
+        ];
+    }
+
+    // ========================================
+    // ENHANCED DATABASE INTEGRATION METHODS
+    // ========================================
+
+    /**
+     * Get jobs with comprehensive analytics data
+     *
+     * @param array $filters
+     * @return array
+     */
+    public function getJobsWithAnalytics($filters = [])
+    {
+        $builder = $this->select('jobs.*,
+                            users.name as customer_name,
+                            users.mobile_number as customer_mobile,
+                            users.user_type as customer_type,
+                            admin_users.full_name as technician_name,
+                            service_centers.name as service_center_name,
+                            COUNT(DISTINCT photos.id) as photo_count,
+                            COUNT(DISTINCT inventory_movements.id) as parts_movements,
+                            SUM(CASE WHEN inventory_movements.movement_type = "OUT" THEN inventory_movements.quantity ELSE 0 END) as total_parts_used,
+                            COUNT(DISTINCT parts_requests.id) as parts_requests_count,
+                            DATEDIFF(CURDATE(), jobs.created_at) as days_since_created,
+                            CASE
+                                WHEN jobs.expected_return_date < CURDATE() AND jobs.status NOT IN ("Completed", "Returned") THEN "OVERDUE"
+                                WHEN jobs.expected_return_date = CURDATE() AND jobs.status NOT IN ("Completed", "Returned") THEN "DUE_TODAY"
+                                ELSE "ON_TIME"
+                            END as delivery_status')
+                    ->join('users', 'users.id = jobs.user_id', 'left')
+                    ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
+                    ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
+                    ->join('photos', 'photos.job_id = jobs.id', 'left')
+                    ->join('inventory_movements', 'inventory_movements.job_id = jobs.id', 'left')
+                    ->join('parts_requests', 'parts_requests.job_id = jobs.id', 'left')
+                    ->groupBy('jobs.id');
+
+        // Apply filters
+        if (!empty($filters['status'])) {
+            $builder->where('jobs.status', $filters['status']);
+        }
+        if (!empty($filters['technician_id'])) {
+            $builder->where('jobs.technician_id', $filters['technician_id']);
+        }
+        if (!empty($filters['service_center_id'])) {
+            $builder->where('jobs.service_center_id', $filters['service_center_id']);
+        }
+        if (!empty($filters['date_from'])) {
+            $builder->where('jobs.created_at >=', $filters['date_from']);
+        }
+        if (!empty($filters['date_to'])) {
+            $builder->where('jobs.created_at <=', $filters['date_to']);
+        }
+        if (!empty($filters['overdue_only'])) {
+            $builder->where('jobs.expected_return_date <', date('Y-m-d'))
+                   ->whereNotIn('jobs.status', ['Completed', 'Returned']);
+        }
+
+        return $builder->orderBy('jobs.id', 'DESC')->findAll();
+    }
+
+    /**
+     * Get job performance metrics
+     *
+     * @param array $filters
+     * @return array
+     */
+    public function getJobPerformanceMetrics($filters = [])
+    {
+        $dateFrom = $filters['date_from'] ?? date('Y-m-01'); // First day of current month
+        $dateTo = $filters['date_to'] ?? date('Y-m-d'); // Today
+
+        // Basic metrics
+        $totalJobs = $this->where('created_at >=', $dateFrom)
+                         ->where('created_at <=', $dateTo . ' 23:59:59')
+                         ->countAllResults();
+
+        $completedJobs = $this->where('created_at >=', $dateFrom)
+                             ->where('created_at <=', $dateTo . ' 23:59:59')
+                             ->where('status', 'Completed')
+                             ->countAllResults();
+
+        $overdueJobs = $this->where('expected_return_date <', date('Y-m-d'))
+                           ->whereNotIn('status', ['Completed', 'Returned'])
+                           ->countAllResults();
+
+        // Revenue metrics
+        $totalRevenue = $this->select('SUM(charge) as total')
+                            ->where('created_at >=', $dateFrom)
+                            ->where('created_at <=', $dateTo . ' 23:59:59')
+                            ->where('status', 'Completed')
+                            ->first();
+
+        // Average completion time
+        $avgCompletionTime = $this->select('AVG(DATEDIFF(updated_at, created_at)) as avg_days')
+                                 ->where('created_at >=', $dateFrom)
+                                 ->where('created_at <=', $dateTo . ' 23:59:59')
+                                 ->where('status', 'Completed')
+                                 ->first();
+
+        return [
+            'total_jobs' => $totalJobs,
+            'completed_jobs' => $completedJobs,
+            'pending_jobs' => $totalJobs - $completedJobs,
+            'overdue_jobs' => $overdueJobs,
+            'completion_rate' => $totalJobs > 0 ? round(($completedJobs / $totalJobs) * 100, 2) : 0,
+            'total_revenue' => $totalRevenue['total'] ?? 0,
+            'avg_completion_days' => round($avgCompletionTime['avg_days'] ?? 0, 1),
+            'period' => [
+                'from' => $dateFrom,
+                'to' => $dateTo
+            ]
+        ];
+    }
+
+    /**
+     * Get jobs requiring attention (overdue, no technician, etc.)
+     *
+     * @return array
+     */
+    public function getJobsRequiringAttention()
+    {
+        return [
+            'overdue' => $this->select('jobs.*, users.name as customer_name, admin_users.full_name as technician_name')
+                             ->join('users', 'users.id = jobs.user_id', 'left')
+                             ->join('admin_users', 'admin_users.id = jobs.technician_id', 'left')
+                             ->where('jobs.expected_return_date <', date('Y-m-d'))
+                             ->whereNotIn('jobs.status', ['Completed', 'Returned'])
+                             ->orderBy('jobs.expected_return_date', 'ASC')
+                             ->findAll(),
+
+            'no_technician' => $this->select('jobs.*, users.name as customer_name')
+                                   ->join('users', 'users.id = jobs.user_id', 'left')
+                                   ->where('jobs.technician_id IS NULL')
+                                   ->where('jobs.status !=', 'Pending')
+                                   ->orderBy('jobs.created_at', 'ASC')
+                                   ->findAll(),
+
+            'parts_pending' => $this->select('jobs.*, users.name as customer_name, admin_users.full_name as technician_name')
+                                   ->join('users', 'users.id = jobs.user_id', 'left')
+                                   ->join('admin_users', 'admin_users.id = jobs.technician_id', 'left')
+                                   ->where('jobs.status', 'Parts Pending')
+                                   ->orderBy('jobs.created_at', 'ASC')
+                                   ->findAll(),
+
+            'ready_for_dispatch' => $this->select('jobs.*, users.name as customer_name, users.mobile_number')
+                                        ->join('users', 'users.id = jobs.user_id', 'left')
+                                        ->where('jobs.status', 'Ready to Dispatch to Customer')
+                                        ->orderBy('jobs.updated_at', 'ASC')
+                                        ->findAll()
         ];
     }
 }

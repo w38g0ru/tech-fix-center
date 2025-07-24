@@ -126,4 +126,110 @@ class ServiceCenterModel extends Model
 
         return $builder->findAll();
     }
+
+    // ========================================
+    // RELATIONSHIP METHODS
+    // ========================================
+
+    /**
+     * Get all jobs referred to a specific service center
+     * Relationship: service_centers.id -> jobs.service_center_id (One-to-Many)
+     *
+     * @param int $serviceCenterId
+     * @param int|null $perPage
+     * @return array
+     */
+    public function getJobs($serviceCenterId, $perPage = null)
+    {
+        $jobModel = new \App\Models\JobModel();
+        return $jobModel->getJobsByServiceCenter($serviceCenterId, $perPage);
+    }
+
+    /**
+     * Get all referrals to a specific service center
+     * Relationship: service_centers.id -> referred.service_center_id (One-to-Many)
+     *
+     * @param int $serviceCenterId
+     * @param int|null $perPage
+     * @return array
+     */
+    public function getReferrals($serviceCenterId, $perPage = null)
+    {
+        $referredModel = new \App\Models\ReferredModel();
+
+        $builder = $referredModel->where('service_center_id', $serviceCenterId)
+                                ->orderBy('created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
+    }
+
+    /**
+     * Get service center with statistics
+     *
+     * @param int $serviceCenterId
+     * @return array|null
+     */
+    public function getServiceCenterWithStats($serviceCenterId)
+    {
+        $serviceCenter = $this->find($serviceCenterId);
+        if (!$serviceCenter) {
+            return null;
+        }
+
+        $jobModel = new \App\Models\JobModel();
+        $referredModel = new \App\Models\ReferredModel();
+
+        // Get job statistics
+        $totalJobs = $jobModel->where('service_center_id', $serviceCenterId)->countAllResults();
+        $completedJobs = $jobModel->where('service_center_id', $serviceCenterId)->where('status', 'Completed')->countAllResults();
+        $pendingJobs = $jobModel->where('service_center_id', $serviceCenterId)->whereNotIn('status', ['Completed', 'Returned'])->countAllResults();
+
+        // Get referral statistics
+        $totalReferrals = $referredModel->where('service_center_id', $serviceCenterId)->countAllResults();
+        $completedReferrals = $referredModel->where('service_center_id', $serviceCenterId)->where('status', 'Completed')->countAllResults();
+
+        $serviceCenter['stats'] = [
+            'total_jobs' => $totalJobs,
+            'completed_jobs' => $completedJobs,
+            'pending_jobs' => $pendingJobs,
+            'total_referrals' => $totalReferrals,
+            'completed_referrals' => $completedReferrals,
+            'job_completion_rate' => $totalJobs > 0 ? round(($completedJobs / $totalJobs) * 100, 2) : 0,
+            'referral_completion_rate' => $totalReferrals > 0 ? round(($completedReferrals / $totalReferrals) * 100, 2) : 0
+        ];
+
+        return $serviceCenter;
+    }
+
+    /**
+     * Get service centers with their workload
+     *
+     * @param int|null $perPage
+     * @return array
+     */
+    public function getServiceCentersWithWorkload($perPage = null)
+    {
+        $builder = $this->select('service_centers.*,
+                            COUNT(DISTINCT jobs.id) as total_jobs,
+                            COUNT(DISTINCT CASE WHEN jobs.status IN ("Pending", "In Progress", "Referred to Service Center") THEN jobs.id END) as active_jobs,
+                            COUNT(DISTINCT CASE WHEN jobs.status = "Completed" THEN jobs.id END) as completed_jobs,
+                            COUNT(DISTINCT referred.id) as total_referrals,
+                            COUNT(DISTINCT CASE WHEN referred.status = "Completed" THEN referred.id END) as completed_referrals')
+                        ->join('jobs', 'jobs.service_center_id = service_centers.id', 'left')
+                        ->join('referred', 'referred.service_center_id = service_centers.id', 'left')
+                        ->where('service_centers.status', 'Active')
+                        ->groupBy('service_centers.id')
+                        ->orderBy('active_jobs', 'DESC')
+                        ->orderBy('service_centers.name', 'ASC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
+    }
 }
