@@ -16,10 +16,31 @@ Add this line to your hosts file:
 Use the configuration provided in `apache_vhost_config.txt` and add it to your Apache virtual hosts file.
 
 ### 3. **Database Setup**
-Make sure you have a MySQL database named `tfcgaighat_db` created:
-```sql
-CREATE DATABASE tfcgaighat_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+Create the localhost database with the correct credentials:
+
+**Option 1: Run the setup script**
+```bash
+mysql -u root -p < database_setup_localhost.sql
 ```
+
+**Option 2: Manual setup**
+```sql
+-- Login to MySQL as root with password: Ab*2525125
+mysql -u root -p
+
+-- Create the database
+CREATE DATABASE tfc CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Grant permissions (if needed)
+GRANT ALL PRIVILEGES ON tfc.* TO 'root'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+**Database Configuration:**
+- **Hostname:** localhost
+- **Username:** root
+- **Password:** Ab*2525125
+- **Database:** tfc
 
 ### 4. **Test Your Setup**
 Visit these URLs to verify everything is working:
@@ -33,10 +54,19 @@ Visit these URLs to verify everything is working:
 
 1. **`.env` file:**
    - Changed `app.baseURL` from `https://tfc.gaighat.com/` to `http://tfc.local/`
-   - Updated database name to `tfcgaighat_db`
+   - Updated database configuration for localhost:
+     - `database.default.database = tfc`
+     - `database.default.username = root`
+     - `database.default.password = Ab*2525125`
 
 2. **`app/Config/App.php`:**
    - Changed `$baseURL` from `https://tfc.gaighat.com/` to `http://tfc.local/`
+
+3. **`app/Config/Database.php`:**
+   - Added environment-specific database configuration
+   - Automatically switches between localhost and production settings
+   - Localhost uses: root/Ab*2525125/tfc
+   - Production uses: tfcgaighat_db/[password]/tfcgaighat_db
 
 3. **Added test routes** in `app/Config/Routes.php`
 
@@ -57,8 +87,13 @@ Visit these URLs to verify everything is working:
 ### **Issue 2: Database Connection Failed**
 **Solutions:**
 - Make sure MySQL/MariaDB is running
-- Create the database: `CREATE DATABASE tfcgaighat_db;`
-- Verify MySQL credentials in `.env` file
+- Create the database: `CREATE DATABASE tfc;`
+- Set MySQL root password to: `Ab*2525125`
+- Run the setup script: `mysql -u root -p < database_setup_localhost.sql`
+- Verify MySQL credentials match:
+  - Username: `root`
+  - Password: `Ab*2525125`
+  - Database: `tfc`
 - Check if MySQL is running on port 3306
 
 ### **Issue 3: Apache Permission Denied**

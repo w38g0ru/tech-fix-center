@@ -28,11 +28,24 @@ class Test extends Controller
     {
         // Test database connection
         $db = \Config\Database::connect();
-        
+
+        // Determine environment
+        $isProduction = (
+            isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'tfc.gaighat.com'
+        ) || (
+            isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] === 'tfc.gaighat.com'
+        ) || (
+            ENVIRONMENT === 'production'
+        );
+
         try {
             $query = $db->query("SELECT 1 as test");
             $result = $query->getRow();
-            
+
+            // Test a simple query to verify database exists
+            $tablesQuery = $db->query("SHOW TABLES");
+            $tableCount = $tablesQuery->getNumRows();
+
             $data = [
                 'title' => 'Database Test',
                 'status' => 'success',
@@ -40,7 +53,20 @@ class Test extends Controller
                 'database_name' => $db->getDatabase(),
                 'hostname' => $db->hostname,
                 'username' => $db->username,
-                'driver' => $db->DBDriver
+                'driver' => $db->DBDriver,
+                'environment' => $isProduction ? 'Production' : 'Development/Localhost',
+                'table_count' => $tableCount,
+                'expected_config' => $isProduction ? [
+                    'hostname' => 'localhost',
+                    'username' => 'tfcgaighat_db',
+                    'database' => 'tfcgaighat_db',
+                    'password' => '[Hidden for security]'
+                ] : [
+                    'hostname' => 'localhost',
+                    'username' => 'root',
+                    'database' => 'tfc',
+                    'password' => 'Ab*2525125'
+                ]
             ];
         } catch (\Exception $e) {
             $data = [
@@ -50,7 +76,20 @@ class Test extends Controller
                 'database_name' => $db->getDatabase(),
                 'hostname' => $db->hostname,
                 'username' => $db->username,
-                'driver' => $db->DBDriver
+                'driver' => $db->DBDriver,
+                'environment' => $isProduction ? 'Production' : 'Development/Localhost',
+                'table_count' => 0,
+                'expected_config' => $isProduction ? [
+                    'hostname' => 'localhost',
+                    'username' => 'tfcgaighat_db',
+                    'database' => 'tfcgaighat_db',
+                    'password' => '[Hidden for security]'
+                ] : [
+                    'hostname' => 'localhost',
+                    'username' => 'root',
+                    'database' => 'tfc',
+                    'password' => 'Ab*2525125'
+                ]
             ];
         }
 

@@ -21,6 +21,7 @@ class Database extends Config
 
     /**
      * The default database connection.
+     * Environment-specific configuration
      *
      * @var array<string, mixed>
      */
@@ -28,12 +29,45 @@ class Database extends Config
         'DSN'          => '',
         'hostname'     => 'localhost',
         'username'     => 'root',
-        'password'     => '',
+        'password'     => 'Ab*2525125',
         'database'     => 'tfc',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
         'DBDebug'      => true,
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => 3306,
+        'numberNative' => false,
+        'foundRows'    => false,
+        'dateFormat'   => [
+            'date'     => 'Y-m-d',
+            'datetime' => 'Y-m-d H:i:s',
+            'time'     => 'H:i:s',
+        ],
+    ];
+
+    /**
+     * Production database connection.
+     * Used when ENVIRONMENT is 'production'
+     *
+     * @var array<string, mixed>
+     */
+    public array $production = [
+        'DSN'          => '',
+        'hostname'     => 'localhost',
+        'username'     => 'tfcgaighat_db',
+        'password'     => 'tfcgaighat_password',
+        'database'     => 'tfcgaighat_db',
+        'DBDriver'     => 'MySQLi',
+        'DBPrefix'     => '',
+        'pConnect'     => false,
+        'DBDebug'      => false,
         'charset'      => 'utf8mb4',
         'DBCollat'     => 'utf8mb4_general_ci',
         'swapPre'      => '',
@@ -200,14 +234,24 @@ class Database extends Config
             isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'tfc.gaighat.com'
         ) || (
             isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] === 'tfc.gaighat.com'
+        ) || (
+            ENVIRONMENT === 'production'
         );
 
         if ($isProduction) {
             // Production database configuration
-            $this->default['username'] = 'tfcgaighat_db';  // Update with actual production username
-            $this->default['password'] = 'tfcgaighat_db';  // Update with actual production password
+            $this->default['hostname'] = 'localhost';
+            $this->default['username'] = 'tfcgaighat_db';  // Production username
+            $this->default['password'] = 'tfcgaighat_password';  // Production password
             $this->default['database'] = 'tfcgaighat_db';
             $this->default['DBDebug'] = false;
+        } else {
+            // Localhost/Development database configuration
+            $this->default['hostname'] = 'localhost';
+            $this->default['username'] = 'root';
+            $this->default['password'] = 'Ab*2525125';
+            $this->default['database'] = 'tfc';
+            $this->default['DBDebug'] = true;
         }
 
         // Ensure that we always set the database group to 'tests' if

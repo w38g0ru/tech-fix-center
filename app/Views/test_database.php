@@ -67,10 +67,18 @@
         </div>
         <?php endif; ?>
 
-        <!-- Database Configuration -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 class="text-lg font-medium text-gray-900 mb-4">Database Configuration</h2>
+        <!-- Current Database Configuration -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">Current Database Configuration</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-50 rounded-md p-4">
+                    <dt class="text-sm font-medium text-gray-500">Environment</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full <?= $environment === 'Production' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' ?>">
+                            <?= $environment ?>
+                        </span>
+                    </dd>
+                </div>
                 <div class="bg-gray-50 rounded-md p-4">
                     <dt class="text-sm font-medium text-gray-500">Database Name</dt>
                     <dd class="mt-1 text-sm text-gray-900 font-mono"><?= $database_name ?></dd>
@@ -87,6 +95,23 @@
                     <dt class="text-sm font-medium text-gray-500">Driver</dt>
                     <dd class="mt-1 text-sm text-gray-900"><?= $driver ?></dd>
                 </div>
+                <div class="bg-gray-50 rounded-md p-4">
+                    <dt class="text-sm font-medium text-gray-500">Tables Found</dt>
+                    <dd class="mt-1 text-sm text-gray-900"><?= $table_count ?> tables</dd>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expected Configuration -->
+        <div class="bg-blue-50 border border-blue-200 rounded-md p-6 mb-6">
+            <h3 class="text-lg font-medium text-blue-900 mb-4">Expected Configuration for <?= $environment ?></h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <?php foreach ($expected_config as $key => $value): ?>
+                <div class="bg-white rounded-md p-4">
+                    <dt class="text-sm font-medium text-blue-700"><?= ucfirst(str_replace('_', ' ', $key)) ?></dt>
+                    <dd class="mt-1 text-sm text-blue-900 font-mono"><?= $value ?></dd>
+                </div>
+                <?php endforeach; ?>
             </div>
         </div>
 
@@ -102,11 +127,12 @@
                     <div class="mt-2 text-sm text-yellow-700">
                         <ul class="list-disc list-inside space-y-1">
                             <li>Make sure MySQL/MariaDB is running on your system</li>
-                            <li>Verify the database name "<?= $database_name ?>" exists</li>
-                            <li>Check if the username "<?= $username ?>" has proper permissions</li>
-                            <li>Ensure the password is correct (currently empty)</li>
+                            <li>Create the database: <code class="bg-gray-200 px-1 rounded">CREATE DATABASE <?= $expected_config['database'] ?>;</code></li>
+                            <li>Verify the username "<?= $expected_config['username'] ?>" has proper permissions</li>
+                            <li>Check the password: "<?= $expected_config['password'] ?>"</li>
                             <li>Verify MySQL is running on port 3306</li>
-                            <li>Check your .env file configuration</li>
+                            <li>Run the database setup script: <code class="bg-gray-200 px-1 rounded">database_setup_localhost.sql</code></li>
+                            <li>Check your .env file configuration matches expected values</li>
                         </ul>
                     </div>
                 </div>
