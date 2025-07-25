@@ -28,6 +28,11 @@ $routes->get('auth/google/callback', 'Auth::callback');
 // Public photo serving route (no authentication required)
 $routes->get('photos/serve/(:any)', 'Photos::serve/$1');
 
+// Test Routes (for debugging and setup verification)
+$routes->get('test', 'Test::index');
+$routes->get('test/database', 'Test::database');
+$routes->get('test/routes', 'Test::routes');
+
 // Dashboard Routes (Protected by Auth in Controllers)
 $routes->group('dashboard', function($routes) {
     $routes->get('/', 'Dashboard::index');

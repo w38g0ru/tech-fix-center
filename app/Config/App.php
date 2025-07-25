@@ -16,7 +16,7 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'https://tfc.gaighat.com/';
+    public string $baseURL = 'http://tfc.local/';
 
     /**
      * --------------------------------------------------------------------------

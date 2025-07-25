@@ -1,0 +1,54 @@
+# Apache Virtual Host Configuration for TeknoPhix (tfc.local)
+# 
+# Instructions:
+# 1. Add this configuration to your Apache virtual hosts file
+# 2. Update the paths to match your actual project location
+# 3. Add "127.0.0.1 tfc.local" to your /etc/hosts file (Mac/Linux) or C:\Windows\System32\drivers\etc\hosts (Windows)
+# 4. Restart Apache
+
+<VirtualHost *:80>
+    ServerName tfc.local
+    ServerAlias www.tfc.local
+    
+    # Update this path to your actual project location
+    DocumentRoot "/Users/hyphenab/Sites/Web/tfc"
+    
+    # Directory permissions
+    <Directory "/Users/hyphenab/Sites/Web/tfc">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    
+    # Enable mod_rewrite
+    RewriteEngine On
+    
+    # Log files (optional - update paths as needed)
+    ErrorLog "/var/log/apache2/tfc_error.log"
+    CustomLog "/var/log/apache2/tfc_access.log" combined
+    
+    # PHP Configuration (if needed)
+    <IfModule mod_php.c>
+        php_value upload_max_filesize 32M
+        php_value post_max_size 32M
+        php_value memory_limit 256M
+        php_value max_execution_time 300
+    </IfModule>
+</VirtualHost>
+
+# Alternative configuration for XAMPP/MAMP users:
+# Add this to your httpd-vhosts.conf file in Apache configuration
+
+# For XAMPP on Windows:
+# File location: C:\xampp\apache\conf\extra\httpd-vhosts.conf
+
+# For XAMPP on Mac:
+# File location: /Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf
+
+# For MAMP:
+# File location: /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf
+
+# Don't forget to:
+# 1. Uncomment the virtual hosts include line in httpd.conf
+# 2. Add "127.0.0.1 tfc.local" to your hosts file
+# 3. Restart Apache/XAMPP/MAMP
