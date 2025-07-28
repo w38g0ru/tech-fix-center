@@ -157,6 +157,3 @@ $routes->group('dashboard', function($routes) {
     $routes->get('settings', 'Dashboard::settings');
 
 });
-
-// Include Admin Routes
-require_once APPPATH . 'Config/AdminRoutes.php';
