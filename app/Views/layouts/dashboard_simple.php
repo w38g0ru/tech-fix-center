@@ -61,8 +61,8 @@ $pageTitle = $title ?? 'Dashboard';
         <!-- Main Content -->
         <div class="flex-1 lg:ml-64 min-h-screen w-full bg-gray-50">
             <!-- Header -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 m-6 p-6">
-                <div class="flex items-center justify-between">
+            <div class="bg-white border-b border-gray-200 sticky top-0 z-30">
+                <div class="px-6 py-4 flex items-center justify-between">
                     <!-- Left Section: Menu + Title -->
                     <div class="flex items-center space-x-4">
                         <!-- Mobile Menu Button -->
@@ -77,10 +77,10 @@ $pageTitle = $title ?? 'Dashboard';
                         <!-- Page Title -->
                         <div class="flex items-center space-x-3">
                             <div class="w-10 h-10 bg-fuchsia-600 rounded-lg flex items-center justify-center">
-                                <span class="text-white font-bold text-lg">D</span>
+                                <span class="text-white font-bold text-lg">T</span>
                             </div>
                             <div>
-                                <h2 class="text-2xl font-semibold text-gray-900">
+                                <h2 class="text-xl font-semibold text-gray-900">
                                     <?= isset($title) ? $title : 'Dashboard' ?>
                                 </h2>
                                 <p class="text-sm text-gray-600">TeknoPhix Management System</p>
@@ -142,9 +142,7 @@ $pageTitle = $title ?? 'Dashboard';
 
             <!-- Content -->
             <div class="p-6">
-                <div class="mx-auto">
-                    <?= $this->renderSection('content') ?>
-                </div>
+                <?= $this->renderSection('content') ?>
             </div>
         </div>
     </div>
