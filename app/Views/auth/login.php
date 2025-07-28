@@ -14,7 +14,7 @@ $config = config('App');
 
     <div class="w-full max-w-sm">
         <!-- Logo -->
-        <div class="text-center mb-8">
+        <div class="text-center mb-8 hidden">
             <div class="w-16 h-12 bg-fuchsia-600 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <span class="text-white font-bold text-sm">TFC</span>
             </div>
