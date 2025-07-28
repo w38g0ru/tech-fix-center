@@ -156,7 +156,12 @@
                 </div>
                 <div class="text-right">
                     <div class="font-medium text-gray-900">₹<?= number_format($job['charge'] ?? 0) ?></div>
-                    <div class="text-sm text-gray-500"><?= isset($job['created_at']) ? date('M j', strtotime($job['created_at'])) : 'Recent' ?></div>
+                    <div class="text-sm text-gray-500">
+                        <?= isset($job['created_at']) ? date('M j, Y', strtotime($job['created_at'])) : 'Recent' ?>
+                    </div>
+                    <div class="text-xs text-gray-400">
+                        <?= isset($job['created_at']) ? date('g:i A', strtotime($job['created_at'])) : '' ?>
+                    </div>
                 </div>
             </div>
             <?php endforeach; ?>
