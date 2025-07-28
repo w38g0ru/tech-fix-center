@@ -242,7 +242,7 @@ class Database extends Config
             // Production database configuration
             $this->default['hostname'] = 'localhost';
             $this->default['username'] = 'tfcgaighat_db';  // Production username
-            $this->default['password'] = 'tfcgaighat_password';  // Production password
+            $this->default['password'] = 'tfcgaighat_db';  // Production password
             $this->default['database'] = 'tfcgaighat_db';
             $this->default['DBDebug'] = false;
         } else {
