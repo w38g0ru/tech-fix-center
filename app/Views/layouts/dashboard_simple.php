@@ -21,6 +21,48 @@ $pageTitle = $title ?? 'Dashboard';
             }
         }
     </script>
+    <style>
+        /* Minimalist Button System */
+        .btn {
+            @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+        }
+
+        .btn-primary {
+            @apply bg-fuchsia-600 text-white hover:bg-fuchsia-700 focus:ring-fuchsia-500;
+        }
+
+        .btn-secondary {
+            @apply bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500;
+        }
+
+        .btn-outline {
+            @apply border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-gray-500;
+        }
+
+        .btn-danger {
+            @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+        }
+
+        .btn-success {
+            @apply bg-green-600 text-white hover:bg-green-700 focus:ring-green-500;
+        }
+
+        .btn-sm {
+            @apply px-3 py-1.5 text-xs;
+        }
+
+        .btn-lg {
+            @apply px-6 py-3 text-base;
+        }
+
+        .btn-icon {
+            @apply p-2;
+        }
+
+        .btn-full {
+            @apply w-full justify-center;
+        }
+    </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 

@@ -212,12 +212,10 @@
             </form>
             
             <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end space-x-3">
-                <button onclick="closeModal('createUserModal')" 
-                        class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                <button onclick="closeModal('createUserModal')" class="btn btn-outline">
                     Cancel
                 </button>
-                <button onclick="createUser()" 
-                        class="btn-primary px-4 py-2 text-sm font-medium text-white rounded-lg">
+                <button onclick="createUser()" class="btn btn-primary">
                     Create User
                 </button>
             </div>

@@ -8,8 +8,7 @@
         <p class="mt-2 text-dark-600">Import multiple inventory items from CSV or Excel file</p>
     </div>
     <div class="mt-4 sm:mt-0">
-        <a href="<?= base_url('dashboard/inventory') ?>"
-           class="btn btn-secondary">
+        <a href="<?= base_url('dashboard/inventory') ?>" class="btn btn-outline">
             <i class="fas fa-arrow-left mr-2"></i>
             Back to Inventory
         </a>

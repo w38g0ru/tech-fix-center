@@ -25,33 +25,39 @@
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
     <h2 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <a href="<?= base_url('dashboard/jobs/create') ?>" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-            <div class="w-10 h-10 bg-fuchsia-600 rounded-lg flex items-center justify-center mr-4">
-                <i class="fas fa-plus text-white"></i>
-            </div>
-            <div>
-                <div class="font-medium text-gray-900">New Job</div>
-                <div class="text-sm text-gray-500">Create repair job</div>
-            </div>
-        </a>
-        
-        <a href="<?= base_url('dashboard/users/create') ?>" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-            <div class="w-10 h-10 bg-fuchsia-600 rounded-lg flex items-center justify-center mr-4">
-                <i class="fas fa-user-plus text-white"></i>
-            </div>
-            <div>
-                <div class="font-medium text-gray-900">Add Customer</div>
-                <div class="text-sm text-gray-500">New customer</div>
+        <a href="<?= base_url('dashboard/jobs/create') ?>" class="btn btn-outline btn-lg flex-col text-left p-4 h-auto">
+            <div class="flex items-center w-full">
+                <div class="w-10 h-10 bg-fuchsia-600 rounded-lg flex items-center justify-center mr-4">
+                    <i class="fas fa-plus text-white"></i>
+                </div>
+                <div>
+                    <div class="font-medium text-gray-900">New Job</div>
+                    <div class="text-sm text-gray-500">Create repair job</div>
+                </div>
             </div>
         </a>
-        
-        <a href="<?= base_url('dashboard/reports') ?>" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-            <div class="w-10 h-10 bg-fuchsia-600 rounded-lg flex items-center justify-center mr-4">
-                <i class="fas fa-chart-bar text-white"></i>
+
+        <a href="<?= base_url('dashboard/users/create') ?>" class="btn btn-outline btn-lg flex-col text-left p-4 h-auto">
+            <div class="flex items-center w-full">
+                <div class="w-10 h-10 bg-fuchsia-600 rounded-lg flex items-center justify-center mr-4">
+                    <i class="fas fa-user-plus text-white"></i>
+                </div>
+                <div>
+                    <div class="font-medium text-gray-900">Add Customer</div>
+                    <div class="text-sm text-gray-500">New customer</div>
+                </div>
             </div>
-            <div>
-                <div class="font-medium text-gray-900">Reports</div>
-                <div class="text-sm text-gray-500">View analytics</div>
+        </a>
+
+        <a href="<?= base_url('dashboard/reports') ?>" class="btn btn-outline btn-lg flex-col text-left p-4 h-auto">
+            <div class="flex items-center w-full">
+                <div class="w-10 h-10 bg-fuchsia-600 rounded-lg flex items-center justify-center mr-4">
+                    <i class="fas fa-chart-bar text-white"></i>
+                </div>
+                <div>
+                    <div class="font-medium text-gray-900">Reports</div>
+                    <div class="text-sm text-gray-500">View analytics</div>
+                </div>
             </div>
         </a>
     </div>

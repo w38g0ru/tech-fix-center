@@ -267,22 +267,22 @@
                 <div class="flex flex-wrap gap-2">
                     <button type="button"
                             onclick="setTemplate('iPhone Screen', 'Apple', 'iPhone 12')"
-                            class="px-3 py-1 text-xs bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200">
+                            class="btn btn-sm btn-secondary">
                         iPhone Screen
                     </button>
                     <button type="button"
                             onclick="setTemplate('Samsung Battery', 'Samsung', 'Galaxy S21')"
-                            class="px-3 py-1 text-xs bg-green-100 text-green-800 rounded-full hover:bg-green-200">
+                            class="btn btn-sm btn-secondary">
                         Samsung Battery
                     </button>
                     <button type="button"
                             onclick="setTemplate('Charging Cable', 'Generic', 'USB-C')"
-                            class="px-3 py-1 text-xs bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200">
+                            class="btn btn-sm btn-secondary">
                         Charging Cable
                     </button>
                     <button type="button"
                             onclick="setTemplate('Phone Case', 'Generic', 'Universal')"
-                            class="px-3 py-1 text-xs bg-purple-100 text-purple-800 rounded-full hover:bg-purple-200">
+                            class="btn btn-sm btn-secondary">
                         Phone Case
                     </button>
                 </div>
@@ -290,12 +290,10 @@
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
-                <a href="<?= base_url('dashboard/inventory') ?>" 
-                   class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <a href="<?= base_url('dashboard/inventory') ?>" class="btn btn-outline">
                     Cancel
                 </a>
-                <button type="submit"
-                        class="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save mr-2"></i>
                     Add Item
                 </button>

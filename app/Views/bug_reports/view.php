@@ -209,13 +209,11 @@
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
             <div class="space-y-3">
-                <a href="<?= base_url('dashboard/bug-reports/edit/' . $bugReport['id']) ?>" 
-                   class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200">
+                <a href="<?= base_url('dashboard/bug-reports/edit/' . $bugReport['id']) ?>" class="btn btn-outline btn-full">
                     <i class="fas fa-edit mr-2"></i>Edit Bug Report
                 </a>
-                
-                <button onclick="window.print()" 
-                        class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200">
+
+                <button onclick="window.print()" class="btn btn-outline btn-full">
                     <i class="fas fa-print mr-2"></i>Print Report
                 </button>
                 

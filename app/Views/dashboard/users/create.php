@@ -121,13 +121,11 @@
 
             <!-- Form Actions -->
             <div class="flex flex-col sm:flex-row items-center justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-8 border-t border-gray-200">
-                <a href="<?= base_url('dashboard/users') ?>"
-                   class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                <a href="<?= base_url('dashboard/users') ?>" class="btn btn-outline w-full sm:w-auto">
                     <i class="fas fa-times mr-2"></i>
                     Cancel
                 </a>
-                <button type="submit"
-                        class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 border border-transparent rounded-xl text-sm font-medium text-white hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg shadow-blue-500/25">
+                <button type="submit" class="btn btn-primary w-full sm:w-auto">
                     <i class="fas fa-save mr-2"></i>
                     Create Customer
                 </button>

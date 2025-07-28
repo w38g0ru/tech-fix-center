@@ -137,12 +137,10 @@
 
     <!-- Form Actions -->
     <div class="flex items-center justify-end space-x-4">
-        <a href="<?= base_url('dashboard/bug-reports') ?>"
-           class="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors duration-200">
+        <a href="<?= base_url('dashboard/bug-reports') ?>" class="btn btn-outline">
             Cancel
         </a>
-        <button type="submit"
-                class="px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-200 shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30">
+        <button type="submit" class="btn btn-danger">
             <i class="fas fa-bug mr-2"></i>Submit Bug Report
         </button>
     </div>
