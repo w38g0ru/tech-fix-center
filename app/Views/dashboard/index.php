@@ -150,13 +150,13 @@
                         <i class="fas fa-mobile-alt text-white text-sm"></i>
                     </div>
                     <div>
-                        <div class="font-medium text-gray-900"><?= esc($job['device_model']) ?></div>
-                        <div class="text-sm text-gray-500"><?= esc($job['customer_name']) ?></div>
+                        <div class="font-medium text-gray-900"><?= esc($job['device_name'] ?? 'Device') ?></div>
+                        <div class="text-sm text-gray-500"><?= esc($job['customer_name'] ?? 'Customer') ?></div>
                     </div>
                 </div>
                 <div class="text-right">
-                    <div class="font-medium text-gray-900">₹<?= number_format($job['estimated_cost']) ?></div>
-                    <div class="text-sm text-gray-500"><?= date('M j', strtotime($job['created_at'])) ?></div>
+                    <div class="font-medium text-gray-900">₹<?= number_format($job['charge'] ?? 0) ?></div>
+                    <div class="text-sm text-gray-500"><?= isset($job['created_at']) ? date('M j', strtotime($job['created_at'])) : 'Recent' ?></div>
                 </div>
             </div>
             <?php endforeach; ?>
