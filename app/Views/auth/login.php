@@ -15,8 +15,8 @@ $config = config('App');
     <div class="w-full max-w-sm">
         <!-- Logo -->
         <div class="text-center mb-8">
-            <div class="w-12 h-12 bg-fuchsia-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <span class="text-white font-bold text-xl">T</span>
+            <div class="w-16 h-12 bg-fuchsia-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span class="text-white font-bold text-sm">TFC</span>
             </div>
             <h1 class="text-2xl font-semibold text-gray-900"><?= $config->appShortName ?></h1>
         </div>
