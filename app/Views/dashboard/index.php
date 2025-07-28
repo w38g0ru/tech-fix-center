@@ -21,7 +21,6 @@
     </div>
 </div>
 
-
 <!-- Quick Actions -->
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
     <h2 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h2>
@@ -35,7 +34,7 @@
                 <div class="text-sm text-gray-500">Create repair job</div>
             </div>
         </a>
-
+        
         <a href="<?= base_url('dashboard/users/create') ?>" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
             <div class="w-10 h-10 bg-fuchsia-600 rounded-lg flex items-center justify-center mr-4">
                 <i class="fas fa-user-plus text-white"></i>
@@ -45,7 +44,7 @@
                 <div class="text-sm text-gray-500">New customer</div>
             </div>
         </a>
-
+        
         <a href="<?= base_url('dashboard/reports') ?>" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
             <div class="w-10 h-10 bg-fuchsia-600 rounded-lg flex items-center justify-center mr-4">
                 <i class="fas fa-chart-bar text-white"></i>
@@ -138,6 +137,7 @@
         </div>
     </div>
 </div>
+
 <!-- Recent Activity -->
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
     <h2 class="text-lg font-medium text-gray-900 mb-4">Recent Activity</h2>
@@ -168,185 +168,5 @@
         <?php endif; ?>
     </div>
 </div>
-
-
-<?= $this->endSection() ?>
-                <i class="fas fa-eye mr-1"></i>View All
-            </a>
-        </div>
-
-        <?php if (!empty($recentJobs)): ?>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Device</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <?php foreach ($recentJobs as $job): ?>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="font-medium text-gray-900">
-                                        <?= esc($job['customer_name'] ?? $job['walk_in_customer_name'] ?? 'N/A') ?>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="font-medium text-gray-900"><?= esc($job['device_name']) ?></div>
-                                    <div class="text-xs text-gray-500"><?= esc($job['serial_number']) ?></div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <?php
-                                    $statusClasses = [
-                                        'Completed' => 'bg-green-100 text-green-800',
-                                        'In Progress' => 'bg-blue-100 text-blue-800',
-                                        'Pending' => 'bg-orange-100 text-orange-800'
-                                    ];
-                                    $statusClass = $statusClasses[$job['status']] ?? 'bg-gray-100 text-gray-800';
-                                    ?>
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $statusClass ?>">
-                                        <?= esc($job['status']) ?>
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <?= formatNepaliDate($job['created_at'], 'short') ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        <?php else: ?>
-            <div class="p-16 text-center text-gray-500">
-                <i class="fas fa-wrench text-5xl mb-4 text-gray-300"></i>
-                <p class="text-lg font-medium text-gray-900">No recent jobs found</p>
-                <p class="text-sm mt-2">Jobs will appear here once you start creating them</p>
-            </div>
-        <?php endif; ?>
-    </div>
-
-    <!-- Low Stock Items -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100">
-        <div class="flex items-center justify-between p-6 border-b border-gray-200">
-            <h3 class="text-lg font-semibold text-gray-900">Low Stock Items</h3>
-            <a href="<?= base_url('dashboard/inventory') ?>" class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 transition-colors">
-                <i class="fas fa-eye mr-1"></i>View All
-            </a>
-        </div>
-
-        <?php if (!empty($lowStockItems)): ?>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <?php foreach ($lowStockItems as $item): ?>
-                            <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="font-medium text-gray-900"><?= esc($item['device_name']) ?></div>
-                                    <div class="text-xs text-gray-500"><?= esc($item['brand']) ?> <?= esc($item['model']) ?></div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="font-semibold text-red-600">
-                                        <?= $item['total_stock'] ?> units
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                        Low Stock
-                                    </span>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        <?php else: ?>
-            <div class="p-16 text-center text-gray-500">
-                <i class="fas fa-boxes text-5xl mb-4 text-gray-300"></i>
-                <p class="text-lg font-medium text-gray-900">All items are well stocked</p>
-                <p class="text-sm mt-2">No items currently below minimum stock levels</p>
-            </div>
-        <?php endif; ?>
-    </div>
-</div>
-
-<script>
-// Quick Actions FAB functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const fab = document.getElementById('quickActionsFab');
-    const menu = document.getElementById('quickActionsMenu');
-    let isMenuOpen = false;
-
-    // Toggle menu on FAB click
-    fab.addEventListener('click', function(e) {
-        e.stopPropagation();
-        toggleMenu();
-    });
-
-    // Close menu when clicking outside
-    document.addEventListener('click', function(e) {
-        if (isMenuOpen && !menu.contains(e.target) && !fab.contains(e.target)) {
-            closeMenu();
-        }
-    });
-
-    // Close menu on escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && isMenuOpen) {
-            closeMenu();
-        }
-    });
-
-    function toggleMenu() {
-        if (isMenuOpen) {
-            closeMenu();
-        } else {
-            openMenu();
-        }
-    }
-
-    function openMenu() {
-        menu.classList.remove('opacity-0', 'invisible', 'translate-y-4');
-        menu.classList.add('opacity-100', 'visible', 'translate-y-0');
-        fab.querySelector('i').classList.add('rotate-45');
-        isMenuOpen = true;
-    }
-
-    function closeMenu() {
-        menu.classList.remove('opacity-100', 'visible', 'translate-y-0');
-        menu.classList.add('opacity-0', 'invisible', 'translate-y-4');
-        fab.querySelector('i').classList.remove('rotate-45');
-        isMenuOpen = false;
-    }
-
-    // Auto-hide FAB on scroll down, show on scroll up
-    let lastScrollTop = 0;
-    const fabContainer = fab.parentElement;
-
-    window.addEventListener('scroll', function() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-        if (scrollTop > lastScrollTop && scrollTop > 100) {
-            // Scrolling down
-            fabContainer.style.transform = 'translateY(100px)';
-            if (isMenuOpen) closeMenu();
-        } else {
-            // Scrolling up
-            fabContainer.style.transform = 'translateY(0)';
-        }
-
-        lastScrollTop = scrollTop;
-    });
-});
-</script>
 
 <?= $this->endSection() ?>
