@@ -60,14 +60,14 @@ if (!function_exists('renderSectionHeader')) {
         if ($theme === 'dark') {
             $textColor = 'text-gray-500';
         } else {
-            $textColor = 'text-gray-400';
+            $textColor = 'text-gray-500';
         }
 
         return <<<HTML
                 <!-- {$sectionName} Section -->
                 <div class="{$marginClass}">
-                    <div class="px-6 mb-2">
-                        <h3 class="text-xs font-semibold {$textColor} uppercase tracking-wider">{$sectionName}</h3>
+                    <div class="px-4 mb-2">
+                        <h3 class="text-xs font-medium {$textColor} uppercase tracking-wide">{$sectionName}</h3>
                         <div class="mt-1 h-px bg-gray-200"></div>
                     </div>
 
@@ -109,12 +109,12 @@ if (!function_exists('renderLightMenuItem')) {
         $name = $item['name'];
         $icon = $item['icon'];
 
-        $activeClass = $isActive ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50';
+        $activeClass = $isActive ? 'text-fuchsia-600 bg-fuchsia-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50';
 
         return <<<HTML
                 <!-- {$name} -->
                 <a href="{$url}"
-                   class="nav-link flex items-center px-4 py-2 text-sm font-medium transition-all duration-200 {$activeClass} mb-1 mx-2 rounded-md"
+                   class="nav-link flex items-center px-4 py-2 text-sm font-medium transition-colors duration-200 {$activeClass} mb-1 mx-2 rounded-lg"
                    title="{$name}">
                     <i class="{$icon} w-4 h-4 mr-3 flex-shrink-0"></i>
                     <span class="nav-text">{$name}</span>

@@ -22,9 +22,9 @@ SELECT DATABASE() as 'Current Database';
 SHOW TABLES;
 
 -- Display connection information
-SELECT 
+SELECT
     'localhost' as Hostname,
     'root' as Username,
-    'Ab*2525125' as Password,
+    '(no password)' as Password,
     'tfc' as Database_Name,
-    'Configuration matches your .env settings' as Note;
+    'Configuration matches your Database.php settings' as Note;

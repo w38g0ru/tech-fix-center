@@ -249,7 +249,7 @@ class Database extends Config
             // Localhost/Development database configuration
             $this->default['hostname'] = 'localhost';
             $this->default['username'] = 'root';
-            $this->default['password'] = 'Ab*2525125';
+            $this->default['password'] = '';
             $this->default['database'] = 'tfc';
             $this->default['DBDebug'] = true;
         }
