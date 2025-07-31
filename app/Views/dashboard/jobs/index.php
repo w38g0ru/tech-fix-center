@@ -116,12 +116,9 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Details</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Device</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Technician</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Details/Created</th>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer/Device</th>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Technician/Status</th>
                     <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
@@ -129,15 +126,21 @@
                 <?php if (!empty($jobs)): ?>
                     <?php foreach ($jobs as $job): ?>
                         <tr class="hover:bg-gray-50 transition-colors duration-200">
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <!-- Job Details/Created -->
+                            <td class="px-6 py-4">
                                 <div class="font-medium text-blue-600">
                                     Job #<?= $job['id'] ?>
                                 </div>
                                 <div class="text-xs text-gray-500 mt-1">
                                     <?= esc(substr($job['problem'], 0, 50)) ?><?= strlen($job['problem']) > 50 ? '...' : '' ?>
                                 </div>
+                                <div class="text-xs text-gray-400 mt-1">
+                                    <?= formatNepaliDate($job['created_at'], 'short') ?>
+                                </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+
+                            <!-- Customer/Device -->
+                            <td class="px-6 py-4">
                                 <div class="font-medium text-gray-900">
                                     <?= esc($job['customer_name'] ?? $job['walk_in_customer_name'] ?? 'N/A') ?>
                                 </div>
@@ -146,21 +149,21 @@
                                         <?= esc($job['walk_in_customer_mobile']) ?>
                                     </div>
                                 <?php endif; ?>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="font-medium text-gray-900">
+                                <div class="text-sm text-gray-700 mt-1">
                                     <?= esc($job['device_name']) ?>
                                 </div>
-                                <div class="text-xs text-gray-500">
-                                    <?= esc($job['serial_number']) ?>
-                                </div>
+                                <?php if (!empty($job['serial_number'])): ?>
+                                    <div class="text-xs text-gray-500">
+                                        SN: <?= esc($job['serial_number']) ?>
+                                    </div>
+                                <?php endif; ?>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="font-medium text-gray-900">
+
+                            <!-- Technician/Status -->
+                            <td class="px-6 py-4">
+                                <div class="font-medium text-gray-900 mb-2">
                                     <?= esc($job['technician_name'] ?? 'Unassigned') ?>
                                 </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
                                 <?php
                                 $statusClasses = [
                                     'Completed' => 'bg-green-100 text-green-800',
@@ -176,10 +179,9 @@
                                     <?= esc($job['status']) ?>
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <?= formatNepaliDate($job['created_at'], 'short') ?>e
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+
+                            <!-- Actions -->
+                            <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end space-x-2">
                                     <a href="<?= base_url('dashboard/jobs/view/' . $job['id']) ?>"
                                        class="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors duration-200"
@@ -197,7 +199,7 @@
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="7" class="px-6 py-16 text-center">
+                        <td colspan="4" class="px-6 py-16 text-center">
                             <div class="text-gray-500">
                                 <i class="fas fa-wrench text-5xl mb-4 text-gray-300"></i>
                                 <p class="text-lg font-medium mb-2 text-gray-900">No jobs found</p>
