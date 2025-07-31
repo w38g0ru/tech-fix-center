@@ -191,8 +191,8 @@ class Jobs extends BaseController
             }
         }
 
-        // Send SMS notification to admin (if not created by anish@anish.com.np)
-        $this->sendJobCreationSmsToAdmin($jobId, $jobData);
+        // SMS notification to admin disabled
+        // $this->sendJobCreationSmsToAdmin($jobId, $jobData);
 
         // Prepare success message
         $message = 'Job created successfully!';
@@ -368,69 +368,7 @@ class Jobs extends BaseController
         }
     }
 
-    /**
-     * Send SMS notification to admin when a new job is created
-     *
-     * @param int $jobId
-     * @param array $jobData
-     * @return void
-     */
-    private function sendJobCreationSmsToAdmin($jobId, $jobData)
-    {
-        try {
-            // Get current user's email to check if it's anish@anish.com.np
-            $currentUser = session()->get('user');
-            if ($currentUser && $currentUser['email'] === 'anish@anish.com.np') {
-                log_message('info', "SMS not sent for job #{$jobId} - created by anish@anish.com.np");
-                return;
-            }
 
-            // Get admin phone number (assuming admin is the first user or has a specific role)
-            $admin = $this->adminUserModel
-                ->whereNotIn('email', ['anish@anish.com.np'])
-                ->where('role', 'admin')
-                ->where('phone IS NOT NULL', null, false)
-                ->where('phone !=', '')
-                ->first();
-
-            if (!$admin || empty($admin['phone'])) {
-                log_message('error', "No admin phone number found for job creation SMS notification");
-                return;
-            }
-
-            // Get customer name for SMS
-            $customerName = 'Walk-in Customer';
-            if (!empty($jobData['user_id'])) {
-                $customer = $this->userModel->find($jobData['user_id']);
-                $customerName = $customer ? $customer['full_name'] : 'Registered Customer';
-            } elseif (!empty($jobData['walk_in_customer_name'])) {
-                $customerName = $jobData['walk_in_customer_name'] . ' (Walk-in)';
-            }
-
-            // Compose SMS message
-            helper('nepali_date');
-            $currentDateTime = formatNepaliDateTime(date('Y-m-d H:i:s'), 'short');
-
-            $message = "New Job Created!\n";
-            $message .= "Job ID: #{$jobId}\n";
-            $message .= "Customer: {$customerName}\n";
-            $message .= "Device: " . ($jobData['device_name'] ?? 'N/A') . "\n";
-            $message .= "Problem: " . (substr($jobData['problem'] ?? 'N/A', 0, 50)) . "\n";
-            $message .= "Status: " . ($jobData['status'] ?? 'N/A') . "\n";
-            $message .= "Time: {$currentDateTime}\n";
-
-            $result = $this->smsService->send($admin['phone'], $message);
-
-            if ($result['status']) {
-                log_message('info', "Job creation SMS sent successfully to admin for job #{$jobId}");
-            } else {
-                log_message('error', "Failed to send job creation SMS to admin for job #{$jobId}: " . ($result['message'] ?? 'Unknown error'));
-            }
-
-        } catch (\Exception $e) {
-            log_message('error', "Exception sending job creation SMS for job #{$jobId}: " . $e->getMessage());
-        }
-    }
 
     /**
      * Send SMS notification to customer when job status changes to "Ready to Dispatch to Customer"

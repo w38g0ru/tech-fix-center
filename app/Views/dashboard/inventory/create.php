@@ -107,6 +107,7 @@
             </div>
 
             <!-- Pricing Row -->
+            <?php if (hasAnyRole(['superadmin', 'admin'])): ?>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Purchase Price -->
                 <div>
@@ -146,6 +147,26 @@
                     <p class="mt-1 text-sm text-gray-500">Retail price for this item (optional)</p>
                 </div>
             </div>
+            <?php else: ?>
+            <!-- Selling Price Only for Non-Admin Users -->
+            <div>
+                <label for="selling_price" class="block text-sm font-medium text-gray-700 mb-2">
+                    Selling Price (NPR)
+                </label>
+                <input type="number"
+                       id="selling_price"
+                       name="selling_price"
+                       value="<?= old('selling_price') ?>"
+                       min="0"
+                       step="0.01"
+                       placeholder="0.00"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.selling_price') ? 'border-red-500' : '' ?>">
+                <?php if (session('errors.selling_price')): ?>
+                    <p class="mt-1 text-sm text-red-600"><?= session('errors.selling_price') ?></p>
+                <?php endif; ?>
+                <p class="mt-1 text-sm text-gray-500">Retail price for this item (optional)</p>
+            </div>
+            <?php endif; ?>
 
             <!-- Additional Fields Row -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

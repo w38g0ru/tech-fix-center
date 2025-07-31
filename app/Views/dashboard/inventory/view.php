@@ -75,12 +75,14 @@
                         <p class="mt-1 text-sm text-gray-900"><?= $item['minimum_order_level'] ? number_format($item['minimum_order_level']) : 'Not set' ?></p>
                     </div>
                     
+                    <?php if (hasAnyRole(['superadmin', 'admin'])): ?>
                     <div>
                         <label class="block text-sm font-medium text-gray-500">Purchase Price</label>
                         <p class="mt-1 text-sm text-gray-900">
                             <?= $item['purchase_price'] ? 'NPR ' . number_format($item['purchase_price'], 2) : 'Not set' ?>
                         </p>
                     </div>
+                    <?php endif; ?>
                     
                     <div>
                         <label class="block text-sm font-medium text-gray-500">Selling Price</label>
@@ -188,25 +190,29 @@
         </div>
         
         <!-- Pricing Information -->
-        <?php if ($item['purchase_price'] || $item['selling_price']): ?>
+        <?php
+        $showPurchasePrice = hasAnyRole(['superadmin', 'admin']) && $item['purchase_price'];
+        $showPricingSection = $showPurchasePrice || $item['selling_price'];
+        ?>
+        <?php if ($showPricingSection): ?>
         <div class="bg-white shadow rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Pricing</h3>
             <div class="space-y-3">
-                <?php if ($item['purchase_price']): ?>
+                <?php if ($showPurchasePrice): ?>
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-600">Purchase Price:</span>
                     <span class="text-sm font-medium text-gray-900">NPR <?= number_format($item['purchase_price'], 2) ?></span>
                 </div>
                 <?php endif; ?>
-                
+
                 <?php if ($item['selling_price']): ?>
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-600">Selling Price:</span>
                     <span class="text-sm font-medium text-gray-900">NPR <?= number_format($item['selling_price'], 2) ?></span>
                 </div>
                 <?php endif; ?>
-                
-                <?php if ($item['purchase_price'] && $item['selling_price']): ?>
+
+                <?php if ($showPurchasePrice && $item['selling_price']): ?>
                 <div class="pt-3 border-t border-gray-200">
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-gray-600">Profit Margin:</span>

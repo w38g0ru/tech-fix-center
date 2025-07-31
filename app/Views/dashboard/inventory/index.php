@@ -171,10 +171,10 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <?php if (!empty($item['selling_price'])): ?>
                                     <div class="font-medium text-gray-900">NPR <?= number_format($item['selling_price'], 2) ?></div>
-                                    <?php if (!empty($item['purchase_price'])): ?>
+                                    <?php if (!empty($item['purchase_price']) && hasAnyRole(['superadmin', 'admin'])): ?>
                                         <div class="text-xs text-gray-500">Cost: NPR <?= number_format($item['purchase_price'], 2) ?></div>
                                     <?php endif; ?>
-                                <?php elseif (!empty($item['purchase_price'])): ?>
+                                <?php elseif (!empty($item['purchase_price']) && hasAnyRole(['superadmin', 'admin'])): ?>
                                     <div class="font-medium text-gray-900">NPR <?= number_format($item['purchase_price'], 2) ?></div>
                                     <div class="text-xs text-gray-500">Purchase price</div>
                                 <?php else: ?>

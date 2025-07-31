@@ -154,8 +154,8 @@ class JobsController extends ResourceController
                 return $this->failServerError('Failed to create job');
             }
 
-            // Send SMS notification (if applicable)
-            $this->sendJobCreationNotification($jobId, $jobData);
+            // SMS notification disabled
+            // $this->sendJobCreationNotification($jobId, $jobData);
 
             // Get the created job with all relationships
             $createdJob = $this->jobModel->getJobWithAllRelations($jobId);
@@ -640,61 +640,7 @@ class JobsController extends ResourceController
         return [];
     }
 
-    /**
-     * Send job creation notification
-     *
-     * @param int $jobId
-     * @param array $jobData
-     * @return void
-     */
-    private function sendJobCreationNotification($jobId, $jobData)
-    {
-        try {
-            // Get current user's email to check if it's anish@anish.com.np
-            $currentUser = session()->get('user');
-            if ($currentUser && $currentUser['email'] === 'anish@anish.com.np') {
-                return; // Don't send SMS
-            }
 
-            // Get admin phone number
-            $admin = $this->adminUserModel
-                ->where('email', 'anish@anish.com.np')
-                ->orWhere('role', 'admin')
-                ->where('phone IS NOT NULL')
-                ->where('phone !=', '')
-                ->first();
-
-            if (!$admin || empty($admin['phone'])) {
-                return;
-            }
-
-            // Get customer name
-            $customerName = 'Walk-in Customer';
-            if (!empty($jobData['user_id'])) {
-                $customer = $this->userModel->find($jobData['user_id']);
-                $customerName = $customer ? $customer['name'] : 'Registered Customer';
-            } elseif (!empty($jobData['walk_in_customer_name'])) {
-                $customerName = $jobData['walk_in_customer_name'] . ' (Walk-in)';
-            }
-
-            // Compose SMS message
-            $currentDateTime = formatNepaliDateTime(date('Y-m-d H:i:s'), 'short');
-
-            $message = "New Job Created!\n";
-            $message .= "Job ID: #{$jobId}\n";
-            $message .= "Customer: {$customerName}\n";
-            $message .= "Device: " . ($jobData['device_name'] ?? 'N/A') . "\n";
-            $message .= "Problem: " . (substr($jobData['problem'] ?? 'N/A', 0, 50)) . "\n";
-            $message .= "Status: " . ($jobData['status'] ?? 'N/A') . "\n";
-            $message .= "Time: {$currentDateTime}\n";
-            $message .= "- TeknoPhix";
-
-            $this->smsService->send($admin['phone'], $message);
-
-        } catch (\Exception $e) {
-            log_message('error', "Job creation SMS error for job #{$jobId}: " . $e->getMessage());
-        }
-    }
 
     /**
      * Send status change notification

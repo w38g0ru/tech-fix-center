@@ -142,15 +142,16 @@
             </div>
 
             <!-- Pricing Row -->
+            <?php if (hasAnyRole(['superadmin', 'admin'])): ?>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Purchase Price -->
                 <div>
                     <label for="purchase_price" class="block text-sm font-medium text-gray-700 mb-2">
                         Purchase Price (NPR)
                     </label>
-                    <input type="number" 
-                           id="purchase_price" 
-                           name="purchase_price" 
+                    <input type="number"
+                           id="purchase_price"
+                           name="purchase_price"
                            value="<?= old('purchase_price', $item['purchase_price']) ?>"
                            min="0"
                            step="0.01"
@@ -166,9 +167,9 @@
                     <label for="selling_price" class="block text-sm font-medium text-gray-700 mb-2">
                         Selling Price (NPR)
                     </label>
-                    <input type="number" 
-                           id="selling_price" 
-                           name="selling_price" 
+                    <input type="number"
+                           id="selling_price"
+                           name="selling_price"
                            value="<?= old('selling_price', $item['selling_price']) ?>"
                            min="0"
                            step="0.01"
@@ -179,6 +180,25 @@
                     <?php endif; ?>
                 </div>
             </div>
+            <?php else: ?>
+            <!-- Selling Price Only for Non-Admin Users -->
+            <div>
+                <label for="selling_price" class="block text-sm font-medium text-gray-700 mb-2">
+                    Selling Price (NPR)
+                </label>
+                <input type="number"
+                       id="selling_price"
+                       name="selling_price"
+                       value="<?= old('selling_price', $item['selling_price']) ?>"
+                       min="0"
+                       step="0.01"
+                       placeholder="0.00"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.selling_price') ? 'border-red-500' : '' ?>">
+                <?php if (session('errors.selling_price')): ?>
+                    <p class="mt-1 text-sm text-red-600"><?= session('errors.selling_price') ?></p>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
 
             <!-- Supplier -->
             <div>

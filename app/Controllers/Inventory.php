@@ -382,25 +382,46 @@ class Inventory extends BaseController
         }
 
         $items = $this->inventoryModel->findAll();
+        $isAdmin = hasAnyRole(['superadmin', 'admin']);
 
-        // Create CSV content
-        $csvContent = "Device Name,Brand,Model,Total Stock,Purchase Price,Selling Price,Minimum Order Level,Category,Description,Supplier,Status\n";
+        // Create CSV content with conditional headers
+        if ($isAdmin) {
+            $csvContent = "Device Name,Brand,Model,Total Stock,Purchase Price,Selling Price,Minimum Order Level,Category,Description,Supplier,Status\n";
+        } else {
+            $csvContent = "Device Name,Brand,Model,Total Stock,Selling Price,Minimum Order Level,Category,Description,Supplier,Status\n";
+        }
 
         foreach ($items as $item) {
-            $csvContent .= sprintf(
-                '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"' . "\n",
-                $item['device_name'] ?? '',
-                $item['brand'] ?? '',
-                $item['model'] ?? '',
-                $item['total_stock'] ?? 0,
-                $item['purchase_price'] ?? '',
-                $item['selling_price'] ?? '',
-                $item['minimum_order_level'] ?? 0,
-                $item['category'] ?? '',
-                str_replace('"', '""', $item['description'] ?? ''),
-                $item['supplier'] ?? '',
-                $item['status'] ?? 'Active'
-            );
+            if ($isAdmin) {
+                $csvContent .= sprintf(
+                    '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"' . "\n",
+                    $item['device_name'] ?? '',
+                    $item['brand'] ?? '',
+                    $item['model'] ?? '',
+                    $item['total_stock'] ?? 0,
+                    $item['purchase_price'] ?? '',
+                    $item['selling_price'] ?? '',
+                    $item['minimum_order_level'] ?? 0,
+                    $item['category'] ?? '',
+                    str_replace('"', '""', $item['description'] ?? ''),
+                    $item['supplier'] ?? '',
+                    $item['status'] ?? 'Active'
+                );
+            } else {
+                $csvContent .= sprintf(
+                    '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"' . "\n",
+                    $item['device_name'] ?? '',
+                    $item['brand'] ?? '',
+                    $item['model'] ?? '',
+                    $item['total_stock'] ?? 0,
+                    $item['selling_price'] ?? '',
+                    $item['minimum_order_level'] ?? 0,
+                    $item['category'] ?? '',
+                    str_replace('"', '""', $item['description'] ?? ''),
+                    $item['supplier'] ?? '',
+                    $item['status'] ?? 'Active'
+                );
+            }
         }
 
         // Set headers for download
@@ -647,14 +668,10 @@ class Inventory extends BaseController
             return redirect()->to('/auth/login');
         }
 
-        // Check if user has admin privileges
-        if (!hasAnyRole(['superadmin', 'admin'])) {
-            return redirect()->to('/dashboard')->with('error', 'Access denied. Admin privileges required.');
-        }
-
         try {
             // Get export data
             $items = $this->inventoryModel->getExportData();
+            $isAdmin = hasAnyRole(['superadmin', 'admin']);
 
             // Set headers for CSV download
             $filename = 'inventory_export_' . date('Y-m-d_H-i-s') . '.csv';
@@ -667,41 +684,75 @@ class Inventory extends BaseController
             // Open output stream
             $output = fopen('php://output', 'w');
 
-            // Write CSV headers
-            $headers = [
-                'Device Name',
-                'Brand',
-                'Model',
-                'Category',
-                'Total Stock',
-                'Purchase Price',
-                'Selling Price',
-                'Minimum Order Level',
-                'Supplier',
-                'Description',
-                'Status',
-                'Created At',
-                'Updated At'
-            ];
+            // Write CSV headers based on user role
+            if ($isAdmin) {
+                $headers = [
+                    'Device Name',
+                    'Brand',
+                    'Model',
+                    'Category',
+                    'Total Stock',
+                    'Purchase Price',
+                    'Selling Price',
+                    'Minimum Order Level',
+                    'Supplier',
+                    'Description',
+                    'Status',
+                    'Created At',
+                    'Updated At'
+                ];
+            } else {
+                $headers = [
+                    'Device Name',
+                    'Brand',
+                    'Model',
+                    'Category',
+                    'Total Stock',
+                    'Selling Price',
+                    'Minimum Order Level',
+                    'Supplier',
+                    'Description',
+                    'Status',
+                    'Created At',
+                    'Updated At'
+                ];
+            }
             fputcsv($output, $headers);
 
-            // Write data rows
+            // Write data rows based on user role
             foreach ($items as $item) {
-                $row = [
-                    $item['device_name'],
-                    $item['brand'],
-                    $item['model'],
-                    $item['category'],
-                    $item['total_stock'],
-                    $item['purchase_price'],
-                    $item['selling_price'],
-                    $item['minimum_order_level'],
-                    $item['supplier'],
-                    $item['description'],
-                    $item['status'],
-                    $item['created_at'],
-                    $item['updated_at']
-                ];
+                if ($isAdmin) {
+                    $row = [
+                        $item['device_name'],
+                        $item['brand'],
+                        $item['model'],
+                        $item['category'],
+                        $item['total_stock'],
+                        $item['purchase_price'],
+                        $item['selling_price'],
+                        $item['minimum_order_level'],
+                        $item['supplier'],
+                        $item['description'],
+                        $item['status'],
+                        $item['created_at'],
+                        $item['updated_at']
+                    ];
+                } else {
+                    $row = [
+                        $item['device_name'],
+                        $item['brand'],
+                        $item['model'],
+                        $item['category'],
+                        $item['total_stock'],
+                        $item['selling_price'],
+                        $item['minimum_order_level'],
+                        $item['supplier'],
+                        $item['description'],
+                        $item['status'],
+                        $item['created_at'],
+                        $item['updated_at']
+                    ];
+                }
                 fputcsv($output, $row);
             }
 
