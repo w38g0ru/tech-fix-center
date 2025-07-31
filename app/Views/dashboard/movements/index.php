@@ -9,7 +9,7 @@
     </div>
     <div class="mt-4 sm:mt-0">
         <a href="<?= base_url('dashboard/movements/create') ?>"
-           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30">
+           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-sm hover:shadow-blue-500/30">
             <i class="fas fa-plus mr-2"></i>
             Add Stock
         </a>
@@ -18,7 +18,7 @@
 
 <!-- Movement Stats -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 hover:shadow-2xl transition-all duration-200">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-2xl transition-all duration-200">
         <div class="flex items-center">
             <div class="p-3 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/25">
                 <i class="fas fa-arrow-down text-lg"></i>
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 hover:shadow-2xl transition-all duration-200">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-2xl transition-all duration-200">
         <div class="flex items-center">
             <div class="p-3 rounded-xl bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-500/25">
                 <i class="fas fa-arrow-up text-lg"></i>
@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 hover:shadow-2xl transition-all duration-200">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-2xl transition-all duration-200">
         <div class="flex items-center">
             <div class="p-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25">
                 <i class="fas fa-exchange-alt text-lg"></i>
@@ -59,7 +59,7 @@
 </div>
 
 <!-- Movements Table -->
-<div class="bg-white shadow-xl rounded-2xl border border-gray-100 overflow-hidden">
+<div class="bg-white shadow-sm rounded-2xl border border-gray-100 overflow-hidden">
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">

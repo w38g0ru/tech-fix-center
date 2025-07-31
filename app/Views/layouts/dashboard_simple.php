@@ -125,7 +125,7 @@ $pageTitle = $title ?? 'Dashboard';
                                 <h2 class="text-xl font-semibold text-gray-900">
                                     <?= isset($title) ? $title : 'Dashboard' ?>
                                 </h2>
-                                <p class="text-sm text-gray-600">TeknoPhix Management System</p>
+                                <p class="text-sm text-gray-600">infoTech Suppliers & Traders</p>
                             </div>
                         </div>
                     </div>
