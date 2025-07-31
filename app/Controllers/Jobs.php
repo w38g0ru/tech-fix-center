@@ -102,9 +102,9 @@ class Jobs extends BaseController
         // Prepare job data for model validation
         $jobData = [
             'user_id' => $userId,
-            'walk_in_customer_name' => $walkInCustomerName,
+            'walk_in_customer_name' => ucfirst(strtolower($walkInCustomerName)),
             'walk_in_customer_mobile' => $walkInCustomerMobile,
-            'device_name' => $this->request->getPost('device_name'),
+            'device_name' => strtoupper(strtolower($this->request->getPost('device_name'))),
             'serial_number' => $this->request->getPost('serial_number'),
             'problem' => $this->request->getPost('problem'),
             'technician_id' => $this->request->getPost('technician_id') ?: null,

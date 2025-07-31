@@ -131,16 +131,6 @@
                                 <div class="font-medium text-blue-600">
                                     Job #<?= $job['id'] ?>
                                 </div>
-                                <div class="text-xs text-gray-500 mt-1">
-                                    <?= esc(substr($job['problem'], 0, 50)) ?><?= strlen($job['problem']) > 50 ? '...' : '' ?>
-                                </div>
-                                <div class="text-xs text-gray-400 mt-1">
-                                    <?= formatNepaliDate($job['created_at'], 'short') ?>
-                                </div>
-                            </td>
-
-                            <!-- Customer/Device -->
-                            <td class="px-6 py-4">
                                 <div class="font-medium text-gray-900">
                                     <?= esc($job['customer_name'] ?? $job['walk_in_customer_name'] ?? 'N/A') ?>
                                 </div>
@@ -149,6 +139,16 @@
                                         <?= esc($job['walk_in_customer_mobile']) ?>
                                     </div>
                                 <?php endif; ?>
+                                <div class="text-xs text-gray-400 mt-1">
+                                    <?= formatNepaliDate($job['created_at'], 'short') ?>
+                                </div>
+                            </td>
+
+                            <!-- Customer/Device -->
+                            <td class="px-6 py-4">
+                                <div class="text-xs text-gray-500 mt-1">
+                                    <?= esc(substr($job['problem'], 0, 50)) ?><?= strlen($job['problem']) > 50 ? '...' : '' ?>
+                                </div>
                                 <div class="text-sm text-gray-700 mt-1">
                                     <?= esc($job['device_name']) ?>
                                 </div>
