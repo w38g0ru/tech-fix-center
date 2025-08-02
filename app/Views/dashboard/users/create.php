@@ -14,29 +14,29 @@
     </a>
 </div>
 
-<!-- Error Messages -->
+<!-- Alert Messages -->
 <?php if (session()->getFlashdata('error')): ?>
-    <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
         <div class="flex">
             <div class="flex-shrink-0">
-                <i class="fas fa-exclamation-circle text-red-400"></i>
+                <i class="fas fa-exclamation-circle"></i>
             </div>
             <div class="ml-3">
-                <p class="text-sm text-red-800"><?= session()->getFlashdata('error') ?></p>
+                <p class="text-sm"><?= session()->getFlashdata('error') ?></p>
             </div>
         </div>
     </div>
 <?php endif; ?>
 
 <?php if (session()->getFlashdata('errors')): ?>
-    <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
         <div class="flex">
             <div class="flex-shrink-0">
-                <i class="fas fa-exclamation-circle text-red-400"></i>
+                <i class="fas fa-exclamation-circle"></i>
             </div>
             <div class="ml-3">
-                <h3 class="text-sm font-medium text-red-800">Please fix the following errors:</h3>
-                <div class="mt-2 text-sm text-red-700">
+                <h3 class="text-sm font-medium">Please fix the following errors:</h3>
+                <div class="mt-2 text-sm">
                     <ul class="list-disc pl-5 space-y-1">
                         <?php foreach (session()->getFlashdata('errors') as $error): ?>
                             <li><?= esc($error) ?></li>
@@ -74,7 +74,7 @@
                            value="<?= old('name') ?>"
                            required
                            placeholder="Enter customer name"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.name') ? 'border-red-500' : '' ?>">
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.name') ? 'border-red-500' : '' ?>">
                     <?php if (session('errors.name')): ?>
                         <p class="mt-1 text-sm text-red-600"><?= session('errors.name') ?></p>
                     <?php endif; ?>
@@ -90,7 +90,7 @@
                            name="mobile_number"
                            value="<?= old('mobile_number') ?>"
                            placeholder="Enter mobile number"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.mobile_number') ? 'border-red-500' : '' ?>">
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.mobile_number') ? 'border-red-500' : '' ?>">
                     <?php if (session('errors.mobile_number')): ?>
                         <p class="mt-1 text-sm text-red-600"><?= session('errors.mobile_number') ?></p>
                     <?php endif; ?>
@@ -105,7 +105,7 @@
                 <select id="user_type"
                         name="user_type"
                         required
-                        class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 <?= session('errors.user_type') ? 'border-red-500' : '' ?>">
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.user_type') ? 'border-red-500' : '' ?>">
                     <option value="">Select customer type</option>
                     <option value="Registered" <?= old('user_type') === 'Registered' ? 'selected' : '' ?>>Registered</option>
                     <option value="Walk-in" <?= old('user_type') === 'Walk-in' ? 'selected' : '' ?>>Walk-in</option>
@@ -120,12 +120,11 @@
             </div>
 
             <!-- Form Actions -->
-            <div class="flex flex-col sm:flex-row items-center justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-8 border-t border-gray-200">
-                <a href="<?= base_url('dashboard/users') ?>" class="btn btn-outline w-full sm:w-auto">
-                    <i class="fas fa-times mr-2"></i>
+            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                <a href="<?= base_url('dashboard/users') ?>" class="btn btn-outline">
                     Cancel
                 </a>
-                <button type="submit" class="btn btn-primary w-full sm:w-auto">
+                <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save mr-2"></i>
                     Create Customer
                 </button>
