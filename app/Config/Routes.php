@@ -37,6 +37,16 @@ $routes->get('test/routes', 'Test::routes');
 $routes->group('dashboard', function($routes) {
     $routes->get('/', 'Dashboard::index');
 
+    // Dashboard Quick Actions
+    $routes->post('quick-dispatch/(:num)', 'Dashboard::quickDispatch/$1');
+    $routes->post('quick-refer/(:num)', 'Dashboard::quickRefer/$1');
+    $routes->get('api/stats', 'Dashboard::apiStats');
+
+    // Dashboard Quick Actions
+    $routes->post('quick-dispatch/(:num)', 'Dashboard::quickDispatch/$1');
+    $routes->post('quick-refer/(:num)', 'Dashboard::quickRefer/$1');
+    $routes->get('api/stats', 'Dashboard::apiStats');
+
     // Users/Customers Routes
     $routes->get('users', 'Dashboard::users');
     $routes->get('users/create', 'Dashboard::createUser');

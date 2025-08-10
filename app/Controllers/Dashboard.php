@@ -7,6 +7,8 @@ use App\Models\AdminUserModel;
 use App\Models\JobModel;
 use App\Models\InventoryItemModel;
 use App\Models\InventoryMovementModel;
+use App\Models\ReferredModel;
+use App\Models\ServiceCenterModel;
 
 class Dashboard extends BaseController
 {
@@ -15,6 +17,8 @@ class Dashboard extends BaseController
     protected $jobModel;
     protected $inventoryModel;
     protected $movementModel;
+    protected $referredModel;
+    protected $serviceCenterModel;
 
     public function __construct()
     {
@@ -23,6 +27,8 @@ class Dashboard extends BaseController
         $this->jobModel = new JobModel();
         $this->inventoryModel = new InventoryItemModel();
         $this->movementModel = new InventoryMovementModel();
+        $this->referredModel = new ReferredModel();
+        $this->serviceCenterModel = new ServiceCenterModel();
 
         // Load auth helper
         helper('auth');
@@ -34,15 +40,26 @@ class Dashboard extends BaseController
         if (!isLoggedIn()) {
             return redirect()->to(base_url('auth/login'));
         }
+        // Get comprehensive dashboard data
+        $jobStats = $this->jobModel->getJobStats();
+        $jobsRequiringAttention = $this->jobModel->getJobsRequiringAttention();
+        $referredStats = $this->referredModel->getReferredStats();
+
         $data = [
             'title' => 'Dashboard',
             'userStats' => $this->userModel->getUserStats(),
-            'jobStats' => $this->jobModel->getJobStats(),
+            'jobStats' => $jobStats,
             'inventoryStats' => $this->inventoryModel->getInventoryStats(),
             'technicianStats' => $this->adminUserModel->getTechnicianStats(),
+            'referredStats' => $referredStats,
             'recentJobs' => $this->jobModel->getRecentJobs(5),
             'recentMovements' => $this->movementModel->getRecentMovements(5),
-            'lowStockItems' => $this->inventoryModel->getLowStockItems(5, 10)
+            'lowStockItems' => $this->inventoryModel->getLowStockItems(5, 10),
+            'jobsRequiringAttention' => $jobsRequiringAttention,
+            'overdueJobs' => $jobsRequiringAttention['overdue'] ?? [],
+            'readyForDispatch' => $jobsRequiringAttention['ready_for_dispatch'] ?? [],
+            'jobsAtServiceCenters' => $this->jobModel->getJobsAtServiceCenters(),
+            'overdueFromServiceCenters' => $this->jobModel->getOverdueJobsFromServiceCenters()
         ];
 
         return view('dashboard/index', $data);
@@ -352,5 +369,83 @@ class Dashboard extends BaseController
         return view('dashboard/settings', $data);
     }
 
+    /**
+     * Quick dispatch action - mark job as ready for dispatch
+     */
+    public function quickDispatch($jobId)
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        $job = $this->jobModel->find($jobId);
+
+        if (!$job) {
+            return redirect()->back()->with('error', 'Job not found.');
+        }
+
+        // Update job status to ready for dispatch
+        if ($this->jobModel->update($jobId, ['status' => 'Ready to Dispatch to Customer'])) {
+            return redirect()->back()->with('success', 'Job marked as ready for dispatch!');
+        } else {
+            return redirect()->back()->with('error', 'Failed to update job status.');
+        }
+    }
+
+    /**
+     * Quick action to refer job to service center
+     */
+    public function quickRefer($jobId)
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        $job = $this->jobModel->find($jobId);
+
+        if (!$job) {
+            return redirect()->back()->with('error', 'Job not found.');
+        }
+
+        // Get available service centers
+        $serviceCenters = $this->serviceCenterModel->getActiveServiceCenters();
+
+        if (empty($serviceCenters)) {
+            return redirect()->back()->with('error', 'No active service centers available.');
+        }
+
+        // Use the first available service center (or implement selection logic)
+        $serviceCenterId = $serviceCenters[0]['id'];
+
+        if ($this->jobModel->referToServiceCenter($jobId, $serviceCenterId)) {
+            return redirect()->back()->with('success', 'Job referred to service center successfully!');
+        } else {
+            return redirect()->back()->with('error', 'Failed to refer job to service center.');
+        }
+    }
+
+    /**
+     * Dashboard API endpoint for real-time updates
+     */
+    public function apiStats()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return $this->response->setJSON(['error' => 'Unauthorized'])->setStatusCode(401);
+        }
+
+        $stats = [
+            'jobStats' => $this->jobModel->getJobStats(),
+            'userStats' => $this->userModel->getUserStats(),
+            'referredStats' => $this->referredModel->getReferredStats(),
+            'overdueCount' => count($this->jobModel->getJobsRequiringAttention()['overdue'] ?? []),
+            'readyForDispatchCount' => count($this->jobModel->getJobsRequiringAttention()['ready_for_dispatch'] ?? []),
+            'timestamp' => date('Y-m-d H:i:s')
+        ];
+
+        return $this->response->setJSON($stats);
+    }
 
 }

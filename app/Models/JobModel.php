@@ -516,16 +516,25 @@ class JobModel extends Model
     }
 
     /**
-     * Get jobs by dispatch type
+     * Get jobs by dispatch type (using status as proxy since dispatch_type column doesn't exist)
      */
     public function getJobsByDispatchType($dispatchType)
     {
+        // Map dispatch types to job statuses since dispatch_type column doesn't exist
+        $statusMapping = [
+            'Customer' => 'Ready to Dispatch to Customer',
+            'Service Center' => 'Referred to Service Center',
+            'Other' => 'Completed'
+        ];
+
+        $status = $statusMapping[$dispatchType] ?? $dispatchType;
+
         return $this->select('jobs.*, users.name as customer_name, users.mobile_number,
                             admin_users.full_name as technician_name, service_centers.name as service_center_name')
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
-                    ->where('jobs.dispatch_type', $dispatchType)
+                    ->where('jobs.status', $status)
                     ->orderBy('jobs.id', 'DESC')
                     ->findAll();
     }
@@ -541,7 +550,7 @@ class JobModel extends Model
                     ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
                     ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
                     ->where('jobs.status', 'Referred to Service Center')
-                    ->orderBy('jobs.dispatch_date', 'DESC')
+                    ->orderBy('jobs.created_at', 'DESC')
                     ->findAll();
     }
 
@@ -837,8 +846,8 @@ class JobModel extends Model
                             ->where('status', 'Completed')
                             ->first();
 
-        // Average completion time
-        $avgCompletionTime = $this->select('AVG(DATEDIFF(updated_at, created_at)) as avg_days')
+        // Average completion time (using expected_return_date as proxy for completion)
+        $avgCompletionTime = $this->select('AVG(DATEDIFF(expected_return_date, created_at)) as avg_days')
                                  ->where('created_at >=', $dateFrom)
                                  ->where('created_at <=', $dateTo . ' 23:59:59')
                                  ->where('status', 'Completed')
@@ -892,7 +901,7 @@ class JobModel extends Model
             'ready_for_dispatch' => $this->select('jobs.*, users.name as customer_name, users.mobile_number')
                                         ->join('users', 'users.id = jobs.user_id', 'left')
                                         ->where('jobs.status', 'Ready to Dispatch to Customer')
-                                        ->orderBy('jobs.updated_at', 'ASC')
+                                        ->orderBy('jobs.created_at', 'ASC')
                                         ->findAll()
         ];
     }
