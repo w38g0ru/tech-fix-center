@@ -122,6 +122,11 @@ $routes->group('dashboard', function($routes) {
     $routes->get('referred/delete/(:num)', 'Referred::delete/$1');
     $routes->post('referred/updateStatus/(:num)', 'Referred::updateStatus/$1');
 
+    // Enhanced dispatch routes (accessible by both admin and user)
+    $routes->post('referred/quick-dispatch/(:num)', 'Referred::quickDispatch/$1');
+    $routes->post('referred/mark-ready/(:num)', 'Referred::markReadyForDispatch/$1');
+    $routes->get('referred/stats', 'Referred::getDispatchStats');
+
     // Service Centers Routes
     $routes->get('service-centers', 'ServiceCenters::index');
     $routes->get('service-centers/create', 'ServiceCenters::create');

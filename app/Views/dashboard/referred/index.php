@@ -4,10 +4,24 @@
 
 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
     <div>
-        <h1 class="text-2xl font-semibold text-gray-900">Dispatch Management</h1>
-        <p class="mt-1 text-sm text-gray-600">Manage items sent to external service centers</p>
+        <div class="flex items-center space-x-3">
+            <h1 class="text-2xl font-semibold text-gray-900">Dispatch Management</h1>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $isAdmin ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' ?>">
+                <i class="fas <?= $isAdmin ? 'fa-crown' : 'fa-user' ?> mr-1"></i>
+                <?= ucfirst($userRole) ?> Access
+            </span>
+        </div>
+        <p class="mt-1 text-sm text-gray-600">
+            <?= $isAdmin ? 'Full dispatch management with admin privileges' : 'View and manage dispatch operations' ?>
+        </p>
     </div>
-    <div class="mt-4 sm:mt-0">
+    <div class="mt-4 sm:mt-0 flex items-center space-x-3">
+        <?php if ($isAdmin): ?>
+            <button onclick="showBulkActions()" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition ease-in-out duration-150">
+                <i class="fas fa-tasks mr-2"></i>
+                Bulk Actions
+            </button>
+        <?php endif; ?>
         <a href="<?= base_url('dashboard/referred/create') ?>"
            class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
             <i class="fas fa-plus mr-2"></i>
@@ -15,6 +29,68 @@
         </a>
     </div>
 </div>
+
+<!-- Quick Actions for Jobs Ready for Dispatch -->
+<?php if (!empty($readyForDispatch)): ?>
+<div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+    <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center">
+            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-shipping-fast text-white"></i>
+            </div>
+            <div>
+                <h2 class="text-lg font-semibold text-gray-900">Jobs Ready for Dispatch</h2>
+                <p class="text-sm text-gray-600"><?= count($readyForDispatch) ?> job(s) ready to be dispatched to customers</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <?php foreach (array_slice($readyForDispatch, 0, 6) as $job): ?>
+        <div class="bg-white rounded-lg border border-blue-200 p-4">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-gray-900">Job #<?= $job['id'] ?></span>
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    Ready
+                </span>
+            </div>
+            <div class="text-sm text-gray-600 mb-3">
+                <div><strong>Device:</strong> <?= esc($job['device_name']) ?></div>
+                <div><strong>Customer:</strong> <?= esc($job['walk_in_customer_name'] ?: 'Walk-in Customer') ?></div>
+                <?php if (!empty($job['walk_in_customer_mobile'])): ?>
+                <div><strong>Mobile:</strong> <?= esc($job['walk_in_customer_mobile']) ?></div>
+                <?php endif; ?>
+            </div>
+            <div class="flex items-center space-x-2">
+                <form method="POST" action="<?= base_url('dashboard/referred/quick-dispatch/' . $job['id']) ?>" class="inline">
+                    <?= csrf_field() ?>
+                    <button type="submit"
+                            onclick="return confirm('Mark this job as dispatched to customer?')"
+                            class="inline-flex items-center px-3 py-1.5 bg-green-600 border border-transparent rounded text-xs font-medium text-white hover:bg-green-700 transition ease-in-out duration-150">
+                        <i class="fas fa-check mr-1"></i>
+                        Dispatch
+                    </button>
+                </form>
+                <a href="<?= base_url('dashboard/jobs/view/' . $job['id']) ?>"
+                   class="inline-flex items-center px-3 py-1.5 bg-gray-600 border border-transparent rounded text-xs font-medium text-white hover:bg-gray-700 transition ease-in-out duration-150">
+                    <i class="fas fa-eye mr-1"></i>
+                    View
+                </a>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+
+    <?php if (count($readyForDispatch) > 6): ?>
+    <div class="mt-4 text-center">
+        <a href="<?= base_url('dashboard/jobs?status=Ready to Dispatch to Customer') ?>"
+           class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+            View all <?= count($readyForDispatch) ?> jobs ready for dispatch →
+        </a>
+    </div>
+    <?php endif; ?>
+</div>
+<?php endif; ?>
 
 <!-- Dispatch Stats -->
 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">

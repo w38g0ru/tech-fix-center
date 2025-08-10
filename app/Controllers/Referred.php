@@ -4,16 +4,22 @@ namespace App\Controllers;
 
 use App\Models\ReferredModel;
 use App\Models\PhotoModel;
+use App\Models\JobModel;
+use App\Models\ServiceCenterModel;
 
 class Referred extends BaseController
 {
     protected $referredModel;
     protected $photoModel;
+    protected $jobModel;
+    protected $serviceCenterModel;
 
     public function __construct()
     {
         $this->referredModel = new ReferredModel();
         $this->photoModel = new PhotoModel();
+        $this->jobModel = new JobModel();
+        $this->serviceCenterModel = new ServiceCenterModel();
         
         // Load auth helper
         helper('auth');
@@ -38,12 +44,27 @@ class Referred extends BaseController
             $referred = $this->referredModel->getReferredWithPhotos($perPage);
         }
 
+        // Get user role for role-based functionality
+        $userRole = session('role');
+        $isAdmin = ($userRole === 'admin');
+
+        // Get additional dispatch data for enhanced functionality
+        $readyForDispatch = $this->jobModel->where('status', 'Ready to Dispatch to Customer')->findAll();
+        $jobsAtServiceCenters = $this->jobModel->getJobsAtServiceCenters();
+        $overdueFromServiceCenters = $this->jobModel->getOverdueJobsFromServiceCenters();
+
         $data = [
             'title' => 'Dispatch Management',
             'referred' => $referred,
             'search' => $search,
             'status' => $status,
+            'userRole' => $userRole,
+            'isAdmin' => $isAdmin,
             'referredStats' => $this->referredModel->getReferredStats(),
+            'readyForDispatch' => $readyForDispatch,
+            'jobsAtServiceCenters' => $jobsAtServiceCenters,
+            'overdueFromServiceCenters' => $overdueFromServiceCenters,
+            'serviceCenters' => $this->serviceCenterModel->getActiveServiceCenters(),
             'pager' => $this->referredModel->pager
         ];
 
@@ -291,5 +312,74 @@ class Referred extends BaseController
         } else {
             return redirect()->back()->with('error', 'Failed to update dispatch status.');
         }
+    }
+
+    /**
+     * Quick dispatch action - mark job as dispatched (accessible by both admin and user)
+     */
+    public function quickDispatch($jobId)
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        $job = $this->jobModel->find($jobId);
+
+        if (!$job) {
+            return redirect()->back()->with('error', 'Job not found.');
+        }
+
+        // Update job status to completed (dispatched to customer)
+        if ($this->jobModel->update($jobId, ['status' => 'Completed'])) {
+            return redirect()->back()->with('success', 'Job marked as dispatched to customer!');
+        } else {
+            return redirect()->back()->with('error', 'Failed to update job status.');
+        }
+    }
+
+    /**
+     * Mark job as ready for dispatch (accessible by both admin and user)
+     */
+    public function markReadyForDispatch($jobId)
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        $job = $this->jobModel->find($jobId);
+
+        if (!$job) {
+            return redirect()->back()->with('error', 'Job not found.');
+        }
+
+        // Update job status to ready for dispatch
+        if ($this->jobModel->update($jobId, ['status' => 'Ready to Dispatch to Customer'])) {
+            return redirect()->back()->with('success', 'Job marked as ready for dispatch!');
+        } else {
+            return redirect()->back()->with('error', 'Failed to update job status.');
+        }
+    }
+
+    /**
+     * Get dispatch statistics (accessible by both admin and user)
+     */
+    public function getDispatchStats()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return $this->response->setJSON(['error' => 'Unauthorized'])->setStatusCode(401);
+        }
+
+        $stats = [
+            'ready_for_dispatch' => $this->jobModel->where('status', 'Ready to Dispatch to Customer')->countAllResults(),
+            'at_service_centers' => $this->jobModel->where('status', 'Referred to Service Center')->countAllResults(),
+            'completed_today' => $this->jobModel->where('status', 'Completed')
+                                              ->where('DATE(created_at)', date('Y-m-d'))
+                                              ->countAllResults()
+        ];
+
+        return $this->response->setJSON($stats);
     }
 }
