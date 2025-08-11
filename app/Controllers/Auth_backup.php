@@ -21,6 +21,8 @@ class Auth extends BaseController
         return view('auth/login', ['title' => 'Login']);
     }
 
+
+
     public function processLogin()
     {
         $email = $this->request->getPost('email');
@@ -42,7 +44,7 @@ class Auth extends BaseController
             ]);
 
             $this->adminUserModel->update($user['id'], ['last_login' => date('Y-m-d H:i:s')]);
-            
+
             return redirect()->to(base_url('dashboard'))->with('success', 'Login successful!');
         }
 
@@ -54,4 +56,58 @@ class Auth extends BaseController
         session()->destroy();
         return redirect()->to(base_url('auth/login'))->with('success', 'Logged out successfully!');
     }
+
+
+
+
+
+    /**
+     * Enhanced credential verification with security checks
+     */
+    private function verifyUserCredentials($email, $password)
+    {
+        $user = $this->adminUserModel->where('email', $email)
+                                   ->where('status', 'active')
+                                   ->first();
+
+        if (!$user) {
+            // Add small delay to prevent timing attacks
+            usleep(100000); // 0.1 second
+            return false;
+        }
+
+        // Verify password
+        if (password_verify($password, $user['password'])) {
+            return $user;
+        }
+
+        // Add delay for failed password verification
+        usleep(100000); // 0.1 second
+        return false;
+    }
+
+
+
+
+
+    /**
+     * Get redirect URL based on user role
+     */
+    private function getRedirectUrl($role)
+    {
+        $roleRedirects = [
+            'superadmin' => 'dashboard',
+            'admin' => 'dashboard',
+            'manager' => 'dashboard',
+            'technician' => 'dashboard/jobs',
+            'customer' => 'dashboard/jobs'
+        ];
+
+        $redirect = $roleRedirects[$role] ?? 'dashboard';
+        return base_url($redirect);
+    }
+
+
+
+
 }
