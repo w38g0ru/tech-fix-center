@@ -119,143 +119,79 @@
 </div>
 
 <!-- Jobs Cards -->
-<div class="space-y-6">
+<div class="space-y-4">
     <?php if (!empty($jobs)): ?>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <?php foreach ($jobs as $job): ?>
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-                    <!-- Card Header -->
-                    <div class="p-6 pb-4">
-                        <div class="flex items-start justify-between mb-4">
-                            <div class="flex-1">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-1">
-                                    Job #<?= $job['id'] ?>
-                                </h3>
-                                <div class="text-sm text-gray-600">
-                                    <?= esc($job['customer_name'] ?? $job['walk_in_customer_name'] ?? 'Walk-in Customer') ?>
-                                </div>
-                                <?php if (!empty($job['walk_in_customer_mobile']) || !empty($job['mobile_number'])): ?>
-                                    <div class="text-sm text-gray-500">
-                                        <?= esc($job['walk_in_customer_mobile'] ?? $job['mobile_number']) ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                            <div class="ml-4">
-                                <?php
-                                $statusClass = match($job['status']) {
-                                    'Pending' => 'bg-yellow-100 text-yellow-800',
-                                    'In Progress' => 'bg-blue-100 text-blue-800',
-                                    'Parts Pending' => 'bg-orange-100 text-orange-800',
-                                    'Referred to Service Center' => 'bg-purple-100 text-purple-800',
-                                    'Ready to Dispatch to Customer' => 'bg-indigo-100 text-indigo-800',
-                                    'Returned' => 'bg-red-100 text-red-800',
-                                    'Completed' => 'bg-green-100 text-green-800',
-                                    default => 'bg-gray-100 text-gray-800'
-                                };
-                                ?>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $statusClass ?>">
-                                    <?= esc($job['status']) ?>
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Device Info -->
-                        <div class="mb-4">
-                            <div class="flex items-center text-sm text-gray-600 mb-2">
-                                <i class="fas fa-mobile-alt text-gray-400 mr-2"></i>
-                                <span class="font-medium"><?= esc($job['device_name']) ?></span>
-                            </div>
-                            <?php if (!empty($job['serial_number'])): ?>
-                                <div class="text-xs text-gray-500 ml-6">
-                                    SN: <?= esc($job['serial_number']) ?>
-                                </div>
-                            <?php endif; ?>
-                            <?php if (!empty($job['problem'])): ?>
-                                <div class="text-sm text-gray-600 mt-2">
-                                    <span class="font-medium">Problem:</span>
-                                    <p class="mt-1 text-gray-500 line-clamp-2">
-                                        <?= esc($job['problem']) ?>
-                                    </p>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-
-                        <!-- Technician & Photos Info -->
-                        <div class="flex items-center justify-between text-sm text-gray-600 mb-4">
-                            <div class="flex items-center">
-                                <i class="fas fa-user-cog text-gray-400 mr-2"></i>
-                                <span><?= esc($job['technician_name'] ?? 'Unassigned') ?></span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-camera text-gray-400 mr-1"></i>
-                                <span class="text-sm text-gray-600"><?= $job['photo_count'] ?? 0 ?></span>
-                                <?php if (($job['photo_count'] ?? 0) > 0): ?>
-                                    <a href="<?= base_url('dashboard/photos/jobs/' . $job['id']) ?>"
-                                       class="ml-2 text-primary-600 hover:text-primary-700 text-xs">
-                                        View
-                                    </a>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-
-                        <!-- Date -->
-                        <div class="text-xs text-gray-500 mb-4">
-                            <i class="fas fa-calendar text-gray-400 mr-1"></i>
-                            Created: <?= formatNepaliDate($job['created_at'], 'short') ?>
-                        </div>
-                    </div>
-
-                    <!-- Card Footer -->
-                    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 rounded-b-lg">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <a href="<?= base_url('dashboard/jobs/view/' . $job['id']) ?>"
-                                   class="inline-flex items-center px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
-                                    <i class="fas fa-eye mr-2"></i>
-                                    View
-                                </a>
-                                <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>"
-                                   class="inline-flex items-center px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200">
-                                    <i class="fas fa-edit mr-2"></i>
-                                    Edit
-                                </a>
-                            </div>
-                            <?php helper('auth'); ?>
-                            <?php if (canDeleteJob()): ?>
-                                <a href="<?= base_url('dashboard/jobs/delete/' . $job['id']) ?>"
-                                   onclick="return confirm('Are you sure you want to delete this job?')"
-                                   class="inline-flex items-center p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200">
-                                    <i class="fas fa-trash text-sm"></i>
-                                </a>
-                            <?php endif; ?>
-                        </div>
-                    </div>
+        <?php foreach ($jobs as $job): ?>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+                <!-- First line: Job ID -->
+                <div class="text-lg font-semibold text-gray-900">
+                    Job #<?= $job['id'] ?>
                 </div>
-            <?php endforeach; ?>
-        </div>
+
+                <!-- Second line: Customer name / phone -->
+                <div class="text-sm text-gray-700">
+                    <?= esc($job['customer_name'] ?? $job['walk_in_customer_name'] ?? 'Walk-in Customer') ?>
+                    <?php if (!empty($job['walk_in_customer_mobile']) || !empty($job['mobile_number'])): ?>
+                        / <?= esc($job['walk_in_customer_mobile'] ?? $job['mobile_number']) ?>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Third line: Status -->
+                <?php
+                $statusClass = match($job['status']) {
+                    'Pending' => 'bg-yellow-100 text-yellow-800',
+                    'In Progress' => 'bg-blue-100 text-blue-800',
+                    'Parts Pending' => 'bg-orange-100 text-orange-800',
+                    'Referred to Service Center' => 'bg-purple-100 text-purple-800',
+                    'Ready to Dispatch to Customer' => 'bg-indigo-100 text-indigo-800',
+                    'Returned' => 'bg-red-100 text-red-800',
+                    'Completed' => 'bg-green-100 text-green-800',
+                    default => 'bg-gray-100 text-gray-800'
+                };
+                ?>
+                <div class="mt-1">
+                    <span class="inline-block px-2 py-0.5 rounded-full text-xs font-medium <?= $statusClass ?>">
+                        <?= esc($job['status']) ?>
+                    </span>
+                </div>
+
+                <!-- Fourth line: Device + SN -->
+                <div class="text-sm text-gray-700 mt-1">
+                    <?= esc($job['device_name']) ?>
+                    <?php if (!empty($job['serial_number'])): ?>
+                        (SN: <?= esc($job['serial_number']) ?>)
+                    <?php endif; ?>
+                </div>
+
+                <!-- Fifth line: Problem -->
+                <?php if (!empty($job['problem'])): ?>
+                    <div class="text-sm text-gray-700 mt-1">
+                        Problem: <?= esc($job['problem']) ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Sixth line: Technician / Created date -->
+                <div class="text-xs text-gray-500 mt-2">
+                    <?= esc($job['technician_name'] ?? 'Unassigned') ?>
+                    / Created: <?= formatNepaliDate($job['created_at'], 'short') ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
 
         <!-- Pagination -->
         <?php if (isset($pager) && $pager): ?>
-            <div class="mt-8">
+            <div class="mt-6">
                 <?= renderPagination($pager) ?>
             </div>
         <?php endif; ?>
+
     <?php else: ?>
-        <!-- Empty State -->
-        <div class="text-center py-12">
-            <div class="text-gray-500">
-                <i class="fas fa-wrench text-6xl mb-4 text-gray-300"></i>
-                <h3 class="text-xl font-medium text-gray-900 mb-2">No jobs found</h3>
-                <p class="text-gray-600 mb-6">Get started by creating your first repair job.</p>
-                <a href="<?= base_url('dashboard/jobs/create') ?>"
-                   class="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
-                    <i class="fas fa-plus mr-2"></i>
-                    Create Job
-                </a>
-            </div>
+        <div class="text-center py-12 text-gray-500">
+            No jobs found.
         </div>
     <?php endif; ?>
 </div>
+
 
 <script>
 function showBulkActions() {
