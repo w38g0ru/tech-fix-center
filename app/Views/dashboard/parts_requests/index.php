@@ -2,6 +2,8 @@
 
 <?= $this->section('content') ?>
 
+<div class="max-w-full overflow-hidden">
+
 <!-- Page Header -->
 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
     <div>
@@ -101,66 +103,93 @@
 
 <!-- Parts Requests Table -->
 <div class="bg-white rounded-lg shadow overflow-hidden">
-    <div class="px-6 py-4 border-b border-gray-200">
+    <div class="px-4 sm:px-6 py-4 border-b border-gray-200">
         <h3 class="text-lg font-medium text-gray-900">Parts Requests</h3>
         <p class="mt-1 text-sm text-gray-600">A list of all parts requests in the system</p>
     </div>
 
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto -mx-4 sm:mx-0">
+        <div class="inline-block min-w-full align-middle">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Details</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Technician</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Qty</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Urgency</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Request</th>
+                    <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Details</th>
+                    <th class="hidden md:table-cell px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Technician</th>
+                    <th class="hidden lg:table-cell px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job</th>
+                    <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="hidden sm:table-cell px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 <?php if (!empty($partsRequests)): ?>
                     <?php foreach ($partsRequests as $request): ?>
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                #<?= $request['id'] ?>
+                            <!-- Request ID & Basic Info -->
+                            <td class="px-3 sm:px-6 py-4">
+                                <div class="text-sm font-medium text-gray-900">#<?= $request['id'] ?></div>
+                                <div class="text-xs text-gray-500">Qty: <?= $request['quantity_requested'] ?></div>
+                                <div class="md:hidden mt-1">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full <?php
+                                    $urgencyClasses = [
+                                        'Low' => 'bg-gray-100 text-gray-800',
+                                        'Medium' => 'bg-blue-100 text-blue-800',
+                                        'High' => 'bg-yellow-100 text-yellow-800',
+                                        'Critical' => 'bg-red-100 text-red-800'
+                                    ];
+                                    echo $urgencyClasses[$request['urgency']];
+                                    ?>"><?= $request['urgency'] ?></span>
+                                </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+
+                            <!-- Item Details -->
+                            <td class="px-3 sm:px-6 py-4">
                                 <div class="text-sm font-medium text-gray-900"><?= esc($request['item_name']) ?></div>
                                 <?php if (!empty($request['brand'])): ?>
                                     <div class="text-sm text-gray-500"><?= esc($request['brand']) ?></div>
                                 <?php endif; ?>
+                                <!-- Show technician on mobile -->
+                                <div class="md:hidden text-xs text-gray-500 mt-1">
+                                    <i class="fas fa-user mr-1"></i><?= esc($request['technician_name']) ?>
+                                </div>
+                                <!-- Show job on mobile/tablet -->
+                                <div class="lg:hidden text-xs text-gray-500 mt-1">
+                                    <?php if (!empty($request['job_device'])): ?>
+                                        <i class="fas fa-wrench mr-1"></i><?= esc($request['job_device']) ?>
+                                    <?php else: ?>
+                                        <i class="fas fa-minus mr-1"></i>No job
+                                    <?php endif; ?>
+                                </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+
+                            <!-- Technician (hidden on mobile) -->
+                            <td class="hidden md:table-cell px-3 sm:px-6 py-4 text-sm text-gray-900">
                                 <?= esc($request['technician_name']) ?>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full <?php
+                                    $urgencyClasses = [
+                                        'Low' => 'bg-gray-100 text-gray-800',
+                                        'Medium' => 'bg-blue-100 text-blue-800',
+                                        'High' => 'bg-yellow-100 text-yellow-800',
+                                        'Critical' => 'bg-red-100 text-red-800'
+                                    ];
+                                    echo $urgencyClasses[$request['urgency']];
+                                    ?>"><?= $request['urgency'] ?></span>
+                                </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+
+                            <!-- Job (hidden on mobile/tablet) -->
+                            <td class="hidden lg:table-cell px-3 sm:px-6 py-4 text-sm text-gray-900">
                                 <?php if (!empty($request['job_device'])): ?>
                                     <?= esc($request['job_device']) ?>
                                 <?php else: ?>
                                     <span class="text-gray-400">No job</span>
                                 <?php endif; ?>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                <?= $request['quantity_requested'] ?>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <?php
-                                $urgencyClasses = [
-                                    'Low' => 'bg-gray-100 text-gray-800',
-                                    'Medium' => 'bg-blue-100 text-blue-800',
-                                    'High' => 'bg-yellow-100 text-yellow-800',
-                                    'Critical' => 'bg-red-100 text-red-800'
-                                ];
-                                ?>
-                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full <?= $urgencyClasses[$request['urgency']] ?>">
-                                    <?= $request['urgency'] ?>
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+
+                            <!-- Status -->
+                            <td class="px-3 sm:px-6 py-4">
                                 <?php
                                 $statusClasses = [
                                     'Pending' => 'bg-yellow-100 text-yellow-800',
@@ -174,16 +203,24 @@
                                 <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full <?= $statusClasses[$request['status']] ?>">
                                     <?= $request['status'] ?>
                                 </span>
+                                <!-- Show date on mobile -->
+                                <div class="sm:hidden text-xs text-gray-500 mt-1">
+                                    <?= formatNepaliDate($request['created_at'], 'short') ?>
+                                </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+
+                            <!-- Date (hidden on mobile) -->
+                            <td class="hidden sm:table-cell px-3 sm:px-6 py-4 text-sm text-gray-900">
                                 <?= formatNepaliDate($request['created_at'], 'short') ?>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div class="flex space-x-2">
+                            <!-- Actions -->
+                            <td class="px-3 sm:px-6 py-4 text-sm font-medium">
+                                <div class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2">
                                     <a href="<?= base_url('dashboard/parts-requests/view/' . $request['id']) ?>"
-                                       class="inline-flex items-center px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs font-medium rounded transition-colors duration-200"
+                                       class="inline-flex items-center justify-center px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs font-medium rounded transition-colors duration-200"
                                        title="View Details">
-                                        <i class="fas fa-eye"></i>
+                                        <i class="fas fa-eye mr-1 sm:mr-0"></i>
+                                        <span class="sm:hidden">View</span>
                                     </a>
 
                                     <?php
@@ -199,24 +236,27 @@
 
                                     <?php if ($canEdit && $request['status'] === 'Pending'): ?>
                                         <a href="<?= base_url('dashboard/parts-requests/edit/' . $request['id']) ?>"
-                                           class="inline-flex items-center px-2 py-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-700 text-xs font-medium rounded transition-colors duration-200"
+                                           class="inline-flex items-center justify-center px-2 py-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-700 text-xs font-medium rounded transition-colors duration-200"
                                            title="Edit Request">
-                                            <i class="fas fa-edit"></i>
+                                            <i class="fas fa-edit mr-1 sm:mr-0"></i>
+                                            <span class="sm:hidden">Edit</span>
                                         </a>
                                     <?php endif; ?>
 
                                     <?php if (in_array($userRole, ['superadmin', 'admin']) && $request['status'] === 'Pending'): ?>
                                         <button type="button"
-                                                class="inline-flex items-center px-2 py-1 bg-green-100 hover:bg-green-200 text-green-700 text-xs font-medium rounded transition-colors duration-200"
+                                                class="inline-flex items-center justify-center px-2 py-1 bg-green-100 hover:bg-green-200 text-green-700 text-xs font-medium rounded transition-colors duration-200"
                                                 onclick="approveRequest(<?= $request['id'] ?>)"
                                                 title="Approve Request">
-                                            <i class="fas fa-check"></i>
+                                            <i class="fas fa-check mr-1 sm:mr-0"></i>
+                                            <span class="sm:hidden">Approve</span>
                                         </button>
                                         <button type="button"
-                                                class="inline-flex items-center px-2 py-1 bg-red-100 hover:bg-red-200 text-red-700 text-xs font-medium rounded transition-colors duration-200"
+                                                class="inline-flex items-center justify-center px-2 py-1 bg-red-100 hover:bg-red-200 text-red-700 text-xs font-medium rounded transition-colors duration-200"
                                                 onclick="rejectRequest(<?= $request['id'] ?>)"
                                                 title="Reject Request">
-                                            <i class="fas fa-times"></i>
+                                            <i class="fas fa-times mr-1 sm:mr-0"></i>
+                                            <span class="sm:hidden">Reject</span>
                                         </button>
                                     <?php endif; ?>
                                 </div>
@@ -225,7 +265,7 @@
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="9" class="px-6 py-12 text-center">
+                        <td colspan="7" class="px-6 py-12 text-center">
                             <div class="flex flex-col items-center">
                                 <i class="fas fa-box-open text-4xl text-gray-400 mb-4"></i>
                                 <h3 class="text-lg font-medium text-gray-900 mb-2">No parts requests found</h3>
@@ -243,11 +283,14 @@
                 <?php endif; ?>
             </tbody>
         </table>
+        </div>
     </div>
 
     <!-- Pagination -->
     <?php if (isset($pager) && $pager): ?>
-        <?= renderPagination($pager) ?>
+        <div class="px-4 sm:px-6 py-4 border-t border-gray-200">
+            <?= renderPagination($pager) ?>
+        </div>
     <?php endif; ?>
 </div>
 
@@ -298,4 +341,7 @@ function rejectRequest(id) {
     }
 }
 </script>
+
+</div> <!-- End max-w-full overflow-hidden wrapper -->
+
 <?= $this->endSection() ?>

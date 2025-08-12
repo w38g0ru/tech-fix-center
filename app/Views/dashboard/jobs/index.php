@@ -2,6 +2,41 @@
 
 <?= $this->section('content') ?>
 
+<!-- Success/Error Messages -->
+<?php if (session('success')): ?>
+    <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl shadow-sm">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2 text-green-600"></i>
+            <span class="font-medium"><?= session('success') ?></span>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php if (session('error')): ?>
+    <div class="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl shadow-sm">
+        <div class="flex items-center">
+            <i class="fas fa-exclamation-circle mr-2 text-red-600"></i>
+            <span class="font-medium"><?= session('error') ?></span>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php if (session('errors')): ?>
+    <div class="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl shadow-sm">
+        <div class="flex items-start">
+            <i class="fas fa-exclamation-triangle mr-2 text-red-600 mt-0.5"></i>
+            <div>
+                <span class="font-medium block mb-2">Please fix the following errors:</span>
+                <ul class="list-disc list-inside space-y-1 text-sm">
+                    <?php foreach (session('errors') as $error): ?>
+                        <li><?= esc($error) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
 <!-- Page Header -->
 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
     <div>

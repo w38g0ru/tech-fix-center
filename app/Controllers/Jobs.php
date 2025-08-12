@@ -194,6 +194,14 @@ class Jobs extends BaseController
         // SMS notification to admin disabled
         // $this->sendJobCreationSmsToAdmin($jobId, $jobData);
 
+        // Log activity (temporarily disabled to debug)
+        // try {
+        //     log_post_activity(session('user_id'), "Created new job (ID: {$jobId}) for " .
+        //         ($jobData['user_id'] ? 'registered customer' : 'walk-in customer'));
+        // } catch (\Exception $e) {
+        //     log_message('error', 'Failed to log job creation activity: ' . $e->getMessage());
+        // }
+
         // Prepare success message
         $message = 'Job created successfully!';
         if ($uploadedCount > 0) {
