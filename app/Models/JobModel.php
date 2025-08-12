@@ -425,9 +425,11 @@ class JobModel extends Model
     public function searchJobs($search, $perPage = null)
     {
         $builder = $this->select('jobs.*, users.name as customer_name, users.mobile_number,
-                            admin_users.full_name as technician_name')
+                            admin_users.full_name as technician_name,
+                            COUNT(DISTINCT photos.id) as photo_count')
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
+                    ->join('photos', 'photos.job_id = jobs.id', 'left')
                     ->groupStart()
                         ->like('jobs.device_name', $search)
                         ->orLike('jobs.serial_number', $search)
@@ -439,6 +441,7 @@ class JobModel extends Model
                         ->orLike('admin_users.full_name', $search)
                         ->orLike('jobs.id', $search)
                     ->groupEnd()
+                    ->groupBy('jobs.id')
                     ->orderBy('jobs.id', 'DESC');
 
         if ($perPage !== null) {
@@ -454,9 +457,11 @@ class JobModel extends Model
     public function searchJobsWithStatus($search, $status, $perPage = null)
     {
         $builder = $this->select('jobs.*, users.name as customer_name, users.mobile_number,
-                            admin_users.full_name as technician_name')
+                            admin_users.full_name as technician_name,
+                            COUNT(DISTINCT photos.id) as photo_count')
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
+                    ->join('photos', 'photos.job_id = jobs.id', 'left')
                     ->where('jobs.status', $status)
                     ->groupStart()
                         ->like('jobs.device_name', $search)
@@ -469,6 +474,7 @@ class JobModel extends Model
                         ->orLike('admin_users.full_name', $search)
                         ->orLike('jobs.id', $search)
                     ->groupEnd()
+                    ->groupBy('jobs.id')
                     ->orderBy('jobs.id', 'DESC');
 
         if ($perPage !== null) {
@@ -484,10 +490,13 @@ class JobModel extends Model
     public function getJobsByStatus($status, $perPage = null)
     {
         $builder = $this->select('jobs.*, users.name as customer_name, users.mobile_number,
-                            admin_users.full_name as technician_name')
+                            admin_users.full_name as technician_name,
+                            COUNT(DISTINCT photos.id) as photo_count')
                     ->join('users', 'users.id = jobs.user_id', 'left')
                     ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
+                    ->join('photos', 'photos.job_id = jobs.id', 'left')
                     ->where('jobs.status', $status)
+                    ->groupBy('jobs.id')
                     ->orderBy('jobs.id', 'DESC');
 
         if ($perPage !== null) {
