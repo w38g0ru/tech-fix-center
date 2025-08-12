@@ -103,13 +103,16 @@
         <!-- Activity Type -->
         <div>
             <label for="activity_type" class="block text-sm font-medium text-gray-700 mb-1">Activity Type</label>
-            <select id="activity_type" 
-                    name="activity_type" 
+            <select id="activity_type"
+                    name="activity_type"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 <option value="">All Types</option>
                 <option value="login" <?= $activityType === 'login' ? 'selected' : '' ?>>Login</option>
                 <option value="logout" <?= $activityType === 'logout' ? 'selected' : '' ?>>Logout</option>
-                <option value="post" <?= $activityType === 'post' ? 'selected' : '' ?>>Data Post</option>
+                <option value="post" <?= $activityType === 'post' ? 'selected' : '' ?>>Create</option>
+                <option value="update" <?= $activityType === 'update' ? 'selected' : '' ?>>Update</option>
+                <option value="delete" <?= $activityType === 'delete' ? 'selected' : '' ?>>Delete</option>
+                <option value="view" <?= $activityType === 'view' ? 'selected' : '' ?>>View</option>
             </select>
         </div>
 
@@ -181,7 +184,10 @@
                                 $activityColors = [
                                     'login' => 'bg-green-100 text-green-800',
                                     'logout' => 'bg-orange-100 text-orange-800',
-                                    'post' => 'bg-blue-100 text-blue-800'
+                                    'post' => 'bg-blue-100 text-blue-800',
+                                    'update' => 'bg-yellow-100 text-yellow-800',
+                                    'delete' => 'bg-red-100 text-red-800',
+                                    'view' => 'bg-purple-100 text-purple-800'
                                 ];
                                 $colorClass = $activityColors[$activity['activity_type']] ?? 'bg-gray-100 text-gray-800';
                                 ?>

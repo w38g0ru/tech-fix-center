@@ -29,7 +29,7 @@ class UserActivityLogModel extends Model
     // Validation
     protected $validationRules = [
         'user_id' => 'required|integer',
-        'activity_type' => 'required|in_list[login,logout,post]',
+        'activity_type' => 'required|in_list[login,logout,post,update,delete,view]',
         'details' => 'permit_empty|string|max_length[1000]',
         'ip_address' => 'permit_empty|string|max_length[45]',
         'user_agent' => 'permit_empty|string'
@@ -42,7 +42,7 @@ class UserActivityLogModel extends Model
         ],
         'activity_type' => [
             'required' => 'Activity type is required',
-            'in_list' => 'Activity type must be login, logout, or post'
+            'in_list' => 'Activity type must be login, logout, post, update, delete, or view'
         ],
         'details' => [
             'string' => 'Details must be a string',

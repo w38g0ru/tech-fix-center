@@ -22,9 +22,10 @@ class ActivityLogs extends BaseController
             return redirect()->to('/auth/login');
         }
 
-        $userRole = getUserRole();
-        $userId = getUserId();
-        $perPage = 20; // Items per page
+        try {
+            $userRole = getUserRole();
+            $userId = getUserId();
+            $perPage = 20; // Items per page
 
         // Get search and filter parameters
         $search = $this->request->getGet('search');
@@ -82,7 +83,11 @@ class ActivityLogs extends BaseController
             'pager' => $this->activityModel->pager
         ];
 
-        return view('dashboard/activity_logs/index', $data);
+            return view('dashboard/activity_logs/index', $data);
+        } catch (\Exception $e) {
+            log_message('error', 'Error in ActivityLogs::index: ' . $e->getMessage());
+            return redirect()->to('/dashboard')->with('error', 'Unable to load activity logs. Please try again.');
+        }
     }
 
     public function view($id)
@@ -189,20 +194,59 @@ class ActivityLogs extends BaseController
 
     private function getActivityStats($userRole, $userId)
     {
-        $builder = $this->activityModel;
+        try {
+            $startDate = date('Y-m-d H:i:s', strtotime('-30 days'));
 
-        // Role-based filtering for stats
-        if (!in_array($userRole, ['superadmin', 'admin'])) {
-            $builder = $builder->where('user_id', $userId);
+            // Get base query
+            $baseQuery = $this->activityModel->where('created_at >=', $startDate);
+
+            // Role-based filtering for stats
+            if (!in_array($userRole, ['superadmin', 'admin'])) {
+                $baseQuery = $baseQuery->where('user_id', $userId);
+            }
+
+            // Get total activities
+            $totalActivities = $baseQuery->countAllResults(false);
+
+            // Reset and get login count
+            $loginCount = $this->activityModel->where('created_at >=', $startDate)
+                                             ->where('activity_type', 'login');
+            if (!in_array($userRole, ['superadmin', 'admin'])) {
+                $loginCount = $loginCount->where('user_id', $userId);
+            }
+            $loginCount = $loginCount->countAllResults(false);
+
+            // Reset and get logout count
+            $logoutCount = $this->activityModel->where('created_at >=', $startDate)
+                                              ->where('activity_type', 'logout');
+            if (!in_array($userRole, ['superadmin', 'admin'])) {
+                $logoutCount = $logoutCount->where('user_id', $userId);
+            }
+            $logoutCount = $logoutCount->countAllResults(false);
+
+            // Reset and get post count (includes post, update, delete activities)
+            $postCount = $this->activityModel->where('created_at >=', $startDate)
+                                            ->whereIn('activity_type', ['post', 'update', 'delete']);
+            if (!in_array($userRole, ['superadmin', 'admin'])) {
+                $postCount = $postCount->where('user_id', $userId);
+            }
+            $postCount = $postCount->countAllResults(false);
+
+            return [
+                'total_activities' => $totalActivities,
+                'login_count' => $loginCount,
+                'logout_count' => $logoutCount,
+                'post_count' => $postCount
+            ];
+        } catch (\Exception $e) {
+            // Return default stats if there's an error
+            log_message('error', 'Error getting activity stats: ' . $e->getMessage());
+            return [
+                'total_activities' => 0,
+                'login_count' => 0,
+                'logout_count' => 0,
+                'post_count' => 0
+            ];
         }
-
-        $startDate = date('Y-m-d H:i:s', strtotime('-30 days'));
-
-        return [
-            'total_activities' => $builder->where('created_at >=', $startDate)->countAllResults(false),
-            'login_count' => $builder->where('activity_type', 'login')->where('created_at >=', $startDate)->countAllResults(false),
-            'logout_count' => $builder->where('activity_type', 'logout')->where('created_at >=', $startDate)->countAllResults(false),
-            'post_count' => $builder->where('activity_type', 'post')->where('created_at >=', $startDate)->countAllResults(false)
-        ];
     }
 }

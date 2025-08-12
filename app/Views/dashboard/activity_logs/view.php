@@ -28,12 +28,24 @@
                     $activityColors = [
                         'login' => 'bg-green-100 text-green-800',
                         'logout' => 'bg-orange-100 text-orange-800',
-                        'post' => 'bg-blue-100 text-blue-800'
+                        'post' => 'bg-blue-100 text-blue-800',
+                        'update' => 'bg-yellow-100 text-yellow-800',
+                        'delete' => 'bg-red-100 text-red-800',
+                        'view' => 'bg-purple-100 text-purple-800'
+                    ];
+                    $activityIcons = [
+                        'login' => 'sign-in-alt',
+                        'logout' => 'sign-out-alt',
+                        'post' => 'plus-circle',
+                        'update' => 'edit',
+                        'delete' => 'trash',
+                        'view' => 'eye'
                     ];
                     $colorClass = $activityColors[$activity['activity_type']] ?? 'bg-gray-100 text-gray-800';
+                    $iconClass = $activityIcons[$activity['activity_type']] ?? 'database';
                     ?>
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <?= $colorClass ?>">
-                        <i class="fas fa-<?= $activity['activity_type'] === 'login' ? 'sign-in-alt' : ($activity['activity_type'] === 'logout' ? 'sign-out-alt' : 'database') ?> mr-2"></i>
+                        <i class="fas fa-<?= $iconClass ?> mr-2"></i>
                         <?= ucfirst($activity['activity_type']) ?>
                     </span>
                 </div>
