@@ -132,8 +132,8 @@ $pageTitle = $title ?? 'Dashboard';
                 <i class="fas fa-user"></i>
               </div>
               <div class="text-left mr-3 hidden sm:block">
-                <div class="text-sm font-medium text-gray-900"><?= htmlspecialchars(session('user_name')) ?></div>
-                <div class="text-xs text-gray-500"><?= htmlspecialchars(session('role')) ?></div>
+                <div class="text-sm font-medium text-gray-900"><?= htmlspecialchars(session('name')) ?></div>
+                <div class="text-xs text-gray-500"><?= htmlspecialchars(session('role')) ?></div>. 
               </div>
               <i class="fas fa-chevron-down text-xs text-gray-400 transition-colors duration-200"></i>
             </button>
