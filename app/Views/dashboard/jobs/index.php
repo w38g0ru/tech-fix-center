@@ -119,9 +119,10 @@
 </div>
 
 <!-- Jobs Cards -->
-<div class="space-y-4">
+<div class="space-y-6">
     <?php if (!empty($jobs)): ?>
-        <?php foreach ($jobs as $job): ?>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <?php foreach ($jobs as $job): ?>
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
                 <!-- First line: Job ID -->
                 <div class="text-lg font-semibold text-gray-900">
@@ -176,11 +177,12 @@
                     / Created: <?= formatNepaliDate($job['created_at'], 'short') ?>
                 </div>
             </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
 
         <!-- Pagination -->
         <?php if (isset($pager) && $pager): ?>
-            <div class="mt-6">
+            <div class="mt-8">
                 <?= renderPagination($pager) ?>
             </div>
         <?php endif; ?>
