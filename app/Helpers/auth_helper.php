@@ -185,6 +185,18 @@ if (!function_exists('getUserEmail')) {
     }
 }
 
+if (!function_exists('getUserAccessLevel')) {
+    /**
+     * Get current user access level
+     */
+    function getUserAccessLevel()
+    {
+        return session()->get('access_level') ?? session()->get('role') ?? 'guest';
+    }
+}
+
+
+
 if (!function_exists('clearSecureSession')) {
     /**
      * Securely clear user session and logout

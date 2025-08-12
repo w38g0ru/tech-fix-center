@@ -239,55 +239,9 @@ if (!function_exists('getUserRole')) {
     }
 }
 
-if (!function_exists('setUserRole')) {
-    /**
-     * Set user role in session (for testing/development)
-     *
-     * @param string $role User role (user, technician, admin, super_admin)
-     * @return void
-     */
-    function setUserRole(string $role): void
-    {
-        $validRoles = ['user', 'technician', 'admin', 'super_admin'];
 
-        if (in_array(strtolower($role), $validRoles)) {
-            session()->set('role', strtolower($role));
-        }
-    }
-}
 
-if (!function_exists('hasAccessLevel')) {
-    /**
-     * Check if user has required access level
-     *
-     * @param string $requiredLevel Required access level
-     * @return bool True if user has access
-     */
-    function hasAccessLevel(string $requiredLevel): bool
-    {
-        if ($requiredLevel === 'all') {
-            return true;
-        }
 
-        $userRole = getUserRole();
-        if ($userRole === 'guest') {
-            return false;
-        }
-
-        // Define access level hierarchy
-        $accessLevels = [
-            'user' => 1,
-            'technician' => 2,
-            'admin' => 3,
-            'super_admin' => 4
-        ];
-
-        $userLevel = $accessLevels[strtolower($userRole)] ?? 0;
-        $requiredLevelValue = $accessLevels[$requiredLevel] ?? 999;
-
-        return $userLevel >= $requiredLevelValue;
-    }
-}
 
 if (!function_exists('isAdmin')) {
     /**

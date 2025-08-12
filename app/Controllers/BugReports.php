@@ -29,8 +29,8 @@ class BugReports extends BaseController
         }
 
         // Check if user has admin access
-        helper('menu');
-        if (!\App\Config\MenuConfig::isAdmin()) {
+        $userRole = session('access_level') ?? session('role') ?? 'guest';
+        if (!in_array($userRole, ['admin', 'superadmin'])) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Access denied');
         }
 

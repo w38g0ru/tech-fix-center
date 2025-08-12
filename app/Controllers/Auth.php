@@ -11,120 +11,62 @@ class Auth extends BaseController
     protected $maxLoginAttempts = 5;
     protected $lockoutTime = 900; // 15 minutes
 
-    // Google OAuth Credentials - loaded from credentials file
-    protected $googleClientId;
-    protected $googleClientSecret;
-
     public function __construct()
     {
         $this->adminUserModel = new AdminUserModel();
-        helper(['form', 'url', 'auth', 'session']);
-
-        // Load Google OAuth credentials
-        $this->loadGoogleCredentials();
+        helper(['form', 'url', 'auth', 'session', 'activity']);
     }
 
     /**
-     * Load Google OAuth credentials from credentials file
-     */
-    private function loadGoogleCredentials()
-    {
-        $credentialsFile = APPPATH . 'Config/GoogleCredentials.php';
-        if (file_exists($credentialsFile)) {
-            $credentials = include $credentialsFile;
-            $this->googleClientId = $credentials['client_id'] ?? '';
-            $this->googleClientSecret = $credentials['client_secret'] ?? '';
-        } else {
-            $this->googleClientId = '';
-            $this->googleClientSecret = '';
-        }
-    }
-
-    /**
-     * Show professional login form
+     * Show login form
      */
     public function login()
     {
-        // If user is already logged in, redirect to dashboard
         if (session()->get('isLoggedIn')) {
             $role = session()->get('role');
-            $redirectUrl = $this->getRedirectUrl($role);
-            return redirect()->to($redirectUrl)->with('info', 'You are already logged in.');
+            return redirect()->to($this->getRedirectUrl($role))->with('info', 'You are already logged in.');
         }
 
-        // Check if there's a redirect URL in session
         $intendedUrl = $this->request->getGet('redirect');
         if ($intendedUrl) {
             session()->set('redirect_url', $intendedUrl);
         }
 
-        // Prepare data for the view
         $data = [
-            'title' => 'Secure Login - Tech Fix Center',
-            'meta_description' => 'Secure login portal for Tech Fix Center staff and administrators',
-            'show_demo_credentials' => ENVIRONMENT === 'development' || ENVIRONMENT === 'testing'
+            'title' => 'Secure Login - TeknoPhix',
+            'meta_description' => 'Secure login portal for TeknoPhix staff and administrators'
         ];
 
         return view('auth/login', $data);
     }
 
-    /**
-     * Alias for login method (for backward compatibility)
-     */
     public function index()
     {
         return $this->login();
     }
 
     /**
-     * Process login with professional security features
+     * Process login
      */
     public function processLogin()
     {
-        // Check if request is POST
         if ($this->request->getMethod() !== 'POST') {
             return redirect()->to(base_url('auth/login'))->with('error', 'Invalid request method.');
         }
 
-        // Rate limiting check (with fallback)
         $clientIP = $this->request->getIPAddress();
-        try {
-            if ($this->isRateLimited($clientIP)) {
-                return redirect()->back()->with('error', 'Too many login attempts. Please try again in 15 minutes.');
-            }
-        } catch (\Exception $e) {
-            log_message('error', 'Rate limiting error: ' . $e->getMessage());
-            // Continue with login if rate limiting fails
+
+        if ($this->isRateLimited($clientIP)) {
+            return redirect()->back()->with('error', 'Too many login attempts. Please try again in 15 minutes.');
         }
 
-        // Enhanced validation rules
         $rules = [
-            'email' => [
-                'label' => 'Email Address',
-                'rules' => 'required|valid_email|max_length[100]',
-                'errors' => [
-                    'required' => 'Email address is required.',
-                    'valid_email' => 'Please enter a valid email address.',
-                    'max_length' => 'Email address is too long.'
-                ]
-            ],
-            'password' => [
-                'label' => 'Password',
-                'rules' => 'required|min_length[6]|max_length[255]',
-                'errors' => [
-                    'required' => 'Password is required.',
-                    'min_length' => 'Password must be at least 6 characters.',
-                    'max_length' => 'Password is too long.'
-                ]
-            ]
+            'email' => 'required|valid_email|max_length[100]',
+            'password' => 'required|min_length[6]|max_length[255]'
         ];
 
         if (!$this->validate($rules)) {
-            try {
-                $this->recordFailedAttempt($clientIP);
-            } catch (\Exception $e) {
-                log_message('error', 'Failed to record login attempt: ' . $e->getMessage());
-            }
+            $this->recordFailedAttempt($clientIP);
             return redirect()->back()
                            ->withInput(['email' => $this->request->getPost('email')])
                            ->with('errors', $this->validator->getErrors());
@@ -132,129 +74,73 @@ class Auth extends BaseController
 
         $email = trim(strtolower($this->request->getPost('email')));
         $password = $this->request->getPost('password');
-        $remember = $this->request->getPost('remember') ? true : false;
+        $remember = (bool) $this->request->getPost('remember');
 
-        // Log login attempt
-        log_message('info', "Login attempt for email: {$email} from IP: {$clientIP}");
-
-        // Verify credentials with enhanced security
         $user = $this->verifyUserCredentials($email, $password);
 
         if ($user) {
-            try {
-                // Clear failed attempts on successful login
-                $this->clearFailedAttempts($clientIP);
+            $this->clearFailedAttempts($clientIP);
+            setSecureSession($user, $remember);
 
-                // Set secure session using helper
-                setSecureSession($user, $remember);
+            // Set additional session data for access control
+            session()->set('access_level', $user['role']);
 
-                // Handle remember me functionality
-                if ($remember) {
-                    $this->setRememberMeCookie($user);
-                }
-
-                // Update last login in database
-                try {
-                    $this->adminUserModel->update($user['id'], [
-                        'last_login' => date('Y-m-d H:i:s'),
-                        'updated_at' => date('Y-m-d H:i:s')
-                    ]);
-                } catch (\Exception $e) {
-                    log_message('error', 'Failed to update last login: ' . $e->getMessage());
-                    // Continue with login even if update fails
-                }
-
-                // Log successful login
-                log_message('info', "Successful login for user ID: {$user['id']}, email: {$email}");
-
-                // Log user activity
-                helper('activity');
-                log_login_activity($user['id'], "Successful login from IP: {$clientIP}");
-
-                // Determine redirect URL
-                $redirectUrl = $this->getRedirectUrl($user['role']);
-
-                // Check for intended redirect URL
-                $intendedUrl = session()->get('redirect_url');
-                if ($intendedUrl && filter_var($intendedUrl, FILTER_VALIDATE_URL)) {
-                    session()->remove('redirect_url');
-                    $redirectUrl = $intendedUrl;
-                }
-
-                $userName = $user['name'] ?? $user['full_name'] ?? 'User';
-                return redirect()->to($redirectUrl)
-                               ->with('success', 'Welcome back, ' . esc($userName) . '! You have been successfully logged in.');
-
-            } catch (\Exception $e) {
-                log_message('error', 'Error during successful login processing: ' . $e->getMessage());
-                return redirect()->back()
-                               ->withInput(['email' => $email])
-                               ->with('error', 'Login successful but there was an error setting up your session. Please try again.');
+            if ($remember) {
+                $this->setRememberMeCookie($user);
             }
+
+            $this->adminUserModel->update($user['id'], [
+                'last_login' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            log_login_activity($user['id'], "Successful login from IP: {$clientIP}");
+
+            $redirectUrl = $this->getRedirectUrl($user['role']);
+            $intendedUrl = session()->get('redirect_url');
+            if ($intendedUrl && filter_var($intendedUrl, FILTER_VALIDATE_URL)) {
+                session()->remove('redirect_url');
+                $redirectUrl = $intendedUrl;
+            }
+
+            $userName = $user['name'] ?? $user['full_name'] ?? 'User';
+            return redirect()->to($redirectUrl)
+                           ->with('success', 'Welcome back, ' . esc($userName) . '!');
         } else {
-            // Record failed attempt
-            try {
-                $this->recordFailedAttempt($clientIP);
-            } catch (\Exception $e) {
-                log_message('error', 'Failed to record login attempt: ' . $e->getMessage());
-            }
-
-            // Log failed login
-            log_message('warning', "Failed login attempt for email: {$email} from IP: {$clientIP}");
-
+            $this->recordFailedAttempt($clientIP);
             return redirect()->back()
                            ->withInput(['email' => $email])
-                           ->with('error', 'Invalid email address or password. Please check your credentials and try again.');
+                           ->with('error', 'Invalid email address or password.');
         }
     }
 
     /**
-     * Professional logout with security cleanup
+     * Logout
      */
     public function logout()
     {
-        // Load auth helper
-        helper('auth');
-        helper('activity');
-
-        // Get user ID before clearing session
         $userId = getUserId();
         $clientIP = $this->request->getIPAddress();
 
-        // Log logout activity before clearing session
         if ($userId) {
             log_logout_activity($userId, "User logged out from IP: {$clientIP}");
         }
 
-        // Use secure session helper for cleanup
         clearSecureSession();
 
         return redirect()->to(base_url('auth/login'))
-                       ->with('success', 'You have been securely logged out. Thank you for using Tech Fix Center!');
+                       ->with('success', 'You have been securely logged out.');
     }
 
-    /**
-     * Show forgot password form
-     */
     public function forgotPassword()
     {
-        $data = [
-            'title' => 'Forgot Password - TFC Dashboard'
-        ];
-
+        $data = ['title' => 'Forgot Password - TeknoPhix'];
         return view('auth/forgot_password', $data);
     }
 
-    /**
-     * Process forgot password
-     */
     public function processForgotPassword()
     {
-        $rules = [
-            'email' => 'required|valid_email'
-        ];
-
-        if (!$this->validate($rules)) {
+        if (!$this->validate(['email' => 'required|valid_email'])) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
@@ -262,20 +148,12 @@ class Auth extends BaseController
         $user = $this->adminUserModel->where('email', $email)->first();
 
         if ($user) {
-            // Generate reset token (in a real app, you'd send this via email)
-            $resetToken = bin2hex(random_bytes(32));
-            
-            // For demo purposes, we'll just show a success message
-            // In production, you'd save the token and send an email
             return redirect()->back()->with('success', 'Password reset instructions have been sent to your email.');
         } else {
             return redirect()->back()->with('error', 'Email address not found.');
         }
     }
 
-    /**
-     * Check if user is authenticated
-     */
     public function checkAuth()
     {
         if (!session()->get('isLoggedIn')) {
@@ -283,9 +161,6 @@ class Auth extends BaseController
         }
     }
 
-    /**
-     * Enhanced credential verification with security checks
-     */
     private function verifyUserCredentials($email, $password)
     {
         $user = $this->adminUserModel->where('email', $email)
@@ -293,84 +168,53 @@ class Auth extends BaseController
                                    ->first();
 
         if (!$user) {
-            // Add small delay to prevent timing attacks
-            usleep(100000); // 0.1 second
+            usleep(100000);
             return false;
         }
 
-        // Verify password
         if (password_verify($password, $user['password'])) {
             return $user;
         }
 
-        // Add delay for failed password verification
-        usleep(100000); // 0.1 second
+        usleep(100000);
         return false;
     }
 
-    /**
-     * Check if IP is rate limited
-     */
     private function isRateLimited($ip)
     {
-        try {
-            $cacheKey = 'login_attempts_' . md5($ip);
-            $attempts = cache()->get($cacheKey);
+        $cacheKey = 'login_attempts_' . md5($ip);
+        $attempts = cache()->get($cacheKey);
 
-            if ($attempts && $attempts['count'] >= $this->maxLoginAttempts) {
-                $timeRemaining = $attempts['lockout_until'] - time();
-                if ($timeRemaining > 0) {
-                    return true;
-                }
+        if ($attempts && $attempts['count'] >= $this->maxLoginAttempts) {
+            $timeRemaining = $attempts['lockout_until'] - time();
+            if ($timeRemaining > 0) {
+                return true;
             }
-
-            return false;
-        } catch (\Exception $e) {
-            // If cache fails, don't block login but log the error
-            log_message('error', 'Cache error in rate limiting: ' . $e->getMessage());
-            return false;
         }
+
+        return false;
     }
 
-    /**
-     * Record failed login attempt
-     */
     private function recordFailedAttempt($ip)
     {
-        try {
-            $cacheKey = 'login_attempts_' . md5($ip);
-            $attempts = cache()->get($cacheKey) ?: ['count' => 0, 'lockout_until' => 0];
+        $cacheKey = 'login_attempts_' . md5($ip);
+        $attempts = cache()->get($cacheKey) ?: ['count' => 0, 'lockout_until' => 0];
 
-            $attempts['count']++;
+        $attempts['count']++;
 
-            if ($attempts['count'] >= $this->maxLoginAttempts) {
-                $attempts['lockout_until'] = time() + $this->lockoutTime;
-            }
-
-            cache()->save($cacheKey, $attempts, $this->lockoutTime);
-        } catch (\Exception $e) {
-            // If cache fails, log the error but don't break login
-            log_message('error', 'Cache error in recording failed attempt: ' . $e->getMessage());
+        if ($attempts['count'] >= $this->maxLoginAttempts) {
+            $attempts['lockout_until'] = time() + $this->lockoutTime;
         }
+
+        cache()->save($cacheKey, $attempts, $this->lockoutTime);
     }
 
-    /**
-     * Clear failed attempts on successful login
-     */
     private function clearFailedAttempts($ip)
     {
-        try {
-            $cacheKey = 'login_attempts_' . md5($ip);
-            cache()->delete($cacheKey);
-        } catch (\Exception $e) {
-            // If cache fails, log the error but don't break login
-            log_message('error', 'Cache error in clearing failed attempts: ' . $e->getMessage());
-        }
+        $cacheKey = 'login_attempts_' . md5($ip);
+        cache()->delete($cacheKey);
     }
 
-    /**
-     * Set secure remember me cookie
-     */
     private function setRememberMeCookie($user)
     {
         $token = bin2hex(random_bytes(32));
@@ -381,7 +225,6 @@ class Auth extends BaseController
             'created' => time()
         ];
 
-        // Set secure cookie for 30 days
         $cookieOptions = [
             'expires' => time() + (30 * 24 * 60 * 60),
             'path' => '/',
@@ -394,9 +237,6 @@ class Auth extends BaseController
         setcookie('remember_token', json_encode($cookieData), $cookieOptions);
     }
 
-    /**
-     * Get redirect URL based on user role
-     */
     private function getRedirectUrl($role)
     {
         $roleRedirects = [
@@ -407,13 +247,11 @@ class Auth extends BaseController
             'customer' => 'dashboard/jobs'
         ];
 
-        $redirect = $roleRedirects[$role] ?? 'dashboard';
-        return base_url($redirect);
+        return base_url($roleRedirects[$role] ?? 'dashboard');
     }
 
-    /**
-     * Auto-login from remember me cookie
-     */
+
+
     public function autoLogin()
     {
         if (session()->get('isLoggedIn')) {
@@ -422,17 +260,17 @@ class Auth extends BaseController
 
         if (isset($_COOKIE['remember_token'])) {
             $cookieData = json_decode($_COOKIE['remember_token'], true);
-            
+
             if ($cookieData && isset($cookieData['user_id'])) {
                 $user = $this->adminUserModel->find($cookieData['user_id']);
-                
+
                 if ($user && $user['status'] === 'active') {
-                    // Set session data
                     $sessionData = [
                         'user_id' => $user['id'],
                         'name' => $user['name'],
                         'email' => $user['email'],
                         'role' => $user['role'],
+                        'access_level' => $user['role'],
                         'user_type' => $user['user_type'],
                         'isLoggedIn' => true
                     ];
@@ -538,6 +376,7 @@ class Auth extends BaseController
                 'full_name' => $user['full_name'] ?? $user['name'] ?? $userInfo['name'],
                 'name' => $user['name'] ?? $userInfo['name'],
                 'role' => $user['role'],
+                'access_level' => $user['role'],
                 'google_id' => $userInfo['id'],
                 'google_picture' => $userInfo['picture'] ?? null,
                 'login_method' => 'google',
@@ -554,7 +393,6 @@ class Auth extends BaseController
             ]);
 
             // Log Google OAuth login activity
-            helper('activity');
             $clientIP = $this->request->getIPAddress();
             log_login_activity($user['id'], "Successful Google OAuth login from IP: {$clientIP}");
 

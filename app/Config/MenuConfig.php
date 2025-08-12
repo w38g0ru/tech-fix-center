@@ -1,258 +1,81 @@
 <?php
 
-namespace App\Config;
+return [
+    // Main Dashboard
+    [
+        'label' => 'Dashboard',
+        'url' => 'dashboard',
+        'roles' => ['admin', 'user', 'technician', 'superadmin'],
+        'icon' => 'fas fa-home fa-lg mr-2'
+    ],
+    [
+        'label' => 'Jobs',
+        'url' => 'dashboard/jobs',
+        'roles' => ['admin', 'user', 'technician'],
+        'icon' => 'fas fa-wrench fa-lg mr-2'
+    ],
+    [
+        'label' => 'Customers',
+        'url' => 'dashboard/users',
+        'roles' => ['admin', 'user', 'technician'],
+        'icon' => 'fas fa-users fa-lg mr-2'
+    ],
 
-class MenuConfig
-{
-    /**
-     * Main navigation menu configuration
-     *
-     * Structure:
-     * - section: Menu section name
-     * - access_level: Required access level for the entire section
-     * - items: Array of menu items
-     *   - name: Display name
-     *   - url: Route URL
-     *   - icon: FontAwesome icon class
-     *   - color: Icon color class
-     *   - subtitle: Optional subtitle for main menu items
-     *   - active_check: URI string to check for active state
-     *   - access_level: Required access level for this menu item
-     *
-     * Access Levels:
-     * - 'all': Available to all authenticated users
-     * - 'user': Regular users and above
-     * - 'technician': Technicians and above
-     * - 'admin': Admin users only
-     * - 'super_admin': Super admin only
-     */
-    public static function getMenuItems(): array
-    {
-        return [
-            // Main Menu Section
-            [
-                'section' => 'Main Menu',
-                'access_level' => 'all',
-                'items' => [
-                    [
-                        'name' => 'Dashboard',
-                        'url' => 'dashboard',
-                        'icon' => 'fas fa-tachometer-alt',
-                        'color' => 'text-blue-600',
-                        'subtitle' => 'Overview & Analytics',
-                        'active_check' => [''],
-                        'exclude_check' => ['jobs', 'users', 'inventory', 'movements', 'reports', 'photos', 'referred', 'parts-requests', 'service-centers', 'technicians', 'user-management', 'profile', 'settings', 'user-guide'],
-                        'gradient' => 'from-blue-500 to-blue-600',
-                        'access_level' => 'all'
-                    ],
-                    [
-                        'name' => 'Jobs',
-                        'url' => 'dashboard/jobs',
-                        'icon' => 'fas fa-wrench',
-                        'color' => 'text-green-600',
-                        'subtitle' => 'Repair Management',
-                        'active_check' => ['jobs'],
-                        'exclude_check' => ['parts-requests'],
-                        'gradient' => 'from-green-500 to-green-600',
-                        'access_level' => 'user'
-                    ],
-                    [
-                        'name' => 'Customers',
-                        'url' => 'dashboard/users',
-                        'icon' => 'fas fa-users',
-                        'color' => 'text-purple-600',
-                        'subtitle' => 'Client Database',
-                        'active_check' => ['users'],
-                        'exclude_check' => ['user-management'],
-                        'gradient' => 'from-purple-500 to-purple-600',
-                        'access_level' => 'user'
-                    ]
-                ]
-            ],
+    // Management Section
+    [
+        'label' => 'Inventory',
+        'url' => 'dashboard/inventory',
+        'roles' => ['admin', 'user', 'technician'],
+        'icon' => 'fas fa-boxes fa-lg mr-2'
+    ],
+    [
+        'label' => 'Stock Management',
+        'url' => 'dashboard/movements',
+        'roles' => ['admin', 'technician'],
+        'icon' => 'fas fa-warehouse fa-lg mr-2'
+    ],
+    [
+        'label' => 'Reports',
+        'url' => 'dashboard/reports',
+        'roles' => ['admin'],
+        'icon' => 'fas fa-chart-bar fa-lg mr-2'
+    ],
+    [
+        'label' => 'Photoproof',
+        'url' => 'dashboard/photos',
+        'roles' => ['admin', 'user', 'technician'],
+        'icon' => 'fas fa-camera fa-lg mr-2'
+    ],
+    [
+        'label' => 'Dispatch',
+        'url' => 'dashboard/referred',
+        'roles' => ['admin', 'technician'],
+        'icon' => 'fas fa-shipping-fast fa-lg mr-2'
+    ],
+    [
+        'label' => 'Parts Requests',
+        'url' => 'dashboard/parts-requests',
+        'roles' => ['admin', 'user', 'technician'],
+        'icon' => 'fas fa-tools fa-lg mr-2'
+    ],
 
-            // Management Section
-            [
-                'section' => 'Management',
-                'access_level' => 'user',
-                'items' => [
-                    [
-                        'name' => 'Inventory',
-                        'url' => 'dashboard/inventory',
-                        'icon' => 'fas fa-boxes',
-                        'color' => 'text-orange-600',
-                        'active_check' => ['inventory'],
-                        'gradient' => 'from-orange-500 to-orange-600',
-                        'access_level' => 'user'
-                    ],
-                    [
-                        'name' => 'Stock Management',
-                        'url' => 'dashboard/movements',
-                        'icon' => 'fas fa-warehouse',
-                        'color' => 'text-indigo-600',
-                        'active_check' => ['movements'],
-                        'gradient' => 'from-indigo-500 to-indigo-600',
-                        'access_level' => 'technician'
-                    ],
-                    [
-                        'name' => 'Reports',
-                        'url' => 'dashboard/reports',
-                        'icon' => 'fas fa-chart-bar',
-                        'color' => 'text-blue-600',
-                        'active_check' => ['reports'],
-                        'exclude_check' => ['bug-reports'],
-                        'gradient' => 'from-blue-500 to-blue-600',
-                        'access_level' => 'technician'
-                    ],
-                    [
-                        'name' => 'Photoproof',
-                        'url' => 'dashboard/photos',
-                        'icon' => 'fas fa-camera',
-                        'color' => 'text-purple-600',
-                        'active_check' => ['photos'],
-                        'gradient' => 'from-purple-500 to-purple-600',
-                        'access_level' => 'user'
-                    ],
-                    [
-                        'name' => 'Dispatch',
-                        'url' => 'dashboard/referred',
-                        'icon' => 'fas fa-shipping-fast',
-                        'color' => 'text-orange-600',
-                        'active_check' => ['referred'],
-                        'gradient' => 'from-orange-500 to-orange-600',
-                        'access_level' => 'technician'
-                    ],
-                    [
-                        'name' => 'Parts Requests',
-                        'url' => 'dashboard/parts-requests',
-                        'icon' => 'fas fa-tools',
-                        'color' => 'text-red-600',
-                        'active_check' => ['parts-requests'],
-                        'gradient' => 'from-red-500 to-red-600',
-                        'access_level' => 'user'
-                    ]
-                ]
-            ],
-
-            // Administration Section
-            [
-                'section' => 'Administration',
-                'access_level' => 'admin',
-                'items' => [
-                    [
-                        'name' => 'Service Centers',
-                        'url' => 'dashboard/service-centers',
-                        'icon' => 'fas fa-building',
-                        'color' => 'text-blue-600',
-                        'active_check' => ['service-centers'],
-                        'gradient' => 'from-blue-500 to-blue-600',
-                        'access_level' => 'admin'
-                    ],
-                    [
-                        'name' => 'User Management',
-                        'url' => 'dashboard/user-management',
-                        'icon' => 'fas fa-users-cog',
-                        'color' => 'text-purple-600',
-                        'subtitle' => 'Manage All Users & Roles',
-                        'active_check' => ['user-management', 'technicians'],
-                        'gradient' => 'from-purple-500 to-purple-600',
-                        'access_level' => 'admin'
-                    ],
-                    [
-                        'name' => 'Bug Reports',
-                        'url' => 'dashboard/bug-reports',
-                        'icon' => 'fas fa-bug',
-                        'color' => 'text-red-600',
-                        'active_check' => ['bug-reports'],
-                        'gradient' => 'from-red-500 to-red-600',
-                        'access_level' => 'admin'
-                    ]
-                ]
-            ],
-
-
-        ];
-    }
-
-    /**
-     * Check if menu item is active based on current URI
-     */
-    public static function isActive(array $activeCheck, array $excludeCheck = []): bool
-    {
-        $currentUri = uri_string();
-
-        // Check exclusions first
-        if (!empty($excludeCheck)) {
-            foreach ($excludeCheck as $exclude) {
-                if (strpos($currentUri, $exclude) !== false) {
-                    return false;
-                }
-            }
-        }
-
-        // Check active conditions
-        foreach ($activeCheck as $check) {
-            // Special case for Dashboard - only active when exactly on dashboard page
-            if ($check === '' && ($currentUri === 'dashboard' || $currentUri === '')) {
-                return true;
-            }
-            // For other menu items, check if URI contains the check string
-            if ($check !== '' && strpos($currentUri, $check) !== false) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if user has required access level
-     */
-    public static function hasAccessLevel(string $requiredLevel): bool
-    {
-        if ($requiredLevel === 'all') {
-            return true;
-        }
-
-        $userRole = session()->get('role');
-        if (!$userRole) {
-            return false;
-        }
-
-        // Define access level hierarchy
-        $accessLevels = [
-            'user' => 1,
-            'technician' => 2,
-            'admin' => 3,
-            'super_admin' => 4
-        ];
-
-        $userLevel = $accessLevels[strtolower($userRole)] ?? 0;
-        $requiredLevelValue = $accessLevels[$requiredLevel] ?? 999;
-
-        return $userLevel >= $requiredLevelValue;
-    }
-
-    /**
-     * Get user role from session
-     */
-    public static function getUserRole(): string
-    {
-        return session()->get('role') ?? 'guest';
-    }
-
-    /**
-     * Check if user is admin or higher
-     */
-    public static function isAdmin(): bool
-    {
-        return self::hasAccessLevel('admin');
-    }
-
-    /**
-     * Check if user is technician or higher
-     */
-    public static function isTechnician(): bool
-    {
-        return self::hasAccessLevel('technician');
-    }
-}
+    // Administration Section
+    [
+        'label' => 'Service Centers',
+        'url' => 'dashboard/service-centers',
+        'roles' => ['admin', 'superadmin'],
+        'icon' => 'fas fa-building fa-lg mr-2'
+    ],
+    [
+        'label' => 'User Management',
+        'url' => 'dashboard/user-management',
+        'roles' => ['admin', 'superadmin'],
+        'icon' => 'fas fa-users-cog fa-lg mr-2'
+    ],
+    [
+        'label' => 'Bug Reports',
+        'url' => 'dashboard/bug-reports',
+        'roles' => ['admin', 'superadmin'],
+        'icon' => 'fas fa-bug fa-lg mr-2'
+    ]
+];

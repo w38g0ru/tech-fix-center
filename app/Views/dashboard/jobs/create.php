@@ -317,19 +317,19 @@
             <div class="bg-gray-50 p-4 rounded-lg">
                 <h3 class="text-sm font-medium text-gray-900 mb-3">Quick Actions</h3>
                 <div class="flex flex-wrap gap-2">
-                    <button type="button" 
+                    <button type="button"
                             onclick="document.getElementById('status').value='Pending'"
-                            class="px-3 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full hover:bg-yellow-200">
+                            class="inline-flex items-center px-3 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full hover:bg-yellow-200 transition-colors duration-200 font-medium">
                         Set as Pending
                     </button>
-                    <button type="button" 
+                    <button type="button"
                             onclick="document.getElementById('device_name').value='iPhone'; document.getElementById('problem').value='Screen replacement needed'"
-                            class="px-3 py-1 text-xs bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200">
+                            class="inline-flex items-center px-3 py-1 text-xs bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition-colors duration-200 font-medium">
                         iPhone Template
                     </button>
-                    <button type="button" 
+                    <button type="button"
                             onclick="document.getElementById('device_name').value='Samsung Galaxy'; document.getElementById('problem').value='Battery replacement needed'"
-                            class="px-3 py-1 text-xs bg-green-100 text-green-800 rounded-full hover:bg-green-200">
+                            class="inline-flex items-center px-3 py-1 text-xs bg-green-100 text-green-800 rounded-full hover:bg-green-200 transition-colors duration-200 font-medium">
                         Samsung Template
                     </button>
                 </div>
@@ -337,10 +337,12 @@
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
-                <a href="<?= base_url('dashboard/jobs') ?>" class="btn btn-outline">
+                <a href="<?= base_url('dashboard/jobs') ?>"
+                   class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-xl font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-50 transition-all duration-200 shadow-sm">
                     Cancel
                 </a>
-                <button type="submit" class="btn btn-primary">
+                <button type="submit"
+                        class="inline-flex items-center px-4 py-2 bg-fuchsia-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-fuchsia-700 transition-all duration-200 shadow-lg shadow-fuchsia-500/25">
                     <i class="fas fa-save mr-2"></i>
                     Create Job
                 </button>

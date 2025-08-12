@@ -6,6 +6,15 @@ use App\Models\InventoryItemModel;
 use App\Models\InventoryMovementModel;
 use App\Models\PhotoModel;
 
+/**
+ * Inventory Controller
+ *
+ * Permission Structure:
+ * - Technicians: Can ADD inventory items (create, store, bulkImport)
+ * - Technicians: Can VIEW inventory items (index, view)
+ * - Technicians: CANNOT EDIT or DELETE inventory items
+ * - Admins/SuperAdmins: Can perform ALL operations (create, edit, delete, view)
+ */
 class Inventory extends BaseController
 {
     protected $inventoryModel;
@@ -66,7 +75,7 @@ class Inventory extends BaseController
                 'low_stock' => $lowStock,
                 'out_of_stock' => $outOfStock
             ],
-            'userRole' => 'admin',
+            'userRole' => getUserRole(),
             'pager' => $this->inventoryModel->pager
         ];
 
@@ -80,11 +89,6 @@ class Inventory extends BaseController
             return redirect()->to('/auth/login');
         }
 
-        // Restrict technicians from adding stock
-        if (hasRole('technician')) {
-            return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot add inventory items.');
-        }
-
         $data = ['title' => 'Add New Inventory Item'];
         return view('dashboard/inventory/create', $data);
     }
@@ -94,11 +98,6 @@ class Inventory extends BaseController
         // Check if user is logged in
         if (!isLoggedIn()) {
             return redirect()->to('/auth/login');
-        }
-
-        // Restrict technicians from adding stock
-        if (hasRole('technician')) {
-            return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot add inventory items.');
         }
 
         $rules = [
@@ -205,8 +204,19 @@ class Inventory extends BaseController
 
     public function edit($id)
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        // Check if user has permission to edit inventory
+        $userRole = session('access_level') ?? session('role') ?? 'guest';
+        if (!in_array($userRole, ['admin', 'superadmin'])) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Access denied. Only administrators can edit inventory items.');
+        }
+
         $item = $this->inventoryModel->find($id);
-        
+
         if (!$item) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Inventory item not found');
         }
@@ -221,8 +231,19 @@ class Inventory extends BaseController
 
     public function update($id)
     {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        // Check if user has permission to update inventory
+        $userRole = session('access_level') ?? session('role') ?? 'guest';
+        if (!in_array($userRole, ['admin', 'superadmin'])) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Access denied. Only administrators can update inventory items.');
+        }
+
         $item = $this->inventoryModel->find($id);
-        
+
         if (!$item) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Inventory item not found');
         }
@@ -273,9 +294,10 @@ class Inventory extends BaseController
             return redirect()->to('/auth/login');
         }
 
-        // Restrict technicians from deleting stock
-        if (hasRole('technician')) {
-            return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot delete inventory items.');
+        // Check if user has permission to delete inventory
+        $userRole = session('access_level') ?? session('role') ?? 'guest';
+        if (!in_array($userRole, ['admin', 'superadmin'])) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Access denied. Only administrators can delete inventory items.');
         }
 
         $item = $this->inventoryModel->find($id);
@@ -322,9 +344,9 @@ class Inventory extends BaseController
             return redirect()->to('/auth/login');
         }
 
-        // Restrict technicians from bulk import
-        if (hasRole('technician')) {
-            return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot import inventory.');
+        // Restrict bulk import to admin users only
+        if (!hasAnyRole(['superadmin', 'admin'])) {
+            return redirect()->to('/dashboard/inventory')->with('error', 'Access denied. Admin privileges required for import.');
         }
 
         $data = ['title' => 'Bulk Import Inventory'];
@@ -338,9 +360,9 @@ class Inventory extends BaseController
             return redirect()->to('/auth/login');
         }
 
-        // Restrict technicians from bulk import
-        if (hasRole('technician')) {
-            return redirect()->to('/inventory')->with('error', 'Access denied. Technicians cannot import inventory.');
+        // Restrict import to admin users only
+        if (!hasAnyRole(['superadmin', 'admin'])) {
+            return redirect()->to('/dashboard/inventory')->with('error', 'Access denied. Admin privileges required for import.');
         }
 
         $file = $this->request->getFile('import_file');
@@ -379,6 +401,11 @@ class Inventory extends BaseController
         // Check if user is logged in
         if (!isLoggedIn()) {
             return redirect()->to('/auth/login');
+        }
+
+        // Restrict export to admin users only
+        if (!hasAnyRole(['superadmin', 'admin'])) {
+            return redirect()->to('/dashboard/inventory')->with('error', 'Access denied. Admin privileges required for export.');
         }
 
         $items = $this->inventoryModel->findAll();
@@ -666,6 +693,11 @@ class Inventory extends BaseController
         // Check if user is logged in
         if (!isLoggedIn()) {
             return redirect()->to('/auth/login');
+        }
+
+        // Restrict export to admin users only
+        if (!hasAnyRole(['superadmin', 'admin'])) {
+            return redirect()->to('/dashboard/inventory')->with('error', 'Access denied. Admin privileges required for export.');
         }
 
         try {

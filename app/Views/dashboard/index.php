@@ -11,12 +11,12 @@
             </div>
             <div>
                 <h1 class="text-2xl font-semibold text-gray-900">Welcome back! 👋</h1>
-                <p class="text-sm text-gray-600">Here's what's happening at TeknoPhix today</p>
+                <p class="text-sm text-gray-600">Here's what's happening at infoTech Suppliers & Traders</p>
             </div>
         </div>
         <div class="text-right">
             <div class="text-sm text-gray-500"><?= formatNepaliDate(date('Y-m-d'), 'full') ?></div>
-            <div class="text-xs text-gray-400">TeknoPhix Center</div>
+            <div class="text-xs text-gray-400">InfoTech </div>
         </div>
     </div>
 </div>

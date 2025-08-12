@@ -55,9 +55,30 @@ $pageTitle = $title ?? 'Dashboard';
       <!-- Navigation -->
       <nav class="p-4" aria-label="Main navigation">
         <?php
-        helper('menu');
-        echo renderMenuItems('light', true);
+        $menu = include APPPATH . 'Config/MenuConfig.php';
+        $userRole = session('access_level') ?? session('role') ?? 'guest';
+        $currentUri = uri_string();
         ?>
+
+        <?php foreach ($menu as $item): ?>
+          <?php if (in_array($userRole, $item['roles'])): ?>
+            <?php
+            $isActive = false;
+            $menuPath = str_replace('dashboard/', '', $item['url']);
+            if ($menuPath === 'dashboard' && ($currentUri === 'dashboard' || $currentUri === '')) {
+                $isActive = true;
+            } elseif ($menuPath !== 'dashboard' && strpos($currentUri, $menuPath) !== false) {
+                $isActive = true;
+            }
+            $activeClass = $isActive ? 'text-fuchsia-600 bg-fuchsia-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50';
+            ?>
+            <a href="<?= base_url($item['url']) ?>"
+               class="nav-link flex items-center px-4 py-2 text-sm font-medium transition-colors duration-200 <?= $activeClass ?> mb-1 mx-2 rounded-lg">
+              <i class="<?= $item['icon'] ?>"></i>
+              <span class="nav-text"><?= $item['label'] ?></span>
+            </a>
+          <?php endif; ?>
+        <?php endforeach; ?>
       </nav>
     </aside>
 

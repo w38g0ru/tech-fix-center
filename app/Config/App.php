@@ -25,10 +25,10 @@ class App extends BaseConfig
      *
      * Professional branding settings for TFC (Tech Fix Center)
      */
-    public string $appName = 'TFC (Tech Fix Center)';
-    public string $appShortName = 'TFC';
+    public string $appName = 'infoTech (infoTech Suppliers & Traders)';
+    public string $appShortName = 'infoTech';
     public string $appVersion = '2.0.0';
-    public string $appDescription = 'Tech Fix Center - Your trusted partner for technology solutions.';
+    public string $appDescription = 'infoTech Suppliers & Traders - Your trusted partner for technology solutions.';
     public string $companyName = 'infoTech Suppliers & Traders';
     public string $companyTagline = 'Precision Technology Solutions';
     public string $companyWebsite = 'https://tfc.gaighat.com';

@@ -8,12 +8,17 @@
         <p class="mt-1 text-sm text-gray-600">Inventory item details and movement history</p>
     </div>
     <div class="flex gap-2">
-        <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>" 
-           class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700">
-            <i class="fas fa-edit mr-2"></i>
-            Edit Item
-        </a>
-        <a href="<?= base_url('dashboard/inventory') ?>" 
+        <?php
+        $userRole = session('access_level') ?? session('role') ?? 'guest';
+        if (in_array($userRole, ['admin', 'superadmin'])):
+        ?>
+            <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>"
+               class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700">
+                <i class="fas fa-edit mr-2"></i>
+                Edit Item
+            </a>
+        <?php endif; ?>
+        <a href="<?= base_url('dashboard/inventory') ?>"
            class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
             <i class="fas fa-arrow-left mr-2"></i>
             Back to Inventory
@@ -142,22 +147,27 @@
     <!-- Sidebar -->
     <div class="space-y-6">
         <!-- Quick Actions -->
+        <?php
+        $userRole = session('access_level') ?? session('role') ?? 'guest';
+        if (in_array($userRole, ['admin', 'superadmin'])):
+        ?>
         <div class="bg-white shadow rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
             <div class="space-y-3">
-                <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>" 
+                <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>"
                    class="w-full inline-flex items-center justify-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700">
                     <i class="fas fa-edit mr-2"></i>
                     Edit Item
                 </a>
-                
-                <button onclick="confirmDelete(<?= $item['id'] ?>)" 
+
+                <button onclick="confirmDelete(<?= $item['id'] ?>)"
                         class="w-full inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700">
                     <i class="fas fa-trash mr-2"></i>
                     Delete Item
                 </button>
             </div>
         </div>
+        <?php endif; ?>
         
         <!-- Stock Status -->
         <div class="bg-white shadow rounded-lg p-6">

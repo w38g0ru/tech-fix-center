@@ -9,7 +9,8 @@
         <p class="text-gray-600">Track stock levels and manage your inventory items</p>
     </div>
     <div class="mt-4 lg:mt-0 flex flex-wrap gap-3">
-        <!-- Import/Export Actions -->
+        <!-- Import/Export Actions (Admin Only) -->
+        <?php if (in_array($userRole, ['superadmin', 'admin'])): ?>
         <div class="flex items-center gap-2 bg-gray-50 rounded-xl p-1">
             <a href="<?= base_url('dashboard/inventory/downloadTemplate') ?>"
                class="inline-flex items-center px-4 py-2 text-sm font-medium text-green-700 bg-white rounded-lg hover:bg-green-50 transition-colors duration-200 shadow-sm"
@@ -27,6 +28,7 @@
                 <i class="fas fa-file-export mr-2"></i>Export
             </a>
         </div>
+        <?php endif; ?>
 
         <!-- Primary Action -->
         <a href="<?= base_url('dashboard/inventory/create') ?>"
@@ -201,17 +203,22 @@
                                        title="View">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>"
-                                       class="text-green-600 hover:text-green-900 p-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
-                                       title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a href="<?= base_url('dashboard/inventory/delete/' . $item['id']) ?>"
-                                       onclick="return confirm('Are you sure you want to delete this item?')"
-                                       class="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors duration-200"
-                                       title="Delete">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                    <?php
+                                    $userRole = session('access_level') ?? session('role') ?? 'guest';
+                                    if (in_array($userRole, ['admin', 'superadmin'])):
+                                    ?>
+                                        <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>"
+                                           class="text-green-600 hover:text-green-900 p-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                                           title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="<?= base_url('dashboard/inventory/delete/' . $item['id']) ?>"
+                                           onclick="return confirm('Are you sure you want to delete this item?')"
+                                           class="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors duration-200"
+                                           title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
                             </td>
                         </tr>
