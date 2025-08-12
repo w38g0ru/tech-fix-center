@@ -30,70 +30,7 @@
     </div>
 </div>
 
-<!-- Quick Actions for Jobs Requiring Attention -->
-<?php
-$overdueJobs = [];
-$readyForDispatchJobs = [];
-if (!empty($jobs)) {
-    foreach ($jobs as $job) {
-        if ($job['status'] === 'Ready to Dispatch to Customer') {
-            $readyForDispatchJobs[] = $job;
-        }
-        // Add logic for overdue jobs if needed
-    }
-}
-?>
-<?php if (!empty($readyForDispatchJobs)): ?>
-<div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
-    <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center">
-            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
-                <i class="fas fa-shipping-fast text-white"></i>
-            </div>
-            <div>
-                <h2 class="text-lg font-semibold text-gray-900">Jobs Ready for Dispatch</h2>
-                <p class="text-sm text-gray-600"><?= count($readyForDispatchJobs) ?> job(s) ready to be dispatched to customers</p>
-            </div>
-        </div>
-    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <?php foreach (array_slice($readyForDispatchJobs, 0, 6) as $job): ?>
-        <div class="bg-white rounded-lg border border-blue-200 p-4">
-            <div class="flex items-center justify-between mb-2">
-                <span class="text-sm font-medium text-gray-900">Job #<?= $job['id'] ?></span>
-                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    Ready
-                </span>
-            </div>
-            <div class="text-sm text-gray-600 mb-3">
-                <div><strong>Device:</strong> <?= esc($job['device_name']) ?></div>
-                <div><strong>Customer:</strong> <?= esc($job['customer_name'] ?? $job['walk_in_customer_name'] ?? 'Walk-in Customer') ?></div>
-                <?php if (!empty($job['walk_in_customer_mobile'])): ?>
-                <div><strong>Mobile:</strong> <?= esc($job['walk_in_customer_mobile']) ?></div>
-                <?php endif; ?>
-            </div>
-            <div class="flex items-center space-x-2">
-                <a href="<?= base_url('dashboard/jobs/view/' . $job['id']) ?>"
-                   class="inline-flex items-center px-3 py-1.5 bg-gray-600 border border-transparent rounded text-xs font-medium text-white hover:bg-gray-700 transition ease-in-out duration-150">
-                    <i class="fas fa-eye mr-1"></i>
-                    View
-                </a>
-            </div>
-        </div>
-        <?php endforeach; ?>
-    </div>
-
-    <?php if (count($readyForDispatchJobs) > 6): ?>
-    <div class="mt-4 text-center">
-        <a href="<?= base_url('dashboard/jobs?status=Ready to Dispatch to Customer') ?>"
-           class="text-blue-600 hover:text-blue-700 text-sm font-medium">
-            View all <?= count($readyForDispatchJobs) ?> jobs ready for dispatch →
-        </a>
-    </div>
-    <?php endif; ?>
-</div>
-<?php endif; ?>
 
 <!-- Job Stats -->
 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
