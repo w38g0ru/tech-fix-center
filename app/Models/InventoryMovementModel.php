@@ -23,10 +23,22 @@ class InventoryMovementModel extends Model
 
     // Validation
     protected $validationRules = [
-        'item_id' => 'required|is_natural_no_zero',
-        'movement_type' => 'required|in_list[IN,OUT]',
-        'quantity' => 'required|is_natural_no_zero',
-        'job_id' => 'permit_empty|is_natural_no_zero'
+        'item_id' => [
+            'label' => 'Inventory Item',
+            'rules' => 'required|is_natural_no_zero'
+        ],
+        'movement_type' => [
+            'label' => 'Movement Type',
+            'rules' => 'required|in_list[IN,OUT]'
+        ],
+        'quantity' => [
+            'label' => 'Quantity',
+            'rules' => 'required|is_natural_no_zero'
+        ],
+        'job_id' => [
+            'label' => 'Job',
+            'rules' => 'permit_empty|is_natural_no_zero'
+        ]
     ];
 
     protected $validationMessages = [

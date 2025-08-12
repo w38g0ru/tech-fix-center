@@ -23,17 +23,36 @@ class PhotoModel extends Model
 
     // Validation
     protected $validationRules = [
-        'photo_type' => 'required|in_list[Job,Dispatch,Received]',
-        'file_name' => 'required|max_length[255]',
-        'description' => 'permit_empty|max_length[255]',
-        'job_id' => 'permit_empty|is_natural_no_zero',
-        'referred_id' => 'permit_empty|is_natural_no_zero'
+        'photo_type' => [
+            'label' => 'Photo Type',
+            'rules' => 'required|in_list[Job,Dispatch,Received,Inventory]'
+        ],
+        'file_name' => [
+            'label' => 'File Name',
+            'rules' => 'required|max_length[255]'
+        ],
+        'description' => [
+            'label' => 'Description',
+            'rules' => 'permit_empty|max_length[255]'
+        ],
+        'job_id' => [
+            'label' => 'Job',
+            'rules' => 'permit_empty|is_natural_no_zero'
+        ],
+        'referred_id' => [
+            'label' => 'Referred Job',
+            'rules' => 'permit_empty|is_natural_no_zero'
+        ],
+        'inventory_id' => [
+            'label' => 'Inventory Item',
+            'rules' => 'permit_empty|is_natural_no_zero'
+        ]
     ];
 
     protected $validationMessages = [
         'photo_type' => [
             'required' => 'Photo type is required',
-            'in_list' => 'Photo type must be Job, Dispatch, or Received'
+            'in_list' => 'Photo type must be Job, Dispatch, Received, or Inventory'
         ],
         'file_name' => [
             'required' => 'File name is required',
@@ -41,6 +60,15 @@ class PhotoModel extends Model
         ],
         'description' => [
             'max_length' => 'Description cannot exceed 255 characters'
+        ],
+        'job_id' => [
+            'is_natural_no_zero' => 'Please select a valid job'
+        ],
+        'referred_id' => [
+            'is_natural_no_zero' => 'Please select a valid referred job'
+        ],
+        'inventory_id' => [
+            'is_natural_no_zero' => 'Please select a valid inventory item'
         ]
     ];
 

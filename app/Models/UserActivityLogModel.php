@@ -29,11 +29,26 @@ class UserActivityLogModel extends Model
 
     // Validation
     protected $validationRules = [
-        'user_id' => 'required|integer',
-        'activity_type' => 'required|in_list[login,logout,post,update,delete,view]',
-        'details' => 'permit_empty|string|max_length[1000]',
-        'ip_address' => 'permit_empty|string|max_length[45]',
-        'user_agent' => 'permit_empty|string'
+        'user_id' => [
+            'label' => 'User ID',
+            'rules' => 'required|integer'
+        ],
+        'activity_type' => [
+            'label' => 'Activity Type',
+            'rules' => 'required|in_list[login,logout,post,update,delete,view]'
+        ],
+        'details' => [
+            'label' => 'Details',
+            'rules' => 'permit_empty|string|max_length[1000]'
+        ],
+        'ip_address' => [
+            'label' => 'IP Address',
+            'rules' => 'permit_empty|string|max_length[45]'
+        ],
+        'user_agent' => [
+            'label' => 'User Agent',
+            'rules' => 'permit_empty|string'
+        ]
     ];
 
     protected $validationMessages = [

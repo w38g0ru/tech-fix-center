@@ -25,12 +25,30 @@ class ServiceCenterModel extends Model
 
     // Validation
     protected $validationRules = [
-        'name' => 'required|min_length[2]|max_length[100]',
-        'address' => 'permit_empty|max_length[500]',
-        'contact_person' => 'permit_empty|max_length[100]',
-        'phone' => 'permit_empty|max_length[20]',
-        'email' => 'permit_empty|valid_email|max_length[100]',
-        'status' => 'required|in_list[Active,Inactive]'
+        'name' => [
+            'label' => 'Service Center Name',
+            'rules' => 'required|min_length[2]|max_length[100]'
+        ],
+        'address' => [
+            'label' => 'Address',
+            'rules' => 'permit_empty|max_length[500]'
+        ],
+        'contact_person' => [
+            'label' => 'Contact Person',
+            'rules' => 'permit_empty|max_length[100]'
+        ],
+        'phone' => [
+            'label' => 'Phone',
+            'rules' => 'permit_empty|max_length[20]'
+        ],
+        'email' => [
+            'label' => 'Email',
+            'rules' => 'permit_empty|valid_email|max_length[100]'
+        ],
+        'status' => [
+            'label' => 'Status',
+            'rules' => 'required|in_list[Active,Inactive]'
+        ]
     ];
 
     protected $validationMessages = [
@@ -232,4 +250,50 @@ class ServiceCenterModel extends Model
 
         return $builder->findAll();
     }
+
+    /**
+     * Get service center performance metrics
+     */
+    public function getServiceCenterPerformance($serviceCenterId, $days = 30)
+    {
+        $cutoffDate = date('Y-m-d', strtotime("-{$days} days"));
+
+        $jobModel = new \App\Models\JobModel();
+        $referredModel = new \App\Models\ReferredModel();
+
+        // Recent jobs
+        $recentJobs = $jobModel->where('service_center_id', $serviceCenterId)
+                              ->where('created_at >=', $cutoffDate)
+                              ->countAllResults();
+
+        // Recent referred items
+        $recentReferred = $referredModel->where('service_center_id', $serviceCenterId)
+                                       ->where('created_at >=', $cutoffDate)
+                                       ->countAllResults();
+
+        // Completed items
+        $completedJobs = $jobModel->where('service_center_id', $serviceCenterId)
+                                 ->where('status', 'Completed')
+                                 ->where('created_at >=', $cutoffDate)
+                                 ->countAllResults();
+
+        $completedReferred = $referredModel->where('service_center_id', $serviceCenterId)
+                                          ->where('status', 'Completed')
+                                          ->where('created_at >=', $cutoffDate)
+                                          ->countAllResults();
+
+        return [
+            'recent_jobs' => $recentJobs,
+            'recent_referred' => $recentReferred,
+            'completed_jobs' => $completedJobs,
+            'completed_referred' => $completedReferred,
+            'total_recent' => $recentJobs + $recentReferred,
+            'total_completed' => $completedJobs + $completedReferred,
+            'completion_rate' => ($recentJobs + $recentReferred) > 0
+                ? round((($completedJobs + $completedReferred) / ($recentJobs + $recentReferred)) * 100, 2)
+                : 0
+        ];
+    }
+
+
 }

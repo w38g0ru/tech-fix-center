@@ -23,9 +23,18 @@ class UserModel extends Model
 
     // Validation
     protected $validationRules = [
-        'name' => 'required|min_length[2]|max_length[100]',
-        'mobile_number' => 'permit_empty|min_length[10]|max_length[20]',
-        'user_type' => 'required|in_list[Registered,Walk-in]'
+        'name' => [
+            'label' => 'Name',
+            'rules' => 'required|min_length[2]|max_length[100]'
+        ],
+        'mobile_number' => [
+            'label' => 'Mobile Number',
+            'rules' => 'permit_empty|min_length[10]|max_length[20]'
+        ],
+        'user_type' => [
+            'label' => 'User Type',
+            'rules' => 'required|in_list[Registered,Walk-in]'
+        ]
     ];
 
     protected $validationMessages = [
@@ -58,6 +67,131 @@ class UserModel extends Model
     protected $beforeDelete = [];
     protected $afterDelete = [];
 
+    // ========================================
+    // RELATIONSHIP METHODS
+    // ========================================
+
+    /**
+     * Get user with their jobs
+     * Relationship: users.id -> jobs.user_id (One-to-Many)
+     */
+    public function getUserWithJobs($userId)
+    {
+        $user = $this->find($userId);
+        if (!$user) {
+            return null;
+        }
+
+        $jobModel = new \App\Models\JobModel();
+        $user['jobs'] = $jobModel->where('user_id', $userId)->findAll();
+
+        return $user;
+    }
+
+    /**
+     * Get users with job counts
+     */
+    public function getUsersWithJobCounts($perPage = null)
+    {
+        $builder = $this->select('users.*, COUNT(jobs.id) as job_count')
+                        ->join('jobs', 'jobs.user_id = users.id', 'left')
+                        ->groupBy('users.id')
+                        ->orderBy('users.created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
+    }
+
+    /**
+     * Get registered users only
+     */
+    public function getRegisteredUsers($perPage = null)
+    {
+        $builder = $this->where('user_type', 'Registered')
+                        ->orderBy('name', 'ASC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
+    }
+
+    /**
+     * Search users by name or mobile
+     */
+    public function searchUsers($search, $perPage = null)
+    {
+        $builder = $this->groupStart()
+                        ->like('name', $search)
+                        ->orLike('mobile_number', $search)
+                        ->groupEnd()
+                        ->orderBy('name', 'ASC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
+    }
+
+    /**
+     * Get user statistics
+     */
+    public function getUserStats()
+    {
+        $totalUsers = $this->countAll();
+        $registeredUsers = $this->where('user_type', 'Registered')->countAllResults();
+        $walkInUsers = $this->where('user_type', 'Walk-in')->countAllResults();
+
+        return [
+            'total_users' => $totalUsers,
+            'registered_users' => $registeredUsers,
+            'walk_in_users' => $walkInUsers
+        ];
+    }
+
+    /**
+     * Get recent users
+     */
+    public function getRecentUsers($limit = 10)
+    {
+        return $this->orderBy('created_at', 'DESC')
+                    ->limit($limit)
+                    ->findAll();
+    }
+
+    /**
+     * Find or create walk-in customer
+     */
+    public function findOrCreateWalkInCustomer($name = null, $mobile = null)
+    {
+        // If both name and mobile are provided, try to find existing
+        if ($name && $mobile) {
+            $existing = $this->where('name', $name)
+                             ->where('mobile_number', $mobile)
+                             ->where('user_type', 'Walk-in')
+                             ->first();
+
+            if ($existing) {
+                return $existing;
+            }
+        }
+
+        // Create new walk-in customer
+        $data = [
+            'name' => $name ?: 'Walk-in Customer',
+            'mobile_number' => $mobile,
+            'user_type' => 'Walk-in'
+        ];
+
+        $userId = $this->insert($data);
+        return $this->find($userId);
+    }
+
     /**
      * Get users with job count
      */
@@ -75,37 +209,9 @@ class UserModel extends Model
         return $builder->findAll();
     }
 
-    /**
-     * Search users by name or mobile
-     */
-    public function searchUsers($search, $perPage = null)
-    {
-        $builder = $this->like('name', $search)
-                    ->orLike('mobile_number', $search)
-                    ->orderBy('created_at', 'DESC');
 
-        if ($perPage !== null) {
-            return $builder->paginate($perPage);
-        }
 
-        return $builder->findAll();
-    }
 
-    /**
-     * Get user statistics
-     */
-    public function getUserStats()
-    {
-        $total = $this->countAll();
-        $registered = $this->where('user_type', 'Registered')->countAllResults();
-        $walkIn = $this->where('user_type', 'Walk-in')->countAllResults();
-
-        return [
-            'total' => $total,
-            'registered' => $registered,
-            'walk_in' => $walkIn
-        ];
-    }
 
     // ========================================
     // RELATIONSHIP METHODS

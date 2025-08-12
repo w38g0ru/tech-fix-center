@@ -949,4 +949,127 @@ class JobModel extends Model
                                         ->findAll()
         ];
     }
+
+    /**
+     * Advanced search with multiple filters
+     */
+    public function advancedSearch($filters = [], $perPage = null)
+    {
+        $builder = $this->select('jobs.*,
+                            users.name as customer_name,
+                            users.mobile_number as customer_mobile,
+                            admin_users.full_name as technician_name,
+                            service_centers.name as service_center_name')
+                        ->join('users', 'users.id = jobs.user_id', 'left')
+                        ->join('admin_users', 'admin_users.id = jobs.technician_id', 'left')
+                        ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left');
+
+        // Apply filters
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+            $builder->groupStart()
+                   ->like('jobs.device_name', $search)
+                   ->orLike('jobs.serial_number', $search)
+                   ->orLike('jobs.problem', $search)
+                   ->orLike('users.name', $search)
+                   ->orLike('jobs.walk_in_customer_name', $search)
+                   ->orLike('jobs.walk_in_customer_mobile', $search)
+                   ->groupEnd();
+        }
+
+        if (!empty($filters['status'])) {
+            $builder->where('jobs.status', $filters['status']);
+        }
+
+        if (!empty($filters['technician_id'])) {
+            $builder->where('jobs.technician_id', $filters['technician_id']);
+        }
+
+        if (!empty($filters['service_center_id'])) {
+            $builder->where('jobs.service_center_id', $filters['service_center_id']);
+        }
+
+        if (!empty($filters['date_from'])) {
+            $builder->where('DATE(jobs.created_at) >=', $filters['date_from']);
+        }
+
+        if (!empty($filters['date_to'])) {
+            $builder->where('DATE(jobs.created_at) <=', $filters['date_to']);
+        }
+
+        if (!empty($filters['charge_min'])) {
+            $builder->where('jobs.charge >=', $filters['charge_min']);
+        }
+
+        if (!empty($filters['charge_max'])) {
+            $builder->where('jobs.charge <=', $filters['charge_max']);
+        }
+
+        if (!empty($filters['dispatch_type'])) {
+            $builder->where('jobs.dispatch_type', $filters['dispatch_type']);
+        }
+
+        // Sorting
+        $sortBy = $filters['sort_by'] ?? 'created_at';
+        $sortOrder = $filters['sort_order'] ?? 'DESC';
+
+        $allowedSortFields = ['created_at', 'status', 'charge', 'device_name', 'technician_name'];
+        if (in_array($sortBy, $allowedSortFields)) {
+            if ($sortBy === 'technician_name') {
+                $builder->orderBy('admin_users.full_name', $sortOrder);
+            } else {
+                $builder->orderBy('jobs.' . $sortBy, $sortOrder);
+            }
+        } else {
+            $builder->orderBy('jobs.created_at', 'DESC');
+        }
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
+    }
+
+    /**
+     * Get jobs by date range
+     */
+    public function getJobsByDateRange($startDate, $endDate, $perPage = null)
+    {
+        $builder = $this->where('DATE(created_at) >=', $startDate)
+                        ->where('DATE(created_at) <=', $endDate)
+                        ->orderBy('created_at', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
+    }
+
+    /**
+     * Get overdue jobs
+     */
+    public function getOverdueJobs($perPage = null)
+    {
+        $today = date('Y-m-d');
+
+        $builder = $this->select('jobs.*,
+                            users.name as customer_name,
+                            admin_users.full_name as technician_name,
+                            service_centers.name as service_center_name')
+                        ->join('users', 'users.id = jobs.user_id', 'left')
+                        ->join('admin_users', 'admin_users.id = jobs.technician_id', 'left')
+                        ->join('service_centers', 'service_centers.id = jobs.service_center_id', 'left')
+                        ->where('expected_return_date <', $today)
+                        ->where('actual_return_date IS NULL')
+                        ->whereNotIn('status', ['Completed', 'Returned'])
+                        ->orderBy('expected_return_date', 'ASC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
+    }
 }

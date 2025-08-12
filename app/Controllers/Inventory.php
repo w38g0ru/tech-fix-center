@@ -100,45 +100,42 @@ class Inventory extends BaseController
             return redirect()->to('/auth/login');
         }
 
-        $rules = [
-            'device_name' => 'permit_empty|max_length[100]',
-            'brand' => 'permit_empty|max_length[100]',
-            'model' => 'permit_empty|max_length[100]',
-            'category' => 'permit_empty|max_length[100]',
-            'total_stock' => 'required|is_natural',
-            'purchase_price' => 'permit_empty|decimal',
-            'selling_price' => 'permit_empty|decimal',
-            'minimum_order_level' => 'permit_empty|is_natural',
-            'supplier' => 'permit_empty|max_length[100]',
-            'description' => 'permit_empty|max_length[1000]',
-            'status' => 'required|in_list[Active,Inactive,Discontinued]',
-            'photo_description' => 'permit_empty|max_length[255]',
-            'inventory_photos' => 'permit_empty|max_size[inventory_photos,5120]|is_image[inventory_photos]'
-        ];
-
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        }
-
-        // Create the inventory item first
-        $data = [
+        // Prepare inventory data for model validation
+        $inventoryData = [
             'device_name' => $this->request->getPost('device_name'),
             'brand' => $this->request->getPost('brand'),
             'model' => $this->request->getPost('model'),
             'category' => $this->request->getPost('category'),
             'total_stock' => $this->request->getPost('total_stock'),
-            'purchase_price' => $this->request->getPost('purchase_price') ?: null,
-            'selling_price' => $this->request->getPost('selling_price') ?: null,
-            'minimum_order_level' => $this->request->getPost('minimum_order_level') ?: null,
+            'purchase_price' => $this->request->getPost('purchase_price'),
+            'selling_price' => $this->request->getPost('selling_price'),
+            'minimum_order_level' => $this->request->getPost('minimum_order_level'),
             'supplier' => $this->request->getPost('supplier'),
             'description' => $this->request->getPost('description'),
-            'status' => $this->request->getPost('status') ?: 'Active'
+            'status' => $this->request->getPost('status')
         ];
 
-        $inventoryId = $this->inventoryModel->insert($data);
+        // Validate file upload separately
+        $fileRules = [
+            'photo_description' => 'permit_empty|max_length[255]',
+            'inventory_photos' => 'permit_empty|max_size[inventory_photos,5120]|is_image[inventory_photos]'
+        ];
+
+        if (!$this->validate($fileRules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        // Use model validation and create the inventory item
+        $inventoryId = $this->inventoryModel->insert($inventoryData);
 
         if (!$inventoryId) {
-            return redirect()->back()->withInput()->with('error', 'Failed to add inventory item.');
+            // Get model validation errors
+            $errors = $this->inventoryModel->errors();
+            if (!empty($errors)) {
+                return redirect()->back()->withInput()->with('errors', $errors);
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Failed to add inventory item.');
+            }
         }
 
         // Handle photo uploads if any
@@ -248,42 +245,32 @@ class Inventory extends BaseController
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Inventory item not found');
         }
 
-        $rules = [
-            'device_name' => 'permit_empty|max_length[100]',
-            'brand' => 'permit_empty|max_length[100]',
-            'model' => 'permit_empty|max_length[100]',
-            'category' => 'permit_empty|max_length[100]',
-            'total_stock' => 'required|is_natural',
-            'purchase_price' => 'permit_empty|decimal',
-            'selling_price' => 'permit_empty|decimal',
-            'minimum_order_level' => 'permit_empty|is_natural',
-            'supplier' => 'permit_empty|max_length[100]',
-            'description' => 'permit_empty|max_length[1000]',
-            'status' => 'required|in_list[Active,Inactive,Discontinued]'
-        ];
-
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        }
-
-        $data = [
+        // Prepare inventory data for model validation
+        $inventoryData = [
             'device_name' => $this->request->getPost('device_name'),
             'brand' => $this->request->getPost('brand'),
             'model' => $this->request->getPost('model'),
             'category' => $this->request->getPost('category'),
             'total_stock' => $this->request->getPost('total_stock'),
-            'purchase_price' => $this->request->getPost('purchase_price') ?: null,
-            'selling_price' => $this->request->getPost('selling_price') ?: null,
-            'minimum_order_level' => $this->request->getPost('minimum_order_level') ?: null,
+            'purchase_price' => $this->request->getPost('purchase_price'),
+            'selling_price' => $this->request->getPost('selling_price'),
+            'minimum_order_level' => $this->request->getPost('minimum_order_level'),
             'supplier' => $this->request->getPost('supplier'),
             'description' => $this->request->getPost('description'),
             'status' => $this->request->getPost('status')
         ];
 
-        if ($this->inventoryModel->update($id, $data)) {
+        // Use model validation and update the inventory item
+        if ($this->inventoryModel->update($id, $inventoryData)) {
             return redirect()->to('/dashboard/inventory')->with('success', 'Inventory item updated successfully!');
         } else {
-            return redirect()->back()->withInput()->with('error', 'Failed to update inventory item.');
+            // Get model validation errors
+            $errors = $this->inventoryModel->errors();
+            if (!empty($errors)) {
+                return redirect()->back()->withInput()->with('errors', $errors);
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Failed to update inventory item.');
+            }
         }
     }
 
@@ -794,6 +781,161 @@ class Inventory extends BaseController
         } catch (\Exception $e) {
             return redirect()->to('/dashboard/inventory')->with('error', 'Export failed: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Bulk delete inventory items
+     */
+    public function bulkDelete()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        $itemIds = $this->request->getPost('item_ids');
+
+        if (empty($itemIds) || !is_array($itemIds)) {
+            return redirect()->back()->with('error', 'No items selected for deletion.');
+        }
+
+        $deletedCount = 0;
+        $errors = [];
+
+        foreach ($itemIds as $itemId) {
+            if ($this->inventoryModel->delete($itemId)) {
+                $deletedCount++;
+            } else {
+                $errors[] = "Failed to delete item ID: {$itemId}";
+            }
+        }
+
+        if ($deletedCount > 0) {
+            $message = "Successfully deleted {$deletedCount} item(s).";
+            if (!empty($errors)) {
+                $message .= " " . implode(", ", $errors);
+            }
+            return redirect()->to('/dashboard/inventory')->with('success', $message);
+        } else {
+            return redirect()->to('/dashboard/inventory')->with('error', 'Failed to delete selected items.');
+        }
+    }
+
+    /**
+     * Bulk update status
+     */
+    public function bulkUpdateStatus()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        $itemIds = $this->request->getPost('item_ids');
+        $newStatus = $this->request->getPost('status');
+
+        if (empty($itemIds) || !is_array($itemIds)) {
+            return redirect()->back()->with('error', 'No items selected for status update.');
+        }
+
+        if (!in_array($newStatus, ['Active', 'Inactive', 'Discontinued'])) {
+            return redirect()->back()->with('error', 'Invalid status selected.');
+        }
+
+        $updatedCount = 0;
+        $errors = [];
+
+        foreach ($itemIds as $itemId) {
+            if ($this->inventoryModel->update($itemId, ['status' => $newStatus])) {
+                $updatedCount++;
+            } else {
+                $errors[] = "Failed to update item ID: {$itemId}";
+            }
+        }
+
+        if ($updatedCount > 0) {
+            $message = "Successfully updated status for {$updatedCount} item(s) to {$newStatus}.";
+            if (!empty($errors)) {
+                $message .= " " . implode(", ", $errors);
+            }
+            return redirect()->to('/dashboard/inventory')->with('success', $message);
+        } else {
+            return redirect()->to('/dashboard/inventory')->with('error', 'Failed to update status for selected items.');
+        }
+    }
+
+    /**
+     * Advanced search with filters
+     */
+    public function advancedSearch()
+    {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            return redirect()->to('/auth/login');
+        }
+
+        $search = $this->request->getGet('search');
+        $category = $this->request->getGet('category');
+        $status = $this->request->getGet('status');
+        $brand = $this->request->getGet('brand');
+        $lowStock = $this->request->getGet('low_stock');
+        $perPage = 20;
+
+        $builder = $this->inventoryModel;
+
+        // Apply search filters
+        if ($search) {
+            $builder = $builder->groupStart()
+                             ->like('device_name', $search)
+                             ->orLike('brand', $search)
+                             ->orLike('model', $search)
+                             ->orLike('description', $search)
+                             ->groupEnd();
+        }
+
+        if ($category) {
+            $builder = $builder->where('category', $category);
+        }
+
+        if ($status) {
+            $builder = $builder->where('status', $status);
+        }
+
+        if ($brand) {
+            $builder = $builder->where('brand', $brand);
+        }
+
+        if ($lowStock) {
+            $builder = $builder->where('total_stock <=', 'minimum_order_level', false);
+        }
+
+        $items = $builder->paginate($perPage);
+
+        // Get filter options
+        $categories = $this->inventoryModel->select('category')
+                                         ->distinct()
+                                         ->where('category IS NOT NULL')
+                                         ->findAll();
+
+        $brands = $this->inventoryModel->select('brand')
+                                     ->distinct()
+                                     ->where('brand IS NOT NULL')
+                                     ->findAll();
+
+        $data = [
+            'title' => 'Advanced Inventory Search',
+            'items' => $items,
+            'search' => $search,
+            'category' => $category,
+            'status' => $status,
+            'brand' => $brand,
+            'lowStock' => $lowStock,
+            'categories' => array_column($categories, 'category'),
+            'brands' => array_column($brands, 'brand'),
+            'pager' => $this->inventoryModel->pager
+        ];
+
+        return view('dashboard/inventory/advanced_search', $data);
     }
 
 }

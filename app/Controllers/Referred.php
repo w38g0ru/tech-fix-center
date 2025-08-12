@@ -85,25 +85,30 @@ class Referred extends BaseController
 
     public function store()
     {
-        $rules = [
-            'customer_name' => 'required|min_length[2]|max_length[100]',
-            'customer_phone' => 'permit_empty|min_length[10]|max_length[20]',
-            'device_name' => 'permit_empty|max_length[100]',
-            'problem_description' => 'permit_empty',
-            'referred_to' => 'permit_empty|max_length[100]',
-            'service_center_id' => 'permit_empty|is_natural_no_zero',
-            'status' => 'required|in_list[Pending,Dispatched,Completed]',
+        // Prepare referred data for model validation
+        $referredData = [
+            'customer_name' => $this->request->getPost('customer_name'),
+            'customer_phone' => $this->request->getPost('customer_phone'),
+            'device_name' => $this->request->getPost('device_name'),
+            'problem_description' => $this->request->getPost('problem_description'),
+            'referred_to' => $this->request->getPost('referred_to'),
+            'service_center_id' => $this->request->getPost('service_center_id'),
+            'status' => $this->request->getPost('status') ?: 'Pending'
+        ];
+
+        // Validate file upload separately
+        $fileRules = [
             'photo_description' => 'permit_empty|max_length[255]',
             'dispatch_photos' => 'permit_empty|max_size[dispatch_photos,5120]|is_image[dispatch_photos]'
         ];
 
-        if (!$this->validate($rules)) {
+        if (!$this->validate($fileRules)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        // Create the dispatch item first
-        $serviceCenterId = $this->request->getPost('service_center_id');
-        $referredTo = $this->request->getPost('referred_to');
+        // Handle service center logic
+        $serviceCenterId = $referredData['service_center_id'];
+        $referredTo = $referredData['referred_to'];
 
         // If service center is selected, get its name
         if (!empty($serviceCenterId)) {
@@ -114,21 +119,22 @@ class Referred extends BaseController
             }
         }
 
-        $data = [
-            'customer_name' => $this->request->getPost('customer_name'),
-            'customer_phone' => $this->request->getPost('customer_phone'),
-            'device_name' => $this->request->getPost('device_name'),
-            'problem_description' => $this->request->getPost('problem_description'),
-            'referred_to' => $referredTo,
-            'service_center_id' => $serviceCenterId ?: null,
-            'status' => $this->request->getPost('status'),
-            'created_at' => date('Y-m-d H:i:s')
-        ];
+        // Update referred data with processed values
+        $referredData['referred_to'] = $referredTo;
+        $referredData['service_center_id'] = $serviceCenterId ?: null;
+        $referredData['created_at'] = date('Y-m-d H:i:s');
 
-        $referredId = $this->referredModel->insert($data);
+        // Use model validation and create the referred item
+        $referredId = $this->referredModel->insert($referredData);
 
         if (!$referredId) {
-            return redirect()->back()->withInput()->with('error', 'Failed to create dispatch item.');
+            // Get model validation errors
+            $errors = $this->referredModel->errors();
+            if (!empty($errors)) {
+                return redirect()->back()->withInput()->with('errors', $errors);
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Failed to create dispatch item.');
+            }
         }
 
         // Handle photo uploads if any

@@ -27,17 +27,50 @@ class InventoryItemModel extends Model
 
     // Validation
     protected $validationRules = [
-        'device_name' => 'permit_empty|max_length[100]',
-        'brand' => 'permit_empty|max_length[100]',
-        'model' => 'permit_empty|max_length[100]',
-        'total_stock' => 'required|is_natural',
-        'purchase_price' => 'permit_empty|decimal',
-        'selling_price' => 'permit_empty|decimal',
-        'minimum_order_level' => 'permit_empty|is_natural',
-        'category' => 'permit_empty|max_length[100]',
-        'description' => 'permit_empty|max_length[1000]',
-        'supplier' => 'permit_empty|max_length[100]',
-        'status' => 'required|in_list[Active,Inactive,Discontinued]'
+        'device_name' => [
+            'label' => 'Device Name',
+            'rules' => 'permit_empty|max_length[100]'
+        ],
+        'brand' => [
+            'label' => 'Brand',
+            'rules' => 'permit_empty|max_length[100]'
+        ],
+        'model' => [
+            'label' => 'Model',
+            'rules' => 'permit_empty|max_length[100]'
+        ],
+        'total_stock' => [
+            'label' => 'Total Stock',
+            'rules' => 'required|is_natural'
+        ],
+        'purchase_price' => [
+            'label' => 'Purchase Price',
+            'rules' => 'permit_empty|decimal'
+        ],
+        'selling_price' => [
+            'label' => 'Selling Price',
+            'rules' => 'permit_empty|decimal'
+        ],
+        'minimum_order_level' => [
+            'label' => 'Minimum Order Level',
+            'rules' => 'permit_empty|is_natural'
+        ],
+        'category' => [
+            'label' => 'Category',
+            'rules' => 'permit_empty|max_length[100]'
+        ],
+        'description' => [
+            'label' => 'Description',
+            'rules' => 'permit_empty|max_length[1000]'
+        ],
+        'supplier' => [
+            'label' => 'Supplier',
+            'rules' => 'permit_empty|max_length[100]'
+        ],
+        'status' => [
+            'label' => 'Status',
+            'rules' => 'required|in_list[Active,Inactive,Discontinued]'
+        ]
     ];
 
     protected $validationMessages = [
@@ -51,8 +84,30 @@ class InventoryItemModel extends Model
             'max_length' => 'Model cannot exceed 100 characters'
         ],
         'total_stock' => [
-            'required' => 'Stock quantity is required',
-            'is_natural' => 'Stock must be a valid number'
+            'required' => 'Total stock is required',
+            'is_natural' => 'Total stock must be a valid number'
+        ],
+        'purchase_price' => [
+            'decimal' => 'Purchase price must be a valid decimal number'
+        ],
+        'selling_price' => [
+            'decimal' => 'Selling price must be a valid decimal number'
+        ],
+        'minimum_order_level' => [
+            'is_natural' => 'Minimum order level must be a valid number'
+        ],
+        'category' => [
+            'max_length' => 'Category cannot exceed 100 characters'
+        ],
+        'description' => [
+            'max_length' => 'Description cannot exceed 1000 characters'
+        ],
+        'supplier' => [
+            'max_length' => 'Supplier cannot exceed 100 characters'
+        ],
+        'status' => [
+            'required' => 'Status is required',
+            'in_list' => 'Status must be Active, Inactive, or Discontinued'
         ]
     ];
 

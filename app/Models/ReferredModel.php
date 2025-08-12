@@ -23,12 +23,34 @@ class ReferredModel extends Model
 
     // Validation
     protected $validationRules = [
-        'customer_name' => 'required|min_length[2]|max_length[100]',
-        'customer_phone' => 'permit_empty|min_length[10]|max_length[20]',
-        'device_name' => 'permit_empty|max_length[100]',
-        'problem_description' => 'permit_empty',
-        'referred_to' => 'permit_empty|max_length[100]',
-        'status' => 'required|in_list[Pending,Dispatched,Completed]'
+        'customer_name' => [
+            'label' => 'Customer Name',
+            'rules' => 'required|min_length[2]|max_length[100]'
+        ],
+        'customer_phone' => [
+            'label' => 'Customer Phone',
+            'rules' => 'permit_empty|min_length[10]|max_length[20]'
+        ],
+        'device_name' => [
+            'label' => 'Device Name',
+            'rules' => 'permit_empty|max_length[100]'
+        ],
+        'problem_description' => [
+            'label' => 'Problem Description',
+            'rules' => 'permit_empty'
+        ],
+        'referred_to' => [
+            'label' => 'Referred To',
+            'rules' => 'permit_empty|max_length[100]'
+        ],
+        'service_center_id' => [
+            'label' => 'Service Center',
+            'rules' => 'permit_empty|is_natural_no_zero'
+        ],
+        'status' => [
+            'label' => 'Status',
+            'rules' => 'required|in_list[Pending,Dispatched,Completed]'
+        ]
     ];
 
     protected $validationMessages = [
@@ -40,6 +62,15 @@ class ReferredModel extends Model
         'customer_phone' => [
             'min_length' => 'Phone number must be at least 10 digits',
             'max_length' => 'Phone number cannot exceed 20 characters'
+        ],
+        'device_name' => [
+            'max_length' => 'Device name cannot exceed 100 characters'
+        ],
+        'referred_to' => [
+            'max_length' => 'Referred to field cannot exceed 100 characters'
+        ],
+        'service_center_id' => [
+            'is_natural_no_zero' => 'Please select a valid service center'
         ],
         'status' => [
             'required' => 'Status is required',
