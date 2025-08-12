@@ -32,6 +32,7 @@
 
 
 
+<?php if ($isAdmin): ?>
 <!-- Job Stats -->
 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
     <div class="bg-white rounded-lg shadow p-4">
@@ -82,6 +83,7 @@
         </div>
     </div>
 </div>
+<?php endif; ?>
 
 <!-- Search and Filter -->
 <div class="mb-6">
