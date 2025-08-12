@@ -25,15 +25,15 @@ class App extends BaseConfig
      *
      * Professional branding settings for TFC (Tech Fix Center)
      */
-    public string $appName = 'infoTech (infoTech Suppliers & Traders)';
-    public string $appShortName = 'infoTech';
+    public string $appName = 'Infotech (Infotech Suppliers & Traders)';
+    public string $appShortName = 'Infotech';
     public string $appVersion = '2.0.0';
-    public string $appDescription = 'infoTech Suppliers & Traders - Your trusted partner for technology solutions.';
-    public string $companyName = 'infoTech Suppliers & Traders';
-    public string $companyTagline = 'Precision Technology Solutions';
+    public string $appDescription = 'Infotech Suppliers & Traders - Your trusted partner for technology solutions.';
+    public string $companyName = 'Infotech Suppliers & Traders';
+    public string $companyTagline = 'Trusted partner for technology solutions';
     public string $companyWebsite = 'https://tfc.gaighat.com';
-    public string $supportEmail = 'support@gaighat.com';
-    public string $contactPhone = '+977-1-4567890';
+    public string $supportEmail = 'infoudayapur@gmail.com';
+    public string $contactPhone = '+977-35-5420830';
     public string $companyAddress = 'Gaighat, Udayapur, Nepal';
 
     // Brand Colors (Quasar Minimalist Design)
