@@ -2,23 +2,29 @@
 
 <?= $this->section('content') ?>
 
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-    <div>
-        <h1 class="text-2xl font-semibold text-gray-900">Technicians</h1>
-        <p class="mt-1 text-sm text-gray-600">View and manage technician accounts</p>
-    </div>
-    <div class="mt-4 sm:mt-0">
-        <?php helper('auth'); ?>
-        <?php if (canCreateTechnician()): ?>
-            <div class="flex items-center space-x-3">
-                <div class="text-sm text-gray-600 bg-blue-50 px-4 py-2 rounded-lg border border-blue-200">
+<!-- Welcome Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-user-cog text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-semibold text-gray-900">Technicians</h1>
+                <p class="text-sm text-gray-600">View and manage technician accounts</p>
+            </div>
+        </div>
+        <div class="text-right">
+            <?php helper('auth'); ?>
+            <?php if (canCreateTechnician()): ?>
+                <div class="text-sm text-gray-600 bg-blue-50 px-4 py-3 rounded-lg border border-blue-200">
                     <i class="fas fa-info-circle text-blue-500 mr-2"></i>
                     To add new technicians, use
                     <a href="<?= base_url('dashboard/user-management/create') ?>"
                        class="text-blue-600 hover:text-blue-800 font-medium underline">User Management</a>
                 </div>
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 

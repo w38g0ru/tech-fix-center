@@ -75,6 +75,7 @@
     </div>
 </div>
 
+<?php if (in_array(session('access'), config('App')->dashboardConfig['showStatsCards'])): ?>
 <!-- Stats Cards -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
     <!-- Total Jobs -->
@@ -160,6 +161,7 @@
         </div>
     </div>
 </div>
+<?php endif; ?>
 
 <!-- Dispatch Management & Attention Required -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">

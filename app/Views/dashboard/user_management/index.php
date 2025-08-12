@@ -2,27 +2,32 @@
 
 <?= $this->section('content') ?>
 
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-    <div>
-        <h1 class="text-2xl font-semibold text-gray-900">User Management</h1>
-        <p class="mt-1 text-sm text-gray-600">Manage all system users including admins, technicians, and customers</p>
-    </div>
-    <div class="mt-4 sm:mt-0 flex space-x-3">
-        <button onclick="sendSms()"
-                class="inline-flex items-center px-4 py-2 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition ease-in-out duration-150">
-            <i class="fas fa-sms mr-2"></i>
-            Send SMS
-        </button>
-        <a href="<?= base_url('dashboard/technicians') ?>"
-           class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
-            <i class="fas fa-user-cog mr-2"></i>
-            Technicians
-        </a>
-        <a href="<?= base_url('dashboard/user-management/create') ?>"
-           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
-            <i class="fas fa-plus mr-2"></i>
-            Add New User
-        </a>
+<!-- Welcome Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-users-cog text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-semibold text-gray-900">User Management</h1>
+                <p class="text-sm text-gray-600">Manage all system users including admins, technicians, and customers</p>
+            </div>
+        </div>
+        <div class="text-right flex items-center space-x-3">
+            <button onclick="sendSms()"
+                    class="inline-flex items-center px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors duration-200">
+                <i class="fas fa-sms mr-2"></i>Send SMS
+            </button>
+            <a href="<?= base_url('dashboard/technicians') ?>"
+               class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200">
+                <i class="fas fa-user-cog mr-2"></i>Technicians
+            </a>
+            <a href="<?= base_url('dashboard/user-management/create') ?>"
+               class="inline-flex items-center px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-all duration-200 shadow-sm">
+                <i class="fas fa-plus mr-2"></i>Add New User
+            </a>
+        </div>
     </div>
 </div>
 

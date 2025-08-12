@@ -2,24 +2,29 @@
 
 <?= $this->section('content') ?>
 
-<!-- Header Section -->
-<div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 mb-8 -m-6 mb-6">
-    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-        <div>
-            <h1 class="text-3xl font-bold mb-2">Reports & Analytics</h1>
-            <p class="text-blue-100 text-lg">Comprehensive business insights and performance metrics</p>
+<!-- Welcome Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-chart-bar text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-semibold text-gray-900">Reports & Analytics</h1>
+                <p class="text-sm text-gray-600">Comprehensive business insights and performance metrics</p>
+            </div>
         </div>
-        <div class="mt-4 lg:mt-0">
-            <form method="GET" class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-3">
-                <div class="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-lg p-3">
-                    <label class="text-sm font-medium text-blue-100">From:</label>
+        <div class="text-right">
+            <form method="GET" class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2 bg-gray-50 rounded-lg p-3">
+                    <label class="text-sm font-medium text-gray-700">From:</label>
                     <input type="date" name="start_date" value="<?= $startDate ?>"
-                           class="px-3 py-2 bg-white/20 border border-white/30 rounded-md text-sm text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50">
-                    <label class="text-sm font-medium text-blue-100">To:</label>
+                           class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <label class="text-sm font-medium text-gray-700">To:</label>
                     <input type="date" name="end_date" value="<?= $endDate ?>"
-                           class="px-3 py-2 bg-white/20 border border-white/30 rounded-md text-sm text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50">
+                           class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <button type="submit"
-                            class="px-4 py-2 bg-white text-blue-600 text-sm font-medium rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors duration-200">
+                            class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors duration-200">
                         <i class="fas fa-filter mr-2"></i>Apply Filter
                     </button>
                 </div>

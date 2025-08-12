@@ -2,39 +2,46 @@
 
 <?= $this->section('content') ?>
 
-<!-- Page Header -->
-<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
-    <div>
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Inventory Management</h1>
-        <p class="text-gray-600">Track stock levels and manage your inventory items</p>
-    </div>
-    <div class="mt-4 lg:mt-0 flex flex-wrap gap-3">
-        <!-- Import/Export Actions (Admin Only) -->
-        <?php if (in_array($userRole, ['superadmin', 'admin'])): ?>
-        <div class="flex items-center gap-2 bg-gray-50 rounded-xl p-1">
-            <a href="<?= base_url('dashboard/inventory/downloadTemplate') ?>"
-               class="inline-flex items-center px-4 py-2 text-sm font-medium text-green-700 bg-white rounded-lg hover:bg-green-50 transition-colors duration-200 shadow-sm"
-               title="Download CSV template for bulk import">
-                <i class="fas fa-download mr-2"></i>Template
-            </a>
-            <a href="<?= base_url('dashboard/inventory/bulk-import') ?>"
-               class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 shadow-sm"
-               title="Import items from CSV/Excel file">
-                <i class="fas fa-upload mr-2"></i>Import
-            </a>
-            <a href="<?= base_url('dashboard/inventory/export') ?>"
-               class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm"
-               title="Export all inventory items to CSV">
-                <i class="fas fa-file-export mr-2"></i>Export
+<!-- Welcome Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-boxes text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-semibold text-gray-900">Inventory Management</h1>
+                <p class="text-sm text-gray-600">Track stock levels and manage your inventory items</p>
+            </div>
+        </div>
+        <div class="text-right flex items-center space-x-3">
+            <!-- Import/Export Actions (Admin Only) -->
+            <?php if (in_array($userRole, ['superadmin', 'admin'])): ?>
+            <div class="flex items-center gap-2 bg-gray-50 rounded-lg p-1">
+                <a href="<?= base_url('dashboard/inventory/downloadTemplate') ?>"
+                   class="inline-flex items-center px-3 py-2 text-sm font-medium text-green-700 bg-white rounded-md hover:bg-green-50 transition-colors duration-200"
+                   title="Download CSV template for bulk import">
+                    <i class="fas fa-download mr-1"></i>Template
+                </a>
+                <a href="<?= base_url('dashboard/inventory/bulk-import') ?>"
+                   class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-700 bg-white rounded-md hover:bg-blue-50 transition-colors duration-200"
+                   title="Import items from CSV/Excel file">
+                    <i class="fas fa-upload mr-1"></i>Import
+                </a>
+                <a href="<?= base_url('dashboard/inventory/export') ?>"
+                   class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white rounded-md hover:bg-gray-50 transition-colors duration-200"
+                   title="Export all inventory items to CSV">
+                    <i class="fas fa-file-export mr-1"></i>Export
+                </a>
+            </div>
+            <?php endif; ?>
+
+            <!-- Primary Action -->
+            <a href="<?= base_url('dashboard/inventory/create') ?>"
+               class="inline-flex items-center px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-all duration-200 shadow-sm">
+                <i class="fas fa-plus mr-2"></i>Add New Item
             </a>
         </div>
-        <?php endif; ?>
-
-        <!-- Primary Action -->
-        <a href="<?= base_url('dashboard/inventory/create') ?>"
-           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30">
-            <i class="fas fa-plus mr-2"></i>Add New Item
-        </a>
     </div>
 </div>
 

@@ -49,6 +49,19 @@ class App extends BaseConfig
         'light' => '#fafafa'         // Quasar Light
     ];
 
+    /**
+     * --------------------------------------------------------------------------
+     * Dashboard Configuration
+     * --------------------------------------------------------------------------
+     *
+     * Dashboard display settings and permissions
+     */
+    public array $dashboardConfig = [
+        'showStatsCards' => ['admin', 'superadmin'], // Roles that can see stats cards
+        'showQuickActions' => ['admin', 'user', 'technician', 'superadmin'], // Roles that can see quick actions
+        'showRecentActivity' => ['admin', 'technician', 'superadmin'], // Roles that can see recent activity
+    ];
+
     // Social Media Links
     public array $socialMedia = [
         'facebook' => 'https://facebook.com/techfixcenter',

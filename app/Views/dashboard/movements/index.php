@@ -2,17 +2,24 @@
 
 <?= $this->section('content') ?>
 
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-    <div>
-        <h1 class="text-2xl font-semibold text-gray-900">Stock Movements</h1>
-        <p class="mt-1 text-sm text-gray-600">Track inventory stock movements (IN/OUT)</p>
-    </div>
-    <div class="mt-4 sm:mt-0">
-        <a href="<?= base_url('dashboard/movements/create') ?>"
-           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-sm hover:shadow-blue-500/30">
-            <i class="fas fa-plus mr-2"></i>
-            Add Stock
-        </a>
+<!-- Welcome Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-teal-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-warehouse text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-semibold text-gray-900">Stock Movements</h1>
+                <p class="text-sm text-gray-600">Track inventory stock movements (IN/OUT)</p>
+            </div>
+        </div>
+        <div class="text-right">
+            <a href="<?= base_url('dashboard/movements/create') ?>"
+               class="inline-flex items-center px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-all duration-200 shadow-sm">
+                <i class="fas fa-plus mr-2"></i>Add Stock
+            </a>
+        </div>
     </div>
 </div>
 

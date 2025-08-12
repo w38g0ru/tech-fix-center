@@ -4,21 +4,27 @@
 
 <div class="max-w-full overflow-hidden">
 
-<!-- Page Header -->
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
-    <div>
-        <h1 class="text-2xl font-bold text-gray-900">Parts Requests</h1>
-        <p class="mt-1 text-sm text-gray-600">Manage and track parts requests for repairs</p>
-    </div>
-    <?php if ($userRole === 'technician'): ?>
-        <div class="mt-4 sm:mt-0">
+<!-- Welcome Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-tools text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-semibold text-gray-900">Parts Requests</h1>
+                <p class="text-sm text-gray-600">Manage and track parts requests for repairs</p>
+            </div>
+        </div>
+        <?php if ($userRole === 'technician'): ?>
+        <div class="text-right">
             <a href="<?= base_url('dashboard/parts-requests/create') ?>"
-               class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                <i class="fas fa-plus mr-2"></i>
-                Request Parts
+               class="inline-flex items-center px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-all duration-200 shadow-sm">
+                <i class="fas fa-plus mr-2"></i>Request Parts
             </a>
         </div>
-    <?php endif; ?>
+        <?php endif; ?>
+    </div>
 </div>
 
 <!-- Statistics Cards -->

@@ -2,27 +2,34 @@
 
 <?= $this->section('content') ?>
 
-<!-- Page Header -->
-<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
-    <div>
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Activity Logs</h1>
-        <p class="text-gray-600">
+<!-- Welcome Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-history text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-semibold text-gray-900">Activity Logs</h1>
+                <p class="text-sm text-gray-600">
+                    <?php if (in_array($userRole, ['superadmin', 'admin'])): ?>
+                        Monitor all user activities and system events
+                    <?php else: ?>
+                        View your activity history and system interactions
+                    <?php endif; ?>
+                </p>
+            </div>
+        </div>
+        <div class="text-right">
+            <!-- Export Button (Admin Only) -->
             <?php if (in_array($userRole, ['superadmin', 'admin'])): ?>
-                Monitor all user activities and system events
-            <?php else: ?>
-                View your activity history and system interactions
+            <a href="<?= base_url('dashboard/activity-logs/export') ?>"
+               class="inline-flex items-center px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-all duration-200 shadow-sm"
+               title="Export activity logs to CSV">
+                <i class="fas fa-file-export mr-2"></i>Export
+            </a>
             <?php endif; ?>
-        </p>
-    </div>
-    <div class="mt-4 lg:mt-0 flex flex-wrap gap-3">
-        <!-- Export Button (Admin Only) -->
-        <?php if (in_array($userRole, ['superadmin', 'admin'])): ?>
-        <a href="<?= base_url('dashboard/activity-logs/export') ?>"
-           class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm border border-gray-300"
-           title="Export activity logs to CSV">
-            <i class="fas fa-file-export mr-2"></i>Export
-        </a>
-        <?php endif; ?>
+        </div>
     </div>
 </div>
 
