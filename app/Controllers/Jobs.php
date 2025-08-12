@@ -42,7 +42,13 @@ class Jobs extends BaseController
         $status = $this->request->getGet('status');
         $perPage = 20; // Items per page
 
-        if ($search) {
+        // Get user role for role-based functionality
+        $userRole = session('role');
+        $isAdmin = ($userRole === 'admin');
+
+        if ($search && $status) {
+            $jobs = $this->jobModel->searchJobsWithStatus($search, $status, $perPage);
+        } elseif ($search) {
             $jobs = $this->jobModel->searchJobs($search, $perPage);
         } elseif ($status) {
             $jobs = $this->jobModel->getJobsByStatus($status, $perPage);
@@ -55,6 +61,8 @@ class Jobs extends BaseController
             'jobs' => $jobs,
             'search' => $search,
             'status' => $status,
+            'userRole' => $userRole,
+            'isAdmin' => $isAdmin,
             'jobStats' => $this->jobModel->getJobStats(),
             'pager' => $this->jobModel->pager
         ];

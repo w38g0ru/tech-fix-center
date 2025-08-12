@@ -431,8 +431,43 @@ class JobModel extends Model
                     ->groupStart()
                         ->like('jobs.device_name', $search)
                         ->orLike('jobs.serial_number', $search)
+                        ->orLike('jobs.problem', $search)
+                        ->orLike('jobs.walk_in_customer_name', $search)
+                        ->orLike('jobs.walk_in_customer_mobile', $search)
                         ->orLike('users.name', $search)
+                        ->orLike('users.mobile_number', $search)
                         ->orLike('admin_users.full_name', $search)
+                        ->orLike('jobs.id', $search)
+                    ->groupEnd()
+                    ->orderBy('jobs.id', 'DESC');
+
+        if ($perPage !== null) {
+            return $builder->paginate($perPage);
+        }
+
+        return $builder->findAll();
+    }
+
+    /**
+     * Search jobs with status filter
+     */
+    public function searchJobsWithStatus($search, $status, $perPage = null)
+    {
+        $builder = $this->select('jobs.*, users.name as customer_name, users.mobile_number,
+                            admin_users.full_name as technician_name')
+                    ->join('users', 'users.id = jobs.user_id', 'left')
+                    ->join('admin_users', 'admin_users.id = jobs.technician_id AND admin_users.role = "technician"', 'left')
+                    ->where('jobs.status', $status)
+                    ->groupStart()
+                        ->like('jobs.device_name', $search)
+                        ->orLike('jobs.serial_number', $search)
+                        ->orLike('jobs.problem', $search)
+                        ->orLike('jobs.walk_in_customer_name', $search)
+                        ->orLike('jobs.walk_in_customer_mobile', $search)
+                        ->orLike('users.name', $search)
+                        ->orLike('users.mobile_number', $search)
+                        ->orLike('admin_users.full_name', $search)
+                        ->orLike('jobs.id', $search)
                     ->groupEnd()
                     ->orderBy('jobs.id', 'DESC');
 

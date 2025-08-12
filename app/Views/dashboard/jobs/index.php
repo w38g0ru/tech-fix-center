@@ -2,142 +2,78 @@
 
 <?= $this->section('content') ?>
 
-<!-- Success/Error Messages -->
-<?php if (session('success')): ?>
-    <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl shadow-sm">
-        <div class="flex items-center">
-            <i class="fas fa-check-circle mr-2 text-green-600"></i>
-            <span class="font-medium"><?= session('success') ?></span>
-        </div>
-    </div>
-<?php endif; ?>
-
-<?php if (session('error')): ?>
-    <div class="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl shadow-sm">
-        <div class="flex items-center">
-            <i class="fas fa-exclamation-circle mr-2 text-red-600"></i>
-            <span class="font-medium"><?= session('error') ?></span>
-        </div>
-    </div>
-<?php endif; ?>
-
-<?php if (session('errors')): ?>
-    <div class="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl shadow-sm">
-        <div class="flex items-start">
-            <i class="fas fa-exclamation-triangle mr-2 text-red-600 mt-0.5"></i>
-            <div>
-                <span class="font-medium block mb-2">Please fix the following errors:</span>
-                <ul class="list-disc list-inside space-y-1 text-sm">
-                    <?php foreach (session('errors') as $error): ?>
-                        <li><?= esc($error) ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        </div>
-    </div>
-<?php endif; ?>
-
-<!-- Page Header -->
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
     <div>
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Job Management</h1>
-        <p class="text-gray-600">Track and manage all repair jobs efficiently</p>
+        <div class="flex items-center space-x-3">
+            <h1 class="text-2xl font-semibold text-gray-900">Job Management</h1>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $isAdmin ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' ?>">
+                <i class="fas <?= $isAdmin ? 'fa-crown' : 'fa-user' ?> mr-1"></i>
+                <?= ucfirst($userRole) ?> Access
+            </span>
+        </div>
+        <p class="mt-1 text-sm text-gray-600">
+            <?= $isAdmin ? 'Full job management with admin privileges' : 'View and manage repair jobs' ?>
+        </p>
     </div>
-    <div class="mt-4 sm:mt-0">
+    <div class="mt-4 sm:mt-0 flex items-center space-x-3">
+        <?php if ($isAdmin): ?>
+            <button onclick="showBulkActions()" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition ease-in-out duration-150">
+                <i class="fas fa-tasks mr-2"></i>
+                Bulk Actions
+            </button>
+        <?php endif; ?>
         <a href="<?= base_url('dashboard/jobs/create') ?>"
-           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-lg shadow-green-500/25 hover:shadow-xl hover:shadow-green-500/30">
-            <i class="fas fa-plus mr-2"></i>Create New Job
+           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
+            <i class="fas fa-plus mr-2"></i>
+            Create Job
         </a>
     </div>
 </div>
 
-<!-- Job Stats -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
-        <div class="flex items-center">
-            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-clipboard-list text-white text-xl"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $jobStats['total'] ?></h3>
-                <p class="text-sm font-medium text-gray-600">Total Jobs</p>
-            </div>
-        </div>
-    </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
-        <div class="flex items-center">
-            <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-orange-500/25 group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-clock text-white text-xl"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $jobStats['pending'] ?></h3>
-                <p class="text-sm font-medium text-gray-600">Pending</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
-        <div class="flex items-center">
-            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-cog text-white text-xl"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $jobStats['in_progress'] ?></h3>
-                <p class="text-sm font-medium text-gray-600">In Progress</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
-        <div class="flex items-center">
-            <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-green-500/25 group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-check-circle text-white text-xl"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="text-3xl font-bold text-gray-900 mb-1"><?= $jobStats['completed'] ?></h3>
-                <p class="text-sm font-medium text-gray-600">Completed</p>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Search and Filter -->
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
-    <form method="GET" action="<?= base_url('dashboard/jobs') ?>" class="flex flex-col lg:flex-row gap-4">
-        <div class="flex-1">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Search Jobs</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i class="fas fa-search text-gray-400"></i>
-                </div>
-                <input type="text"
-                       name="search"
-                       value="<?= esc($search ?? '') ?>"
-                       placeholder="Search by customer, device, or serial number..."
-                       class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
-            </div>
+<div class="mb-6">
+    <?php if (!empty($search) || !empty($status)): ?>
+        <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <p class="text-sm text-blue-800">
+                <i class="fas fa-info-circle mr-1"></i>
+                <?php if (!empty($search) && !empty($status)): ?>
+                    Showing results for "<strong><?= esc($search) ?></strong>" with status "<strong><?= esc($status) ?></strong>"
+                <?php elseif (!empty($search)): ?>
+                    Showing search results for "<strong><?= esc($search) ?></strong>"
+                <?php elseif (!empty($status)): ?>
+                    Showing jobs with status "<strong><?= esc($status) ?></strong>"
+                <?php endif; ?>
+            </p>
         </div>
-        <div class="lg:w-48">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Status Filter</label>
-            <select name="status" class="block w-full px-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+    <?php endif; ?>
+    <form method="GET" action="<?= base_url('dashboard/jobs') ?>" class="flex flex-col sm:flex-row gap-4">
+        <div class="flex-1">
+            <input type="text"
+                   name="search"
+                   value="<?= esc($search ?? '') ?>"
+                   placeholder="Search by customer, device, or serial number..."
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+        </div>
+        <div class="flex gap-2">
+            <select name="status" class="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 <option value="">All Status</option>
                 <option value="Pending" <?= ($status ?? '') === 'Pending' ? 'selected' : '' ?>>Pending</option>
                 <option value="In Progress" <?= ($status ?? '') === 'In Progress' ? 'selected' : '' ?>>In Progress</option>
-                <option value="Completed" <?= ($status ?? '') === 'Completed' ? 'selected' : '' ?>>Completed</option>
                 <option value="Parts Pending" <?= ($status ?? '') === 'Parts Pending' ? 'selected' : '' ?>>Parts Pending</option>
-                <option value="Referred to Service" <?= ($status ?? '') === 'Referred to Service' ? 'selected' : '' ?>>Referred</option>
+                <option value="Referred to Service Center" <?= ($status ?? '') === 'Referred to Service Center' ? 'selected' : '' ?>>Referred to Service Center</option>
+                <option value="Ready to Dispatch to Customer" <?= ($status ?? '') === 'Ready to Dispatch to Customer' ? 'selected' : '' ?>>Ready to Dispatch to Customer</option>
                 <option value="Returned" <?= ($status ?? '') === 'Returned' ? 'selected' : '' ?>>Returned</option>
+                <option value="Completed" <?= ($status ?? '') === 'Completed' ? 'selected' : '' ?>>Completed</option>
             </select>
-        </div>
-        <div class="flex items-end gap-3">
             <button type="submit"
-                    class="px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors duration-200 flex items-center">
+                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 <i class="fas fa-search mr-2"></i>Search
             </button>
             <?php if (!empty($search) || !empty($status)): ?>
                 <a href="<?= base_url('dashboard/jobs') ?>"
-                   class="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors duration-200 flex items-center">
+                   class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                     <i class="fas fa-times mr-2"></i>Clear
                 </a>
             <?php endif; ?>
@@ -146,102 +82,106 @@
 </div>
 
 <!-- Jobs Table -->
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+<div class="bg-white shadow overflow-hidden sm:rounded-md">
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Details/Created</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer/Device</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Technician/Status</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Customer & Device
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Job Details
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Created
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 <?php if (!empty($jobs)): ?>
                     <?php foreach ($jobs as $job): ?>
-                        <tr class="hover:bg-gray-50 transition-colors duration-200">
-                            <!-- Job Details/Created -->
-                            <td class="px-6 py-4">
-                                <div class="font-medium text-blue-600">
-                                    Job #<?= $job['id'] ?>
-                                </div>
-                                <div class="font-medium text-gray-900">
-                                    <?= esc($job['customer_name'] ?? $job['walk_in_customer_name'] ?? 'N/A') ?>
-                                </div>
-                                <?php if (!empty($job['walk_in_customer_mobile'])): ?>
-                                    <div class="text-xs text-gray-500">
-                                        <?= esc($job['walk_in_customer_mobile']) ?>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            <?= esc($job['customer_name'] ?? $job['walk_in_customer_name'] ?? 'Walk-in Customer') ?>
+                                        </div>
+                                        <?php if (!empty($job['walk_in_customer_mobile'])): ?>
+                                            <div class="text-sm text-gray-500"><?= esc($job['walk_in_customer_mobile']) ?></div>
+                                        <?php endif; ?>
+                                        <div class="text-sm text-gray-500 mt-1">
+                                            <strong>Device:</strong> <?= esc($job['device_name']) ?>
+                                        </div>
+                                        <?php if (!empty($job['serial_number'])): ?>
+                                            <div class="text-xs text-gray-400">SN: <?= esc($job['serial_number']) ?></div>
+                                        <?php endif; ?>
                                     </div>
-                                <?php endif; ?>
-                                <div class="text-xs text-gray-400 mt-1">
-                                    <?= formatNepaliDate($job['created_at'], 'short') ?>
                                 </div>
                             </td>
-
-                            <!-- Customer/Device -->
-                            <td class="px-6 py-4">
-                                <div class="text-xs text-gray-500 mt-1">
-                                    <?= esc(substr($job['problem'], 0, 50)) ?><?= strlen($job['problem']) > 50 ? '...' : '' ?>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <strong>Job #<?= $job['id'] ?></strong>
                                 </div>
-                                <div class="text-sm text-gray-700 mt-1">
-                                    <?= esc($job['device_name']) ?>
+                                <div class="text-sm text-gray-500">
+                                    <?= esc(substr($job['problem'], 0, 60)) ?><?= strlen($job['problem']) > 60 ? '...' : '' ?>
                                 </div>
-                                <?php if (!empty($job['serial_number'])): ?>
-                                    <div class="text-xs text-gray-500">
-                                        SN: <?= esc($job['serial_number']) ?>
+                                <?php if (!empty($job['technician_name'])): ?>
+                                    <div class="text-xs text-gray-400 mt-1">
+                                        <strong>Technician:</strong> <?= esc($job['technician_name']) ?>
                                     </div>
                                 <?php endif; ?>
                             </td>
-
-                            <!-- Technician/Status -->
-                            <td class="px-6 py-4">
-                                <div class="font-medium text-gray-900 mb-2">
-                                    <?= esc($job['technician_name'] ?? 'Unassigned') ?>
-                                </div>
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 <?php
                                 $statusClasses = [
                                     'Completed' => 'bg-green-100 text-green-800',
                                     'In Progress' => 'bg-blue-100 text-blue-800',
                                     'Pending' => 'bg-orange-100 text-orange-800',
                                     'Parts Pending' => 'bg-yellow-100 text-yellow-800',
-                                    'Referred to Service' => 'bg-purple-100 text-purple-800',
+                                    'Referred to Service Center' => 'bg-purple-100 text-purple-800',
+                                    'Ready to Dispatch to Customer' => 'bg-indigo-100 text-indigo-800',
                                     'Returned' => 'bg-red-100 text-red-800'
                                 ];
                                 $statusClass = $statusClasses[$job['status']] ?? 'bg-gray-100 text-gray-800';
                                 ?>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $statusClass ?>">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?= $statusClass ?>">
                                     <?= esc($job['status']) ?>
                                 </span>
                             </td>
-
-                            <!-- Actions -->
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex items-center justify-end space-x-2">
-                                    <a href="<?= base_url('dashboard/jobs/view/' . $job['id']) ?>"
-                                       class="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors duration-200"
-                                       title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>"
-                                       class="text-green-600 hover:text-green-900 p-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
-                                       title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </div>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <?= formatNepaliDate($job['created_at'], 'short') ?>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="<?= base_url('dashboard/jobs/view/' . $job['id']) ?>"
+                                   class="text-blue-600 hover:text-blue-700 mr-3">
+                                    View
+                                </a>
+                                <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>"
+                                   class="text-green-600 hover:text-green-700">
+                                    Edit
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="4" class="px-6 py-16 text-center">
+                        <td colspan="5" class="px-6 py-12 text-center">
                             <div class="text-gray-500">
-                                <i class="fas fa-wrench text-5xl mb-4 text-gray-300"></i>
-                                <p class="text-lg font-medium mb-2 text-gray-900">No jobs found</p>
-                                <p class="text-sm mb-6">Get started by creating your first repair job.</p>
+                                <i class="fas fa-wrench text-4xl mb-4"></i>
+                                <p class="text-lg font-medium">No jobs found</p>
+                                <p class="text-sm">Get started by creating your first repair job.</p>
                                 <a href="<?= base_url('dashboard/jobs/create') ?>"
-                                   class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg shadow-blue-500/25">
-                                    <i class="fas fa-plus mr-2"></i>Create Job
+                                   class="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
+                                    <i class="fas fa-plus mr-2"></i>
+                                    Create Job
                                 </a>
                             </div>
                         </td>
@@ -253,9 +193,14 @@
 
     <!-- Pagination -->
     <?php if (isset($pager) && $pager): ?>
-        <?php helper('pagination'); ?>
         <?= renderPagination($pager) ?>
     <?php endif; ?>
 </div>
+
+<script>
+function showBulkActions() {
+    alert('Bulk actions functionality coming soon!');
+}
+</script>
 
 <?= $this->endSection() ?>
