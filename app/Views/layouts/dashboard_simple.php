@@ -132,8 +132,8 @@ $pageTitle = $title ?? 'Dashboard';
                 <i class="fas fa-user"></i>
               </div>
               <div class="text-left mr-3 hidden sm:block">
-                <div class="text-sm font-medium text-gray-900"><?= htmlspecialchars(session('user_name') ?? 'User') ?></div>
-                <div class="text-xs text-gray-500">Administrator</div>
+                <div class="text-sm font-medium text-gray-900"><?= htmlspecialchars(session('user_name')) ?></div>
+                <div class="text-xs text-gray-500"><?= htmlspecialchars(session('role')) ?></div>
               </div>
               <i class="fas fa-chevron-down text-xs text-gray-400 transition-colors duration-200"></i>
             </button>
@@ -141,8 +141,8 @@ $pageTitle = $title ?? 'Dashboard';
             <div id="userDropdown" class="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-200 min-w-56 opacity-0 invisible transform -translate-y-2 transition-all duration-200 z-50 overflow-hidden" role="menu" aria-hidden="true">
 
               <div class="p-4 border-b border-gray-200">
-                <div class="font-medium text-gray-900"><?= htmlspecialchars(session('user_name') ?? 'User') ?></div>
-                <div class="text-sm text-gray-500 capitalize"><?= htmlspecialchars(session('role') ?? 'User') ?></div>
+                <div class="font-medium text-gray-900"><?= htmlspecialchars(session('user_name')) ?></div>
+                <div class="text-sm text-gray-500 capitalize"><?= htmlspecialchars(session('role')) ?></div>
               </div>
 
               <!-- User Section -->
