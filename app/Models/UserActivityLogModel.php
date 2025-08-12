@@ -14,8 +14,8 @@ class UserActivityLogModel extends Model
     protected $protectFields = true;
     protected $allowedFields = [
         'user_id',
-        'activity_type',
-        'details',
+        'action',
+        'description',
         'ip_address',
         'user_agent'
     ];
