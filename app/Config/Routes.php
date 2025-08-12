@@ -95,6 +95,11 @@ $routes->group('dashboard', function($routes) {
     $routes->post('parts-requests/reject/(:num)', 'PartsRequests::reject/$1');
     $routes->post('parts-requests/update-status/(:num)', 'PartsRequests::updateStatus/$1');
 
+    // Activity Logs Routes
+    $routes->get('activity-logs', 'ActivityLogs::index');
+    $routes->get('activity-logs/view/(:num)', 'ActivityLogs::view/$1');
+    $routes->get('activity-logs/export', 'ActivityLogs::export');
+
     // Inventory Movements Routes
     $routes->get('movements', 'Movements::index');
     $routes->get('movements/create', 'Movements::create');

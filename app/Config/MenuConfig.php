@@ -59,6 +59,14 @@ return [
         'icon' => 'fas fa-tools fa-lg mr-2'
     ],
 
+    // Activity Logs
+    [
+        'label' => 'Activity Logs',
+        'url' => 'dashboard/activity-logs',
+        'roles' => ['admin', 'technician', 'superadmin'],
+        'icon' => 'fas fa-history fa-lg mr-2'
+    ],
+
     // Administration Section
     [
         'label' => 'Service Centers',
