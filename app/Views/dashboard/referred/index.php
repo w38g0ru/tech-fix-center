@@ -60,7 +60,7 @@
                 <?php if (!empty($job['walk_in_customer_mobile'])): ?>
                 <div><strong>Mobile:</strong> <?= esc($job['walk_in_customer_mobile']) ?></div>
                 <?php endif; ?>
-            </div>
+            </div> 
             <div class="flex items-center space-x-2">
                 <form method="POST" action="<?= base_url('dashboard/referred/quick-dispatch/' . $job['id']) ?>" class="inline">
                     <?= csrf_field() ?>
