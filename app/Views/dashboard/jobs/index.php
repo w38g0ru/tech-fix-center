@@ -125,15 +125,21 @@
             <?php foreach ($jobs as $job): ?>
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
                 <!-- First line: Job ID -->
-                <div class="text-lg font-semibold text-gray-900">
-                    Job #<?= $job['id'] ?>
+                <div class="text-lg font-semibold">
+                    <a href="<?= base_url('dashboard/jobs/view/' . $job['id']) ?>"
+                       class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200">
+                        Job #<?= $job['id'] ?>
+                    </a>
                 </div>
 
                 <!-- Second line: Customer name / phone -->
                 <div class="text-sm text-gray-700">
                     <?= esc($job['customer_name'] ?? $job['walk_in_customer_name'] ?? 'Walk-in Customer') ?>
                     <?php if (!empty($job['walk_in_customer_mobile']) || !empty($job['mobile_number'])): ?>
-                        / <?= esc($job['walk_in_customer_mobile'] ?? $job['mobile_number']) ?>
+                        / <a href="<?= base_url('dashboard/jobs?search=' . urlencode($job['walk_in_customer_mobile'] ?? $job['mobile_number'])) ?>"
+                             class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200">
+                            <?= esc($job['walk_in_customer_mobile'] ?? $job['mobile_number']) ?>
+                        </a>
                     <?php endif; ?>
                 </div>
 
@@ -173,7 +179,14 @@
 
                 <!-- Sixth line: Technician / Created date -->
                 <div class="text-xs text-gray-500 mt-2">
-                    <?= esc($job['technician_name'] ?? 'Unassigned') ?>
+                    <?php if (!empty($job['technician_name'])): ?>
+                        <a href="<?= base_url('dashboard/jobs?search=' . urlencode($job['technician_name'])) ?>"
+                           class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200">
+                            <?= esc($job['technician_name']) ?>
+                        </a>
+                    <?php else: ?>
+                        <span class="text-gray-400">Unassigned</span>
+                    <?php endif; ?>
                     / Created: <?= formatNepaliDate($job['created_at'], 'short') ?>
                 </div>
             </div>
