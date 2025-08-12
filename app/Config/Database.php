@@ -50,6 +50,7 @@ class Database extends Config
             'datetime' => 'Y-m-d H:i:s',
             'time'     => 'H:i:s',
         ],
+        'timezone'     => '+05:45', // Nepal timezone (Asia/Kathmandu)
     ];
 
     /**
@@ -83,6 +84,7 @@ class Database extends Config
             'datetime' => 'Y-m-d H:i:s',
             'time'     => 'H:i:s',
         ],
+        'timezone'     => '+05:45', // Nepal timezone (Asia/Kathmandu)
     ];
 
 
