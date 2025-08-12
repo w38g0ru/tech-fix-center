@@ -14,8 +14,8 @@ class UserActivityLogModel extends Model
     protected $protectFields = true;
     protected $allowedFields = [
         'user_id',
-        'action',
-        'description',
+        'activity_type',
+        'details',
         'ip_address',
         'user_agent'
     ];
@@ -84,13 +84,51 @@ class UserActivityLogModel extends Model
     public function getActivityStats($days = 30)
     {
         $startDate = date('Y-m-d H:i:s', strtotime("-{$days} days"));
-        
+
         return [
             'total_activities' => $this->where('created_at >=', $startDate)->countAllResults(false),
             'login_count' => $this->where('activity_type', 'login')->where('created_at >=', $startDate)->countAllResults(false),
             'logout_count' => $this->where('activity_type', 'logout')->where('created_at >=', $startDate)->countAllResults(false),
-            'post_count' => $this->where('activity_type', 'post')->where('created_at >=', $startDate)->countAllResults(false)
+            'post_count' => $this->whereIn('activity_type', ['post', 'update', 'delete'])->where('created_at >=', $startDate)->countAllResults(false),
+            'view_count' => $this->where('activity_type', 'view')->where('created_at >=', $startDate)->countAllResults(false)
         ];
+    }
+
+    /**
+     * Get activities with user details and filtering
+     */
+    public function getActivitiesWithDetails($filters = [], $perPage = 20)
+    {
+        $builder = $this->select('user_activity_logs.*, admin_users.full_name, admin_users.email')
+                        ->join('admin_users', 'admin_users.id = user_activity_logs.user_id', 'left');
+
+        // Apply filters
+        if (!empty($filters['user_id'])) {
+            $builder->where('user_activity_logs.user_id', $filters['user_id']);
+        }
+
+        if (!empty($filters['activity_type'])) {
+            $builder->where('user_activity_logs.activity_type', $filters['activity_type']);
+        }
+
+        if (!empty($filters['search'])) {
+            $builder->groupStart()
+                   ->like('user_activity_logs.details', $filters['search'])
+                   ->orLike('admin_users.full_name', $filters['search'])
+                   ->orLike('admin_users.email', $filters['search'])
+                   ->groupEnd();
+        }
+
+        if (!empty($filters['date_from'])) {
+            $builder->where('user_activity_logs.created_at >=', $filters['date_from'] . ' 00:00:00');
+        }
+
+        if (!empty($filters['date_to'])) {
+            $builder->where('user_activity_logs.created_at <=', $filters['date_to'] . ' 23:59:59');
+        }
+
+        return $builder->orderBy('user_activity_logs.created_at', 'DESC')
+                      ->paginate($perPage);
     }
 
     /**
