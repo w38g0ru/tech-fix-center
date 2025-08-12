@@ -13,10 +13,16 @@ class UserActivityLogModel extends Model
     protected $useSoftDeletes = false;
     protected $protectFields = true;
 
-    protected $allowedFields = ['user_id', 'activity_type', 'details', 'ip_address', 'user_agent'];
+    protected $allowedFields = [
+        'user_id',
+        'activity_type',
+        'details',
+        'ip_address',
+        'user_agent'
+    ];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false; // Let database handle created_at with DEFAULT CURRENT_TIMESTAMP
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = null; // No updated_at field needed for logs
