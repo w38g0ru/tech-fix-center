@@ -12,13 +12,8 @@ class UserActivityLogModel extends Model
     protected $returnType = 'array';
     protected $useSoftDeletes = false;
     protected $protectFields = true;
-    protected $allowedFields = [
-        'user_id',
-        'activity_type',
-        'details',
-        'ip_address',
-        'user_agent'
-    ];
+
+    protected $allowedFields = ['user_id', 'activity_type', 'details', 'ip_address', 'user_agent'];
 
     // Dates
     protected $useTimestamps = true;
