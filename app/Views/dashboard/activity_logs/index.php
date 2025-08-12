@@ -149,37 +149,37 @@
 <!-- Activity Logs Table -->
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
+        <table class="w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activity</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP Address</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">User</th>
+                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20">Activity</th>
+                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24 hidden sm:table-cell">IP</th>
+                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32 hidden md:table-cell">Date & Time</th>
+                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">Actions</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 <?php if (!empty($activities)): ?>
                     <?php foreach ($activities as $activity): ?>
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-3 py-4">
                                 <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
                                         <i class="fas fa-user text-gray-600 text-sm"></i>
                                     </div>
-                                    <div class="ml-3">
-                                        <div class="text-sm font-medium text-gray-900">
+                                    <div class="ml-3 min-w-0 flex-1">
+                                        <div class="text-sm font-medium text-gray-900 truncate">
                                             <?= esc($activity['full_name'] ?? 'Unknown User') ?>
                                         </div>
                                         <?php if (!empty($activity['email'])): ?>
-                                            <div class="text-sm text-gray-500"><?= esc($activity['email']) ?></div>
+                                            <div class="text-xs text-gray-500 truncate"><?= esc($activity['email']) ?></div>
                                         <?php endif; ?>
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-3 py-4">
                                 <?php
                                 $activityColors = [
                                     'login' => 'bg-green-100 text-green-800',
@@ -191,22 +191,28 @@
                                 ];
                                 $colorClass = $activityColors[$activity['activity_type']] ?? 'bg-gray-100 text-gray-800';
                                 ?>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $colorClass ?>">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium <?= $colorClass ?>">
                                     <?= ucfirst($activity['activity_type']) ?>
                                 </span>
                             </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900 max-w-xs truncate" title="<?= esc($activity['details']) ?>">
-                                    <?= esc($activity['details']) ?>
+                            <td class="px-3 py-4">
+                                <div class="text-sm text-gray-900">
+                                    <div class="line-clamp-2" title="<?= esc($activity['details']) ?>">
+                                        <?= esc($activity['details']) ?>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1 sm:hidden">
+                                        <?= esc($activity['ip_address']) ?> • <?= date('M j, Y g:i A', strtotime($activity['created_at'])) ?>
+                                    </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <?= esc($activity['ip_address']) ?>
+                            <td class="px-3 py-4 text-sm text-gray-500 hidden sm:table-cell">
+                                <div class="truncate"><?= esc($activity['ip_address']) ?></div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <?= date('M j, Y g:i A', strtotime($activity['created_at'])) ?>
+                            <td class="px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
+                                <div class="whitespace-nowrap"><?= date('M j, Y', strtotime($activity['created_at'])) ?></div>
+                                <div class="text-xs text-gray-400"><?= date('g:i A', strtotime($activity['created_at'])) ?></div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <td class="px-3 py-4 text-right text-sm font-medium">
                                 <a href="<?= base_url('dashboard/activity-logs/view/' . $activity['id']) ?>"
                                    class="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors duration-200"
                                    title="View Details">
@@ -217,7 +223,7 @@
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="6" class="px-6 py-12 text-center">
+                        <td colspan="6" class="px-3 py-12 text-center">
                             <div class="flex flex-col items-center">
                                 <i class="fas fa-history text-4xl text-gray-400 mb-4"></i>
                                 <h3 class="text-lg font-medium text-gray-900 mb-2">No activity logs found</h3>
