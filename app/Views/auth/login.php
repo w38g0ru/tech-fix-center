@@ -13,16 +13,19 @@ $config = config('App');
 <body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
 
     <div class="w-full max-w-sm">
-        <!-- Logo -->
-        <div class="text-center mb-8 hidden">
-            <div class="w-16 h-12 bg-fuchsia-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <span class="text-white font-bold text-sm">TFC</span>
-            </div>
-            <h1 class="text-2xl font-semibold text-gray-900"><?= $config->appShortName ?></h1>
-        </div>
-
         <!-- Login Card -->
         <div class="bg-white rounded-lg border border-gray-200 p-6">
+
+            <!-- Logo -->
+            <div class="text-center mb-6">
+                <div class="mx-auto mb-4">
+                    <img src="<?= base_url('images/infotech.jpg') ?>"
+                         alt="<?= $config->companyName ?>"
+                         class="w-24 h-24 mx-auto rounded-lg object-cover">
+                </div>
+                <h1 class="text-xl font-semibold text-gray-900"><?= $config->appShortName ?></h1>
+                <p class="text-xs text-gray-600 mt-1"><?= $config->companyTagline ?></p>
+            </div>
             
             <!-- Alerts -->
             <?php if (session()->getFlashdata('error')): ?>

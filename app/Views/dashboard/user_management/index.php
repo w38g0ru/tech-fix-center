@@ -122,146 +122,129 @@
     </div>
 </div>
 
-<!-- Users Table -->
-<div class="bg-white shadow overflow-hidden sm:rounded-md">
-    <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        User
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Contact Info
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Role
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Status
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Last Login
-                    </th>
-                    <th scope="col" class="relative px-6 py-3">
-                        <span class="sr-only">Actions</span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                <?php if (!empty($users)): ?>
-                    <?php foreach ($users as $user): ?>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10">
-                                        <div class="h-10 w-10 rounded-full bg-primary-600 flex items-center justify-center">
-                                            <i class="fas fa-user text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">
-                                            <?= esc($user['full_name']) ?>
-                                        </div>
-                                        <div class="text-sm text-gray-500">
-                                            @<?= esc($user['username']) ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">
-                                    <div class="flex items-center mb-1">
-                                        <i class="fas fa-envelope text-gray-400 mr-2"></i>
-                                        <a href="mailto:<?= esc($user['email']) ?>" 
-                                           class="text-primary-600 hover:text-primary-700">
-                                            <?= esc($user['email']) ?>
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <?php
-                                $roleConfig = match($user['role']) {
-                                    'superadmin' => ['bg-red-100 text-red-800', 'fas fa-crown', 'Super Admin'],
-                                    'admin' => ['bg-purple-100 text-purple-800', 'fas fa-shield-alt', 'Admin'],
-                                    'technician' => ['bg-green-100 text-green-800', 'fas fa-cog', 'Technician'],
-                                    'user' => ['bg-gray-100 text-gray-800', 'fas fa-user', 'User'],
-                                    default => ['bg-gray-100 text-gray-800', 'fas fa-question', 'Unknown']
-                                };
-                                ?>
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?= $roleConfig[0] ?>">
-                                    <i class="<?= $roleConfig[1] ?> mr-1"></i>
-                                    <?= $roleConfig[2] ?>
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <?php
-                                $statusConfig = match($user['status']) {
-                                    'active' => ['bg-green-100 text-green-800', 'fas fa-check-circle'],
-                                    'inactive' => ['bg-gray-100 text-gray-800', 'fas fa-pause-circle'],
-                                    'suspended' => ['bg-red-100 text-red-800', 'fas fa-ban'],
-                                    default => ['bg-gray-100 text-gray-800', 'fas fa-question-circle']
-                                };
-                                ?>
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?= $statusConfig[0] ?>">
-                                    <i class="<?= $statusConfig[1] ?> mr-1"></i>
-                                    <?= ucfirst($user['status']) ?>
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+<!-- Users Cards -->
+<div class="space-y-4">
+    <?php if (!empty($users)): ?>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <?php foreach ($users as $user): ?>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+                    <!-- User Header -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900"><?= esc($user['full_name']) ?></h3>
+                                <p class="text-sm text-gray-500">@<?= esc($user['username']) ?></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <a href="<?= base_url('dashboard/user-management/view/' . $user['id']) ?>"
+                               class="text-blue-600 hover:text-blue-900 p-1.5 rounded-lg hover:bg-blue-50 transition-colors duration-200"
+                               title="View">
+                                <i class="fas fa-eye text-sm"></i>
+                            </a>
+                            <a href="<?= base_url('dashboard/user-management/edit/' . $user['id']) ?>"
+                               class="text-purple-600 hover:text-purple-900 p-1.5 rounded-lg hover:bg-purple-50 transition-colors duration-200"
+                               title="Edit">
+                                <i class="fas fa-edit text-sm"></i>
+                            </a>
+                            <?php if ($user['role'] !== 'superadmin' || hasRole('superadmin')): ?>
+                                <?php if ($user['id'] != session()->get('user_id')): ?>
+                                    <a href="<?= base_url('dashboard/user-management/delete/' . $user['id']) ?>"
+                                       onclick="return confirm('Are you sure you want to delete this user?')"
+                                       class="text-red-600 hover:text-red-900 p-1.5 rounded-lg hover:bg-red-50 transition-colors duration-200"
+                                       title="Delete">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </a>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    <!-- User Details -->
+                    <div class="space-y-3">
+                        <!-- Email -->
+                        <div>
+                            <span class="text-sm text-gray-600">Email:</span>
+                            <div class="mt-1">
+                                <a href="mailto:<?= esc($user['email']) ?>"
+                                   class="text-purple-600 hover:text-purple-700 text-sm font-medium">
+                                    <?= esc($user['email']) ?>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Role -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Role:</span>
+                            <?php
+                            $roleConfig = match($user['role']) {
+                                'superadmin' => ['bg-red-100 text-red-800', 'fas fa-crown', 'Super Admin'],
+                                'admin' => ['bg-purple-100 text-purple-800', 'fas fa-shield-alt', 'Admin'],
+                                'technician' => ['bg-green-100 text-green-800', 'fas fa-cog', 'Technician'],
+                                'user' => ['bg-gray-100 text-gray-800', 'fas fa-user', 'User'],
+                                default => ['bg-gray-100 text-gray-800', 'fas fa-question', 'Unknown']
+                            };
+                            ?>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $roleConfig[0] ?>">
+                                <i class="<?= $roleConfig[1] ?> mr-1"></i>
+                                <?= $roleConfig[2] ?>
+                            </span>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Status:</span>
+                            <?php
+                            $statusConfig = match($user['status']) {
+                                'active' => ['bg-green-100 text-green-800', 'fas fa-check-circle'],
+                                'inactive' => ['bg-gray-100 text-gray-800', 'fas fa-pause-circle'],
+                                'suspended' => ['bg-red-100 text-red-800', 'fas fa-ban'],
+                                default => ['bg-gray-100 text-gray-800', 'fas fa-question-circle']
+                            };
+                            ?>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $statusConfig[0] ?>">
+                                <i class="<?= $statusConfig[1] ?> mr-1"></i>
+                                <?= ucfirst($user['status']) ?>
+                            </span>
+                        </div>
+
+                        <!-- Last Login -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Last Login:</span>
+                            <span class="text-sm text-gray-500">
                                 <?php if (!empty($user['last_login'])): ?>
                                     <?= formatNepaliDateTime($user['last_login'], 'short') ?>
                                 <?php else: ?>
                                     <span class="text-gray-400">कहिल्यै नभएको</span>
                                 <?php endif; ?>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex items-center justify-end space-x-2">
-                                    <a href="<?= base_url('dashboard/user-management/view/' . $user['id']) ?>" 
-                                       class="text-blue-600 hover:text-blue-900 p-1 rounded-full hover:bg-blue-50">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="<?= base_url('dashboard/user-management/edit/' . $user['id']) ?>" 
-                                       class="text-primary-600 hover:text-primary-900 p-1 rounded-full hover:bg-primary-50">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <?php if ($user['role'] !== 'superadmin' || hasRole('superadmin')): ?>
-                                        <?php if ($user['id'] != session()->get('user_id')): ?>
-                                            <a href="<?= base_url('dashboard/user-management/delete/' . $user['id']) ?>" 
-                                               onclick="return confirm('Are you sure you want to delete this user?')"
-                                               class="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-50">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        <?php endif; ?>
-                                    <?php endif; ?>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="6" class="px-6 py-12 text-center">
-                            <div class="text-gray-500">
-                                <i class="fas fa-users text-4xl mb-4"></i>
-                                <p class="text-lg font-medium">No users found</p>
-                                <p class="text-sm">Get started by adding your first user.</p>
-                                <a href="<?= base_url('dashboard/user-management/create') ?>" 
-                                   class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700">
-                                    <i class="fas fa-plus mr-2"></i>
-                                    Add User
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
 
-    <!-- Pagination -->
-    <?php if (isset($pager) && $pager): ?>
-        <?= renderPagination($pager) ?>
+        <!-- Pagination -->
+        <?php if (isset($pager) && $pager): ?>
+            <div class="mt-6">
+                <?= renderPagination($pager) ?>
+            </div>
+        <?php endif; ?>
+    <?php else: ?>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-16 text-center">
+            <div class="text-gray-500">
+                <i class="fas fa-users text-5xl mb-4 text-gray-300"></i>
+                <p class="text-lg font-medium mb-2 text-gray-900">No users found</p>
+                <p class="text-sm mb-6">Get started by adding your first user.</p>
+                <a href="<?= base_url('dashboard/user-management/create') ?>"
+                   class="inline-flex items-center px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-all duration-200 shadow-sm">
+                    <i class="fas fa-plus mr-2"></i>Add User
+                </a>
+            </div>
+        </div>
     <?php endif; ?>
 </div>
 

@@ -127,132 +127,133 @@
     </form>
 </div>
 
-<!-- Inventory Table -->
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-    <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Details</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand & Model</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock Level</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pricing</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                <?php if (!empty($items)): ?>
-                    <?php foreach ($items as $item): ?>
-                        <tr class="hover:bg-gray-50 transition-colors duration-200">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
-                                        <i class="fas fa-box text-orange-600 text-sm"></i>
-                                    </div>
-                                    <div class="font-medium text-gray-900">
-                                        <?= esc($item['device_name'] ?? 'N/A') ?>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="font-medium text-gray-900">
-                                    <?= esc($item['brand'] ?? 'N/A') ?>
-                                </div>
-                                <div class="text-xs text-gray-500">
-                                    <?= esc($item['model'] ?? 'N/A') ?>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <?php
-                                if ($item['total_stock'] <= 0) {
-                                    $stockClass = 'bg-red-100 text-red-800';
-                                } elseif ($item['total_stock'] <= 10) {
-                                    $stockClass = 'bg-orange-100 text-orange-800';
-                                } else {
-                                    $stockClass = 'bg-green-100 text-green-800';
-                                }
-                                ?>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $stockClass ?>">
-                                    <?= $item['total_stock'] ?> units
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+<!-- Inventory Cards -->
+<div class="space-y-4">
+    <?php if (!empty($items)): ?>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <?php foreach ($items as $item): ?>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+                    <!-- Item Header -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-box text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900"><?= esc($item['device_name'] ?? 'N/A') ?></h3>
+                                <p class="text-sm text-gray-500">ID: #<?= $item['id'] ?></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <a href="<?= base_url('dashboard/inventory/view/' . $item['id']) ?>"
+                               class="text-blue-600 hover:text-blue-900 p-1.5 rounded-lg hover:bg-blue-50 transition-colors duration-200"
+                               title="View">
+                                <i class="fas fa-eye text-sm"></i>
+                            </a>
+                            <?php
+                            $userRole = session('access_level') ?? session('role') ?? 'guest';
+                            if (in_array($userRole, ['admin', 'superadmin'])):
+                            ?>
+                                <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>"
+                                   class="text-green-600 hover:text-green-900 p-1.5 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                                   title="Edit">
+                                    <i class="fas fa-edit text-sm"></i>
+                                </a>
+                                <a href="<?= base_url('dashboard/inventory/delete/' . $item['id']) ?>"
+                                   onclick="return confirm('Are you sure you want to delete this item?')"
+                                   class="text-red-600 hover:text-red-900 p-1.5 rounded-lg hover:bg-red-50 transition-colors duration-200"
+                                   title="Delete">
+                                    <i class="fas fa-trash text-sm"></i>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    <!-- Item Details -->
+                    <div class="space-y-3">
+                        <!-- Brand & Model -->
+                        <div>
+                            <span class="text-sm text-gray-600">Brand & Model:</span>
+                            <div class="mt-1">
+                                <p class="font-medium text-gray-900"><?= esc($item['brand'] ?? 'N/A') ?></p>
+                                <p class="text-sm text-gray-500"><?= esc($item['model'] ?? 'N/A') ?></p>
+                            </div>
+                        </div>
+
+                        <!-- Stock Level -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Stock:</span>
+                            <?php
+                            if ($item['total_stock'] <= 0) {
+                                $stockClass = 'bg-red-100 text-red-800';
+                            } elseif ($item['total_stock'] <= 10) {
+                                $stockClass = 'bg-orange-100 text-orange-800';
+                            } else {
+                                $stockClass = 'bg-green-100 text-green-800';
+                            }
+                            ?>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $stockClass ?>">
+                                <?= $item['total_stock'] ?> units
+                            </span>
+                        </div>
+
+                        <!-- Pricing -->
+                        <div>
+                            <span class="text-sm text-gray-600">Price:</span>
+                            <div class="mt-1">
                                 <?php if (!empty($item['selling_price'])): ?>
-                                    <div class="font-medium text-gray-900">NPR <?= number_format($item['selling_price'], 2) ?></div>
+                                    <p class="font-medium text-gray-900">NPR <?= number_format($item['selling_price'], 2) ?></p>
                                     <?php if (!empty($item['purchase_price']) && hasAnyRole(['superadmin', 'admin'])): ?>
-                                        <div class="text-xs text-gray-500">Cost: NPR <?= number_format($item['purchase_price'], 2) ?></div>
+                                        <p class="text-xs text-gray-500">Cost: NPR <?= number_format($item['purchase_price'], 2) ?></p>
                                     <?php endif; ?>
                                 <?php elseif (!empty($item['purchase_price']) && hasAnyRole(['superadmin', 'admin'])): ?>
-                                    <div class="font-medium text-gray-900">NPR <?= number_format($item['purchase_price'], 2) ?></div>
-                                    <div class="text-xs text-gray-500">Purchase price</div>
+                                    <p class="font-medium text-gray-900">NPR <?= number_format($item['purchase_price'], 2) ?></p>
+                                    <p class="text-xs text-gray-500">Purchase price</p>
                                 <?php else: ?>
                                     <span class="text-gray-400">No pricing</span>
                                 <?php endif; ?>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <?php
-                                $statusClasses = [
-                                    'Active' => 'bg-green-100 text-green-800',
-                                    'Inactive' => 'bg-orange-100 text-orange-800',
-                                    'Discontinued' => 'bg-red-100 text-red-800'
-                                ];
-                                $statusClass = $statusClasses[$item['status'] ?? 'Active'] ?? 'bg-gray-100 text-gray-800';
-                                ?>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $statusClass ?>">
-                                    <?= esc($item['status'] ?? 'Active') ?>
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex items-center justify-end space-x-2">
-                                    <a href="<?= base_url('dashboard/inventory/view/' . $item['id']) ?>"
-                                       class="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors duration-200"
-                                       title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <?php
-                                    $userRole = session('access_level') ?? session('role') ?? 'guest';
-                                    if (in_array($userRole, ['admin', 'superadmin'])):
-                                    ?>
-                                        <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>"
-                                           class="text-green-600 hover:text-green-900 p-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
-                                           title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a href="<?= base_url('dashboard/inventory/delete/' . $item['id']) ?>"
-                                           onclick="return confirm('Are you sure you want to delete this item?')"
-                                           class="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors duration-200"
-                                           title="Delete">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    <?php endif; ?>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="6" class="px-6 py-16 text-center">
-                            <div class="text-gray-500">
-                                <i class="fas fa-boxes text-5xl mb-4 text-gray-300"></i>
-                                <p class="text-lg font-medium mb-2 text-gray-900">No inventory items found</p>
-                                <p class="text-sm mb-6">Get started by adding your first inventory item.</p>
-                                <a href="<?= base_url('dashboard/inventory/create') ?>"
-                                   class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-semibold rounded-xl hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg shadow-orange-500/25">
-                                    <i class="fas fa-plus mr-2"></i>Add Item
-                                </a>
                             </div>
-                        </td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
+                        </div>
 
-    <!-- Pagination -->
-    <?php if (isset($pager) && $pager): ?>
-        <?php helper('pagination'); ?>
-        <?= renderPagination($pager) ?>
+                        <!-- Status -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Status:</span>
+                            <?php
+                            $statusClasses = [
+                                'Active' => 'bg-green-100 text-green-800',
+                                'Inactive' => 'bg-orange-100 text-orange-800',
+                                'Discontinued' => 'bg-red-100 text-red-800'
+                            ];
+                            $statusClass = $statusClasses[$item['status'] ?? 'Active'] ?? 'bg-gray-100 text-gray-800';
+                            ?>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $statusClass ?>">
+                                <?= esc($item['status'] ?? 'Active') ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Pagination -->
+        <?php if (isset($pager) && $pager): ?>
+            <div class="mt-6">
+                <?php helper('pagination'); ?>
+                <?= renderPagination($pager) ?>
+            </div>
+        <?php endif; ?>
+    <?php else: ?>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-16 text-center">
+            <div class="text-gray-500">
+                <i class="fas fa-boxes text-5xl mb-4 text-gray-300"></i>
+                <p class="text-lg font-medium mb-2 text-gray-900">No inventory items found</p>
+                <p class="text-sm mb-6">Get started by adding your first inventory item.</p>
+                <a href="<?= base_url('dashboard/inventory/create') ?>"
+                   class="inline-flex items-center px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-all duration-200 shadow-sm">
+                    <i class="fas fa-plus mr-2"></i>Add Item
+                </a>
+            </div>
+        </div>
     <?php endif; ?>
 </div>
 
