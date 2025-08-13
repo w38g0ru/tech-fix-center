@@ -124,12 +124,16 @@
                     <option value="suspended" <?= ($status ?? '') === 'suspended' ? 'selected' : '' ?>>Suspended</option>
                 </select>
             </div>
-            <div class="flex items-center gap-2">
-                <button type="submit" class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200" title="Search Users">
+            <div class="flex flex-wrap items-center gap-2">
+                <button type="submit"
+                        class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                        title="Search Users">
                     <i class="fas fa-search text-sm"></i>
                     <span class="hidden md:inline md:ml-2 whitespace-nowrap">Search</span>
                 </button>
-                <a href="<?= base_url('dashboard/user-management') ?>" class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200" title="Clear Search">
+                <a href="<?= base_url('dashboard/user-management') ?>"
+                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
+                   title="Clear Search">
                     <i class="fas fa-times text-sm"></i>
                     <span class="hidden md:inline md:ml-2 whitespace-nowrap">Clear</span>
                 </a>
