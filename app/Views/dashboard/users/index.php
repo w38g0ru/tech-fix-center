@@ -14,10 +14,12 @@
                 <p class="text-sm text-gray-600">Manage your repair shop customers and their information</p>
             </div>
         </div>
-        <div class="text-right">
+        <div class="flex items-center justify-end gap-2">
             <a href="<?= base_url('dashboard/users/create') ?>"
-               class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-sm">
-                <i class="fas fa-plus mr-2"></i>Add New Customer
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Add New Customer">
+                <i class="fas fa-plus text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Add New Customer</span>
             </a>
         </div>
     </div>
@@ -39,15 +41,19 @@
                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
             </div>
         </div>
-        <div class="flex items-end gap-3">
+        <div class="flex flex-wrap items-center gap-2">
             <button type="submit"
-                    class="px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors duration-200 flex items-center">
-                <i class="fas fa-search mr-2"></i>Search
+                    class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                    title="Search Customers">
+                <i class="fas fa-search text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Search</span>
             </button>
             <?php if (!empty($search)): ?>
                 <a href="<?= base_url('dashboard/users') ?>"
-                   class="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors duration-200 flex items-center">
-                    <i class="fas fa-times mr-2"></i>Clear
+                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
+                   title="Clear Search">
+                    <i class="fas fa-times text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Clear</span>
                 </a>
             <?php endif; ?>
         </div>
