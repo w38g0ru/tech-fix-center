@@ -10,8 +10,16 @@
                 <i class="fas fa-user-cog text-white text-xl"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-semibold text-gray-900">Technicians</h1>
-                <p class="text-sm text-gray-600">View and manage technician accounts</p>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900">Technicians</h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <i class="fas fa-user-cog mr-1"></i>
+                        Management
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">
+                    View and manage technician accounts and performance
+                </p>
             </div>
         </div>
         <div class="text-right">
@@ -85,8 +93,10 @@
         </div>
         <div class="flex items-end gap-3">
             <button type="submit"
-                    class="px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors duration-200 flex items-center">
-                <i class="fas fa-search mr-2"></i>Search
+                    class="px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors duration-200 flex items-center"
+                    title="Search Technicians">
+                <i class="fas fa-search"></i>
+                <span class="hidden sm:inline sm:ml-2">Search</span>
             </button>
             <?php if (!empty($search)): ?>
                 <a href="<?= base_url('dashboard/technicians') ?>"

@@ -10,14 +10,24 @@
                 <i class="fas fa-building text-white text-xl"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-semibold text-gray-900"><?= $title ?></h1>
-                <p class="text-sm text-gray-600">Manage service centers and their information</p>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900"><?= $title ?></h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                        <i class="fas fa-building mr-1"></i>
+                        Admin Access
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">
+                    Manage service centers and their information
+                </p>
             </div>
         </div>
-        <div class="text-right">
+        <div class="flex items-center justify-end gap-2">
             <a href="<?= base_url('dashboard/service-centers/create') ?>"
-               class="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-all duration-200 shadow-sm">
-                <i class="fas fa-plus mr-2"></i>Add Service Center
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Add New Service Center">
+                <i class="fas fa-plus text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Add Service Center</span>
             </a>
         </div>
     </div>
@@ -93,8 +103,10 @@
                        value="<?= isset($search) ? esc($search) : '' ?>"
                        class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-l-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 <button type="submit"
-                        class="inline-flex items-center px-4 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        class="inline-flex items-center px-3 sm:px-4 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                        title="Search Service Centers">
                     <i class="fas fa-search"></i>
+                    <span class="hidden sm:inline sm:ml-1">Search</span>
                 </button>
             </div>
         </form>

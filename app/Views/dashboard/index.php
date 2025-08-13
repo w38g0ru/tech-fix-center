@@ -24,51 +24,63 @@
 <!-- Quick Actions -->
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
     <h2 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <a href="<?= base_url('dashboard/jobs/create') ?>" class="btn btn-outline btn-lg flex-col text-left p-4 h-auto">
+    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <a href="<?= base_url('dashboard/jobs/create') ?>" class="btn btn-outline btn-lg flex-col text-left p-3 sm:p-4 h-auto" title="Create New Job">
             <div class="flex items-center w-full">
-                <div class="w-10 h-10 bg-fuchsia-600 rounded-lg flex items-center justify-center mr-4">
-                    <i class="fas fa-plus text-white"></i>
+                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-fuchsia-600 rounded-lg flex items-center justify-center mr-2 sm:mr-4">
+                    <i class="fas fa-plus text-white text-sm sm:text-base"></i>
                 </div>
-                <div>
+                <div class="hidden sm:block">
                     <div class="font-medium text-gray-900">New Job</div>
                     <div class="text-sm text-gray-500">Create repair job</div>
                 </div>
+                <div class="block sm:hidden">
+                    <div class="font-medium text-gray-900 text-xs">Job</div>
+                </div>
             </div>
         </a>
 
-        <a href="<?= base_url('dashboard/referred/create') ?>" class="btn btn-outline btn-lg flex-col text-left p-4 h-auto">
+        <a href="<?= base_url('dashboard/referred/create') ?>" class="btn btn-outline btn-lg flex-col text-left p-3 sm:p-4 h-auto" title="Create New Dispatch">
             <div class="flex items-center w-full">
-                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
-                    <i class="fas fa-shipping-fast text-white"></i>
+                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-2 sm:mr-4">
+                    <i class="fas fa-shipping-fast text-white text-sm sm:text-base"></i>
                 </div>
-                <div>
+                <div class="hidden sm:block">
                     <div class="font-medium text-gray-900">New Dispatch</div>
                     <div class="text-sm text-gray-500">Create dispatch item</div>
                 </div>
+                <div class="block sm:hidden">
+                    <div class="font-medium text-gray-900 text-xs">Dispatch</div>
+                </div>
             </div>
         </a>
 
-        <a href="<?= base_url('dashboard/users/create') ?>" class="btn btn-outline btn-lg flex-col text-left p-4 h-auto">
+        <a href="<?= base_url('dashboard/users/create') ?>" class="btn btn-outline btn-lg flex-col text-left p-3 sm:p-4 h-auto" title="Add New Customer">
             <div class="flex items-center w-full">
-                <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-4">
-                    <i class="fas fa-user-plus text-white"></i>
+                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-green-600 rounded-lg flex items-center justify-center mr-2 sm:mr-4">
+                    <i class="fas fa-user-plus text-white text-sm sm:text-base"></i>
                 </div>
-                <div>
+                <div class="hidden sm:block">
                     <div class="font-medium text-gray-900">Add Customer</div>
                     <div class="text-sm text-gray-500">New customer</div>
                 </div>
+                <div class="block sm:hidden">
+                    <div class="font-medium text-gray-900 text-xs">Customer</div>
+                </div>
             </div>
         </a>
 
-        <a href="<?= base_url('dashboard/reports') ?>" class="btn btn-outline btn-lg flex-col text-left p-4 h-auto">
+        <a href="<?= base_url('dashboard/reports') ?>" class="btn btn-outline btn-lg flex-col text-left p-3 sm:p-4 h-auto" title="View Reports & Analytics">
             <div class="flex items-center w-full">
-                <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center mr-4">
-                    <i class="fas fa-chart-bar text-white"></i>
+                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-600 rounded-lg flex items-center justify-center mr-2 sm:mr-4">
+                    <i class="fas fa-chart-bar text-white text-sm sm:text-base"></i>
                 </div>
-                <div>
+                <div class="hidden sm:block">
                     <div class="font-medium text-gray-900">Reports</div>
                     <div class="text-sm text-gray-500">View analytics</div>
+                </div>
+                <div class="block sm:hidden">
+                    <div class="font-medium text-gray-900 text-xs">Reports</div>
                 </div>
             </div>
         </a>

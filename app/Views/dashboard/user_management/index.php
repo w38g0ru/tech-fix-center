@@ -10,22 +10,36 @@
                 <i class="fas fa-users-cog text-white text-xl"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-semibold text-gray-900">User Management</h1>
-                <p class="text-sm text-gray-600">Manage all system users including admins, technicians, and customers</p>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900">User Management</h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        <i class="fas fa-crown mr-1"></i>
+                        Admin Access
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">
+                    Manage all system users including admins, technicians, and customers
+                </p>
             </div>
         </div>
-        <div class="text-right flex items-center space-x-3">
+        <div class="flex items-center justify-end gap-2">
             <button onclick="sendSms()"
-                    class="inline-flex items-center px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors duration-200">
-                <i class="fas fa-sms mr-2"></i>Send SMS
+                    class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors duration-200"
+                    title="Send SMS to Users">
+                <i class="fas fa-sms text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Send SMS</span>
             </button>
             <a href="<?= base_url('dashboard/technicians') ?>"
-               class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200">
-                <i class="fas fa-user-cog mr-2"></i>Technicians
+               class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200"
+               title="Manage Technicians">
+                <i class="fas fa-user-cog text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Technicians</span>
             </a>
             <a href="<?= base_url('dashboard/user-management/create') ?>"
-               class="inline-flex items-center px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-all duration-200 shadow-sm">
-                <i class="fas fa-plus mr-2"></i>Add New User
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Add New User">
+                <i class="fas fa-plus text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Add New User</span>
             </a>
         </div>
     </div>
@@ -110,12 +124,14 @@
                     <option value="suspended" <?= ($status ?? '') === 'suspended' ? 'selected' : '' ?>>Suspended</option>
                 </select>
             </div>
-            <div class="flex gap-2">
-                <button type="submit" class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700">
-                    <i class="fas fa-search mr-1"></i>Search
+            <div class="flex items-center gap-2">
+                <button type="submit" class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200" title="Search Users">
+                    <i class="fas fa-search text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Search</span>
                 </button>
-                <a href="<?= base_url('dashboard/user-management') ?>" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
-                    <i class="fas fa-times mr-1"></i>Clear
+                <a href="<?= base_url('dashboard/user-management') ?>" class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200" title="Clear Search">
+                    <i class="fas fa-times text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Clear</span>
                 </a>
             </div>
         </form>

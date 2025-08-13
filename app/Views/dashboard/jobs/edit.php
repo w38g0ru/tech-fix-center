@@ -7,16 +7,18 @@
         <h1 class="text-2xl font-semibold text-gray-900">Edit Job #<?= $job['id'] ?></h1>
         <p class="mt-1 text-sm text-gray-600">Update job information</p>
     </div>
-    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+    <div class="flex items-center gap-2">
         <a href="<?= base_url('dashboard/jobs/view/' . $job['id']) ?>"
-           class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 transition-all duration-200 shadow-lg shadow-blue-500/25">
-            <i class="fas fa-eye mr-2"></i>
-            View Job
+           class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200"
+           title="View Job">
+            <i class="fas fa-eye text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">View Job</span>
         </a>
         <a href="<?= base_url('dashboard/jobs') ?>"
-           class="inline-flex items-center justify-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Back to Jobs
+           class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
+           title="Back to Jobs">
+            <i class="fas fa-arrow-left text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Jobs</span>
         </a>
     </div>
 </div>
@@ -401,16 +403,18 @@
             </div>
 
             <!-- Form Actions -->
-            <div class="flex flex-col sm:flex-row items-center justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-8 border-t border-gray-200">
+            <div class="flex items-center justify-end gap-3 pt-8 border-t border-gray-200">
                 <a href="<?= base_url('dashboard/jobs') ?>"
-                   class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
-                    <i class="fas fa-times mr-2"></i>
-                    Cancel
+                   class="inline-flex items-center justify-center min-w-0 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
+                   title="Cancel and Return">
+                    <i class="fas fa-times text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Cancel</span>
                 </a>
                 <button type="submit"
-                        class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 border border-transparent rounded-xl text-sm font-medium text-white hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg shadow-blue-500/25">
-                    <i class="fas fa-save mr-2"></i>
-                    Update Job
+                        class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-blue-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                        title="Update Job">
+                    <i class="fas fa-save text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Update Job</span>
                 </button>
             </div>
         </form>

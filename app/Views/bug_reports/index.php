@@ -2,17 +2,34 @@
 
 <?= $this->section('content') ?>
 
-<!-- Page Header -->
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
-    <div>
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Bug Reports</h1>
-        <p class="text-gray-600">Track and manage bug reports and issues</p>
-    </div>
-    <div class="mt-4 sm:mt-0">
-        <a href="<?= base_url('dashboard/bug-reports/create') ?>"
-           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-200 shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30">
-            <i class="fas fa-bug mr-2"></i>Report New Bug
-        </a>
+<!-- Welcome Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-bug text-white text-xl"></i>
+            </div>
+            <div>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900">Bug Reports</h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        Issue Tracking
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">
+                    Track and manage bug reports and system issues
+                </p>
+            </div>
+        </div>
+        <div class="flex items-center justify-end gap-2">
+            <a href="<?= base_url('dashboard/bug-reports/create') ?>"
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Report New Bug">
+                <i class="fas fa-bug text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Report New Bug</span>
+            </a>
+        </div>
     </div>
 </div>
 
@@ -109,15 +126,19 @@
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="flex items-end gap-3">
+        <div class="flex items-center gap-2">
             <button type="submit"
-                    class="px-6 py-3 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition-colors duration-200 flex items-center">
-                <i class="fas fa-search mr-2"></i>Search
+                    class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200"
+                    title="Search Bug Reports">
+                <i class="fas fa-search text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Search</span>
             </button>
             <?php if (!empty($search) || !empty($bug_type) || !empty($severity)): ?>
                 <a href="<?= base_url('dashboard/bug-reports') ?>"
-                   class="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors duration-200 flex items-center">
-                    <i class="fas fa-times mr-2"></i>Clear
+                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
+                   title="Clear Filters">
+                    <i class="fas fa-times text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Clear</span>
                 </a>
             <?php endif; ?>
         </div>

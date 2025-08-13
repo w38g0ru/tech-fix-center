@@ -7,10 +7,12 @@
         <h1 class="text-3xl font-bold text-dark-900">Bulk Import Inventory</h1>
         <p class="mt-2 text-dark-600">Import multiple inventory items from CSV or Excel file</p>
     </div>
-    <div class="mt-4 sm:mt-0">
-        <a href="<?= base_url('dashboard/inventory') ?>" class="btn btn-outline">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Back to Inventory
+    <div class="flex items-center gap-2">
+        <a href="<?= base_url('dashboard/inventory') ?>"
+           class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
+           title="Back to Inventory">
+            <i class="fas fa-arrow-left text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Inventory</span>
         </a>
     </div>
 </div>

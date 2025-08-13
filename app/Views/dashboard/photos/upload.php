@@ -7,10 +7,11 @@
         <h1 class="text-2xl font-semibold text-gray-900">Upload Photoproof</h1>
         <p class="mt-1 text-sm text-gray-600">Upload photoproofs for jobs or dispatch items</p>
     </div>
-    <a href="<?= base_url('dashboard/photos') ?>" 
-       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-        <i class="fas fa-arrow-left mr-2"></i>
-        Back to Gallery
+    <a href="<?= base_url('dashboard/photos') ?>"
+       class="inline-flex items-center px-3 sm:px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700"
+       title="Back to Gallery">
+        <i class="fas fa-arrow-left"></i>
+        <span class="hidden sm:inline sm:ml-2">Back to Gallery</span>
     </a>
 </div>
 
@@ -243,9 +244,10 @@
                     Cancel
                 </a>
                 <button type="submit"
-                        class="px-4 py-2 bg-primary-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                    <i class="fas fa-upload mr-2"></i>
-                    Upload Photoproof
+                        class="px-3 sm:px-4 py-2 bg-primary-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                        title="Upload Photoproof">
+                    <i class="fas fa-upload"></i>
+                    <span class="hidden sm:inline sm:ml-2">Upload Photoproof</span>
                 </button>
             </div>
         </form>

@@ -8,9 +8,10 @@
         <p class="mt-1 text-sm text-gray-600">Create a new repair job</p>
     </div>
     <a href="<?= base_url('dashboard/jobs') ?>"
-       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
-        <i class="fas fa-arrow-left mr-2"></i>
-        Back to Jobs
+       class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
+       title="Back to Jobs">
+        <i class="fas fa-arrow-left text-sm"></i>
+        <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Jobs</span>
     </a>
 </div>
 
@@ -338,13 +339,16 @@
             <!-- Form Actions -->
             <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
                 <a href="<?= base_url('dashboard/jobs') ?>"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-xl font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-50 transition-all duration-200 shadow-sm">
-                    Cancel
+                   class="inline-flex items-center px-3 sm:px-4 py-2 bg-white border border-gray-300 rounded-xl font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-50 transition-all duration-200 shadow-sm"
+                   title="Cancel and Return">
+                    <span class="hidden sm:inline">Cancel</span>
+                    <i class="fas fa-times sm:hidden"></i>
                 </a>
                 <button type="submit"
-                        class="inline-flex items-center px-4 py-2 bg-fuchsia-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-fuchsia-700 transition-all duration-200 shadow-lg shadow-fuchsia-500/25">
-                    <i class="fas fa-save mr-2"></i>
-                    Create Job
+                        class="inline-flex items-center px-3 sm:px-4 py-2 bg-fuchsia-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-fuchsia-700 transition-all duration-200 shadow-lg shadow-fuchsia-500/25"
+                        title="Create New Job">
+                    <i class="fas fa-save"></i>
+                    <span class="hidden sm:inline sm:ml-2">Create Job</span>
                 </button>
             </div>
         </form>

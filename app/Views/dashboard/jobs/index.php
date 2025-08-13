@@ -22,16 +22,20 @@
                 </p>
             </div>
         </div>
-        <div class="text-right flex items-center space-x-3">
+        <div class="flex items-center justify-end gap-2">
             <?php if ($isAdmin): ?>
-                <button onclick="showBulkActions()" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors duration-200">
-                    <i class="fas fa-tasks mr-2"></i>
-                    Bulk Actions
+                <button onclick="showBulkActions()"
+                        class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
+                        title="Bulk Actions">
+                    <i class="fas fa-tasks text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Bulk Actions</span>
                 </button>
             <?php endif; ?>
             <a href="<?= base_url('dashboard/jobs/create') ?>"
-               class="inline-flex items-center px-6 py-3 bg-fuchsia-600 text-white font-semibold rounded-lg hover:bg-fuchsia-700 transition-all duration-200 shadow-sm">
-                <i class="fas fa-plus mr-2"></i>Create Job
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-fuchsia-600 text-white text-sm font-semibold rounded-lg hover:bg-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Create New Job">
+                <i class="fas fa-plus text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Create Job</span>
             </a>
         </div>
     </div>
@@ -94,16 +98,16 @@
 
 <!-- Search and Filter -->
 <div class="mb-6">
-    <form method="GET" action="<?= base_url('dashboard/jobs') ?>" class="flex flex-col sm:flex-row gap-4">
+    <form method="GET" action="<?= base_url('dashboard/jobs') ?>" class="flex flex-col sm:flex-row gap-3 sm:gap-4">
         <div class="flex-1">
             <input type="text"
                    name="search"
                    value="<?= esc($search ?? '') ?>"
                    placeholder="Search by customer name, phone, or device..."
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-sm">
         </div>
-        <div class="flex gap-2">
-            <select name="status" class="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+        <div class="flex flex-wrap items-center gap-2">
+            <select name="status" class="min-w-0 flex-shrink px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white">
                 <option value="">All Status</option>
                 <option value="Pending" <?= ($status ?? '') === 'Pending' ? 'selected' : '' ?>>Pending</option>
                 <option value="In Progress" <?= ($status ?? '') === 'In Progress' ? 'selected' : '' ?>>In Progress</option>
@@ -114,13 +118,17 @@
                 <option value="Completed" <?= ($status ?? '') === 'Completed' ? 'selected' : '' ?>>Completed</option>
             </select>
             <button type="submit"
-                    class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
-                <i class="fas fa-search mr-2"></i>Search
+                    class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                    title="Search Jobs">
+                <i class="fas fa-search text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Search</span>
             </button>
             <?php if (!empty($search) || !empty($status)): ?>
                 <a href="<?= base_url('dashboard/jobs') ?>"
-                   class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200">
-                    <i class="fas fa-times mr-2"></i>Clear
+                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
+                   title="Clear Filters">
+                    <i class="fas fa-times text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Clear</span>
                 </a>
             <?php endif; ?>
         </div>

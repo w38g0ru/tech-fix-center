@@ -22,16 +22,17 @@
                 </p>
             </div>
         </div>
-        <div class="text-right flex items-center space-x-3">
+        <div class="flex items-center justify-end gap-2">
             <?php if ($isAdmin): ?>
-                <button onclick="showBulkActions()" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors duration-200">
-                    <i class="fas fa-tasks mr-2"></i>
-                    Bulk Actions
+                <button onclick="showBulkActions()" class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200" title="Bulk Actions">
+                    <i class="fas fa-tasks text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Bulk Actions</span>
                 </button>
             <?php endif; ?>
             <a href="<?= base_url('dashboard/referred/create') ?>"
-               class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-sm">
-                <i class="fas fa-plus mr-2"></i>Create Dispatch
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-sm" title="Create New Dispatch">
+                <i class="fas fa-plus text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Create Dispatch</span>
             </a>
         </div>
     </div>
@@ -73,15 +74,17 @@
                     <?= csrf_field() ?>
                     <button type="submit"
                             onclick="return confirm('Mark this job as dispatched to customer?')"
-                            class="inline-flex items-center px-3 py-1.5 bg-green-600 border border-transparent rounded text-xs font-medium text-white hover:bg-green-700 transition ease-in-out duration-150">
-                        <i class="fas fa-check mr-1"></i>
-                        Dispatch
+                            class="inline-flex items-center justify-center min-w-0 px-2 py-1.5 bg-green-600 border border-transparent rounded text-xs font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition ease-in-out duration-150"
+                            title="Mark as Dispatched">
+                        <i class="fas fa-check text-xs"></i>
+                        <span class="hidden lg:inline lg:ml-1 whitespace-nowrap">Dispatch</span>
                     </button>
                 </form>
                 <a href="<?= base_url('dashboard/jobs/view/' . $job['id']) ?>"
-                   class="inline-flex items-center px-3 py-1.5 bg-gray-600 border border-transparent rounded text-xs font-medium text-white hover:bg-gray-700 transition ease-in-out duration-150">
-                    <i class="fas fa-eye mr-1"></i>
-                    View
+                   class="inline-flex items-center justify-center min-w-0 px-2 py-1.5 bg-gray-600 border border-transparent rounded text-xs font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition ease-in-out duration-150"
+                   title="View Job Details">
+                    <i class="fas fa-eye text-xs"></i>
+                    <span class="hidden lg:inline lg:ml-1 whitespace-nowrap">View</span>
                 </a>
             </div>
         </div>
@@ -167,9 +170,11 @@
                 <option value="Dispatched" <?= ($status ?? '') === 'Dispatched' ? 'selected' : '' ?>>Dispatched</option>
                 <option value="Completed" <?= ($status ?? '') === 'Completed' ? 'selected' : '' ?>>Completed</option>
             </select>
-            <button type="submit" 
-                    class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-                <i class="fas fa-search mr-2"></i>Search
+            <button type="submit"
+                    class="px-3 sm:px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                    title="Search Dispatches">
+                <i class="fas fa-search"></i>
+                <span class="hidden sm:inline sm:ml-2">Search</span>
             </button>
             <?php if (!empty($search) || !empty($status)): ?>
                 <a href="<?= base_url('dashboard/referred') ?>" 

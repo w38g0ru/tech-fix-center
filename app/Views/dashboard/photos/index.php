@@ -10,14 +10,24 @@
                 <i class="fas fa-camera text-white text-xl"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-semibold text-gray-900">Photoproof Gallery</h1>
-                <p class="text-sm text-gray-600">Manage job and dispatch photoproofs</p>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900">Photoproof Gallery</h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        <i class="fas fa-camera mr-1"></i>
+                        Media Management
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">
+                    Manage job and dispatch photoproofs
+                </p>
             </div>
         </div>
-        <div class="text-right">
+        <div class="flex items-center justify-end gap-2">
             <a href="<?= base_url('dashboard/photos/upload') ?>"
-               class="inline-flex items-center px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-all duration-200 shadow-sm">
-                <i class="fas fa-upload mr-2"></i>Upload Photoproof
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Upload New Photoproof">
+                <i class="fas fa-upload text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Upload Photoproof</span>
             </a>
         </div>
     </div>

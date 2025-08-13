@@ -7,21 +7,23 @@
         <h1 class="text-2xl font-semibold text-gray-900"><?= esc($item['device_name']) ?></h1>
         <p class="mt-1 text-sm text-gray-600">Inventory item details and movement history</p>
     </div>
-    <div class="flex gap-2">
+    <div class="flex items-center gap-2">
         <?php
         $userRole = session('access_level') ?? session('role') ?? 'guest';
         if (in_array($userRole, ['admin', 'superadmin'])):
         ?>
             <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>"
-               class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700">
-                <i class="fas fa-edit mr-2"></i>
-                Edit Item
+               class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-primary-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200"
+               title="Edit Item">
+                <i class="fas fa-edit text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Edit Item</span>
             </a>
         <?php endif; ?>
         <a href="<?= base_url('dashboard/inventory') ?>"
-           class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Back to Inventory
+           class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
+           title="Back to Inventory">
+            <i class="fas fa-arrow-left text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Inventory</span>
         </a>
     </div>
 </div>

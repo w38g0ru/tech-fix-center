@@ -84,7 +84,8 @@ $config = config('App');
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="w-full bg-fuchsia-600 text-white py-2 px-4 rounded-md hover:bg-fuchsia-700 font-medium">
+                <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2 bg-fuchsia-600 text-white text-sm font-medium rounded-lg hover:bg-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 transition-colors duration-200">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
                     Sign In
                 </button>
             </form>

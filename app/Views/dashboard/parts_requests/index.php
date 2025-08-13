@@ -12,15 +12,25 @@
                 <i class="fas fa-tools text-white text-xl"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-semibold text-gray-900">Parts Requests</h1>
-                <p class="text-sm text-gray-600">Manage and track parts requests for repairs</p>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900">Parts Requests</h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= in_array($userRole, ['superadmin', 'admin']) ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800' ?>">
+                        <i class="fas <?= in_array($userRole, ['superadmin', 'admin']) ? 'fa-crown' : 'fa-tools' ?> mr-1"></i>
+                        <?= ucfirst($userRole) ?> Access
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">
+                    <?= in_array($userRole, ['superadmin', 'admin']) ? 'Manage and approve parts requests from technicians' : 'Request parts needed for repairs and track status' ?>
+                </p>
             </div>
         </div>
         <?php if ($userRole === 'technician'): ?>
-        <div class="text-right">
+        <div class="flex items-center justify-end gap-2">
             <a href="<?= base_url('dashboard/parts-requests/create') ?>"
-               class="inline-flex items-center px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-all duration-200 shadow-sm">
-                <i class="fas fa-plus mr-2"></i>Request Parts
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-orange-600 text-white text-sm font-semibold rounded-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Request New Parts">
+                <i class="fas fa-plus text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Request Parts</span>
             </a>
         </div>
         <?php endif; ?>
@@ -221,12 +231,12 @@
                             </td>
                             <!-- Actions -->
                             <td class="px-3 sm:px-6 py-4 text-sm font-medium">
-                                <div class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2">
+                                <div class="flex flex-wrap items-center gap-1">
                                     <a href="<?= base_url('dashboard/parts-requests/view/' . $request['id']) ?>"
-                                       class="inline-flex items-center justify-center px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs font-medium rounded transition-colors duration-200"
+                                       class="inline-flex items-center justify-center min-w-0 px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs font-medium rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors duration-200"
                                        title="View Details">
-                                        <i class="fas fa-eye mr-1 sm:mr-0"></i>
-                                        <span class="sm:hidden">View</span>
+                                        <i class="fas fa-eye text-xs"></i>
+                                        <span class="hidden lg:inline lg:ml-1 whitespace-nowrap">View</span>
                                     </a>
 
                                     <?php
@@ -242,27 +252,27 @@
 
                                     <?php if ($canEdit && $request['status'] === 'Pending'): ?>
                                         <a href="<?= base_url('dashboard/parts-requests/edit/' . $request['id']) ?>"
-                                           class="inline-flex items-center justify-center px-2 py-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-700 text-xs font-medium rounded transition-colors duration-200"
+                                           class="inline-flex items-center justify-center min-w-0 px-2 py-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-700 text-xs font-medium rounded focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-1 transition-colors duration-200"
                                            title="Edit Request">
-                                            <i class="fas fa-edit mr-1 sm:mr-0"></i>
-                                            <span class="sm:hidden">Edit</span>
+                                            <i class="fas fa-edit text-xs"></i>
+                                            <span class="hidden lg:inline lg:ml-1 whitespace-nowrap">Edit</span>
                                         </a>
                                     <?php endif; ?>
 
                                     <?php if (in_array($userRole, ['superadmin', 'admin']) && $request['status'] === 'Pending'): ?>
                                         <button type="button"
-                                                class="inline-flex items-center justify-center px-2 py-1 bg-green-100 hover:bg-green-200 text-green-700 text-xs font-medium rounded transition-colors duration-200"
+                                                class="inline-flex items-center justify-center min-w-0 px-2 py-1 bg-green-100 hover:bg-green-200 text-green-700 text-xs font-medium rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-colors duration-200"
                                                 onclick="approveRequest(<?= $request['id'] ?>)"
                                                 title="Approve Request">
-                                            <i class="fas fa-check mr-1 sm:mr-0"></i>
-                                            <span class="sm:hidden">Approve</span>
+                                            <i class="fas fa-check text-xs"></i>
+                                            <span class="hidden lg:inline lg:ml-1 whitespace-nowrap">Approve</span>
                                         </button>
                                         <button type="button"
-                                                class="inline-flex items-center justify-center px-2 py-1 bg-red-100 hover:bg-red-200 text-red-700 text-xs font-medium rounded transition-colors duration-200"
+                                                class="inline-flex items-center justify-center min-w-0 px-2 py-1 bg-red-100 hover:bg-red-200 text-red-700 text-xs font-medium rounded focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 transition-colors duration-200"
                                                 onclick="rejectRequest(<?= $request['id'] ?>)"
                                                 title="Reject Request">
-                                            <i class="fas fa-times mr-1 sm:mr-0"></i>
-                                            <span class="sm:hidden">Reject</span>
+                                            <i class="fas fa-times text-xs"></i>
+                                            <span class="hidden lg:inline lg:ml-1 whitespace-nowrap">Reject</span>
                                         </button>
                                     <?php endif; ?>
                                 </div>

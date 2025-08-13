@@ -25,36 +25,49 @@ $isAdmin = in_array($role, ['admin', 'superadmin']);
                 <i class="fas fa-boxes text-white text-xl"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-semibold text-gray-900">Inventory Management</h1>
-                <p class="text-sm text-gray-600">Track stock levels and manage inventory items efficiently</p>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900">Inventory Management</h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $isAdmin ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' ?>">
+                        <i class="fas <?= $isAdmin ? 'fa-crown' : 'fa-user' ?> mr-1"></i>
+                        <?= ucfirst($role) ?> Access
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">
+                    <?= $isAdmin ? 'Full inventory management with admin privileges' : 'Track stock levels and manage inventory items' ?>
+                </p>
             </div>
         </div>
-        <div class="text-right flex items-center space-x-3">
+        <div class="flex items-center justify-end gap-2">
             <!-- Quick Actions -->
             <?php if ($isAdmin): ?>
-            <div class="flex items-center gap-2 bg-gray-50 rounded-lg p-1">
+            <div class="flex items-center gap-1 bg-gray-50 rounded-lg p-1">
                 <a href="<?= base_url('dashboard/inventory/downloadTemplate') ?>"
-                   class="inline-flex items-center px-3 py-2 text-sm font-medium text-green-700 bg-white rounded-md hover:bg-green-50 transition-colors duration-200"
+                   class="inline-flex items-center justify-center min-w-0 px-2 py-1.5 text-sm font-medium text-green-700 bg-white rounded-md hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-colors duration-200"
                    title="Download CSV template for bulk import">
-                    <i class="fas fa-download mr-1"></i>Template
+                    <i class="fas fa-download text-xs"></i>
+                    <span class="hidden lg:inline lg:ml-1 whitespace-nowrap text-xs">Template</span>
                 </a>
                 <a href="<?= base_url('dashboard/inventory/bulk-import') ?>"
-                   class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-700 bg-white rounded-md hover:bg-blue-50 transition-colors duration-200"
+                   class="inline-flex items-center justify-center min-w-0 px-2 py-1.5 text-sm font-medium text-blue-700 bg-white rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors duration-200"
                    title="Import items from CSV/Excel file">
-                    <i class="fas fa-upload mr-1"></i>Import
+                    <i class="fas fa-upload text-xs"></i>
+                    <span class="hidden lg:inline lg:ml-1 whitespace-nowrap text-xs">Import</span>
                 </a>
                 <a href="<?= base_url('dashboard/inventory/export') ?>"
-                   class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white rounded-md hover:bg-gray-50 transition-colors duration-200"
+                   class="inline-flex items-center justify-center min-w-0 px-2 py-1.5 text-sm font-medium text-gray-700 bg-white rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors duration-200"
                    title="Export all inventory items to CSV">
-                    <i class="fas fa-file-export mr-1"></i>Export
+                    <i class="fas fa-file-export text-xs"></i>
+                    <span class="hidden lg:inline lg:ml-1 whitespace-nowrap text-xs">Export</span>
                 </a>
             </div>
             <?php endif; ?>
 
             <!-- Primary Action -->
             <a href="<?= base_url('dashboard/inventory/create') ?>"
-               class="inline-flex items-center px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-all duration-200 shadow-sm">
-                <i class="fas fa-plus mr-2"></i>Add New Item
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Add New Inventory Item">
+                <i class="fas fa-plus text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Add New Item</span>
             </a>
         </div>
     </div>
@@ -137,26 +150,28 @@ $isAdmin = in_array($role, ['admin', 'superadmin']);
                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors duration-200">
                 </div>
             </div>
-            <div class="flex items-end gap-3">
-                <button type="submit" class="inline-flex items-center px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors duration-200">
-                    <i class="fas fa-search mr-2"></i>Search
+            <div class="flex items-center gap-2">
+                <button type="submit" class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200" title="Search Inventory">
+                    <i class="fas fa-search text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Search</span>
                 </button>
                 <?php if (!empty($search)): ?>
-                    <a href="<?= base_url('dashboard/inventory') ?>" class="inline-flex items-center px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors duration-200">
-                        <i class="fas fa-times mr-2"></i>Clear
+                    <a href="<?= base_url('dashboard/inventory') ?>" class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200" title="Clear Search">
+                        <i class="fas fa-times text-sm"></i>
+                        <span class="hidden md:inline md:ml-2 whitespace-nowrap">Clear</span>
                     </a>
                 <?php endif; ?>
             </div>
         </div>
 
         <!-- Quick Filters -->
-        <div class="flex flex-wrap gap-2">
-            <span class="text-sm font-medium text-gray-700 mr-2">Quick Filters:</span>
-            <button type="button" onclick="filterByStock('all')" class="px-3 py-1.5 text-sm font-medium rounded-full border bg-white text-gray-700 border-gray-300 hover:border-green-500 hover:text-green-600 transition-all duration-200 cursor-pointer">All Items</button>
-            <button type="button" onclick="filterByStock('low')" class="px-3 py-1.5 text-sm font-medium rounded-full border bg-white text-gray-700 border-gray-300 hover:border-green-500 hover:text-green-600 transition-all duration-200 cursor-pointer">Low Stock</button>
-            <button type="button" onclick="filterByStock('out')" class="px-3 py-1.5 text-sm font-medium rounded-full border bg-white text-gray-700 border-gray-300 hover:border-green-500 hover:text-green-600 transition-all duration-200 cursor-pointer">Out of Stock</button>
-            <button type="button" onclick="filterByStatus('active')" class="px-3 py-1.5 text-sm font-medium rounded-full border bg-white text-gray-700 border-gray-300 hover:border-green-500 hover:text-green-600 transition-all duration-200 cursor-pointer">Active</button>
-            <button type="button" onclick="filterByStatus('inactive')" class="px-3 py-1.5 text-sm font-medium rounded-full border bg-white text-gray-700 border-gray-300 hover:border-green-500 hover:text-green-600 transition-all duration-200 cursor-pointer">Inactive</button>
+        <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-medium text-gray-700 hidden md:inline">Quick Filters:</span>
+            <button type="button" onclick="filterByStock('all')" class="inline-flex items-center justify-center min-w-0 px-3 py-1.5 text-xs font-medium rounded-full border bg-white text-gray-700 border-gray-300 hover:border-green-500 hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-all duration-200 cursor-pointer" title="Show All Items">All</button>
+            <button type="button" onclick="filterByStock('low')" class="inline-flex items-center justify-center min-w-0 px-3 py-1.5 text-xs font-medium rounded-full border bg-white text-gray-700 border-gray-300 hover:border-green-500 hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-all duration-200 cursor-pointer" title="Show Low Stock Items">Low</button>
+            <button type="button" onclick="filterByStock('out')" class="inline-flex items-center justify-center min-w-0 px-3 py-1.5 text-xs font-medium rounded-full border bg-white text-gray-700 border-gray-300 hover:border-green-500 hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-all duration-200 cursor-pointer" title="Show Out of Stock Items">Out</button>
+            <button type="button" onclick="filterByStatus('active')" class="inline-flex items-center justify-center min-w-0 px-3 py-1.5 text-xs font-medium rounded-full border bg-white text-gray-700 border-gray-300 hover:border-green-500 hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-all duration-200 cursor-pointer" title="Show Active Items">Active</button>
+            <button type="button" onclick="filterByStatus('inactive')" class="inline-flex items-center justify-center min-w-0 px-3 py-1.5 text-xs font-medium rounded-full border bg-white text-gray-700 border-gray-300 hover:border-green-500 hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-all duration-200 cursor-pointer" title="Show Inactive Items">Inactive</button>
         </div>
 
         <!-- Advanced Filters (Hidden by default) -->
@@ -203,15 +218,18 @@ $isAdmin = in_array($role, ['admin', 'superadmin']);
             <label for="selectAll" class="text-sm font-medium text-gray-700">Select All</label>
             <span id="selectedCount" class="text-sm text-gray-500">0 items selected</span>
         </div>
-        <div id="bulkActions" class="hidden flex items-center space-x-2">
-            <button onclick="bulkUpdateStatus('active')" class="px-3 py-1.5 text-sm bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors">
-                <i class="fas fa-check mr-1"></i>Activate
+        <div id="bulkActions" class="hidden flex items-center space-x-1 sm:space-x-2">
+            <button onclick="bulkUpdateStatus('active')" class="px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors" title="Activate Selected Items">
+                <i class="fas fa-check"></i>
+                <span class="hidden sm:inline sm:ml-1">Activate</span>
             </button>
-            <button onclick="bulkUpdateStatus('inactive')" class="px-3 py-1.5 text-sm bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition-colors">
-                <i class="fas fa-pause mr-1"></i>Deactivate
+            <button onclick="bulkUpdateStatus('inactive')" class="px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition-colors" title="Deactivate Selected Items">
+                <i class="fas fa-pause"></i>
+                <span class="hidden sm:inline sm:ml-1">Deactivate</span>
             </button>
-            <button onclick="bulkDelete()" class="px-3 py-1.5 text-sm bg-red-100 text-red-800 rounded-lg hover:bg-red-200 transition-colors">
-                <i class="fas fa-trash mr-1"></i>Delete
+            <button onclick="bulkDelete()" class="px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-red-100 text-red-800 rounded-lg hover:bg-red-200 transition-colors" title="Delete Selected Items">
+                <i class="fas fa-trash"></i>
+                <span class="hidden sm:inline sm:ml-1">Delete</span>
             </button>
         </div>
     </div>
@@ -359,14 +377,14 @@ $isAdmin = in_array($role, ['admin', 'superadmin']);
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 mb-2">No inventory items found</h3>
                 <p class="text-gray-600 mb-8">Get started by adding your first inventory item to track stock levels and manage your products efficiently.</p>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <div class="flex flex-wrap items-center justify-center gap-3">
                     <a href="<?= base_url('dashboard/inventory/create') ?>"
-                       class="inline-flex items-center px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-all duration-200 shadow-sm">
+                       class="inline-flex items-center justify-center min-w-0 px-6 py-3 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 shadow-sm">
                         <i class="fas fa-plus mr-2"></i>Add First Item
                     </a>
                     <?php if ($isAdmin): ?>
                         <a href="<?= base_url('dashboard/inventory/bulk-import') ?>"
-                           class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-sm">
+                           class="inline-flex items-center justify-center min-w-0 px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-sm">
                             <i class="fas fa-upload mr-2"></i>Import Items
                         </a>
                     <?php endif; ?>

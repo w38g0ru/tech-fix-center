@@ -8,9 +8,10 @@
         <p class="mt-1 text-sm text-gray-600">Add a new item to your inventory</p>
     </div>
     <a href="<?= base_url('dashboard/inventory') ?>"
-       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
-        <i class="fas fa-arrow-left mr-2"></i>
-        Back to Inventory
+       class="inline-flex items-center px-3 sm:px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25"
+       title="Back to Inventory">
+        <i class="fas fa-arrow-left"></i>
+        <span class="hidden sm:inline sm:ml-2">Back to Inventory</span>
     </a>
 </div>
 
@@ -310,13 +311,14 @@
             </div>
 
             <!-- Form Actions -->
-            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
-                <a href="<?= base_url('dashboard/inventory') ?>" class="btn btn-outline">
-                    Cancel
+            <div class="flex items-center justify-end space-x-3 sm:space-x-4 pt-6 border-t border-gray-200">
+                <a href="<?= base_url('dashboard/inventory') ?>" class="btn btn-outline" title="Cancel and Return">
+                    <span class="hidden sm:inline">Cancel</span>
+                    <i class="fas fa-times sm:hidden"></i>
                 </a>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save mr-2"></i>
-                    Add Item
+                <button type="submit" class="btn btn-primary" title="Add New Item">
+                    <i class="fas fa-save"></i>
+                    <span class="hidden sm:inline sm:ml-2">Add Item</span>
                 </button>
             </div>
         </form>

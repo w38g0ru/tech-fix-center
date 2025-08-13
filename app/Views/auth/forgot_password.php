@@ -82,8 +82,8 @@
 
                 <!-- Submit Button -->
                 <div>
-                    <button type="submit" 
-                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition duration-150 ease-in-out">
+                    <button type="submit"
+                            class="w-full inline-flex items-center justify-center px-4 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition duration-150 ease-in-out">
                         <i class="fas fa-paper-plane mr-2"></i>
                         Send Reset Instructions
                     </button>
@@ -91,9 +91,9 @@
 
                 <!-- Back to Login -->
                 <div class="text-center">
-                    <a href="<?= base_url('auth/login') ?>" 
-                       class="text-sm text-primary-600 hover:text-primary-700">
-                        <i class="fas fa-arrow-left mr-1"></i>
+                    <a href="<?= base_url('auth/login') ?>"
+                       class="inline-flex items-center justify-center text-sm text-primary-600 hover:text-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg px-2 py-1 transition duration-150 ease-in-out">
+                        <i class="fas fa-arrow-left mr-2"></i>
                         Back to Login
                     </a>
                 </div>

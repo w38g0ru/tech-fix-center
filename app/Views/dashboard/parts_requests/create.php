@@ -8,9 +8,10 @@
         <p class="mt-1 text-sm text-gray-600">Create a new parts request</p>
     </div>
     <a href="<?= base_url('dashboard/parts-requests') ?>"
-       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
-        <i class="fas fa-arrow-left mr-2"></i>
-        Back to Parts Requests
+       class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
+       title="Back to Parts Requests">
+        <i class="fas fa-arrow-left text-sm"></i>
+        <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Parts Requests</span>
     </a>
 </div>
 

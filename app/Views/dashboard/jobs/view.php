@@ -9,24 +9,28 @@
     </div>
     <div class="flex flex-wrap gap-2">
         <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>"
-           class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500">
-            <i class="fas fa-edit mr-2"></i>
-            Edit Job
+           class="inline-flex items-center px-3 sm:px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
+           title="Edit Job">
+            <i class="fas fa-edit"></i>
+            <span class="hidden sm:inline sm:ml-2">Edit Job</span>
         </a>
         <a href="<?= base_url('dashboard/photos/upload?type=Job&job_id=' . $job['id']) ?>"
-           class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
-            <i class="fas fa-camera-retro mr-2"></i>
-            Add Photos
+           class="inline-flex items-center px-3 sm:px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+           title="Add Photos">
+            <i class="fas fa-camera-retro"></i>
+            <span class="hidden sm:inline sm:ml-2">Add Photos</span>
         </a>
         <button onclick="window.print()"
-                class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <i class="fas fa-print mr-2"></i>
-            Print
+                class="inline-flex items-center px-3 sm:px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                title="Print Job Details">
+            <i class="fas fa-print"></i>
+            <span class="hidden sm:inline sm:ml-2">Print</span>
         </button>
         <a href="<?= base_url('dashboard/jobs') ?>"
-           class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Back to Jobs
+           class="inline-flex items-center px-3 sm:px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+           title="Back to Jobs List">
+            <i class="fas fa-arrow-left"></i>
+            <span class="hidden sm:inline sm:ml-2">Back to Jobs</span>
         </a>
     </div>
 </div>
@@ -131,9 +135,10 @@
                 </div>
                 <div class="w-full sm:w-auto">
                     <button type="submit"
-                            class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-orange-600 border border-transparent rounded-lg text-sm font-semibold text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors shadow-md">
-                        <i class="fas fa-sync-alt mr-2"></i>
-                        Update Status
+                            class="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-orange-600 border border-transparent rounded-lg text-sm font-semibold text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors shadow-md"
+                            title="Update Job Status">
+                        <i class="fas fa-sync-alt"></i>
+                        <span class="hidden sm:inline sm:ml-2">Update Status</span>
                     </button>
                 </div>
             </form>
