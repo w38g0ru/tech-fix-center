@@ -7,30 +7,30 @@
         <h1 class="text-2xl font-semibold text-gray-900">Job #<?= $job['id'] ?> Details</h1>
         <p class="mt-1 text-sm text-gray-600">View complete job information</p>
     </div>
-    <div class="flex flex-wrap gap-2">
+    <div class="flex items-center justify-end gap-2">
         <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>"
-           class="inline-flex items-center px-3 sm:px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
+           class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200"
            title="Edit Job">
-            <i class="fas fa-edit"></i>
-            <span class="hidden sm:inline sm:ml-2">Edit Job</span>
+            <i class="fas fa-edit text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Edit Job</span>
         </a>
         <a href="<?= base_url('dashboard/photos/upload?type=Job&job_id=' . $job['id']) ?>"
-           class="inline-flex items-center px-3 sm:px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+           class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200"
            title="Add Photos">
-            <i class="fas fa-camera-retro"></i>
-            <span class="hidden sm:inline sm:ml-2">Add Photos</span>
+            <i class="fas fa-camera-retro text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Add Photos</span>
         </a>
         <button onclick="window.print()"
-                class="inline-flex items-center px-3 sm:px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
                 title="Print Job Details">
-            <i class="fas fa-print"></i>
-            <span class="hidden sm:inline sm:ml-2">Print</span>
+            <i class="fas fa-print text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Print</span>
         </button>
         <a href="<?= base_url('dashboard/jobs') ?>"
-           class="inline-flex items-center px-3 sm:px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+           class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 text-white text-sm font-semibold rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
            title="Back to Jobs List">
-            <i class="fas fa-arrow-left"></i>
-            <span class="hidden sm:inline sm:ml-2">Back to Jobs</span>
+            <i class="fas fa-arrow-left text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Jobs</span>
         </a>
     </div>
 </div>

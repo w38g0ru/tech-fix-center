@@ -337,18 +337,18 @@
             </div>
 
             <!-- Form Actions -->
-            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+            <div class="flex items-center justify-end gap-2 pt-6 border-t border-gray-200">
                 <a href="<?= base_url('dashboard/jobs') ?>"
-                   class="inline-flex items-center px-3 sm:px-4 py-2 bg-white border border-gray-300 rounded-xl font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-50 transition-all duration-200 shadow-sm"
+                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
                    title="Cancel and Return">
-                    <span class="hidden sm:inline">Cancel</span>
-                    <i class="fas fa-times sm:hidden"></i>
+                    <i class="fas fa-times text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Cancel</span>
                 </a>
                 <button type="submit"
-                        class="inline-flex items-center px-3 sm:px-4 py-2 bg-fuchsia-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-fuchsia-700 transition-all duration-200 shadow-lg shadow-fuchsia-500/25"
+                        class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-fuchsia-600 text-white text-sm font-semibold rounded-lg hover:bg-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
                         title="Create New Job">
-                    <i class="fas fa-save"></i>
-                    <span class="hidden sm:inline sm:ml-2">Create Job</span>
+                    <i class="fas fa-save text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Create Job</span>
                 </button>
             </div>
         </form>

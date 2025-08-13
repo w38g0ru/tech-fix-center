@@ -311,14 +311,18 @@
             </div>
 
             <!-- Form Actions -->
-            <div class="flex items-center justify-end space-x-3 sm:space-x-4 pt-6 border-t border-gray-200">
-                <a href="<?= base_url('dashboard/inventory') ?>" class="btn btn-outline" title="Cancel and Return">
-                    <span class="hidden sm:inline">Cancel</span>
-                    <i class="fas fa-times sm:hidden"></i>
+            <div class="flex items-center justify-end gap-2 pt-6 border-t border-gray-200">
+                <a href="<?= base_url('dashboard/inventory') ?>"
+                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
+                   title="Cancel and Return">
+                    <i class="fas fa-times text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Cancel</span>
                 </a>
-                <button type="submit" class="btn btn-primary" title="Add New Item">
-                    <i class="fas fa-save"></i>
-                    <span class="hidden sm:inline sm:ml-2">Add Item</span>
+                <button type="submit"
+                        class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+                        title="Add New Item">
+                    <i class="fas fa-save text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Add Item</span>
                 </button>
             </div>
         </form>

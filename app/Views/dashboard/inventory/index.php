@@ -38,31 +38,26 @@ $isAdmin = in_array($role, ['admin', 'superadmin']);
             </div>
         </div>
         <div class="flex items-center justify-end gap-2">
-            <!-- Quick Actions -->
             <?php if ($isAdmin): ?>
-            <div class="flex items-center gap-1 bg-gray-50 rounded-lg p-1">
-                <a href="<?= base_url('dashboard/inventory/downloadTemplate') ?>"
-                   class="inline-flex items-center justify-center min-w-0 px-2 py-1.5 text-sm font-medium text-green-700 bg-white rounded-md hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-colors duration-200"
-                   title="Download CSV template for bulk import">
-                    <i class="fas fa-download text-xs"></i>
-                    <span class="hidden lg:inline lg:ml-1 whitespace-nowrap text-xs">Template</span>
-                </a>
+                <button onclick="showBulkActions()"
+                        class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
+                        title="Download Template">
+                    <i class="fas fa-download text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Template</span>
+                </button>
                 <a href="<?= base_url('dashboard/inventory/bulk-import') ?>"
-                   class="inline-flex items-center justify-center min-w-0 px-2 py-1.5 text-sm font-medium text-blue-700 bg-white rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors duration-200"
+                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
                    title="Import items from CSV/Excel file">
-                    <i class="fas fa-upload text-xs"></i>
-                    <span class="hidden lg:inline lg:ml-1 whitespace-nowrap text-xs">Import</span>
+                    <i class="fas fa-upload text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Import</span>
                 </a>
                 <a href="<?= base_url('dashboard/inventory/export') ?>"
-                   class="inline-flex items-center justify-center min-w-0 px-2 py-1.5 text-sm font-medium text-gray-700 bg-white rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors duration-200"
+                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
                    title="Export all inventory items to CSV">
-                    <i class="fas fa-file-export text-xs"></i>
-                    <span class="hidden lg:inline lg:ml-1 whitespace-nowrap text-xs">Export</span>
+                    <i class="fas fa-file-export text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Export</span>
                 </a>
-            </div>
             <?php endif; ?>
-
-            <!-- Primary Action -->
             <a href="<?= base_url('dashboard/inventory/create') ?>"
                class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
                title="Add New Inventory Item">
@@ -150,13 +145,17 @@ $isAdmin = in_array($role, ['admin', 'superadmin']);
                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors duration-200">
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button type="submit" class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200" title="Search Inventory">
+            <div class="flex flex-wrap items-center gap-2">
+                <button type="submit"
+                        class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                        title="Search Inventory">
                     <i class="fas fa-search text-sm"></i>
                     <span class="hidden md:inline md:ml-2 whitespace-nowrap">Search</span>
                 </button>
                 <?php if (!empty($search)): ?>
-                    <a href="<?= base_url('dashboard/inventory') ?>" class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200" title="Clear Search">
+                    <a href="<?= base_url('dashboard/inventory') ?>"
+                       class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
+                       title="Clear Search">
                         <i class="fas fa-times text-sm"></i>
                         <span class="hidden md:inline md:ml-2 whitespace-nowrap">Clear</span>
                     </a>
