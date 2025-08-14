@@ -2,17 +2,19 @@
 
 <?= $this->section('content') ?>
 
-<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
     <div>
         <h1 class="text-2xl font-semibold text-gray-900">Create New Job</h1>
         <p class="mt-1 text-sm text-gray-600">Create a new repair job</p>
     </div>
-    <a href="<?= base_url('dashboard/jobs') ?>"
-       class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
-       title="Back to Jobs">
-        <i class="fas fa-arrow-left text-sm"></i>
-        <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Jobs</span>
-    </a>
+    <div class="flex items-center justify-start lg:justify-end gap-2">
+        <a href="<?= base_url('dashboard/jobs') ?>"
+           class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
+           title="Back to Jobs">
+            <i class="fas fa-arrow-left text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Jobs</span>
+        </a>
+    </div>
 </div>
 
 <div class="w-full">

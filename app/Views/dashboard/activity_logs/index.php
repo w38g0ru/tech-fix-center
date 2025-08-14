@@ -4,7 +4,7 @@
 
 <!-- Welcome Section -->
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div class="flex items-center space-x-4">
             <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center">
                 <i class="fas fa-history text-white text-xl"></i>
@@ -20,13 +20,14 @@
                 </p>
             </div>
         </div>
-        <div class="text-right">
+        <div class="flex items-center justify-start lg:justify-end gap-2">
             <!-- Export Button (Admin Only) -->
             <?php if (in_array($userRole, ['superadmin', 'admin'])): ?>
             <a href="<?= base_url('dashboard/activity-logs/export') ?>"
-               class="inline-flex items-center px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-all duration-200 shadow-sm"
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 text-white text-sm font-semibold rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
                title="Export activity logs to CSV">
-                <i class="fas fa-file-export mr-2"></i>Export
+                <i class="fas fa-file-export text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Export</span>
             </a>
             <?php endif; ?>
         </div>
