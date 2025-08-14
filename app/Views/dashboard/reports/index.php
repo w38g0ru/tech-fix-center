@@ -4,7 +4,7 @@
 
 <!-- Welcome Section -->
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div class="flex items-center space-x-4">
             <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
                 <i class="fas fa-chart-bar text-white text-xl"></i>
@@ -14,18 +14,24 @@
                 <p class="text-sm text-gray-600">Comprehensive business insights and performance metrics</p>
             </div>
         </div>
-        <div class="text-right">
-            <form method="GET" class="flex items-center space-x-3">
-                <div class="flex items-center space-x-2 bg-gray-50 rounded-lg p-3">
-                    <label class="text-sm font-medium text-gray-700">From:</label>
-                    <input type="date" name="start_date" value="<?= $startDate ?>"
-                           class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                    <label class="text-sm font-medium text-gray-700">To:</label>
-                    <input type="date" name="end_date" value="<?= $endDate ?>"
-                           class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+        <div class="flex items-center justify-start lg:justify-end">
+            <form method="GET" class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 bg-gray-50 rounded-lg p-3">
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700 whitespace-nowrap">From:</label>
+                        <input type="date" name="start_date" value="<?= $startDate ?>"
+                               class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700 whitespace-nowrap">To:</label>
+                        <input type="date" name="end_date" value="<?= $endDate ?>"
+                               class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
                     <button type="submit"
-                            class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors duration-200">
-                        <i class="fas fa-filter mr-2"></i>Apply Filter
+                            class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
+                            title="Apply Date Filter">
+                        <i class="fas fa-filter text-sm"></i>
+                        <span class="hidden md:inline md:ml-2 whitespace-nowrap">Apply Filter</span>
                     </button>
                 </div>
             </form>
