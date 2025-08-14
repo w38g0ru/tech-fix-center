@@ -2,18 +2,57 @@
 
 <?= $this->section('content') ?>
 
-<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
-    <div>
-        <h1 class="text-2xl font-semibold text-gray-900">Add Stock Movement</h1>
-        <p class="mt-1 text-sm text-gray-600">Record stock IN or OUT movement</p>
-    </div>
-    <div class="flex items-center justify-start lg:justify-end gap-2">
-        <a href="<?= base_url('dashboard/movements') ?>"
-           class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
-           title="Back to Movements">
-            <i class="fas fa-arrow-left text-sm"></i>
-            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Movements</span>
-        </a>
+<!-- Page Header Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-teal-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-plus text-white text-xl"></i>
+            </div>
+            <div>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900">Add Stock Movement</h1>
+                    <?php if (!empty($selectedJob)): ?>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            <i class="fas fa-link mr-1"></i>
+                            Job #<?= $selectedJob['id'] ?>
+                        </span>
+                    <?php endif; ?>
+                </div>
+                <p class="text-sm text-gray-600">
+                    <?php if (!empty($selectedJob)): ?>
+                        Record stock movement for <?= esc($selectedJob['device_name']) ?>
+                        <?php if (!empty($selectedJob['customer_name'])): ?>
+                            - <?= esc($selectedJob['customer_name']) ?>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        Record inventory stock IN or OUT movement
+                    <?php endif; ?>
+                </p>
+            </div>
+        </div>
+        <div class="flex items-center justify-start lg:justify-end gap-2">
+            <?php if (!empty($selectedJob)): ?>
+                <a href="<?= base_url('dashboard/jobs/view/' . $selectedJob['id']) ?>"
+                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                   title="View Job Details">
+                    <i class="fas fa-eye text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">View Job</span>
+                </a>
+                <a href="<?= base_url('dashboard/movements/job/' . $selectedJob['id']) ?>"
+                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-colors duration-200"
+                   title="View Job Movements">
+                    <i class="fas fa-exchange-alt text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Job Movements</span>
+                </a>
+            <?php endif; ?>
+            <a href="<?= base_url('dashboard/movements') ?>"
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 text-white text-sm font-semibold rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Back to Movements">
+                <i class="fas fa-arrow-left text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Movements</span>
+            </a>
+        </div>
     </div>
 </div>
 
