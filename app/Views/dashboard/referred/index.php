@@ -4,7 +4,7 @@
 
 <!-- Welcome Section -->
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div class="flex items-center space-x-4">
             <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
                 <i class="fas fa-shipping-fast text-white text-xl"></i>
@@ -22,7 +22,7 @@
                 </p>
             </div>
         </div>
-        <div class="flex items-center justify-end gap-2">
+        <div class="flex items-center justify-start lg:justify-end gap-2">
             <?php if ($isAdmin): ?>
                 <button onclick="showBulkActions()" class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200" title="Bulk Actions">
                     <i class="fas fa-tasks text-sm"></i>

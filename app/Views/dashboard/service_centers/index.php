@@ -4,7 +4,7 @@
 
 <!-- Welcome Section -->
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div class="flex items-center space-x-4">
             <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
                 <i class="fas fa-building text-white text-xl"></i>
@@ -22,7 +22,7 @@
                 </p>
             </div>
         </div>
-        <div class="flex items-center justify-end gap-2">
+        <div class="flex items-center justify-start lg:justify-end gap-2">
             <a href="<?= base_url('dashboard/service-centers/create') ?>"
                class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
                title="Add New Service Center">

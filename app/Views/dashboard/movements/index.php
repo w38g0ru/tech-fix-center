@@ -4,7 +4,7 @@
 
 <!-- Welcome Section -->
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div class="flex items-center space-x-4">
             <div class="w-12 h-12 bg-teal-600 rounded-lg flex items-center justify-center">
                 <i class="fas fa-warehouse text-white text-xl"></i>
@@ -14,7 +14,7 @@
                 <p class="text-sm text-gray-600">Track inventory stock movements (IN/OUT)</p>
             </div>
         </div>
-        <div class="flex items-center justify-end gap-2">
+        <div class="flex items-center justify-start lg:justify-end gap-2">
             <a href="<?= base_url('dashboard/movements/create') ?>"
                class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-teal-600 text-white text-sm font-semibold rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
                title="Add Stock Movement">
