@@ -8,9 +8,10 @@
         <p class="mt-1 text-sm text-gray-600">Record stock IN or OUT movement</p>
     </div>
     <a href="<?= base_url('dashboard/movements') ?>"
-       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
-        <i class="fas fa-arrow-left mr-2"></i>
-        Back to Movements
+       class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
+       title="Back to Movements">
+        <i class="fas fa-arrow-left text-sm"></i>
+        <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Movements</span>
     </a>
 </div>
 
@@ -120,16 +121,18 @@
             </div>
 
             <!-- Form Actions -->
-            <div class="flex flex-col sm:flex-row items-center justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-8 border-t border-gray-200">
+            <div class="flex items-center justify-end gap-2 pt-8 border-t border-gray-200">
                 <a href="<?= base_url('dashboard/movements') ?>"
-                   class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
-                    <i class="fas fa-times mr-2"></i>
-                    Cancel
+                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
+                   title="Cancel and Return">
+                    <i class="fas fa-times text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Cancel</span>
                 </a>
                 <button type="submit"
-                        class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 border border-transparent rounded-xl text-sm font-medium text-white hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg shadow-blue-500/25">
-                    <i class="fas fa-save mr-2"></i>
-                    Record Stock Movement
+                        class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-teal-600 text-white text-sm font-semibold rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+                        title="Record Stock Movement">
+                    <i class="fas fa-save text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Record Movement</span>
                 </button>
             </div>
         </form>

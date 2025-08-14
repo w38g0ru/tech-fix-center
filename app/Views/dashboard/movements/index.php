@@ -14,10 +14,12 @@
                 <p class="text-sm text-gray-600">Track inventory stock movements (IN/OUT)</p>
             </div>
         </div>
-        <div class="text-right">
+        <div class="flex items-center justify-end gap-2">
             <a href="<?= base_url('dashboard/movements/create') ?>"
-               class="inline-flex items-center px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-all duration-200 shadow-sm">
-                <i class="fas fa-plus mr-2"></i>Add Stock
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-teal-600 text-white text-sm font-semibold rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Add Stock Movement">
+                <i class="fas fa-plus text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Add Stock</span>
             </a>
         </div>
     </div>
