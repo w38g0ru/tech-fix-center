@@ -99,14 +99,34 @@
                 <label for="job_id" class="block text-sm font-medium text-gray-700 mb-2">
                     Related Job (Optional)
                 </label>
-                <select id="job_id" 
-                        name="job_id" 
+                <?php if (!empty($selectedJob)): ?>
+                    <!-- Show selected job info -->
+                    <div class="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-blue-900">
+                                    Job #<?= $selectedJob['id'] ?> - <?= esc($selectedJob['device_name']) ?>
+                                </p>
+                                <?php if (!empty($selectedJob['customer_name'])): ?>
+                                    <p class="text-sm text-blue-700">
+                                        Customer: <?= esc($selectedJob['customer_name']) ?>
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+                            <button type="button" onclick="clearJobSelection()" class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                <select id="job_id"
+                        name="job_id"
                         class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 <?= session('errors.job_id') ? 'border-red-500' : '' ?>">
                     <option value="">No job linked</option>
                     <?php if (!empty($jobs)): ?>
                         <?php foreach ($jobs as $job): ?>
-                            <option value="<?= $job['id'] ?>" <?= old('job_id') == $job['id'] ? 'selected' : '' ?>>
-                                Job #<?= $job['id'] ?> - <?= esc($job['device_name']) ?> 
+                            <option value="<?= $job['id'] ?>" <?= (old('job_id', $selectedJobId ?? '') == $job['id']) ? 'selected' : '' ?>>
+                                Job #<?= $job['id'] ?> - <?= esc($job['device_name']) ?>
                                 <?php if (!empty($job['customer_name'])): ?>
                                     (<?= esc($job['customer_name']) ?>)
                                 <?php endif; ?>
@@ -119,6 +139,17 @@
                 <?php endif; ?>
                 <p class="mt-1 text-sm text-gray-500">Link this movement to a specific repair job</p>
             </div>
+
+            <script>
+            function clearJobSelection() {
+                document.getElementById('job_id').value = '';
+                // Remove the selected job info div
+                const selectedJobDiv = document.querySelector('.bg-blue-50');
+                if (selectedJobDiv) {
+                    selectedJobDiv.remove();
+                }
+            }
+            </script>
 
             </div>
 

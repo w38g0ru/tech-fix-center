@@ -49,10 +49,20 @@ class Movements extends BaseController
             return redirect()->to('/auth/login');
         }
 
+        // Get job_id from URL parameter if provided
+        $jobId = $this->request->getGet('job_id');
+        $selectedJob = null;
+
+        if ($jobId) {
+            $selectedJob = $this->jobModel->getJobWithDetails($jobId);
+        }
+
         $data = [
             'title' => 'Add Stock Movement',
             'inventoryItems' => $this->inventoryModel->findAll(),
-            'jobs' => $this->jobModel->getJobsWithDetails()
+            'jobs' => $this->jobModel->getJobsWithDetails(),
+            'selectedJobId' => $jobId,
+            'selectedJob' => $selectedJob
         ];
 
         return view('dashboard/movements/create', $data);
