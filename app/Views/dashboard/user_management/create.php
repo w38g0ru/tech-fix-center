@@ -2,17 +2,35 @@
 
 <?= $this->section('content') ?>
 
-<div class="flex items-center justify-between mb-6">
-    <div>
-        <h1 class="text-2xl font-semibold text-gray-900">Create New User</h1>
-        <p class="mt-1 text-sm text-gray-600">Add a new user to the system (including technicians, admins, and customers)</p>
+<!-- Welcome Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-user-plus text-white text-xl"></i>
+            </div>
+            <div>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900">Create New User</h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        <i class="fas fa-crown mr-1"></i>
+                        Admin Access
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">
+                    Add a new user to the system (including technicians, admins, and customers)
+                </p>
+            </div>
+        </div>
+        <div class="flex items-center justify-start lg:justify-end gap-2">
+            <a href="<?= base_url('dashboard/user-management') ?>"
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 text-white text-sm font-semibold rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Back to User Management">
+                <i class="fas fa-arrow-left text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to User Management</span>
+            </a>
+        </div>
     </div>
-    <a href="<?= base_url('dashboard/user-management') ?>"
-       class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
-       title="Back to Users">
-        <i class="fas fa-arrow-left text-sm"></i>
-        <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Users</span>
-    </a>
 </div>
 
 <div class="w-full">

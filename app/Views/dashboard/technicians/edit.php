@@ -2,16 +2,19 @@
 
 <?= $this->section('content') ?>
 
-<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
     <div>
         <h1 class="text-2xl font-semibold text-gray-900">Edit Technician</h1>
         <p class="mt-1 text-sm text-gray-600">Update technician information</p>
     </div>
-    <a href="<?= base_url('dashboard/technicians') ?>" 
-       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-        <i class="fas fa-arrow-left mr-2"></i>
-        Back to Technicians
-    </a>
+    <div class="flex items-center justify-start lg:justify-end gap-2">
+        <a href="<?= base_url('dashboard/technicians') ?>"
+           class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
+           title="Back to Technicians">
+            <i class="fas fa-arrow-left text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Technicians</span>
+        </a>
+    </div>
 </div>
 
 <div class="max-w-2xl">

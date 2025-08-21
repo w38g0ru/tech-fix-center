@@ -2,18 +2,18 @@
 
 <?= $this->section('content') ?>
 
-<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
     <div>
         <h1 class="text-2xl font-semibold text-gray-900"><?= esc($item['device_name']) ?></h1>
         <p class="mt-1 text-sm text-gray-600">Inventory item details and movement history</p>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center justify-start lg:justify-end gap-2">
         <?php
         $userRole = session('access_level') ?? session('role') ?? 'guest';
         if (in_array($userRole, ['admin', 'superadmin'])):
         ?>
             <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>"
-               class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-primary-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200"
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200"
                title="Edit Item">
                 <i class="fas fa-edit text-sm"></i>
                 <span class="hidden md:inline md:ml-2 whitespace-nowrap">Edit Item</span>
@@ -31,7 +31,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Main Item Details -->
     <div class="lg:col-span-2">
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Item Information</h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -153,7 +153,7 @@
         $userRole = session('access_level') ?? session('role') ?? 'guest';
         if (in_array($userRole, ['admin', 'superadmin'])):
         ?>
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
             <div class="space-y-3">
                 <a href="<?= base_url('dashboard/inventory/edit/' . $item['id']) ?>"
@@ -207,7 +207,7 @@
         $showPricingSection = $showPurchasePrice || $item['selling_price'];
         ?>
         <?php if ($showPricingSection): ?>
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Pricing</h3>
             <div class="space-y-3">
                 <?php if ($showPurchasePrice): ?>
@@ -244,7 +244,7 @@
 <!-- Movement History -->
 <?php if (!empty($movements)): ?>
 <div class="mt-8">
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white rounded-lg">
         <div class="px-6 py-4 border-b border-gray-200">
             <h3 class="text-lg font-medium text-gray-900">Movement History</h3>
         </div>

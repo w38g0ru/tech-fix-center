@@ -8,7 +8,7 @@
         <p class="mt-1 text-sm text-gray-600">Detailed information about this activity</p>
     </div>
     <a href="<?= base_url('dashboard/activity-logs') ?>"
-       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
+       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200">
         <i class="fas fa-arrow-left mr-2"></i>
         Back to Activity Logs
     </a>
@@ -17,7 +17,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Main Activity Details -->
     <div class="lg:col-span-2">
-        <div class="bg-white shadow-xl rounded-2xl border border-gray-100 p-6 lg:p-8">
+        <div class="bg-white rounded-2xl border border-gray-100 p-6 lg:p-8">
             <h2 class="text-xl font-semibold text-gray-900 mb-6">Activity Information</h2>
             
             <div class="space-y-6">
@@ -94,7 +94,7 @@
     <!-- Sidebar -->
     <div class="space-y-6">
         <!-- User Information -->
-        <div class="bg-white shadow-xl rounded-2xl border border-gray-100 p-6">
+        <div class="bg-white rounded-2xl border border-gray-100 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">User Information</h3>
             <div class="space-y-4">
                 <!-- User Avatar & Name -->
@@ -131,7 +131,7 @@
         </div>
 
         <!-- Activity Metadata -->
-        <div class="bg-white shadow-xl rounded-2xl border border-gray-100 p-6">
+        <div class="bg-white rounded-2xl border border-gray-100 p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Metadata</h3>
             <div class="space-y-3">
                 <!-- Activity ID -->

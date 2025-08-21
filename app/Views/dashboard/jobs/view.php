@@ -37,7 +37,7 @@
 
 <!-- Mobile Quick Actions (visible on small screens) -->
 <div class="lg:hidden mb-6">
-    <div class="bg-white shadow rounded-lg p-4">
+    <div class="bg-white rounded-lg p-4">
         <h3 class="text-sm font-medium text-gray-900 mb-3">Quick Actions</h3>
         <div class="grid grid-cols-2 gap-2">
             <a href="<?= base_url('dashboard/jobs/edit/' . $job['id']) ?>"
@@ -114,7 +114,7 @@
         </div>
 
         <!-- Quick Status Update -->
-        <div class="bg-white shadow-lg rounded-lg p-6 border-l-4 border-orange-500">
+        <div class="bg-white rounded-lg p-6 border-l-4 border-orange-500">
             <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <i class="fas fa-tasks text-orange-600 mr-2"></i>
                 Quick Status Update
@@ -306,7 +306,7 @@
         </div>
 
         <!-- Job Actions -->
-        <div class="bg-white shadow-lg rounded-lg p-6 border-l-4 border-primary-500">
+        <div class="bg-white rounded-lg p-6 border-l-4 border-primary-500">
             <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <i class="fas fa-cogs text-primary-600 mr-2"></i>
                 Job Actions

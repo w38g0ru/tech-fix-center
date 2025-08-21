@@ -28,7 +28,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Photo Display -->
     <div class="lg:col-span-2">
-        <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="bg-white rounded-lg overflow-hidden">
             <div class="aspect-video bg-gray-100 flex items-center justify-center">
                 <img src="<?= base_url('dashboard/photos/serve/' . $photo['file_name']) ?>" 
                      alt="<?= esc($photo['description'] ?? 'Photo') ?>"
@@ -48,7 +48,7 @@
     <!-- Photo Information -->
     <div class="space-y-6">
         <!-- Basic Info -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Photo Information</h3>
             
             <div class="space-y-3">
@@ -86,7 +86,7 @@
 
         <!-- Related Information -->
         <?php if (!empty($photo['job_id']) || !empty($photo['referred_id'])): ?>
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="bg-white rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">
                     <?= !empty($photo['job_id']) ? 'Related Job' : 'Related Dispatch' ?>
                 </h3>
@@ -213,7 +213,7 @@
         <?php endif; ?>
 
         <!-- Actions -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Actions</h3>
             
             <div class="space-y-3">

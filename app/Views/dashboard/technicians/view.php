@@ -2,21 +2,23 @@
 
 <?= $this->section('content') ?>
 
-<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
     <div>
         <h1 class="text-2xl font-semibold text-gray-900">Technician Details</h1>
         <p class="mt-1 text-sm text-gray-600">View technician information and contact details</p>
     </div>
-    <div class="flex space-x-2">
-        <a href="<?= base_url('dashboard/technicians/edit/' . $technician['id']) ?>" 
-           class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700">
-            <i class="fas fa-edit mr-2"></i>
-            Edit Technician
+    <div class="flex items-center justify-start lg:justify-end gap-2">
+        <a href="<?= base_url('dashboard/technicians/edit/' . $technician['id']) ?>"
+           class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200"
+           title="Edit Technician">
+            <i class="fas fa-edit text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Edit Technician</span>
         </a>
-        <a href="<?= base_url('dashboard/technicians') ?>" 
-           class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Back to List
+        <a href="<?= base_url('dashboard/technicians') ?>"
+           class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
+           title="Back to List">
+            <i class="fas fa-arrow-left text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to List</span>
         </a>
     </div>
 </div>
@@ -25,7 +27,7 @@
     <!-- Technician Information -->
     <div class="lg:col-span-2 space-y-6">
         <!-- Basic Info -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -42,7 +44,7 @@
         </div>
 
         <!-- Contact Information -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Contact Information</h3>
             
             <div class="space-y-4">
@@ -128,7 +130,7 @@
         </div>
 
         <!-- Account Information -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Account Information</h3>
             
             <div class="space-y-3">

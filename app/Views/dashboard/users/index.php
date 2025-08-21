@@ -10,8 +10,16 @@
                 <i class="fas fa-users text-white text-xl"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-semibold text-gray-900">Customer Management</h1>
-                <p class="text-sm text-gray-600">Manage your repair shop customers and their information</p>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900">Customer Management</h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <i class="fas fa-user mr-1"></i>
+                        Management
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">
+                    Manage your repair shop customers and their information
+                </p>
             </div>
         </div>
         <div class="flex items-center justify-start lg:justify-end gap-2">

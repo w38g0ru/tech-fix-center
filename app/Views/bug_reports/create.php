@@ -2,17 +2,34 @@
 
 <?= $this->section('content') ?>
 
-<!-- Page Header -->
-<div class="flex items-center justify-between mb-8">
-    <div>
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Report Bug</h1>
-        <p class="text-gray-600">Help us improve by reporting bugs and issues</p>
-    </div>
-    <div>
-        <a href="<?= base_url('dashboard/bug-reports') ?>"
-           class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors duration-200">
-            <i class="fas fa-arrow-left mr-2"></i>Back to Bug Reports
-        </a>
+<!-- Welcome Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-plus text-white text-xl"></i>
+            </div>
+            <div>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900">Report Bug</h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        Issue Tracking
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">
+                    Help us improve by reporting bugs and issues
+                </p>
+            </div>
+        </div>
+        <div class="flex items-center justify-start lg:justify-end gap-2">
+            <a href="<?= base_url('dashboard/bug-reports') ?>"
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 text-white text-sm font-semibold rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Back to Bug Reports">
+                <i class="fas fa-arrow-left text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Bug Reports</span>
+            </a>
+        </div>
     </div>
 </div>
 
@@ -137,11 +154,17 @@
 
     <!-- Form Actions -->
     <div class="flex items-center justify-end space-x-4">
-        <a href="<?= base_url('dashboard/bug-reports') ?>" class="btn btn-outline">
+        <a href="<?= base_url('dashboard/bug-reports') ?>"
+           class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
+           title="Cancel">
+            <i class="fas fa-times text-sm mr-2"></i>
             Cancel
         </a>
-        <button type="submit" class="btn btn-danger">
-            <i class="fas fa-bug mr-2"></i>Submit Bug Report
+        <button type="submit"
+                class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-red-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+                title="Submit Bug Report">
+            <i class="fas fa-bug text-sm mr-2"></i>
+            Submit Bug Report
         </button>
     </div>
 </form>

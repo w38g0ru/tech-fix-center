@@ -3,12 +3,12 @@
 <?= $this->section('content') ?>
 
 <!-- Page Header -->
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
     <div>
-        <h1 class="text-2xl font-bold text-gray-900">Parts Request #<?= $partsRequest['id'] ?></h1>
+        <h1 class="text-2xl font-semibold text-gray-900">Parts Request #<?= $partsRequest['id'] ?></h1>
         <p class="mt-1 text-sm text-gray-600">View detailed information about this parts request</p>
     </div>
-    <div class="mt-4 sm:mt-0 flex space-x-3">
+    <div class="flex items-center justify-start lg:justify-end gap-2">
         <?php
         // Show edit button for technicians (own pending requests) or admins
         $canEdit = false;
@@ -22,16 +22,18 @@
 
         <?php if ($canEdit && $partsRequest['status'] === 'Pending'): ?>
             <a href="<?= base_url('dashboard/parts-requests/edit/' . $partsRequest['id']) ?>"
-               class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                <i class="fas fa-edit mr-2"></i>
-                Edit Request
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200"
+               title="Edit Request">
+                <i class="fas fa-edit text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Edit Request</span>
             </a>
         <?php endif; ?>
 
         <a href="<?= base_url('dashboard/parts-requests') ?>"
-           class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Back to Parts Requests
+           class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
+           title="Back to Parts Requests">
+            <i class="fas fa-arrow-left text-sm"></i>
+            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Parts Requests</span>
         </a>
     </div>
 </div>
@@ -39,7 +41,7 @@
 <!-- Main Content -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     <!-- Request Details Card -->
-    <div class="bg-white rounded-lg shadow p-6">
+    <div class="bg-white rounded-lg p-6">
         <h3 class="text-lg font-medium text-gray-900 mb-6">Request Details</h3>
 
         <dl class="space-y-4">
@@ -102,7 +104,7 @@
     </div>
 
     <!-- Request Information Card -->
-    <div class="bg-white rounded-lg shadow p-6">
+    <div class="bg-white rounded-lg p-6">
         <h3 class="text-lg font-medium text-gray-900 mb-6">Request Information</h3>
 
         <dl class="space-y-4">
@@ -143,7 +145,7 @@
 
 <!-- Additional Information -->
 <?php if ($partsRequest['description']): ?>
-<div class="bg-white rounded-lg shadow p-6 mt-8">
+<div class="bg-white rounded-lg p-6 mt-8">
     <h3 class="text-lg font-medium text-gray-900 mb-4">Description</h3>
     <div class="text-sm text-gray-700 leading-relaxed">
         <?= nl2br(esc($partsRequest['description'])) ?>
@@ -152,7 +154,7 @@
 <?php endif; ?>
 
 <?php if ($partsRequest['notes']): ?>
-<div class="bg-white rounded-lg shadow p-6 mt-8">
+<div class="bg-white rounded-lg p-6 mt-8">
     <h3 class="text-lg font-medium text-gray-900 mb-4">Notes</h3>
     <div class="text-sm text-gray-700 leading-relaxed">
         <?= nl2br(esc($partsRequest['notes'])) ?>
@@ -161,7 +163,7 @@
 <?php endif; ?>
 
 <?php if ($partsRequest['rejection_reason']): ?>
-<div class="bg-white rounded-lg shadow p-6 mt-8">
+<div class="bg-white rounded-lg p-6 mt-8">
     <h3 class="text-lg font-medium text-gray-900 mb-4">Rejection Reason</h3>
     <div class="bg-red-50 border border-red-200 rounded-lg p-4">
         <div class="flex">
@@ -182,7 +184,7 @@
 
 <!-- Cost and Delivery Information -->
 <?php if ($partsRequest['estimated_cost'] || $partsRequest['actual_cost'] || $partsRequest['supplier']): ?>
-<div class="bg-white rounded-lg shadow p-6 mt-8">
+<div class="bg-white rounded-lg p-6 mt-8">
     <h3 class="text-lg font-medium text-gray-900 mb-6">Cost & Delivery Information</h3>
 
     <dl class="space-y-4">
@@ -233,7 +235,7 @@
 
 <!-- Action Buttons -->
 <?php if (in_array($userRole, ['superadmin', 'admin']) && $partsRequest['status'] === 'Pending'): ?>
-<div class="bg-white rounded-lg shadow p-6 mt-8">
+<div class="bg-white rounded-lg p-6 mt-8">
     <h3 class="text-lg font-medium text-gray-900 mb-6">Actions</h3>
 
     <div class="flex flex-col sm:flex-row gap-4">

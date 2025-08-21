@@ -2,18 +2,40 @@
 
 <?= $this->section('content') ?>
 
-<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
-    <div>
-        <h1 class="text-2xl font-semibold text-gray-900">Create New Job</h1>
-        <p class="mt-1 text-sm text-gray-600">Create a new repair job</p>
-    </div>
-    <div class="flex items-center justify-start lg:justify-end gap-2">
-        <a href="<?= base_url('dashboard/jobs') ?>"
-           class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
-           title="Back to Jobs">
-            <i class="fas fa-arrow-left text-sm"></i>
-            <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Jobs</span>
-        </a>
+<?php
+// Get user role information
+$userRole = session('access_level') ?? session('role') ?? 'guest';
+$isAdmin = in_array($userRole, ['admin', 'superadmin']);
+?>
+
+<!-- Welcome Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-fuchsia-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-plus text-white text-xl"></i>
+            </div>
+            <div>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900">Create New Job</h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $isAdmin ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' ?>">
+                        <i class="fas <?= $isAdmin ? 'fa-crown' : 'fa-user' ?> mr-1"></i>
+                        <?= ucfirst($userRole) ?> Access
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">
+                    Create a new repair job and assign it to technicians
+                </p>
+            </div>
+        </div>
+        <div class="flex items-center justify-start lg:justify-end gap-2">
+            <a href="<?= base_url('dashboard/jobs') ?>"
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 text-white text-sm font-semibold rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Back to Jobs">
+                <i class="fas fa-arrow-left text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Jobs</span>
+            </a>
+        </div>
     </div>
 </div>
 

@@ -25,7 +25,7 @@
     <!-- Dispatch Information -->
     <div class="lg:col-span-2 space-y-6">
         <!-- Basic Info -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Dispatch Information</h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -57,7 +57,7 @@
         </div>
 
         <!-- Customer Information -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Customer Information</h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -82,7 +82,7 @@
 
         <!-- Device Information -->
         <?php if (!empty($referred['device_name']) || !empty($referred['problem_description'])): ?>
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="bg-white rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Device Information</h3>
                 
                 <?php if (!empty($referred['device_name'])): ?>
@@ -103,7 +103,7 @@
 
         <!-- Service Information -->
         <?php if (!empty($referred['referred_to'])): ?>
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="bg-white rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Service Information</h3>
                 
                 <div>
@@ -115,7 +115,7 @@
 
         <!-- Dispatch Photos -->
         <?php if (!empty($photos)): ?>
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="bg-white rounded-lg p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-medium text-gray-900">Dispatch Photoproofs</h3>
                     <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
@@ -155,7 +155,7 @@
     <!-- Sidebar -->
     <div class="space-y-6">
         <!-- Quick Actions -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
             
             <div class="space-y-3">
@@ -192,7 +192,7 @@
         </div>
 
         <!-- Timeline -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Timeline</h3>
             
             <div class="space-y-3">

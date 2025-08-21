@@ -41,22 +41,10 @@ $isAdmin = in_array($role, ['admin', 'superadmin']);
             <?php if ($isAdmin): ?>
                 <button onclick="showBulkActions()"
                         class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
-                        title="Download Template">
-                    <i class="fas fa-download text-sm"></i>
-                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Template</span>
+                        title="Bulk Actions">
+                    <i class="fas fa-tasks text-sm"></i>
+                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Bulk Actions</span>
                 </button>
-                <a href="<?= base_url('dashboard/inventory/bulk-import') ?>"
-                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
-                   title="Import items from CSV/Excel file">
-                    <i class="fas fa-upload text-sm"></i>
-                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Import</span>
-                </a>
-                <a href="<?= base_url('dashboard/inventory/export') ?>"
-                   class="inline-flex items-center justify-center min-w-0 px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
-                   title="Export all inventory items to CSV">
-                    <i class="fas fa-file-export text-sm"></i>
-                    <span class="hidden md:inline md:ml-2 whitespace-nowrap">Export</span>
-                </a>
             <?php endif; ?>
             <a href="<?= base_url('dashboard/inventory/create') ?>"
                class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"

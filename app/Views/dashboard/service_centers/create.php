@@ -2,17 +2,35 @@
 
 <?= $this->section('content') ?>
 
-<!-- Page Header -->
-<div class="flex items-center justify-between mb-6">
-    <div>
-        <h1 class="text-2xl font-semibold text-gray-900"><?= $title ?></h1>
-        <p class="mt-1 text-sm text-gray-600">Add a new service center to the system</p>
+<!-- Welcome Section -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-plus text-white text-xl"></i>
+            </div>
+            <div>
+                <div class="flex items-center space-x-3">
+                    <h1 class="text-2xl font-semibold text-gray-900"><?= $title ?></h1>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                        <i class="fas fa-building mr-1"></i>
+                        Admin Access
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">
+                    Add a new service center to the system
+                </p>
+            </div>
+        </div>
+        <div class="flex items-center justify-start lg:justify-end gap-2">
+            <a href="<?= base_url('dashboard/service-centers') ?>"
+               class="inline-flex items-center justify-center min-w-0 px-4 py-2 bg-gray-600 text-white text-sm font-semibold rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+               title="Back to Service Centers">
+                <i class="fas fa-arrow-left text-sm"></i>
+                <span class="hidden md:inline md:ml-2 whitespace-nowrap">Back to Service Centers</span>
+            </a>
+        </div>
     </div>
-    <a href="<?= base_url('dashboard/service-centers') ?>"
-       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/25">
-        <i class="fas fa-arrow-left mr-2"></i>
-        Back to Service Centers
-    </a>
 </div>
 
 <!-- Form -->

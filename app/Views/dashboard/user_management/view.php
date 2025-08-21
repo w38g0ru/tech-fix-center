@@ -32,7 +32,7 @@
     <!-- User Information -->
     <div class="lg:col-span-2 space-y-6">
         <!-- Basic Info -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -85,7 +85,7 @@
         </div>
 
         <!-- Account Status -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Account Status</h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -121,7 +121,7 @@
         </div>
 
         <!-- Activity Log -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
             
             <div class="space-y-4">
@@ -171,7 +171,7 @@
     <!-- Sidebar -->
     <div class="space-y-6">
         <!-- Role Information -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Role & Permissions</h3>
             
             <div class="text-center">
@@ -202,7 +202,7 @@
         </div>
 
         <!-- Account Statistics -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Account Statistics</h3>
             
             <div class="space-y-3">
@@ -235,7 +235,7 @@
         </div>
 
         <!-- Quick Actions -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
             
             <div class="space-y-3">
